@@ -1,15 +1,16 @@
-# Chrome extension to mark **Late** stories on Jira Board
+# Chrome extension to mark **Open** Bible.com or Cleanup notes
+
+This extension will remove coments (from current page only),
+and will add space after the verse number
+so when you copy the text to have paste it in a better format.
 
 ## Usage
 
-- [x] Click on **Jira Late Stories on Board**
+- [x] Click on **This Extension**
 
 ## Setup
 
 - [x] **Download** this repo as zip & Unzip it
-      (or git `clone https://github.com/crinel/chrome-jira-board.git`)
+      (or git `clone https://github.com/nmatei/chrome-bible-utilities.git`)
 - [x] Open [chrome://extensions/](chrome://extensions/)
 - [x] **Load unpacked** Extension
-- [x] When new sprint is started use "Settings".
-  - Date format is YYYY-MM-DD
-  - URL must be in https://jira.com/secure/RapidBoard.jspa?rapidView=1234 format (don't include other quickFilters parameters)
