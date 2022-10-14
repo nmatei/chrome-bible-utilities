@@ -1,0 +1,17 @@
+{
+  "name": "📖 Cleanup bible.com",
+  "version": "1.0.0",
+  "description": "Cleanup notes on YouVersion bible.com before you copy text",
+  "manifest_version": 3,
+  "author": "Matei Nicolae",
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "action": {},
+  "permissions": ["activeTab", "storage", "scripting"],
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  }
+}
