@@ -12,12 +12,12 @@ function cleaunUp() {
 }
 
 chrome.action.onClicked.addListener(tab => {
-  if (tab.url.startsWith("https://my.bible.com/")) {
+  if (tab.url.startsWith("https://my.bible.com/bible")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: cleaunUp
     });
   } else {
-    chrome.tabs.create({ url: "https://my.bible.com/" });
+    chrome.tabs.create({ url: "https://my.bible.com/bible" });
   }
 });
