@@ -8,6 +8,8 @@ so when you copy the text to have paste it in a better format.
 
 - [x] Click on **This Extension**
 
+![icon](icon-48.png)
+
 ## Setup
 
 - [x] **Download** this repo as zip & Unzip it
