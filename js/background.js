@@ -75,7 +75,8 @@ function selectVersesToProjectInitEvents() {
     }
     // TODO more space (left - right)
     const styles = `
-    .row, body.c_pages.a_privacy .privacy_content {
+    .row,
+    body.c_pages.a_privacy .privacy_content {
       max-width: 90rem;
     }
     .bible-reader-arrows-container {
@@ -89,6 +90,23 @@ function selectVersesToProjectInitEvents() {
     .verse.selected .label {
       background: #000;
       color: #fff;
+    }
+    
+    body .chapter-picker-modal .chapter-container .chapter-list li {
+      height: 40px;
+    }
+    body .bible-reader .verse {
+      display: block;
+    }
+    body .bible-reader.primary-chapter .label,
+    body .bible-reader.parallel-chapter .label {
+      display: inline;
+    }
+    
+    @media screen and (min-width: 992px) {
+      body .yv-footer {
+        padding: 30px;
+      }
     }
   `;
     const styleSheet = document.createElement("style");

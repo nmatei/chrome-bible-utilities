@@ -16,3 +16,8 @@ so when you copy the text to have paste it in a better format.
       (or git `clone https://github.com/nmatei/chrome-bible-utilities.git`)
 - [x] Open [chrome://extensions/](chrome://extensions/)
 - [x] **Load unpacked** Extension
+
+## TODO
+
+- [ ] Check if verses are not in sync (Numbers 13 in RO vs RU has more verses)
+- 
