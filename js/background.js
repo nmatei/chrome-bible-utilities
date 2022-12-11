@@ -12,37 +12,67 @@ function cleaunUp() {
 }
 
 function selectVersesToProjectInitEvents() {
-  const showProject = false;
+  const showProject = true;
+  const projected = "projected";
+
+  function adjustBodySize(tab) {
+    let fontSize = 150;
+    const body = tab.document.body;
+    do {
+      body.style.fontSize = fontSize + "px";
+      fontSize--;
+    } while (fontSize > 12 && body.offsetHeight > tab.window.innerHeight);
+    console.warn("body: %o, window: %o, fontSize: %o", body.offsetHeight, tab.window.innerHeight, fontSize + 1);
+  }
 
   function printSelectedVerses(tab) {
-    const selectedVerses = [...document.querySelectorAll(".verse.selected")];
+    // add spaces after label
+    document.querySelectorAll(".verse .label").forEach(l => {
+      l.innerHTML = l.innerHTML.trim() + " ";
+    });
 
-    tab.document.body.innerHTML = selectedVerses.map(v => `<p>${v.innerText}</p>`).join("\n");
+    const selectedVerses = [...document.querySelectorAll(`.verse.${projected}`)];
+
+    // tab.document.body.innerHTML = selectedVerses.map(v => `<p>${v.innerText}</p>`).join("\n");
+    tab.document.body.innerHTML = selectedVerses
+      .map(v => {
+        const label = v.querySelector(":scope > .label");
+        const verseNr = label ? label.innerText : "";
+        const nr = label ? `<span>${verseNr}</span>` : "";
+        return `<p>${nr}${v.innerText.substring(verseNr.length)}</p>`;
+      })
+      .join("\n");
+
+    setTimeout(() => {
+      adjustBodySize(tab);
+    }, 10);
   }
 
   if (!window.selectVersesToProject) {
     let projectTab;
-    console.warn("window.selectVersesToProject");
+    //console.warn("window.selectVersesToProject");
     window.selectVersesToProject = function (e) {
       if (e.target.matches(".verse .label")) {
+        e.stopPropagation();
+        e.preventDefault();
         const multiSelect = e.ctrlKey;
         const verse = e.target.closest(".verse");
-        const cls = "." + verse.className.split(/\s+/).join(".");
+        const cls = ".row ." + verse.className.split(/\s+/).join(".");
         console.warn("click on verse number", cls);
         const verses = document.querySelectorAll(cls);
 
-        const selected = verse.classList.contains("selected");
-        console.warn("multiSelect", multiSelect, "selected", selected);
+        const projectedVerses = verse.classList.contains(projected);
+        //console.warn("multiSelect", multiSelect, projected, projectedVerses);
 
         if (!multiSelect) {
-          document.querySelectorAll(".verse.selected").forEach(v => {
-            v.classList.remove("selected");
+          document.querySelectorAll(".verse.projected").forEach(v => {
+            v.classList.remove(projected);
           });
         }
 
-        if (!selected) {
+        if (!projectedVerses || multiSelect) {
           verses.forEach(v => {
-            v.classList.toggle("selected");
+            v.classList.toggle(projected);
           });
         }
 
@@ -52,17 +82,37 @@ function selectVersesToProjectInitEvents() {
           if (!projectTab) {
             projectTab = window.open("", "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no");
             const styles = `
+            html {
+              height: 100%;
+              overflow: hidden;
+            }
             body {
+              min-height: 100%;
               background: #000;
               color: #fff;
+              margin: 0;
+	            padding: 0;
+            }
+            p {
+              margin: 0;
+              padding: 0.2em;
+            }
+            p > span {
+              color: gray;
+              font-size: 0.7em;
             }
           `;
             const styleSheet = projectTab.document.createElement("style");
             styleSheet.id = "bible-projector";
             styleSheet.innerText = styles;
             projectTab.document.head.appendChild(styleSheet);
-          }
 
+            projectTab.document.body.innerHTML = "";
+
+            window.onbeforeunload = function () {
+              projectTab.close();
+            };
+          }
           printSelectedVerses(projectTab);
         }
       }
@@ -87,7 +137,7 @@ function selectVersesToProjectInitEvents() {
       padding: 5px 5px 5px 8px;
       border-radius: 4px;
     }
-    .verse.selected .label {
+    .verse.projected .label {
       background: #000;
       color: #fff;
     }
@@ -103,6 +153,18 @@ function selectVersesToProjectInitEvents() {
       display: inline;
     }
     
+    #react-app-Footer {
+      display: none;
+    }
+    
+    body .verse-action-footer.open {
+      display: none;
+    }
+    @media only screen and (min-width: 37.5em) {
+      body .verse-action-footer {
+        padding: 5px;
+      }
+    }
     @media screen and (min-width: 992px) {
       body .yv-footer {
         padding: 30px;
