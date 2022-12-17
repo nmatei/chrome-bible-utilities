@@ -1,23 +1,19 @@
 {
-  "name": "📖 Cleanup bible.com",
+  "name": "📖 Project verses from bible.com",
   "version": "1.0.0",
-  "description": "Cleanup notes on YouVersion bible.com before you copy text",
+  "description": "Project selected Bible verses (works for parallel as well) from YouVersion bible.com",
   "manifest_version": 3,
   "author": "Matei Nicolae",
   "background": {
     "service_worker": "js/background.js"
   },
   "action": {},
-  "permissions": ["activeTab", "storage", "scripting"],
-  "host_permissions": [
-    "https://my.bible.com/*"
-  ],
+  "permissions": ["activeTab", "tabs", "storage", "scripting"],
+  "host_permissions": ["https://my.bible.com/*"],
   "content_scripts": [
     {
       "js": ["js/content-project.js"],
-      "matches": [
-        "https://my.bible.com/*"
-      ]
+      "matches": ["https://my.bible.com/*"]
     }
   ],
   "icons": {

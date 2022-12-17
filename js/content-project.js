@@ -74,6 +74,14 @@ function addBodyStyles() {
         padding: 30px;
       }
     }
+    
+    /* primary only */
+    @media only screen and (min-width: 64em) {
+      .large-6 {
+        width: 80%;
+      }
+    }
+    
   `;
   const styleSheet = document.createElement("style");
   styleSheet.id = "bible-projector";
@@ -87,20 +95,29 @@ function adjustBodySize(tab) {
   do {
     body.style.fontSize = fontSize + "px";
     fontSize--;
-  } while (fontSize > 12 && body.offsetHeight > tab.window.innerHeight);
+  } while (fontSize > 10 && body.offsetHeight > tab.window.innerHeight);
 }
 
 function getDisplayText(verses) {
   const chapters = [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim()).join(" / ");
   const selectedVerses = [...verses];
+  const showParallel = !!document.querySelector(".parallel-chapter");
+  let separator = " separator";
   return (
     `<h1>${chapters}</h1>` +
     selectedVerses
       .map(v => {
         const label = v.querySelector(":scope > .label");
         const verseNr = label ? label.innerText : "";
-        const nr = label ? `<span>${verseNr}</span>` : "";
-        return `<p>${nr}${v.innerText.substring(verseNr.length)}</p>`;
+        const nr = label ? `<sup>${verseNr}</sup>` : "";
+        let cls = "";
+        if (showParallel) {
+          if (v.closest(".parallel-chapter")) {
+            cls = `parallel${separator}`;
+            separator = ""; // only first well be separator
+          }
+        }
+        return `<p class="${cls}">${nr}${v.innerText.substring(verseNr.length)}</p>`;
       })
       .join("\n")
   );
@@ -119,7 +136,7 @@ function printSelectedVerses(tab, verses) {
 }
 
 function createProjectTab() {
-  const tab = window.open("", "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no");
+  const tab = window.open("", "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,fullscreen=yes,width=300,height=240,top=200,left=300");
   const styles = `
     html {
       height: 100%;
@@ -137,13 +154,16 @@ function createProjectTab() {
     h1 {
       color: gray;
       font-size: 0.7em;
-      margin: 0.2em 0.2em 0 0.2em;
+      margin: 0.2em 0.4em 0 0.4em;
+    }
+    p.parallel.separator {
+      border-top: 2px solid gray;
     }
     p {
       margin: 0;
       padding: 0.2em;
     }
-    p > span {
+    p > sup {
       color: gray;
       font-size: 0.7em;
     }
@@ -163,6 +183,9 @@ function getProjectTab() {
     window.onbeforeunload = function () {
       projectTab.close();
     };
+    projectTab.window.addEventListener("resize", () => {
+      adjustBodySize(projectTab);
+    });
   }
   return projectTab;
 }
@@ -188,15 +211,18 @@ function selectVerses(verses, deselect) {
 }
 
 function selectVersesToProject(e) {
-  if (e.target.matches(".verse .label")) {
+  const target = e.target;
+  if (target.matches(".verse .label")) {
     e.stopPropagation();
     e.preventDefault();
     const multiSelect = e.ctrlKey;
-    const verse = e.target.closest(".verse");
+    const verse = target.closest(".verse");
     const cls = ".row ." + verse.className.split(/\s+/).join(".");
     const verses = document.querySelectorAll(cls);
 
     const projectedVerses = verse.classList.contains(projected);
+
+    focusChapter = target.closest(".parallel-chapter") ? "parallel" : "primary";
 
     if (!multiSelect) {
       deselectAll();
@@ -218,7 +244,7 @@ function displayVerses(verses) {
 }
 
 function selectByKeys(e) {
-  let next;
+  let dir = 0;
   switch (e.keyCode) {
     case 27: {
       // ESC
@@ -228,27 +254,33 @@ function selectByKeys(e) {
     }
     case 38: {
       // up
-      next = selectedVersesNr = selectedVersesNr.map(v => v - 1);
+      dir = -1;
       break;
     }
     case 40: {
       //down
-      next = selectedVersesNr = selectedVersesNr.map(v => v + 1);
+      dir = 1;
       break;
     }
   }
 
-  if (next) {
+  if (dir) {
+    let next = selectedVersesNr.map(v => v + dir);
     const [primary, parallel] = next;
     const verses = document.querySelectorAll(`.row .primary-chapter .verse.v${primary}, .row .parallel-chapter .verse.v${parallel}`);
+    if (verses.length) {
+      selectedVersesNr = next;
+    } else {
+      return;
+    }
     selectVerses(verses, true);
     displayVerses(verses);
-    const focus = focusChapter === "primary" ? verses[0] : verses[1] || verses[0];
-    if (focus) {
+    const focusEl = focusChapter === "primary" ? verses[0] : verses[1] || verses[0];
+    if (focusEl) {
       setTimeout(() => {
-        focus.scrollIntoViewIfNeeded();
-        // focus.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
-      }, 200);
+        // focusEl.scrollIntoView();
+        focusEl.scrollIntoViewIfNeeded(false);
+      }, 500);
     }
   }
 }
