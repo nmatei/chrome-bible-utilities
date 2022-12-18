@@ -1,8 +1,13 @@
 # Chrome extension to mark **Open** Bible.com or Cleanup notes
 
-This extension will remove coments (from current page only),
+This extension will remove comments (from current page only),
 and will add space after the verse number
 so when you copy the text to have paste it in a better format.
+
+## Features
+
+- [x] improve text for copy the text.
+- [x] project selected verses (+/- parallel text)
 
 ## Usage
 

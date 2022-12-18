@@ -42,8 +42,11 @@ function addBodyStyles() {
       border-radius: 4px;
     }
     .verse.projected .label {
-      background: #000;
-      color: #fff;
+      background: #000 !important;
+      color: #fff !important;
+    }
+    .focus-lost .verse.projected .label {
+      background: #999;
     }
     
     body .chapter-picker-modal .chapter-container .chapter-list li {
@@ -51,6 +54,7 @@ function addBodyStyles() {
     }
     body .bible-reader .verse {
       display: block;
+      line-height: 1.6em;
     }
     body .bible-reader.primary-chapter .label,
     body .bible-reader.parallel-chapter .label {
@@ -104,7 +108,7 @@ function getDisplayText(verses) {
   const showParallel = !!document.querySelector(".parallel-chapter");
   let separator = " separator";
   return (
-    `<h1>${chapters}</h1>` +
+    `<h1>📖 ${chapters}</h1>` +
     selectedVerses
       .map(v => {
         const label = v.querySelector(":scope > .label");
@@ -136,7 +140,7 @@ function printSelectedVerses(tab, verses) {
 }
 
 function createProjectTab() {
-  const tab = window.open("", "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,fullscreen=yes,width=300,height=240,top=200,left=300");
+  const tab = window.open("", "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,fullscreen=yes,width=800,height=600,top=200,left=100");
   const styles = `
     html {
       height: 100%;
@@ -173,6 +177,12 @@ function createProjectTab() {
   styleSheet.innerText = styles;
   tab.document.head.appendChild(styleSheet);
   tab.document.body.innerHTML = "";
+  tab.document.title = "Bible Verses";
+
+  const iconLink = tab.document.createElement("link");
+  iconLink.setAttribute("rel", "shortcut icon");
+  iconLink.setAttribute("href", "https://my.bible.com/favicon.ico");
+  tab.document.querySelector("head").appendChild(iconLink);
 
   return tab;
 }
@@ -233,14 +243,37 @@ function selectVersesToProject(e) {
     }
 
     displayVerses(document.querySelectorAll(`.verse.${projected}`));
+
+    if (e.altKey) {
+      bringTabToFront();
+      document.body.classList.add("focus-lost");
+      return;
+    }
   }
+  document.body.classList.remove("focus-lost");
+}
+
+function bringTabToFront() {
+  const tab = getProjectTab();
+  if (tab) {
+    window.blur();
+    tab.focus();
+  }
+  setTimeout(() => {
+    // TODO focus back not working...
+    // tab.opener.focus();
+    //tab.opener.document.body.focus();
+    window.focus();
+  }, 1000);
 }
 
 function displayVerses(verses) {
+  let tab;
   if (showProject) {
-    const tab = getProjectTab();
+    tab = getProjectTab();
     printSelectedVerses(tab, verses);
   }
+  return tab;
 }
 
 function selectByKeys(e) {
@@ -280,7 +313,7 @@ function selectByKeys(e) {
       setTimeout(() => {
         // focusEl.scrollIntoView();
         focusEl.scrollIntoViewIfNeeded(false);
-      }, 500);
+      }, 600);
     }
   }
 }
@@ -289,4 +322,10 @@ function initEvents() {
   const app = document.querySelector("#react-app-Bible");
   app.addEventListener("click", selectVersesToProject);
   document.addEventListener("keydown", selectByKeys);
+  // document.addEventListener("blur", () => {
+  //   document.body.classList.add("focus-lost");
+  // });
+  // document.addEventListener("focus", () => {
+  //   document.body.classList.remove("focus-lost");
+  // });
 }
