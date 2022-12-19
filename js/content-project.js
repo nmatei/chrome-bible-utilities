@@ -7,7 +7,9 @@ let focusChapter = "primary";
 
 addBodyStyles();
 cleaunUp();
-initEvents();
+setTimeout(() => {
+  initEvents();
+}, 100);
 
 // = = = utilities = = =
 
@@ -46,7 +48,20 @@ function addBodyStyles() {
       color: #fff !important;
     }
     .focus-lost .verse.projected .label {
-      background: #999;
+      background: #999 !important;
+    }
+    
+    body #current-ui-view {
+      padding: 110px 0 20px 0;
+    }
+    body .yv-header .yv-sticky-header-content {
+      height: 60px;
+    }
+    body .reader-header {
+      height: 50px
+    }
+    body #react-app-Bible {
+      padding-bottom: 20px;
     }
     
     body .chapter-picker-modal .chapter-container .chapter-list li {
@@ -55,6 +70,9 @@ function addBodyStyles() {
     body .bible-reader .verse {
       display: block;
       line-height: 1.6em;
+    }
+    body .bible-reader .verse.projected {
+      background: #cccccc80;
     }
     body .bible-reader.primary-chapter .label,
     body .bible-reader.parallel-chapter .label {
@@ -103,28 +121,45 @@ function adjustBodySize(tab) {
 }
 
 function getDisplayText(verses) {
-  const chapters = [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim()).join(" / ");
+  let chapters = [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
   const selectedVerses = [...verses];
   const showParallel = !!document.querySelector(".parallel-chapter");
   let separator = " separator";
-  return (
-    `<h1>📖 ${chapters}</h1>` +
-    selectedVerses
-      .map(v => {
-        const label = v.querySelector(":scope > .label");
-        const verseNr = label ? label.innerText : "";
-        const nr = label ? `<sup>${verseNr}</sup>` : "";
-        let cls = "";
-        if (showParallel) {
-          if (v.closest(".parallel-chapter")) {
-            cls = `parallel${separator}`;
-            separator = ""; // only first well be separator
-          }
-        }
-        return `<p class="${cls}">${nr}${v.innerText.substring(verseNr.length)}</p>`;
-      })
-      .join("\n")
-  );
+  const versesInfo = selectedVerses.map(v => {
+    const label = v.querySelector(":scope > .label");
+    const verseNr = label ? label.innerText : "";
+    let cls = "";
+    let parallel = false;
+    if (showParallel) {
+      if (v.closest(".parallel-chapter")) {
+        cls = `parallel${separator}`;
+        separator = ""; // only first well be separator
+        parallel = true;
+      }
+    }
+    return {
+      verseNr,
+      content: v.innerText.substring(verseNr.length),
+      parallel,
+      cls
+    };
+  });
+
+  // if (verses.length < 3) {
+  chapters = chapters.map((c, i) => {
+    const numbers = versesInfo
+      .filter(v => v.verseNr && (i ? v.parallel : !v.parallel))
+      .map(v => v.verseNr.trim())
+      .join(",");
+    return `${c}:${numbers}`;
+  });
+  // }
+
+  const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
+    return `<p class="${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
+  });
+
+  return `<h1>📘 ${chapters.join(" / ")}</h1>` + versesContent.join("\n");
 }
 
 function printSelectedVerses(tab, verses) {
@@ -133,9 +168,7 @@ function printSelectedVerses(tab, verses) {
   tab.document.body.innerHTML = verses.length ? getDisplayText(verses) : "";
 
   if (verses.length) {
-    setTimeout(() => {
-      adjustBodySize(tab);
-    }, 10);
+    adjustBodySize(tab);
   }
 }
 
@@ -157,7 +190,13 @@ function createProjectTab() {
     }
     h1 {
       color: gray;
-      font-size: 0.7em;
+      /*font-size: 0.7em;*/
+      font-size: 40px;
+      margin: 0.2em 0.4em 0 0.4em;
+    }
+    h2 {
+      color: gray;
+      font-size: 0.6em;
       margin: 0.2em 0.4em 0 0.4em;
     }
     p.parallel.separator {
@@ -176,7 +215,9 @@ function createProjectTab() {
   styleSheet.id = "bible-projector";
   styleSheet.innerText = styles;
   tab.document.head.appendChild(styleSheet);
-  tab.document.body.innerHTML = "";
+  tab.document.body.innerHTML = `
+    <h2>press <strong>F11</strong> to fullscreen</h2>
+  `;
   tab.document.title = "Bible Verses";
 
   const iconLink = tab.document.createElement("link");
@@ -188,16 +229,25 @@ function createProjectTab() {
 }
 
 function getProjectTab() {
-  if (!projectTab) {
-    projectTab = createProjectTab();
+  let tab = projectTab;
+  if (!tab) {
+    tab = projectTab = createProjectTab();
     window.onbeforeunload = function () {
-      projectTab.close();
+      tab.close();
     };
-    projectTab.window.addEventListener("resize", () => {
-      adjustBodySize(projectTab);
+    tab.window.addEventListener("resize", () => {
+      adjustBodySize(tab);
+    });
+    tab.onbeforeunload = function () {
+      deselectAll();
+      projectTab = null;
+    };
+    tab.document.body.addEventListener("keydown", e => {
+      //console.info("keydown");
+      selectByKeys(e);
     });
   }
-  return projectTab;
+  return tab;
 }
 
 function deselectAll() {
@@ -285,11 +335,13 @@ function selectByKeys(e) {
       displayVerses([]);
       break;
     }
+    case 37:
     case 38: {
       // up
       dir = -1;
       break;
     }
+    case 39:
     case 40: {
       //down
       dir = 1;
@@ -311,8 +363,9 @@ function selectByKeys(e) {
     const focusEl = focusChapter === "primary" ? verses[0] : verses[1] || verses[0];
     if (focusEl) {
       setTimeout(() => {
-        // focusEl.scrollIntoView();
-        focusEl.scrollIntoViewIfNeeded(false);
+        // focusEl.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        // focusEl.scrollIntoViewIfNeeded(false);
+        focusEl.scrollIntoViewIfNeeded(true);
       }, 600);
     }
   }
@@ -322,10 +375,10 @@ function initEvents() {
   const app = document.querySelector("#react-app-Bible");
   app.addEventListener("click", selectVersesToProject);
   document.addEventListener("keydown", selectByKeys);
-  // document.addEventListener("blur", () => {
-  //   document.body.classList.add("focus-lost");
-  // });
-  // document.addEventListener("focus", () => {
-  //   document.body.classList.remove("focus-lost");
-  // });
+  window.addEventListener("blur", () => {
+    document.body.classList.add("focus-lost");
+  });
+  window.addEventListener("focus", () => {
+    document.body.classList.remove("focus-lost");
+  });
 }

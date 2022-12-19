@@ -9,11 +9,11 @@
   },
   "action": {},
   "permissions": ["activeTab", "tabs", "storage", "scripting"],
-  "host_permissions": ["https://my.bible.com/*"],
+  "host_permissions": ["https://my.bible.com/bible*"],
   "content_scripts": [
     {
       "js": ["js/content-project.js"],
-      "matches": ["https://my.bible.com/*"]
+      "matches": ["https://my.bible.com/bible*"]
     }
   ],
   "icons": {
