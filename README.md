@@ -1,4 +1,4 @@
-# Chrome extension to mark **Open** Bible.com or Cleanup notes
+# Chrome extension to for Bible.com (display verses on external Projector/Screen)
 
 ![icon](icon-48.png)
 This extension will remove comments (from current page only),
