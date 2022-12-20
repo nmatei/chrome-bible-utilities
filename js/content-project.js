@@ -386,14 +386,16 @@ function selectByKeys(e) {
 
 function initEvents() {
   const app = document.querySelector("#react-app-Bible");
-  app.addEventListener("click", selectVersesToProject);
-  document.addEventListener("keydown", selectByKeys);
-  window.addEventListener("blur", () => {
-    document.body.classList.add("focus-lost");
-  });
-  window.addEventListener("focus", () => {
-    document.body.classList.remove("focus-lost");
-  });
+  if (app) {
+    app.addEventListener("click", selectVersesToProject);
+    document.addEventListener("keydown", selectByKeys);
+    window.addEventListener("blur", () => {
+      document.body.classList.add("focus-lost");
+    });
+    window.addEventListener("focus", () => {
+      document.body.classList.remove("focus-lost");
+    });
+  }
 }
 
 /**
