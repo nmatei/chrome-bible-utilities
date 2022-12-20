@@ -88,12 +88,21 @@ function addBodyStyles() {
     }
     
     #react-app-Footer {
-      display: none;
+      /* display: none; */
+    }
+    body .verse-action-footer.open {
+      /* display: none; */
+    }
+    body .yv-footer .yv-footer-vertical-link-list li:first-child {
+      margin-top: 10px;
+    }
+    body .yv-footer .yv-footer-vertical-link-list li {
+      margin-top: 2px;
+    }
+    body .yv-footer hr {
+      margin: 5px 0 5px;
     }
     
-    body .verse-action-footer.open {
-      display: none;
-    }
     @media only screen and (min-width: 37.5em) {
       body .verse-action-footer {
         padding: 5px;
