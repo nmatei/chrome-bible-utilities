@@ -11,12 +11,11 @@ so when you copy the text to have paste it in a better format.
 
 ## Usage
 
-- [x] Click on **This Extension**
+- [x] Click on **This Extension** ![icon](icon-48.png)
+  - [x] Will open https://my.bible.com/bible if not opened
 - [x] `Click` on verse number to 'project' it
 - [x] `CTRL + Click` to add verse to selection (multi select)
 - [x] `ALT + Click` to force project window to be on top (in case is not visible)
-
-![icon](icon-48.png)
 
 ## Setup
 
@@ -24,6 +23,7 @@ so when you copy the text to have paste it in a better format.
   - [ ] as zip & Unzip it
   - [ ] or `git clone https://github.com/nmatei/chrome-bible-utilities.git`
 - [x] Open [chrome://extensions/](chrome://extensions/)
+  - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
 - [x] Select chrome-bible-utilities folder
 
