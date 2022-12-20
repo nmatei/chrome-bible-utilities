@@ -3,7 +3,7 @@ const projected = "projected";
 let projectTab;
 let selectedVersesNr = [];
 let selectParallel = true;
-let focusChapter = "primary";
+let focusChapter = null;
 
 addBodyStyles();
 cleaunUp();
@@ -42,6 +42,10 @@ function addBodyStyles() {
       cursor: pointer;
       padding: 5px 5px 5px 8px;
       border-radius: 4px;
+      border: 2px solid #dcdcdc;
+    }
+    .verse .label:hover {
+      background: #eaf3fc;
     }
     .verse.projected .label {
       background: #000 !important;
@@ -49,6 +53,10 @@ function addBodyStyles() {
     }
     .focus-lost .verse.projected .label {
       background: #999 !important;
+    }
+    .focus-parallel .parallel-chapter .verse.projected .label,
+    .focus-primary .primary-chapter .verse.projected .label {
+      border-color: #d7237c !important;      
     }
     
     body #current-ui-view {
@@ -282,7 +290,12 @@ function selectVersesToProject(e) {
 
     const projectedVerses = verse.classList.contains(projected);
 
-    focusChapter = target.closest(".parallel-chapter") ? "parallel" : "primary";
+    const nextFocusChapter = target.closest(".parallel-chapter") ? "parallel" : "primary";
+    if (nextFocusChapter !== focusChapter) {
+      document.body.classList.remove(`focus-${focusChapter}`);
+      document.body.classList.add(`focus-${nextFocusChapter}`);
+      focusChapter = nextFocusChapter;
+    }
 
     if (!multiSelect) {
       deselectAll();
@@ -382,3 +395,14 @@ function initEvents() {
     document.body.classList.remove("focus-lost");
   });
 }
+
+/**
+
+ // sync verses in same 'line'
+ var v = 39
+ var verses = document.querySelectorAll(`.row .primary-chapter .verse.v${v}, .row .parallel-chapter .verse.v${v}`);
+ console.info(verses[0].offsetTop, verses[1].offsetTop)
+ var primary = document.querySelector('.primary-chapter');
+ primary.style.paddingTop = `${verses[1].offsetTop - verses[0].offsetTop - 0 + primary.style.paddingTop.replace('px', '') * 1}px`
+
+ */
