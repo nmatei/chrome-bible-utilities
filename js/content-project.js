@@ -167,9 +167,19 @@ function getDisplayText(verses) {
   chapters = chapters.map((c, i) => {
     const numbers = versesInfo
       .filter(v => v.verseNr && (i ? v.parallel : !v.parallel))
-      .map(v => v.verseNr.trim())
-      .join(",");
-    return `${c}:${numbers}`;
+      .map(v => parseInt(v.verseNr.trim()));
+
+    const groupedNumbers = numbers.reduce((acc, n) => {
+      const prev = acc[acc.length-1];
+      if (prev && (prev[1] + 1) === n) {
+        prev[1] = n;
+      } else {
+        acc.push([n, n])
+      }
+      return acc;
+    }, []).map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`)).join(',')
+
+    return `${c}:${groupedNumbers}`;
   });
   // }
 
@@ -409,9 +419,6 @@ function initEvents() {
 }
 
 /**
-
- // TODO - show more selected verses grouped
-    eg. Faptele Apostolilor 3:1-3,5
 
  // TODO sync verses in same 'line'
  var v = 39
