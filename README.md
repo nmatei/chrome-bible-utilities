@@ -25,6 +25,7 @@ Parallel View + projected
 - [x] `Click` on verse number to 'project' it
 - [x] `CTRL + Click` to add verse to selection (multi select)
 - [x] `ALT + Click` to force project window to be on top (in case is not visible)
+- [x] `ESC` to show blank page (hide all selected verses)
 
 ## Setup
 

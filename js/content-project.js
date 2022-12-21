@@ -6,14 +6,15 @@ let selectParallel = true;
 let focusChapter = null;
 
 addBodyStyles();
-cleaunUp();
-setTimeout(() => {
+
+window.addEventListener("load", () => {
+  cleanUp();
   initEvents();
-}, 100);
+});
 
 // = = = utilities = = =
 
-function cleaunUp() {
+function cleanUp() {
   // remove all notes
   document.querySelectorAll(".note").forEach(n => {
     n.innerHTML = "";
@@ -180,7 +181,7 @@ function getDisplayText(verses) {
 }
 
 function printSelectedVerses(tab, verses) {
-  cleaunUp();
+  cleanUp();
 
   tab.document.body.innerHTML = verses.length ? getDisplayText(verses) : "";
 
@@ -409,7 +410,10 @@ function initEvents() {
 
 /**
 
- // sync verses in same 'line'
+ // TODO - show more selected verses grouped
+    eg. Faptele Apostolilor 3:1-3,5
+
+ // TODO sync verses in same 'line'
  var v = 39
  var verses = document.querySelectorAll(`.row .primary-chapter .verse.v${v}, .row .parallel-chapter .verse.v${v}`);
  console.info(verses[0].offsetTop, verses[1].offsetTop)
