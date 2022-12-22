@@ -12,8 +12,9 @@
   "host_permissions": ["https://my.bible.com/bible*"],
   "content_scripts": [
     {
+      "matches": ["https://my.bible.com/bible*"],
       "js": ["js/content-project.js"],
-      "matches": ["https://my.bible.com/bible*"]
+      "css": ["css/style.css"]
     }
   ],
   "icons": {

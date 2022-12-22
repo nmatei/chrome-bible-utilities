@@ -5,14 +5,10 @@ let selectedVersesNr = [];
 let selectParallel = true;
 let focusChapter = null;
 
-addBodyStyles();
-
 window.addEventListener("load", () => {
   cleanUp();
   initEvents();
 });
-
-// = = = utilities = = =
 
 function cleanUp() {
   // remove all notes
@@ -25,108 +21,6 @@ function cleanUp() {
   document.querySelectorAll(".verse .label").forEach(l => {
     l.innerHTML = l.innerHTML.trim() + " ";
   });
-}
-
-function addBodyStyles() {
-  if (document.querySelector("#bible-projector")) {
-    return;
-  }
-  const styles = `
-    .row,
-    body.c_pages.a_privacy .privacy_content {
-      max-width: 90rem;
-    }
-    .bible-reader-arrows-container {
-      max-width: 100%;
-    }
-    .verse .label {
-      cursor: pointer;
-      padding: 5px 5px 5px 8px;
-      border-radius: 4px;
-      border: 2px solid #dcdcdc;
-    }
-    .verse .label:hover {
-      background: #eaf3fc;
-    }
-    .verse.projected .label {
-      background: #000 !important;
-      color: #fff !important;
-    }
-    .focus-lost .verse.projected .label {
-      background: #999 !important;
-    }
-    .focus-parallel .parallel-chapter .verse.projected .label,
-    .focus-primary .primary-chapter .verse.projected .label {
-      border-color: #d7237c !important;      
-    }
-    
-    body #current-ui-view {
-      padding: 110px 0 20px 0;
-    }
-    body .yv-header .yv-sticky-header-content {
-      height: 60px;
-    }
-    body .reader-header {
-      height: 50px
-    }
-    body #react-app-Bible {
-      padding-bottom: 20px;
-    }
-    
-    body .chapter-picker-modal .chapter-container .chapter-list li {
-      height: 40px;
-    }
-    body .bible-reader .verse {
-      display: block;
-      line-height: 1.6em;
-    }
-    body .bible-reader .verse.projected {
-      background: #cccccc80;
-    }
-    body .bible-reader.primary-chapter .label,
-    body .bible-reader.parallel-chapter .label {
-      display: inline;
-    }
-    
-    #react-app-Footer {
-      /* display: none; */
-    }
-    body .verse-action-footer.open {
-      /* display: none; */
-    }
-    body .yv-footer .yv-footer-vertical-link-list li:first-child {
-      margin-top: 10px;
-    }
-    body .yv-footer .yv-footer-vertical-link-list li {
-      margin-top: 2px;
-    }
-    body .yv-footer hr {
-      margin: 5px 0 5px;
-    }
-    
-    @media only screen and (min-width: 37.5em) {
-      body .verse-action-footer {
-        padding: 5px;
-      }
-    }
-    @media screen and (min-width: 992px) {
-      body .yv-footer {
-        padding: 30px;
-      }
-    }
-    
-    /* primary only */
-    @media only screen and (min-width: 64em) {
-      .large-6 {
-        width: 80%;
-      }
-    }
-    
-  `;
-  const styleSheet = document.createElement("style");
-  styleSheet.id = "bible-projector";
-  styleSheet.innerText = styles;
-  document.head.appendChild(styleSheet);
 }
 
 function adjustBodySize(tab) {
@@ -165,19 +59,20 @@ function getDisplayText(verses) {
 
   // if (verses.length < 3) {
   chapters = chapters.map((c, i) => {
-    const numbers = versesInfo
-      .filter(v => v.verseNr && (i ? v.parallel : !v.parallel))
-      .map(v => parseInt(v.verseNr.trim()));
+    const numbers = versesInfo.filter(v => v.verseNr && (i ? v.parallel : !v.parallel)).map(v => parseInt(v.verseNr.trim()));
 
-    const groupedNumbers = numbers.reduce((acc, n) => {
-      const prev = acc[acc.length-1];
-      if (prev && (prev[1] + 1) === n) {
-        prev[1] = n;
-      } else {
-        acc.push([n, n])
-      }
-      return acc;
-    }, []).map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`)).join(',')
+    const groupedNumbers = numbers
+      .reduce((acc, n) => {
+        const prev = acc[acc.length - 1];
+        if (prev && prev[1] + 1 === n) {
+          prev[1] = n;
+        } else {
+          acc.push([n, n]);
+        }
+        return acc;
+      }, [])
+      .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
+      .join(",");
 
     return `${c}:${groupedNumbers}`;
   });
