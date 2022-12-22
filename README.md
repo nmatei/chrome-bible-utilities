@@ -1,13 +1,14 @@
 # Chrome extension to for Bible.com (display verses on external Projector/Screen)
 
 ![icon](icon-48.png)
-This extension will remove comments (from current page only),
-and will add space after the verse number
-so when you copy the text to have paste it in a better format.
+
+This extension will help you project any verses in your Church,
+You decide which version to display and also can project parallel versions
+or project in 2 different languages
 
 ## Features
 
-- [x] improve text for copy the text.
+- [x] improve text for copy
 - [x] project selected verses (+/- parallel text)
 
 ## Results
@@ -23,15 +24,17 @@ Parallel View + projected
 - [x] Click on **This Extension** ![icon](icon-16.png)
   - [x] Will open https://my.bible.com/bible if not opened
 - [x] `Click` on verse number to 'project' it
+- [x] `Up/Down/Left/Right` arrows to navigate to next/preview verses
 - [x] `CTRL + Click` to add verse to selection (multi select)
 - [x] `ALT + Click` to force project window to be on top (in case is not visible)
 - [x] `ESC` to show blank page (hide all selected verses)
 
-## Setup
+## Setup Plugin as Developer
 
-- [x] **Download** this repo
+- [x] **Download/Clone** this repo
   - [ ] as zip & Unzip it
   - [ ] or `git clone https://github.com/nmatei/chrome-bible-utilities.git`
+  - [ ] to update use `git pull`
 - [x] Open [chrome://extensions/](chrome://extensions/)
   - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
@@ -49,3 +52,4 @@ Parallel View + projected
 - [ ] User Settings
   - [ ] Select what verses to display on main screen
   - [ ] Allow to display on 2 different screens (more than 2 even better)
+  - [ ] Allow display inline/block for main screen or projected screen

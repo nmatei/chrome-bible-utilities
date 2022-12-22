@@ -138,6 +138,7 @@ function createProjectTab() {
   styleSheet.id = "bible-projector";
   styleSheet.innerText = styles;
   tab.document.head.appendChild(styleSheet);
+
   tab.document.body.innerHTML = `
     <h2>press <strong>F11</strong> to fullscreen</h2>
   `;
