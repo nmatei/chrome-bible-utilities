@@ -33,8 +33,8 @@ Parallel View + projected
 
 - [x] **Download/Clone** this repo
   - [ ] as zip & Unzip it
-  - [ ] or `git clone https://github.com/nmatei/chrome-bible-utilities.git`
-  - [ ] to update use `git pull`
+  - [x] or `git clone https://github.com/nmatei/chrome-bible-utilities.git`
+  - [x] to update use `git pull`
 - [x] Open [chrome://extensions/](chrome://extensions/)
   - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
