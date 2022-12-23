@@ -1,4 +1,3 @@
-const showProject = true;
 const projected = "projected";
 let projectTab;
 let selectedVersesNr = [];
@@ -6,9 +5,19 @@ let selectParallel = true;
 let focusChapter = null;
 
 window.addEventListener("load", () => {
-  cleanUp();
+  setTimeout(() => {
+    cleanUp();
+  }, 100);
   initEvents();
 });
+
+window.onbeforeunload = function () {
+  if (chrome.runtime) {
+    if (projectTab) {
+      chrome.runtime.sendMessage({ action: "removeTab", payload: projectTab });
+    }
+  }
+};
 
 function cleanUp() {
   // remove all notes
@@ -23,21 +32,16 @@ function cleanUp() {
   });
 }
 
-function adjustBodySize(tab) {
-  let fontSize = 100;
-  const body = tab.document.body;
-  do {
-    body.style.fontSize = fontSize + "px";
-    fontSize--;
-  } while (fontSize > 10 && body.offsetHeight > tab.window.innerHeight);
+function hasParallelView() {
+  return !!document.querySelector(".parallel-chapter");
 }
 
 function getDisplayText(verses) {
   let chapters = [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
-  const selectedVerses = [...verses];
-  const showParallel = !!document.querySelector(".parallel-chapter");
+  let selectedVerses = [...verses];
+  const showParallel = hasParallelView();
   let separator = " separator";
-  const versesInfo = selectedVerses.map(v => {
+  let versesInfo = selectedVerses.map(v => {
     const label = v.querySelector(":scope > .label");
     const verseNr = label ? label.innerText : "";
     let cls = "";
@@ -57,26 +61,26 @@ function getDisplayText(verses) {
     };
   });
 
-  // if (verses.length < 3) {
-  chapters = chapters.map((c, i) => {
-    const numbers = versesInfo.filter(v => v.verseNr && (i ? v.parallel : !v.parallel)).map(v => parseInt(v.verseNr.trim()));
+  chapters = chapters
+    .map((c, i) => {
+      const numbers = versesInfo.filter(v => v.verseNr && (i ? v.parallel : !v.parallel)).map(v => parseInt(v.verseNr.trim()));
 
-    const groupedNumbers = numbers
-      .reduce((acc, n) => {
-        const prev = acc[acc.length - 1];
-        if (prev && prev[1] + 1 === n) {
-          prev[1] = n;
-        } else {
-          acc.push([n, n]);
-        }
-        return acc;
-      }, [])
-      .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
-      .join(",");
+      const groupedNumbers = numbers
+        .reduce((acc, n) => {
+          const prev = acc[acc.length - 1];
+          if (prev && prev[1] + 1 === n) {
+            prev[1] = n;
+          } else {
+            acc.push([n, n]);
+          }
+          return acc;
+        }, [])
+        .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
+        .join(",");
 
-    return `${c}:${groupedNumbers}`;
-  });
-  // }
+      return groupedNumbers ? `${c}:${groupedNumbers}` : "";
+    })
+    .filter(Boolean);
 
   const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
     return `<p class="${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
@@ -87,89 +91,27 @@ function getDisplayText(verses) {
 
 function printSelectedVerses(tab, verses) {
   cleanUp();
-
-  tab.document.body.innerHTML = verses.length ? getDisplayText(verses) : "";
-
-  if (verses.length) {
-    adjustBodySize(tab);
-  }
+  const text = verses.length ? getDisplayText(verses) : "";
+  chrome.runtime.sendMessage({ action: "update", payload: text });
 }
 
-function createProjectTab() {
-  const tab = window.open("", "_blank", "toolbar=no,location=no,directories=no,status=no,menubar=no,fullscreen=yes,width=800,height=600,top=200,left=100");
-  const styles = `
-    html {
-      height: 100%;
-      overflow: hidden;
-    }
-    body {
-      font-family: Calibri, Arial, sans-serif;
-      font-weight: bold;
-      min-height: 100%;
-      background: #000;
-      color: #fff;
-      margin: 0;
-	    padding: 0;
-    }
-    h1 {
-      color: gray;
-      /*font-size: 0.7em;*/
-      font-size: 40px;
-      margin: 0.2em 0.4em 0 0.4em;
-    }
-    h2 {
-      color: gray;
-      font-size: 0.6em;
-      margin: 0.2em 0.4em 0 0.4em;
-    }
-    p.parallel.separator {
-      border-top: 2px solid gray;
-    }
-    p {
-      margin: 0;
-      padding: 0.2em;
-    }
-    p > sup {
-      color: gray;
-      font-size: 0.7em;
-    }
-    `;
-  const styleSheet = tab.document.createElement("style");
-  styleSheet.id = "bible-projector";
-  styleSheet.innerText = styles;
-  tab.document.head.appendChild(styleSheet);
-
-  tab.document.body.innerHTML = `
-    <h2>press <strong>F11</strong> to fullscreen</h2>
-  `;
-  tab.document.title = "Bible Verses";
-
-  const iconLink = tab.document.createElement("link");
-  iconLink.setAttribute("rel", "shortcut icon");
-  iconLink.setAttribute("href", "https://my.bible.com/favicon.ico");
-  tab.document.querySelector("head").appendChild(iconLink);
-
-  return tab;
+async function createProjectTab() {
+  const response = await createChromeWindow();
+  return response.id;
 }
 
-function getProjectTab() {
+function createChromeWindow() {
+  return new Promise(async resolve => {
+    const response = await chrome.runtime.sendMessage({ action: "createTab" });
+    //console.info("response", response);
+    resolve(response);
+  });
+}
+
+async function getProjectTab() {
   let tab = projectTab;
   if (!tab) {
-    tab = projectTab = createProjectTab();
-    window.onbeforeunload = function () {
-      tab.close();
-    };
-    tab.window.addEventListener("resize", () => {
-      adjustBodySize(tab);
-    });
-    tab.onbeforeunload = function () {
-      deselectAll();
-      projectTab = null;
-    };
-    tab.document.body.addEventListener("keydown", e => {
-      //console.info("keydown");
-      selectByKeys(e);
-    });
+    tab = projectTab = await createProjectTab();
   }
   return tab;
 }
@@ -194,24 +136,71 @@ function selectVerses(verses, deselect) {
     .filter(Boolean);
 }
 
-function selectVersesToProject(e) {
+// TODO make it more generic
+function mapParallelVerse(nr, isParallel) {
+  const match = Array.from(window.location.href.matchAll(/(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(.+)\?parallel\=(?<parallel>\d+)/gi))[0];
+  if (match) {
+    // console.debug("groups", match.groups);
+    let { primary, book, chapter, parallel } = match.groups;
+    primary = parseInt(primary);
+    parallel = parseInt(parallel);
+    chapter = parseInt(chapter);
+
+    if (primary === 191 && parallel === 143 && book === "NUM" && chapter === 13) {
+      return nr + (isParallel ? -1 : 1);
+    }
+    if (primary === 191 && parallel === 143 && book === "PSA" /* && chapter === 13*/) {
+      return 0;
+    }
+  }
+  return nr;
+}
+
+function getVerseNumber(verse) {
+  const match = Array.from(verse.className.matchAll(/v(?<nr>\d+)/gi))[0];
+  if (match) {
+    return match.groups.nr * 1;
+  }
+  return 1;
+}
+
+function setFocusChapter(isParallel) {
+  const nextFocusChapter = isParallel ? "parallel" : "primary";
+  if (nextFocusChapter !== focusChapter) {
+    document.body.classList.remove(`focus-${focusChapter}`);
+    document.body.classList.add(`focus-${nextFocusChapter}`);
+    focusChapter = nextFocusChapter;
+  }
+}
+
+async function selectVersesToProject(e) {
   const target = e.target;
   if (target.matches(".verse .label")) {
     e.stopPropagation();
     e.preventDefault();
+
     const multiSelect = e.ctrlKey;
     const verse = target.closest(".verse");
-    const cls = ".row ." + verse.className.split(/\s+/).join(".");
-    const verses = document.querySelectorAll(cls);
+    const verseNumber = getVerseNumber(verse);
+    const isParallel = target.closest(".parallel-chapter");
 
+    const focusOrder = ["primary-chapter", "parallel-chapter"];
+    if (isParallel) {
+      focusOrder.reverse();
+    }
+
+    const selectors = [`.row .${focusOrder[0]} .verse.v${verseNumber}`];
+    if (isParallel || hasParallelView()) {
+      const parallelNr = mapParallelVerse(verseNumber, isParallel);
+      if (parallelNr) {
+        selectors.push(`.row .${focusOrder[1]} .verse.v${parallelNr}`);
+      }
+    }
+
+    const verses = document.querySelectorAll(selectors.join(","));
     const projectedVerses = verse.classList.contains(projected);
 
-    const nextFocusChapter = target.closest(".parallel-chapter") ? "parallel" : "primary";
-    if (nextFocusChapter !== focusChapter) {
-      document.body.classList.remove(`focus-${focusChapter}`);
-      document.body.classList.add(`focus-${nextFocusChapter}`);
-      focusChapter = nextFocusChapter;
-    }
+    setFocusChapter(isParallel);
 
     if (!multiSelect) {
       deselectAll();
@@ -221,10 +210,10 @@ function selectVersesToProject(e) {
       selectedVersesNr = selectVerses(verses);
     }
 
-    displayVerses(document.querySelectorAll(`.verse.${projected}`));
+    await displayVerses(document.querySelectorAll(`.verse.${projected}`));
 
     if (e.altKey) {
-      bringTabToFront();
+      await bringTabToFront();
       document.body.classList.add("focus-lost");
       return;
     }
@@ -232,63 +221,67 @@ function selectVersesToProject(e) {
   document.body.classList.remove("focus-lost");
 }
 
-function bringTabToFront() {
-  const tab = getProjectTab();
+async function bringTabToFront() {
+  const tab = await getProjectTab();
   if (tab) {
-    window.blur();
-    tab.focus();
+    await chrome.runtime.sendMessage({ action: "focus", payload: { id: tab } });
   }
-  setTimeout(() => {
-    // TODO focus back not working...
-    // tab.opener.focus();
-    //tab.opener.document.body.focus();
-    window.focus();
-  }, 1000);
 }
 
-function displayVerses(verses) {
-  let tab;
-  if (showProject) {
-    tab = getProjectTab();
-    printSelectedVerses(tab, verses);
-  }
+async function displayVerses(verses) {
+  const tab = await getProjectTab();
+  printSelectedVerses(tab, verses);
   return tab;
 }
 
-function selectByKeys(e) {
+async function selectByKeys(key) {
   let dir = 0;
-  switch (e.keyCode) {
-    case 27: {
-      // ESC
+  switch (key) {
+    case "Escape": {
       deselectAll();
-      displayVerses([]);
+      await displayVerses([]);
       break;
     }
-    case 37:
-    case 38: {
-      // up
+    case "ArrowLeft":
+    case "ArrowUp": {
       dir = -1;
       break;
     }
-    case 39:
-    case 40: {
-      //down
+    case "ArrowRight":
+    case "ArrowDown": {
       dir = 1;
       break;
     }
   }
 
   if (dir) {
+    // TODO fix order when focus is on parallel and can't select primary (eg. PSA)
+    const focusOrder = ["primary-chapter", "parallel-chapter"];
+    // if (isParallel) {
+    //   focusOrder.reverse();
+    // }
+
     let next = selectedVersesNr.map(v => v + dir);
     const [primary, parallel] = next;
-    const verses = document.querySelectorAll(`.row .primary-chapter .verse.v${primary}, .row .parallel-chapter .verse.v${parallel}`);
+
+    if (!parallel && focusChapter === "parallel") {
+      focusOrder.reverse();
+    }
+
+    const selectors = [`.row .${focusOrder[0]} .verse.v${primary}`];
+
+    if (parallel) {
+      selectors.push(`.row .${focusOrder[1]} .verse.v${parallel}`);
+    }
+
+    const verses = document.querySelectorAll(selectors.join(","));
     if (verses.length) {
       selectedVersesNr = next;
     } else {
       return;
     }
     selectVerses(verses, true);
-    displayVerses(verses);
+    await displayVerses(verses);
     const focusEl = focusChapter === "primary" ? verses[0] : verses[1] || verses[0];
     if (focusEl) {
       setTimeout(() => {
@@ -304,12 +297,30 @@ function initEvents() {
   const app = document.querySelector("#react-app-Bible");
   if (app) {
     app.addEventListener("click", selectVersesToProject);
-    document.addEventListener("keydown", selectByKeys);
+    document.addEventListener("keydown", e => {
+      selectByKeys(e.key);
+    });
     window.addEventListener("blur", () => {
       document.body.classList.add("focus-lost");
     });
     window.addEventListener("focus", () => {
       document.body.classList.remove("focus-lost");
+    });
+
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      switch (request.action) {
+        case "tabkeydown": {
+          selectByKeys(request.payload);
+          sendResponse({ status: "keydown" });
+          break;
+        }
+        case "windowRemoved": {
+          deselectAll();
+          projectTab = null;
+          sendResponse({ status: 200 });
+          break;
+        }
+      }
     });
   }
 }

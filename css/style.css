@@ -10,6 +10,10 @@ body .bible-reader-arrows-container {
   padding: 5px 5px 5px 8px;
   border-radius: 4px;
   border: 2px solid #dcdcdc;
+  font-weight: bold;
+}
+.verse .label:after {
+  content: " ";
 }
 .verse .label:hover {
   background: #eaf3fc;
@@ -44,9 +48,16 @@ body .chapter-picker-modal .chapter-container .chapter-list li {
   height: 40px;
 }
 body .bible-reader .verse {
-  display: block;
   line-height: 1.6em;
+  display: block;
 }
+
+/*
+body.display-block .bible-reader .verse {
+  display: block;
+}
+*/
+
 body .bible-reader .verse.projected {
   background: #cccccc80;
 }
