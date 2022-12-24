@@ -21,7 +21,8 @@ Parallel View + projected
 
 ## Usage
 
-- [x] Click on **This Extension** ![icon](icon-16.png)
+- [x] 📌 Pin extension to see it after search bar
+  - [x] ![icon](icon-16.png) Click on **This Extension**
   - [x] Will open https://my.bible.com/bible if not opened
 - [x] `Click` on verse number to 'project' it
 - [x] `Up/Down/Left/Right` arrows to navigate to next/preview verses
