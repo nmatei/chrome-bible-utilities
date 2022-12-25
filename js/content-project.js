@@ -97,13 +97,13 @@ function printSelectedVerses(tab, verses) {
 
 async function createProjectTab() {
   const response = await createChromeWindow();
-  return response.id;
+  return response ? response.id : null;
 }
 
 function createChromeWindow() {
   return new Promise(async resolve => {
     const response = await chrome.runtime.sendMessage({ action: "createTab" });
-    //console.info("response", response);
+    console.info("createTab", response);
     resolve(response);
   });
 }

@@ -1,3 +1,8 @@
+// TODO seems to work only when I click from extension
+let projectorPageId;
+
+const projectorPage = "views/projector/tab.html";
+
 chrome.action.onClicked.addListener(tab => {
   const url = "https://my.bible.com/bible";
   if (tab.url === "chrome://newtab/") {
@@ -10,7 +15,7 @@ chrome.action.onClicked.addListener(tab => {
 
 async function createTab() {
   return await chrome.windows.create({
-    url: chrome.runtime.getURL("views/projector/tab.html"),
+    url: chrome.runtime.getURL(projectorPage),
     // state: "maximized",
     // state: "fullscreen",
     width: 800,
@@ -21,8 +26,42 @@ async function createTab() {
   });
 }
 
+function getProjectorPageWindow(sendResponse) {
+  if (projectorPageId) {
+    chrome.windows
+      .get(projectorPageId)
+      .then(win => {
+        console.warn("windows", projectorPageId, win);
+        setTimeout(() => {
+          sendResponse({
+            status: "existing",
+            id: win.id
+          });
+        }, 100);
+      })
+      .catch(e => {
+        console.warn("error in getProjectorPageWindow", e);
+      });
+  } else {
+    createTab().then(w => {
+      projectorPageId = w.id;
+      setTimeout(() => {
+        sendResponse({
+          status: "created",
+          id: w.id
+        });
+      }, 100);
+    });
+  }
+}
+
 chrome.windows.onRemoved.addListener(async windowId => {
-  const tabs = await chrome.tabs.query({ url: ["https://my.bible.com/bible/*"] });
+  if (projectorPageId === windowId) {
+    projectorPageId = null;
+  }
+  const tabs = await chrome.tabs.query({
+    url: ["https://my.bible.com/bible/*"]
+  });
   tabs.forEach(async tab => {
     chrome.tabs.sendMessage(tab.id, {
       action: "windowRemoved",
@@ -34,37 +73,21 @@ chrome.windows.onRemoved.addListener(async windowId => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "createTab": {
-      chrome.windows.getAll({ windowTypes: ["popup"] }).then(windows => {
-        if (windows.length) {
-          setTimeout(() => {
-            sendResponse({
-              status: "existing",
-              id: windows[0].id
-            });
-          }, 100);
-        } else {
-          createTab().then(w => {
-            setTimeout(() => {
-              sendResponse({
-                status: "created",
-                id: w.id
-              });
-            }, 100);
-          });
-        }
-      });
+      console.warn("projectorPageId", projectorPageId);
+      getProjectorPageWindow(sendResponse);
       return true;
     }
     case "removeTab": {
       // wait until is removed then do tabs.query
-      setTimeout(() => {
-        chrome.tabs.query({ url: ["https://my.bible.com/bible/*"] }).then(tabs => {
-          if (!tabs.length) {
-            chrome.windows.remove(request.payload);
-          } else {
-            console.info("There are %d tabs opened", tabs.length, tabs);
-          }
+      setTimeout(async () => {
+        const tabs = await chrome.tabs.query({
+          url: ["https://my.bible.com/bible/*"]
         });
+        if (!tabs.length) {
+          chrome.windows.remove(request.payload);
+        } else {
+          console.info("There are %d tabs opened", tabs.length, tabs);
+        }
       }, 100);
       sendResponse({ status: 200 });
       break;
