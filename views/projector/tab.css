@@ -1,8 +1,10 @@
 :root {
+  --pageBackgroundColor: #000;
   --rootPadding: 65px 0 40px 0;
   --referenceColor: #ffffff;
   --referenceFontSize: 40px;
   --verseNumberColor: #ffffff;
+  --verseColor: #ffffff;
 }
 
 html {
@@ -13,8 +15,8 @@ body {
   font-family: Calibri, Arial, sans-serif;
   font-weight: bold;
   min-height: 100%;
-  background: #000;
-  color: #fff;
+  background: var(--pageBackgroundColor);
+  color: var(--verseColor);
   margin: 0;
   padding: 0;
 }
@@ -25,6 +27,14 @@ h1 {
   color: var(--referenceColor);
   font-size: var(--referenceFontSize);
   margin: 0.2em 0 0.4em 0;
+  /*
+  padding: 0.2em 0.4em;
+  margin: 0;
+  display: inline-block;
+  border: 2px solid var(--referenceColor);
+  border-top-left-radius: 0.8em;
+  border-bottom-right-radius: 0.8em;
+  */
 }
 h2 {
   color: #fff;
@@ -32,7 +42,7 @@ h2 {
   margin: 0.2em 0.4em 0 0.4em;
 }
 p.parallel.separator {
-  border-top: 2px solid gray;
+  border-top: 2px solid lightgrey;
   padding-top: 0.2em;
   margin-top: 0.2em;
 }

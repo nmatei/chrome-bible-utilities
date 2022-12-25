@@ -1,9 +1,14 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
-    case "update": {
-      // const root = document.body;
+    case "updateText": {
       const root = document.getElementById("root");
       root.innerHTML = request.payload;
+      adjustBodySize();
+      sendResponse({ status: 200 });
+      break;
+    }
+    case "updateRootStyles": {
+      setRootStyles(request.payload);
       adjustBodySize();
       sendResponse({ status: 200 });
       break;
@@ -53,4 +58,11 @@ function adjustBodySize() {
     body.style.fontSize = fontSize + "px";
     fontSize--;
   } while (fontSize > 10 && body.offsetHeight > window.innerHeight);
+}
+
+function setRootStyles(styles) {
+  const root = document.querySelector(":root");
+  Object.entries(styles).forEach(([key, value]) => {
+    root.style.setProperty("--" + key, value);
+  });
 }

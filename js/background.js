@@ -92,7 +92,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ status: 200 });
       break;
     }
-    case "focus": {
+    case "focusTab": {
       chrome.windows.update(request.payload.id, { focused: true }).then(() => {
         sendResponse({ status: 200 });
       });

@@ -36,6 +36,22 @@ function hasParallelView() {
   return !!document.querySelector(".parallel-chapter");
 }
 
+/**
+ * if verse is on multiple line (more paragraphs), merge them in 1 (eg. Mica 5:2)
+ * @param versesInfo
+ * @returns {*}
+ */
+function mergeParagraphs(versesInfo) {
+  return versesInfo.reduce((verses, verse) => {
+    if (verse.verseNr) {
+      verses.push(verse);
+    } else {
+      verses[verses.length - 1].content += " " + verse.content;
+    }
+    return verses;
+  }, []);
+}
+
 function getDisplayText(verses) {
   let chapters = [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
   let selectedVerses = [...verses];
@@ -60,6 +76,8 @@ function getDisplayText(verses) {
       cls
     };
   });
+
+  versesInfo = mergeParagraphs(versesInfo);
 
   chapters = chapters
     .map((c, i) => {
@@ -86,13 +104,13 @@ function getDisplayText(verses) {
     return `<p class="${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
   });
 
-  return `<h1>📘 ${chapters.join(" / ")}</h1>` + versesContent.join("\n");
+  return `<h1>${chapters.join(" / ")}</h1>` + versesContent.join("\n");
 }
 
 function printSelectedVerses(tab, verses) {
   cleanUp();
   const text = verses.length ? getDisplayText(verses) : "";
-  chrome.runtime.sendMessage({ action: "update", payload: text });
+  chrome.runtime.sendMessage({ action: "updateText", payload: text });
 }
 
 async function createProjectTab() {
@@ -224,7 +242,7 @@ async function selectVersesToProject(e) {
 async function bringTabToFront() {
   const tab = await getProjectTab();
   if (tab) {
-    await chrome.runtime.sendMessage({ action: "focus", payload: { id: tab } });
+    await chrome.runtime.sendMessage({ action: "focusTab", payload: { id: tab } });
   }
 }
 
@@ -240,7 +258,7 @@ async function selectByKeys(key) {
     case "Escape": {
       deselectAll();
       await displayVerses([]);
-      break;
+      return;
     }
     case "ArrowLeft":
     case "ArrowUp": {
@@ -255,11 +273,7 @@ async function selectByKeys(key) {
   }
 
   if (dir) {
-    // TODO fix order when focus is on parallel and can't select primary (eg. PSA)
     const focusOrder = ["primary-chapter", "parallel-chapter"];
-    // if (isParallel) {
-    //   focusOrder.reverse();
-    // }
 
     let next = selectedVersesNr.map(v => v + dir);
     const [primary, parallel] = next;
@@ -323,6 +337,21 @@ function initEvents() {
       }
     });
   }
+}
+
+// TODO usage example
+async function updateRootStyles() {
+  await chrome.runtime.sendMessage({
+    action: "updateRootStyles",
+    payload: {
+      pageBackgroundColor: "green",
+      rootPadding: "200px 50px 50px 50px",
+      referenceColor: "#ffffff",
+      referenceFontSize: "60px",
+      verseNumberColor: "#ff00ff",
+      verseColor: "#FF0000"
+    }
+  });
 }
 
 /**
