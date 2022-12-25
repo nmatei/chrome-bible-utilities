@@ -49,8 +49,11 @@ Parallel View + projected
   - [x] Numbers 13 in RO vs RU has more verses
   - [x] Chapters in Psalms in RO vs RU have different numbers
 - [ ] Sync primary verses to be in same 'line' with parallel
-  - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll 
+  - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
+- [ ] if verse is on multiple line (more paragraphs), merge them in 1 (eg. Mica 5:2)
 - [ ] User Settings
   - [ ] Select what verses to display on main screen
   - [ ] Allow to display on 2 different screens (more than 2 even better)
   - [ ] Allow display inline/block for main screen or projected screen
+  - [ ] Adjust font-size & line-height for main page
+  - [ ] Adjust css variables (--rootPadding, --referenceColor, --referenceFontSize, --verseNumberColor)
