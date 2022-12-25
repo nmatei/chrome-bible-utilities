@@ -119,11 +119,7 @@ async function createProjectTab() {
 }
 
 function createChromeWindow() {
-  return new Promise(async resolve => {
-    const response = await chrome.runtime.sendMessage({ action: "createTab" });
-    console.info("createTab", response);
-    resolve(response);
-  });
+  return chrome.runtime.sendMessage({ action: "createTab" });
 }
 
 async function getProjectTab() {

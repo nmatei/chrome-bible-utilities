@@ -1,6 +1,3 @@
-// TODO seems to work only when I click from extension
-let projectorPageId;
-
 const projectorPage = "views/projector/tab.html";
 
 chrome.action.onClicked.addListener(tab => {
@@ -13,82 +10,18 @@ chrome.action.onClicked.addListener(tab => {
   }
 });
 
-async function createTab() {
-  return await chrome.windows.create({
-    url: chrome.runtime.getURL(projectorPage),
-    // state: "maximized",
-    // state: "fullscreen",
-    width: 800,
-    height: 600,
-    top: 200,
-    left: 100,
-    type: "popup"
-  });
-}
-
-function getProjectorPageWindow(sendResponse) {
-  if (projectorPageId) {
-    chrome.windows
-      .get(projectorPageId)
-      .then(win => {
-        console.warn("windows", projectorPageId, win);
-        setTimeout(() => {
-          sendResponse({
-            status: "existing",
-            id: win.id
-          });
-        }, 100);
-      })
-      .catch(e => {
-        console.warn("error in getProjectorPageWindow", e);
-      });
-  } else {
-    createTab().then(w => {
-      projectorPageId = w.id;
-      setTimeout(() => {
-        sendResponse({
-          status: "created",
-          id: w.id
-        });
-      }, 100);
-    });
-  }
-}
-
-chrome.windows.onRemoved.addListener(async windowId => {
-  if (projectorPageId === windowId) {
-    projectorPageId = null;
-  }
-  const tabs = await chrome.tabs.query({
-    url: ["https://my.bible.com/bible/*"]
-  });
-  tabs.forEach(async tab => {
-    chrome.tabs.sendMessage(tab.id, {
-      action: "windowRemoved",
-      payload: { id: windowId }
-    });
-  });
+chrome.windows.onRemoved.addListener(windowId => {
+  notifyOnWindowRemoved(windowId);
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "createTab": {
-      console.warn("projectorPageId", projectorPageId);
       getProjectorPageWindow(sendResponse);
       return true;
     }
     case "removeTab": {
-      // wait until is removed then do tabs.query
-      setTimeout(async () => {
-        const tabs = await chrome.tabs.query({
-          url: ["https://my.bible.com/bible/*"]
-        });
-        if (!tabs.length) {
-          chrome.windows.remove(request.payload);
-        } else {
-          console.info("There are %d tabs opened", tabs.length, tabs);
-        }
-      }, 100);
+      checkIfLastTabClosed(request.payload);
       sendResponse({ status: 200 });
       break;
     }
@@ -100,3 +33,89 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
   }
 });
+
+async function getProjectorPageId() {
+  const { projectorWindowId } = await chrome.storage.session.get("projectorWindowId");
+  return projectorWindowId;
+}
+
+function setProjectorPageId(id) {
+  chrome.storage.session.set({
+    projectorWindowId: id
+  });
+}
+
+function createTab() {
+  return chrome.windows.create({
+    url: chrome.runtime.getURL(projectorPage),
+    // state: "maximized",
+    // state: "fullscreen",
+    width: 800,
+    height: 600,
+    top: 200,
+    left: 100,
+    type: "popup"
+  });
+}
+
+async function getProjectorPageWindow(sendResponse) {
+  let id = await getProjectorPageId();
+  let win;
+  if (id) {
+    try {
+      win = await chrome.windows.get(id);
+    } catch (e) {}
+    if (win) {
+      setTimeout(() => {
+        sendResponse({
+          status: "existing",
+          id: win.id
+        });
+      }, 100);
+      return;
+    }
+  }
+
+  win = await createTab();
+  setProjectorPageId(win.id);
+  setTimeout(() => {
+    sendResponse({
+      status: "created",
+      id: win.id
+    });
+  }, 100);
+}
+
+async function notifyOnWindowRemoved(windowId) {
+  const previewId = await getProjectorPageId();
+  if (previewId === windowId) {
+    setProjectorPageId(null);
+  }
+  const tabs = await chrome.tabs.query({
+    url: ["https://my.bible.com/bible/*"]
+  });
+  tabs.forEach(tab => {
+    chrome.tabs.sendMessage(tab.id, {
+      action: "windowRemoved",
+      payload: { id: windowId }
+    });
+  });
+}
+
+/**
+ * wait until is removed then do tabs.query
+ * to see if we should also close projector window (if is last)
+ * @param id
+ */
+function checkIfLastTabClosed(id) {
+  setTimeout(async () => {
+    const tabs = await chrome.tabs.query({
+      url: ["https://my.bible.com/bible/*"]
+    });
+    if (!tabs.length) {
+      chrome.windows.remove(id);
+    } else {
+      console.info("There are %d tabs opened", tabs.length, tabs);
+    }
+  }, 100);
+}

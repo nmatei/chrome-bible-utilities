@@ -57,3 +57,5 @@ Parallel View + projected
   - [ ] Adjust css variables (--rootPadding, --referenceColor, --referenceFontSize, --verseNumberColor)
   - [ ] Remember last url (or if parallel was opened)
   - [ ] Display Reference version (VDC, НРП)
+  - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
+    - [ ] Customize size & color

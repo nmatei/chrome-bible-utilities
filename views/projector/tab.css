@@ -41,13 +41,10 @@ h2 {
   font-size: 0.6em;
   margin: 0.2em 0.4em 0 0.4em;
 }
-p.parallel.separator {
+p.parallel.separator:not(p:first-of-type) {
   border-top: 2px solid lightgrey;
   padding-top: 0.2em;
   margin-top: 0.2em;
-}
-p.separator:first-of-type {
-  border-top: none;
 }
 p {
   margin: 0;
