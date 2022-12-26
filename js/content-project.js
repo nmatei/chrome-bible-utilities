@@ -25,7 +25,7 @@ function createSettingsActions() {
   actions.id = "project-actions";
   actions.className = "actions";
   actions.innerHTML = `
-    <a data-key="settings">🛠</a>
+    <a data-key="settings" class="action-btn">🛠</a>
   `;
   document.body.appendChild(actions);
   actions.addEventListener("click", e => {

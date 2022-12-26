@@ -9,31 +9,51 @@
   </head>
   <body>
     <script defer src="options.js" type="module"></script>
-    <h1>🛠 Settings</h1>
     <form id="optionsForm">
-      <div class="form-field">
-        <label for="pageBackgroundColor">Page Background Color</label>
-        <input type="color" id="pageBackgroundColor" name="pageBackgroundColor" />
+      <h1>🛠 Settings</h1>
+      <div class="form-body">
+        <div class="form-field" style="margin-bottom: 0">
+          <label></label>
+          <label for="rootPaddingTop" class="number-top-label">Top</label>
+          <label for="rootPaddingRight" class="number-top-label">Right</label>
+          <label for="rootPaddingBottom" class="number-top-label">Bottom</label>
+          <label for="rootPaddingLeft" class="number-top-label">Left</label>
+        </div>
+        <div class="form-field">
+          <label for="rootPaddingTop">Screen Padding</label>
+          <input type="number" required min="0" max="200" name="rootPaddingTop" id="rootPaddingTop" />
+          <input type="number" required min="0" max="200" name="rootPaddingRight" id="rootPaddingRight" />
+          <input type="number" required min="0" max="200" name="rootPaddingBottom" id="rootPaddingBottom" />
+          <input type="number" required min="0" max="200" name="rootPaddingLeft" id="rootPaddingLeft" />
+          <div>px</div>
+        </div>
+        <div class="form-field">
+          <label for="pageBackgroundColor">Page Background Color</label>
+          <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
+        </div>
+        <div class="form-field">
+          <label for="referenceColor">Reference Color</label>
+          <input type="color" required id="referenceColor" name="referenceColor" />
+        </div>
+        <div class="form-field">
+          <label for="referenceFontSize">Reference Font Size</label>
+          <input type="number" required min="20" max="100" id="referenceFontSize" name="referenceFontSize" />
+          <div>px</div>
+        </div>
+        <div class="form-field">
+          <label for="verseNumberColor">Verse Number Color</label>
+          <input type="color" required id="verseNumberColor" name="verseNumberColor" />
+        </div>
+        <div class="form-field">
+          <label for="verseColor">Verse Color</label>
+          <input type="color" required id="verseColor" name="verseColor" />
+        </div>
       </div>
-      <div class="form-field">
-        <label for="rootPadding">Screen Padding</label>
-        <input type="text" id="rootPadding" name="rootPadding" />
-      </div>
-      <div class="form-field">
-        <label for="referenceColor">Reference Color</label>
-        <input type="color" id="referenceColor" name="referenceColor" />
-      </div>
-      <div class="form-field">
-        <label for="referenceFontSize">Reference Font Size</label>
-        <input type="number" min="20" max="100" id="referenceFontSize" name="referenceFontSize" />
-      </div>
-      <div class="form-field">
-        <label for="verseNumberColor">Verse Number Color</label>
-        <input type="color" id="verseNumberColor" name="verseNumberColor" />
-      </div>
-      <div class="form-field">
-        <label for="pageBackgroundColor">Verse Color</label>
-        <input type="color" id="verseColor" name="verseColor" />
+      <div id="settings-actions" class="actions">
+        <a data-key="fill" class="fill"></a>
+        <button data-key="save" class="action-btn" type="submit">💾 Save</button>
+        <button data-key="defaults" class="action-btn" type="button">🔁 Defaults</button>
+        <button data-key="cancel" class="action-btn" type="button">Cancel</button>
       </div>
     </form>
   </body>

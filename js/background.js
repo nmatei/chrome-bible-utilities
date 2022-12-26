@@ -1,5 +1,6 @@
 const projectorPage = "views/projector/tab.html";
 const settingsPage = "views/settings/options.html";
+let settingsWinId;
 
 chrome.action.onClicked.addListener(tab => {
   const url = "https://my.bible.com/bible";
@@ -33,7 +34,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true;
     }
     case "showSettingsTab": {
-      createSettingsTab();
+      createSettingsTab().then(w => {
+        settingsWinId = w.id;
+        sendResponse({ status: 200 });
+      });
+      return true;
+    }
+    case "closeSettingsTab": {
+      if (settingsWinId) {
+        chrome.windows.remove(settingsWinId);
+        settingsWinId = null;
+      }
       sendResponse({ status: 200 });
       break;
     }
@@ -67,10 +78,10 @@ function createProjectorTab() {
 function createSettingsTab() {
   return chrome.windows.create({
     url: chrome.runtime.getURL(settingsPage),
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 500,
     top: 200,
-    left: 100,
+    left: 500,
     type: "popup"
   });
 }

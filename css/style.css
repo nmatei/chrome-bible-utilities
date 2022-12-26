@@ -44,9 +44,6 @@ body .bible-reader-arrows-container {
 
 .actions {
   display: flex;
-  position: fixed;
-  top: 5px;
-  right: 5px;
   gap: 10px;
 }
 .actions a {

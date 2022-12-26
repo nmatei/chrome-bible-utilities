@@ -15,6 +15,8 @@ or in 2 different languages.
   - [x] `CTRL + Click` to add verse to selection (multi select)
   - [x] `ALT + Click` to force project window to be on top (in case is not visible)
   - [x] `ESC` to show blank page (hide all selected verses)
+- [x] 🛠 User Settings (top-left actions)
+  - [x] Adjust css variables (padding, colors)
 - [x] improved text for copy (hide notes and add space after verse number)
 
 ## Results
@@ -54,7 +56,6 @@ Parallel View + projected
   - [ ] Allow to display on 2 different screens (more than 2 even better)
   - [ ] Allow display inline/block for main screen or projected screen
   - [ ] Adjust font-size & line-height for main page
-  - [ ] Adjust css variables (--rootPadding, --referenceColor, --referenceFontSize, --verseNumberColor)
   - [ ] Remember last url (or if parallel was opened)
   - [ ] Display Reference version (VDC, НРП)
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)

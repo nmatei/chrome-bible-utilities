@@ -1,3 +1,11 @@
+import { applyLoadOptions, getDefaults } from "../settings/common.js";
+
+// Initialize the form with the user's option settings
+const options = await applyLoadOptions(getDefaults());
+setRootStyles(options);
+
+initEvents();
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "updateText": {
@@ -16,10 +24,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-window.addEventListener("load", () => {
-  initEvents();
-});
-
 function initEvents() {
   window.addEventListener("resize", () => {
     adjustBodySize();
@@ -35,7 +39,7 @@ function initEvents() {
   });
 
   document.querySelector(".actions").addEventListener("click", e => {
-    if (e.target.matches("a")) {
+    if (e.target.matches(".action-btn")) {
       selectByKeys(e.target.getAttribute("data-key"));
     }
   });
@@ -60,7 +64,22 @@ function adjustBodySize() {
   } while (fontSize > 10 && body.offsetHeight > window.innerHeight);
 }
 
+function mapValue(key, value) {
+  if (key.startsWith("rootPadding") || key.endsWith("FontSize")) {
+    return value + "px";
+  }
+  return value;
+}
+
+function mapStyles(styles) {
+  return Object.entries(styles).reduce((acc, [key, value]) => {
+    acc[key] = mapValue(key, value);
+    return acc;
+  }, {});
+}
+
 function setRootStyles(styles) {
+  styles = mapStyles(styles);
   const root = document.querySelector(":root");
   Object.entries(styles).forEach(([key, value]) => {
     root.style.setProperty("--" + key, value);

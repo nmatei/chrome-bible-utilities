@@ -1,6 +1,9 @@
 :root {
-  --pageBackgroundColor: #000;
-  --rootPadding: 65px 0 40px 0;
+  --rootPaddingTop: 65px;
+  --rootPaddingRight: 0px;
+  --rootPaddingBottom: 40px;
+  --rootPaddingLeft: 0px;
+  --pageBackgroundColor: #000000;
   --referenceColor: #ffffff;
   --referenceFontSize: 40px;
   --verseNumberColor: #ffffff;
@@ -21,7 +24,7 @@ body {
   padding: 0;
 }
 #root {
-  padding: var(--rootPadding);
+  padding: var(--rootPaddingTop) var(--rootPaddingRight) var(--rootPaddingBottom) var(--rootPaddingLeft);
 }
 h1 {
   color: var(--referenceColor);

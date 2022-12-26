@@ -1,32 +1,76 @@
 // In-page cache of the user's options
-const options = {
-  pageBackgroundColor: "#000",
-  rootPadding: "65px 0px 40px 0px",
-  referenceColor: "#ffffff",
-  referenceFontSize: "40px",
-  verseNumberColor: "#ffffff",
-  verseColor: "#ffffff"
-};
+import { applyLoadOptions, getDefaults } from "./common.js";
+
+// Initialize the form with the user's option settings
+const options = await applyLoadOptions(getDefaults());
 
 const optionsForm = document.getElementById("optionsForm");
 
-// Initialize the form with the user's option settings
-const storageData = await chrome.storage.sync.get("options");
-Object.assign(options, storageData.options);
-console.warn("options", options, storageData.options);
-Object.entries(options).forEach(([key, value]) => {
-  optionsForm[key].value = value;
-});
+setFormValues(optionsForm, options);
 
-Object.entries(options).forEach(([key, value]) => {
-  optionsForm[key].addEventListener("change", event => {
-    const target = event.target;
-    options[target.name] = target.value;
-    //chrome.storage.sync.set({ options });
+initEvents();
 
-    chrome.runtime.sendMessage({
-      action: "previewRootStyles",
-      payload: options
-    });
+function setFormValues(form, values) {
+  Object.entries(values).forEach(([key, value]) => {
+    const input = form[key];
+    if (input) {
+      input.value = value;
+    }
   });
-});
+}
+
+function previewStyles(options) {
+  return chrome.runtime.sendMessage({
+    action: "previewRootStyles",
+    payload: options
+  });
+}
+
+async function saveStyles(options) {
+  await chrome.storage.sync.set({ options });
+  await closeTab();
+}
+
+function closeTab() {
+  return chrome.runtime.sendMessage({
+    action: "closeSettingsTab"
+  });
+}
+
+function initEvents() {
+  Object.entries(options).forEach(([key, value]) => {
+    const input = optionsForm[key];
+    if (input) {
+      input.addEventListener("change", event => {
+        const target = event.target;
+        options[target.name] = target.value;
+        previewStyles(options);
+      });
+    }
+  });
+
+  optionsForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    await saveStyles(options);
+  });
+
+  document.getElementById("settings-actions").addEventListener("click", async e => {
+    if (e.target.matches(".action-btn")) {
+      const action = e.target.getAttribute("data-key");
+      switch (action) {
+        case "defaults": {
+          Object.assign(options, getDefaults());
+          setFormValues(optionsForm, options);
+          previewStyles(options);
+          break;
+        }
+        case "cancel": {
+          await applyLoadOptions(options);
+          await previewStyles(options);
+          closeTab();
+          break;
+        }
+      }
+    }
+  });
+}

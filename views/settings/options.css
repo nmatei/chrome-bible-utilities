@@ -1,22 +1,87 @@
+html {
+  height: 100%;
+}
 body {
+  min-height: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 h1 {
   color: #0b5394;
   background: #edefef;
   margin: 0;
   padding: 10px;
+  border-bottom: 1px solid #adafaf;
 }
+#optionsForm {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.form-body {
+  flex: 1;
+  padding: 10px;
+}
+#settings-actions {
+  background: #edefef;
+  padding: 10px;
+  border-top: 1px solid #adafaf;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+.actions .fill {
+  flex: 1;
+}
+.actions .action-btn {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid #adafaf;
+  color: #000000;
+  transition: 0.2s;
+  line-height: 1em;
+  text-align: center;
+}
+.actions .action-btn:hover {
+  background: #ffffff;
+  border-color: #0b5394;
+  color: #0b5394;
+}
+.actions .action-btn:active {
+  border-color: #0b539490;
+  color: #0b5394aa;
+  transition: none;
+}
+
 .form-field {
   margin: 6px;
   display: flex;
   gap: 5px;
+  align-items: center;
 }
-.form-field label {
-  min-width: 15em;
+.form-field label:first-child {
+  min-width: 13em;
   display: inline-block;
   text-align: right;
   font-weight: bold;
   padding: 3px 5px 5px 0;
   font-size: 1.2em;
+}
+.form-field input[type="number"] {
+  width: 40px;
+  padding: 3px;
+}
+.number-top-label {
+  width: 44px;
+  padding: 0 3px;
+  text-align: center;
 }
