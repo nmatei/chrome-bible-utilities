@@ -1,4 +1,5 @@
 const projectorPage = "views/projector/tab.html";
+const settingsPage = "views/settings/options.html";
 
 chrome.action.onClicked.addListener(tab => {
   const url = "https://my.bible.com/bible";
@@ -31,6 +32,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       return true;
     }
+    case "showSettingsTab": {
+      createSettingsTab();
+      sendResponse({ status: 200 });
+      break;
+    }
   }
 });
 
@@ -45,11 +51,22 @@ function setProjectorPageId(id) {
   });
 }
 
-function createTab() {
+function createProjectorTab() {
   return chrome.windows.create({
     url: chrome.runtime.getURL(projectorPage),
     // state: "maximized",
     // state: "fullscreen",
+    width: 800,
+    height: 600,
+    top: 200,
+    left: 100,
+    type: "popup"
+  });
+}
+
+function createSettingsTab() {
+  return chrome.windows.create({
+    url: chrome.runtime.getURL(settingsPage),
     width: 800,
     height: 600,
     top: 200,
@@ -76,7 +93,7 @@ async function getProjectorPageWindow(sendResponse) {
     }
   }
 
-  win = await createTab();
+  win = await createProjectorTab();
   setProjectorPageId(win.id);
   setTimeout(() => {
     sendResponse({

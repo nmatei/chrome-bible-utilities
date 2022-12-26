@@ -7,6 +7,7 @@ let focusChapter = null;
 window.addEventListener("load", () => {
   setTimeout(() => {
     cleanUp();
+    createSettingsActions();
   }, 100);
   initEvents();
 });
@@ -18,6 +19,24 @@ window.onbeforeunload = function () {
     }
   }
 };
+
+function createSettingsActions() {
+  const actions = document.createElement("div");
+  actions.id = "project-actions";
+  actions.className = "actions";
+  actions.innerHTML = `
+    <a data-key="settings">🛠</a>
+  `;
+  document.body.appendChild(actions);
+  actions.addEventListener("click", e => {
+    if (e.target.matches("a")) {
+      const action = e.target.getAttribute("data-key");
+      if (action === "settings") {
+        chrome.runtime.sendMessage({ action: "showSettingsTab" });
+      }
+    }
+  });
+}
 
 function cleanUp() {
   // remove all notes
@@ -338,7 +357,7 @@ function initEvents() {
 // TODO usage example
 async function updateRootStyles() {
   await chrome.runtime.sendMessage({
-    action: "updateRootStyles",
+    action: "previewRootStyles",
     payload: {
       pageBackgroundColor: "green",
       rootPadding: "200px 50px 50px 50px",

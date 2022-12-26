@@ -31,6 +31,49 @@ body .bible-reader-arrows-container {
   border-color: #d7237c !important;
 }
 
+#project-actions {
+  position: fixed;
+  background: #000000;
+  padding: 5px;
+  z-index: 100;
+  display: inline;
+  left: 0;
+  top: 0;
+  right: unset;
+}
+
+.actions {
+  display: flex;
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  gap: 10px;
+}
+.actions a {
+  /* width: 50px; */
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 4px;
+  border-radius: 5px;
+  border: 2px solid #cccccc90;
+  color: #cccccc90;
+  transition: 0.2s;
+  line-height: 1em;
+  text-align: center;
+}
+.actions a:hover {
+  border-color: #eeeeee;
+  color: #cccccc90;
+}
+.actions a:active {
+  border-color: #ffffff;
+  color: #eeeeee;
+  transition: none;
+}
+
 body #current-ui-view {
   padding: 110px 0 20px 0;
 }

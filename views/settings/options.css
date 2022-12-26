@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+}
+h1 {
+  color: #0b5394;
+  background: #edefef;
+  margin: 0;
+  padding: 10px;
+}
+.form-field {
+  margin: 6px;
+  display: flex;
+  gap: 5px;
+}
+.form-field label {
+  min-width: 15em;
+  display: inline-block;
+  text-align: right;
+  font-weight: bold;
+  padding: 3px 5px 5px 0;
+  font-size: 1.2em;
+}

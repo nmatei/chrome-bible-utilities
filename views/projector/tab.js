@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ status: 200 });
       break;
     }
-    case "updateRootStyles": {
+    case "previewRootStyles": {
       setRootStyles(request.payload);
       adjustBodySize();
       sendResponse({ status: 200 });

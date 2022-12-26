@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Bible Display Options 🛠</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <script defer src="options.js" type="module"></script>
+    <h1>🛠 Settings</h1>
+    <form id="optionsForm">
+      <div class="form-field">
+        <label for="pageBackgroundColor">Page Background Color</label>
+        <input type="color" id="pageBackgroundColor" name="pageBackgroundColor" />
+      </div>
+      <div class="form-field">
+        <label for="rootPadding">Screen Padding</label>
+        <input type="text" id="rootPadding" name="rootPadding" />
+      </div>
+      <div class="form-field">
+        <label for="referenceColor">Reference Color</label>
+        <input type="color" id="referenceColor" name="referenceColor" />
+      </div>
+      <div class="form-field">
+        <label for="referenceFontSize">Reference Font Size</label>
+        <input type="number" min="20" max="100" id="referenceFontSize" name="referenceFontSize" />
+      </div>
+      <div class="form-field">
+        <label for="verseNumberColor">Verse Number Color</label>
+        <input type="color" id="verseNumberColor" name="verseNumberColor" />
+      </div>
+      <div class="form-field">
+        <label for="pageBackgroundColor">Verse Color</label>
+        <input type="color" id="verseColor" name="verseColor" />
+      </div>
+    </form>
+  </body>
+</html>
