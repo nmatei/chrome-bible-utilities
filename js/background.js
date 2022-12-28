@@ -1,6 +1,8 @@
 const projectorPage = "views/projector/tab.html";
 const settingsPage = "views/settings/options.html";
-let settingsWinId;
+
+const projectorStorageKey = "projectorWindowId";
+const settingsStorageKey = "settingsWindowId";
 
 chrome.action.onClicked.addListener(tab => {
   const url = "https://my.bible.com/bible";
@@ -13,13 +15,14 @@ chrome.action.onClicked.addListener(tab => {
 });
 
 chrome.windows.onRemoved.addListener(windowId => {
+  // in case window is closed from 'x' button / Alt+F4
   notifyOnWindowRemoved(windowId);
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "createTab": {
-      getProjectorPageWindow(sendResponse);
+      getWindow(projectorStorageKey, createProjectorTab, sendResponse);
       return true;
     }
     case "removeTab": {
@@ -33,101 +36,115 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       return true;
     }
-    case "showSettingsTab": {
-      createSettingsTab().then(w => {
-        settingsWinId = w.id;
-        sendResponse({ status: 200 });
+    case "createSettingsTab": {
+      getWindow(settingsStorageKey, createSettingsTab, sendResponse).then(win => {
+        chrome.windows.update(win.id, { focused: true });
       });
       return true;
     }
     case "closeSettingsTab": {
-      if (settingsWinId) {
-        chrome.windows.remove(settingsWinId);
-        settingsWinId = null;
-      }
-      sendResponse({ status: 200 });
-      break;
+      closeSettingsWindow().then(() => {
+        sendResponse({ status: 200 });
+      });
+      return true;
     }
   }
 });
 
-async function getProjectorPageId() {
-  const { projectorWindowId } = await chrome.storage.session.get("projectorWindowId");
-  return projectorWindowId;
+async function getWindowId(key) {
+  const result = await chrome.storage.session.get(key);
+  return result[key];
 }
 
-function setProjectorPageId(id) {
+function setWindowId(key, id) {
   chrome.storage.session.set({
-    projectorWindowId: id
+    [key]: id
   });
 }
 
-function createProjectorTab() {
+function createWindow(config) {
   return chrome.windows.create({
-    url: chrome.runtime.getURL(projectorPage),
-    // state: "maximized",
-    // state: "fullscreen",
     width: 800,
     height: 600,
     top: 200,
     left: 100,
-    type: "popup"
+    type: "popup",
+    ...config
+  });
+}
+
+async function getWindow(key, createWindowFn, sendResponse) {
+  return new Promise(async resolve => {
+    let id = await getWindowId(key);
+    let win;
+    if (id) {
+      try {
+        win = await chrome.windows.get(id);
+      } catch (e) {}
+      if (win) {
+        setTimeout(() => {
+          sendResponse({
+            status: "existing",
+            id: win.id
+          });
+          resolve(win);
+        }, 100);
+        return;
+      }
+    }
+
+    win = await createWindowFn();
+    setWindowId(key, win.id);
+    setTimeout(() => {
+      sendResponse({
+        status: "created",
+        id: win.id
+      });
+      resolve(win);
+    }, 200);
+  });
+}
+
+function createProjectorTab() {
+  return createWindow({
+    url: chrome.runtime.getURL(projectorPage)
+    // state: "maximized",
+    // state: "fullscreen",
   });
 }
 
 function createSettingsTab() {
-  return chrome.windows.create({
+  return createWindow({
     url: chrome.runtime.getURL(settingsPage),
     width: 600,
     height: 500,
-    top: 200,
-    left: 500,
-    type: "popup"
+    left: 500
   });
-}
-
-async function getProjectorPageWindow(sendResponse) {
-  let id = await getProjectorPageId();
-  let win;
-  if (id) {
-    try {
-      win = await chrome.windows.get(id);
-    } catch (e) {}
-    if (win) {
-      setTimeout(() => {
-        sendResponse({
-          status: "existing",
-          id: win.id
-        });
-      }, 100);
-      return;
-    }
-  }
-
-  win = await createProjectorTab();
-  setProjectorPageId(win.id);
-  setTimeout(() => {
-    sendResponse({
-      status: "created",
-      id: win.id
-    });
-  }, 100);
 }
 
 async function notifyOnWindowRemoved(windowId) {
-  const previewId = await getProjectorPageId();
+  const previewId = await getWindowId(projectorStorageKey);
   if (previewId === windowId) {
-    setProjectorPageId(null);
-  }
-  const tabs = await chrome.tabs.query({
-    url: ["https://my.bible.com/bible/*"]
-  });
-  tabs.forEach(tab => {
-    chrome.tabs.sendMessage(tab.id, {
-      action: "windowRemoved",
-      payload: { id: windowId }
+    setWindowId(projectorStorageKey, null);
+
+    const tabs = await chrome.tabs.query({
+      url: ["https://my.bible.com/bible/*"]
     });
-  });
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, {
+        action: "windowRemoved",
+        payload: { id: windowId }
+      });
+    });
+  }
+}
+
+async function closeSettingsWindow() {
+  const id = await getWindowId(settingsStorageKey);
+  if (id) {
+    setWindowId(settingsStorageKey, null);
+    chrome.windows.remove(id);
+  }
 }
 
 /**

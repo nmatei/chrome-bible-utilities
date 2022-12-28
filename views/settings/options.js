@@ -42,9 +42,11 @@ function initEvents() {
     const input = optionsForm[key];
     if (input) {
       input.addEventListener("change", event => {
-        const target = event.target;
-        options[target.name] = target.value;
-        previewStyles(options);
+        const input = event.target;
+        if (input.checkValidity()) {
+          options[input.name] = input.value;
+          previewStyles(options);
+        }
       });
     }
   });

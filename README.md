@@ -17,6 +17,9 @@ or in 2 different languages.
   - [x] `ESC` to show blank page (hide all selected verses)
 - [x] 🛠 User Settings (top-left actions)
   - [x] Adjust css variables (padding, colors)
+- [x] Project "live text"
+  - [x] input any text to be projected
+  - [ ] Select any text from page and allow it to be projected
 - [x] improved text for copy (hide notes and add space after verse number)
 
 ## Results
@@ -56,7 +59,9 @@ Parallel View + projected
   - [ ] Allow to display on 2 different screens (more than 2 even better)
   - [ ] Allow display inline/block for main screen or projected screen
   - [ ] Adjust font-size & line-height for main page
-  - [ ] Remember last url (or if parallel was opened)
+  - [ ] Remember last url (or if parallel was opened - store it in storage.sync)
   - [ ] Display Reference version (VDC, НРП)
+  - [ ] Customize styles for parallel vs primary
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
+  - [ ] remember last window position (projector & settings)

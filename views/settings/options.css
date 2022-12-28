@@ -44,6 +44,7 @@ h1 {
   text-decoration: none;
   font-size: 20px;
   padding: 4px 10px;
+  margin: 0;
   border-radius: 5px;
   border: 1px solid #adafaf;
   color: #000000;
@@ -79,6 +80,10 @@ h1 {
 .form-field input[type="number"] {
   width: 40px;
   padding: 3px;
+}
+.form-field input[type="number"]:invalid {
+  border: 2px solid #ff0000;
+  background: #ff000030;
 }
 .number-top-label {
   width: 44px;

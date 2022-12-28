@@ -10,7 +10,7 @@
   <body>
     <script defer src="options.js" type="module"></script>
     <form id="optionsForm">
-      <h1>🛠 Settings</h1>
+      <h1>🛠 Projector Screen Settings</h1>
       <div class="form-body">
         <div class="form-field" style="margin-bottom: 0">
           <label></label>
@@ -19,7 +19,7 @@
           <label for="rootPaddingBottom" class="number-top-label">Bottom</label>
           <label for="rootPaddingLeft" class="number-top-label">Left</label>
         </div>
-        <div class="form-field">
+        <div class="form-field" style="margin-top: 0">
           <label for="rootPaddingTop">Screen Padding</label>
           <input type="number" required min="0" max="200" name="rootPaddingTop" id="rootPaddingTop" />
           <input type="number" required min="0" max="200" name="rootPaddingRight" id="rootPaddingRight" />
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div id="settings-actions" class="actions">
-        <a data-key="fill" class="fill"></a>
+        <span data-key="fill" class="fill"></span>
         <button data-key="save" class="action-btn" type="submit">💾 Save</button>
         <button data-key="defaults" class="action-btn" type="button">🔁 Defaults</button>
         <button data-key="cancel" class="action-btn" type="button">Cancel</button>

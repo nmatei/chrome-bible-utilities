@@ -33,27 +33,35 @@ body .bible-reader-arrows-container {
 
 #project-actions {
   position: fixed;
-  background: #000000;
-  padding: 5px;
+  background: #000000cc;
   z-index: 100;
   display: inline;
   left: 0;
   top: 0;
   right: unset;
+  border-bottom-right-radius: 5px;
+}
+#project-actions:hover {
+  background: #000000;
 }
 
 .actions {
+  padding: 5px;
   display: flex;
   gap: 10px;
+  align-items: center;
 }
-.actions a {
-  /* width: 50px; */
+.actions .fill {
+  flex: 1;
+}
+.actions .action-btn {
   display: inline-block;
   cursor: pointer;
   user-select: none;
   text-decoration: none;
   font-size: 20px;
   padding: 4px;
+  margin: 0;
   border-radius: 5px;
   border: 2px solid #cccccc90;
   color: #cccccc90;
@@ -61,14 +69,44 @@ body .bible-reader-arrows-container {
   line-height: 1em;
   text-align: center;
 }
-.actions a:hover {
+.actions .action-btn:hover {
   border-color: #eeeeee;
   color: #cccccc90;
 }
-.actions a:active {
+.actions .action-btn:active {
   border-color: #ffffff;
   color: #eeeeee;
   transition: none;
+}
+
+#live-text-box {
+  display: block;
+  position: fixed;
+  border: 1px solid #000000;
+  background: #333333;
+  padding: 10px;
+  z-index: 100;
+  right: unset;
+  left: 0;
+  top: 0;
+  border-radius: 5px;
+}
+#live-text-box .actions {
+  padding: 0 0 10px 0;
+}
+.hide-view {
+  display: none !important;
+}
+#live-text-box label {
+  display: inline-block;
+  color: #ffffff;
+}
+#live-text-box input[type="checkbox"] {
+  margin: 4px;
+  height: auto !important;
+}
+#liveText {
+  margin: 0;
 }
 
 body #current-ui-view {
@@ -142,4 +180,27 @@ body .yv-footer hr {
   .large-6 {
     width: 80%;
   }
+}
+
+.arrow-up:before {
+  content: " ";
+  position: absolute;
+  left: 15px;
+  top: -6px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #000000;
+}
+.arrow-up:after {
+  content: " ";
+  position: absolute;
+  left: 15px;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #333333;
 }

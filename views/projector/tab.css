@@ -44,14 +44,26 @@ h2 {
   font-size: 0.6em;
   margin: 0.2em 0.4em 0 0.4em;
 }
+/*
 p.parallel.separator:not(p:first-of-type) {
   border-top: 2px solid lightgrey;
   padding-top: 0.2em;
   margin-top: 0.2em;
 }
+*/
+p.parallel.separator:not(p:first-of-type):before {
+  display: block;
+  content: " ";
+  position: relative;
+  border-top: 2px solid lightgrey;
+  padding-top: 0.2em;
+  margin-top: 0.2em;
+}
+
 p {
   margin: 0;
   padding: 0;
+  display: inline;
 }
 p > sup {
   color: var(--verseNumberColor);

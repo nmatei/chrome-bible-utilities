@@ -25,17 +25,78 @@ function createSettingsActions() {
   actions.id = "project-actions";
   actions.className = "actions";
   actions.innerHTML = `
-    <a data-key="settings" class="action-btn">🛠</a>
+    <button data-key="settings" class="action-btn" title="Settings">🛠</button>
+    <button data-key="live-text" class="action-btn" title="Live Text">💬</button>
   `;
   document.body.appendChild(actions);
-  actions.addEventListener("click", e => {
-    if (e.target.matches("a")) {
-      const action = e.target.getAttribute("data-key");
-      if (action === "settings") {
-        chrome.runtime.sendMessage({ action: "showSettingsTab" });
+
+  const liveBoxForm = createLiveTextForm();
+  const liveText = document.getElementById("liveText");
+
+  actions.addEventListener("click", async e => {
+    const target = e.target;
+    if (target.matches(".action-btn")) {
+      const action = target.getAttribute("data-key");
+      switch (action) {
+        case "settings": {
+          chrome.runtime.sendMessage({ action: "createSettingsTab" });
+          break;
+        }
+        case "live-text": {
+          liveBoxForm.style.top = target.offsetTop + target.offsetHeight + 10;
+          liveBoxForm.style.left = target.offsetLeft;
+          liveBoxForm.classList.toggle("hide-view");
+          if (!liveBoxForm.classList.contains("hide-view")) {
+            await getProjectTab();
+            liveText.focus();
+          }
+          break;
+        }
       }
     }
   });
+}
+
+function addLiveTextBox() {
+  const form = document.createElement("form");
+  form.className = "hide-view arrow-up";
+  form.id = "live-text-box";
+  form.innerHTML = `
+    <div class="actions">
+      <label for="realTimeUpdates">Live updates
+        <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates" checked/>
+      </label>
+      <span data-key="fill" class="fill"></span>
+      <button type="submit" class="action-btn">💬 Project</button>
+    </div>
+    <textarea name="liveText" id="liveText" cols="30" rows="6"></textarea>
+  `;
+  document.body.appendChild(form);
+  return form;
+}
+
+function createLiveTextForm() {
+  const liveBoxForm = addLiveTextBox();
+  const liveText = document.getElementById("liveText");
+  liveBoxForm.addEventListener("submit", e => {
+    e.preventDefault();
+    projectLiveText(liveText.value);
+  });
+  liveText.addEventListener(
+    "input",
+    debounce(e => {
+      if (liveBoxForm.realTimeUpdates.checked) {
+        projectLiveText(e.target.value);
+      }
+    }, 200)
+  );
+  return liveBoxForm;
+}
+
+function projectLiveText(text) {
+  const title = `<h1>💬</h1>`;
+  text = text.replaceAll(/\n/gi, "<br/>");
+  projectText(text ? title + `<p>${text}</p>` : "");
 }
 
 function cleanUp() {
@@ -129,7 +190,11 @@ function getDisplayText(verses) {
 function printSelectedVerses(tab, verses) {
   cleanUp();
   const text = verses.length ? getDisplayText(verses) : "";
-  chrome.runtime.sendMessage({ action: "updateText", payload: text });
+  projectText(text);
+}
+
+function projectText(text) {
+  return chrome.runtime.sendMessage({ action: "updateText", payload: text });
 }
 
 async function createProjectTab() {
@@ -354,19 +419,16 @@ function initEvents() {
   }
 }
 
-// TODO usage example
-async function updateRootStyles() {
-  await chrome.runtime.sendMessage({
-    action: "previewRootStyles",
-    payload: {
-      pageBackgroundColor: "green",
-      rootPadding: "200px 50px 50px 50px",
-      referenceColor: "#ffffff",
-      referenceFontSize: "60px",
-      verseNumberColor: "#ff00ff",
-      verseColor: "#FF0000"
-    }
-  });
+function debounce(fn, delay) {
+  let timer = null;
+  return function () {
+    const context = this,
+      args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      fn.apply(context, args);
+    }, delay);
+  };
 }
 
 /**
