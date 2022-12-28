@@ -9,10 +9,10 @@
   },
   "action": {},
   "permissions": ["activeTab", "tabs", "storage", "scripting"],
-  "host_permissions": ["https://my.bible.com/bible*"],
+  "host_permissions": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
   "content_scripts": [
     {
-      "matches": ["https://my.bible.com/bible*"],
+      "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
       "js": ["js/content-project.js"],
       "css": ["css/style.css"]
     }
