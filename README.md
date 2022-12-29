@@ -24,7 +24,7 @@ or in **2 different languages**.
   - [ ] Select any text from page and allow it to be projected
 - [x] improved text for copy (hide notes and add space after verse number)
 
-## Results
+## 🎞 Results
 
 Primary View + projected
 
@@ -55,7 +55,7 @@ Actions
 - [x] Sign in to YouVersion on https://my.bible.com/sign-in
   - [x] Must be logged in to have parallel view and to enable this plugin
 
-## Developers TODOs (items to improve)
+## 📋 Developers TODOs (items to improve)
 
 - [ ] Improve search
   - [ ] Type full verse reference (+shorcuts: Rom 2.2) and press enter to display it automatically
