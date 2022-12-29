@@ -1,10 +1,10 @@
-# Chrome extension to for Bible.com (display verses on external Projector/Screen)
+# Chrome extension to for Bible.com
 
 ![icon](icon-48.png)
 
-This extension will help you project any verses in your Church,
+This extension will help you **project Bible verses in your Church**,
 You decide which version to display and also can project parallel versions
-or in 2 different languages.
+or in **2 different languages**.
 
 ## Features
 
@@ -17,6 +17,7 @@ or in 2 different languages.
   - [x] `ESC` to show blank page (hide all selected verses)
 - [x] 🛠 User Settings (top-left actions)
   - [x] Adjust css variables (padding, colors)
+  - [x] remember last windows position (projector & settings)
 - [x] 💬 Project "live text"
   - [x] input any text to be projected
   - [ ] Select any text from page and allow it to be projected
@@ -70,4 +71,3 @@ Actions
   - [ ] Customize styles for parallel vs primary
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
-  - [ ] remember last window position (projector & settings)

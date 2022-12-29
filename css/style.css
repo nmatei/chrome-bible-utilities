@@ -165,6 +165,9 @@ body .yv-footer .yv-footer-vertical-link-list li {
 body .yv-footer hr {
   margin: 5px 0 5px;
 }
+body .version-copyright {
+  font-size: 10px;
+}
 
 @media only screen and (min-width: 37.5em) {
   body .verse-action-footer {

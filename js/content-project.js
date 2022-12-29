@@ -8,17 +8,9 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     cleanUp();
     createSettingsActions();
+    initEvents();
   }, 100);
-  initEvents();
 });
-
-window.onbeforeunload = function () {
-  if (chrome.runtime) {
-    if (projectTab) {
-      chrome.runtime.sendMessage({ action: "removeTab", payload: projectTab });
-    }
-  }
-};
 
 function createSettingsActions() {
   const actions = document.createElement("div");
@@ -63,11 +55,12 @@ function addLiveTextBox() {
   form.id = "live-text-box";
   form.innerHTML = `
     <div class="actions">
-      <label for="realTimeUpdates">Live updates
+      <label for="realTimeUpdates" title="Live updates">Live
         <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates" checked/>
       </label>
       <span data-key="fill" class="fill"></span>
       <button type="submit" class="action-btn">💬 Project</button>
+      <button type="reset" class="action-btn">Clear</button>
     </div>
     <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
     <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected"></textarea>
@@ -85,9 +78,13 @@ function createLiveTextForm() {
     e.preventDefault();
     projectLiveText(liveTextTitle.value, liveText.value);
   });
+  liveBoxForm.addEventListener("reset", () => {
+    projectText("");
+  });
   liveTextTitle.addEventListener(
     "input",
-    debounce(() => {
+    debounce(e => {
+      e.stopPropagation();
       if (liveBoxForm.realTimeUpdates.checked) {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
@@ -95,7 +92,8 @@ function createLiveTextForm() {
   );
   liveText.addEventListener(
     "input",
-    debounce(() => {
+    debounce(e => {
+      e.stopPropagation();
       if (liveBoxForm.realTimeUpdates.checked) {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
@@ -407,7 +405,9 @@ function initEvents() {
   if (app) {
     app.addEventListener("click", selectVersesToProject);
     document.addEventListener("keydown", e => {
-      selectByKeys(e.key);
+      if (!e.target.matches("input,textarea")) {
+        selectByKeys(e.key);
+      }
     });
     window.addEventListener("blur", () => {
       document.body.classList.add("focus-lost");

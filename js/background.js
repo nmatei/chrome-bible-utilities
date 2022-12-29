@@ -26,6 +26,10 @@ chrome.windows.onBoundsChanged.addListener(win => {
   changeWindowsBounds(win);
 });
 
+chrome.tabs.onRemoved.addListener(() => {
+  checkIfLastTabClosed();
+});
+
 async function changeWindowsBounds(win) {
   const windows = await chrome.storage.sync.get(allWindows);
   const updateWin = Object.entries(windows).find(([key, w]) => w.id === win.id);
@@ -40,6 +44,7 @@ async function changeWindowsBounds(win) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "createTab": {
+      // TODO https://developer.chrome.com/articles/multi-screen-window-placement/
       getWindow(projectorStorageKey, createProjectorTab).then((win, status) => {
         sendResponse({
           status,
@@ -47,11 +52,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       });
       return true;
-    }
-    case "removeTab": {
-      checkIfLastTabClosed(request.payload);
-      sendResponse({ status: 200 });
-      break;
     }
     case "focusTab": {
       chrome.windows.update(request.payload.id, { focused: true }).then(() => {
@@ -169,9 +169,7 @@ async function notifyOnWindowRemoved(windowId) {
   if (settings && settings.id === windowId) {
     await setWindowSettings(projectorStorageKey, null, settings);
 
-    const tabs = await chrome.tabs.query({
-      url: ["https://my.bible.com/bible/*"]
-    });
+    const tabs = await getBibleTabs();
     tabs.forEach(tab => {
       chrome.tabs.sendMessage(tab.id, {
         action: "windowRemoved",
@@ -192,17 +190,24 @@ async function closeSettingsWindow() {
 /**
  * wait until is removed then do tabs.query
  * to see if we should also close projector window (if is last)
- * @param id
  */
-function checkIfLastTabClosed(id) {
+function checkIfLastTabClosed() {
   setTimeout(async () => {
-    const tabs = await chrome.tabs.query({
-      url: ["https://my.bible.com/bible/*"]
-    });
+    const tabs = await getBibleTabs();
     if (!tabs.length) {
-      chrome.windows.remove(id);
+      const settings = await getWindowSettings(projectorStorageKey);
+      const existingId = settings ? settings.id : "";
+      if (existingId) {
+        chrome.windows.remove(existingId);
+      }
     } else {
       console.info("There are %d tabs opened", tabs.length, tabs);
     }
   }, 100);
+}
+
+function getBibleTabs() {
+  return chrome.tabs.query({
+    url: ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"]
+  });
 }
