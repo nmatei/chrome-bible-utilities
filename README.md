@@ -25,12 +25,15 @@ or in 2 different languages.
 ## Results
 
 Primary View + projected
+
 ![Primary](screens/primary.jpg)
 
 Parallel View + projected
+
 ![Parallel](screens/parallel.jpg)
 
 Actions
+
 ![Actions](screens/actions.jpg)
 
 
