@@ -6,7 +6,7 @@ This extension will help you **project Bible verses in your Church**,
 You decide which version to display and also can project parallel versions
 or in **2 different languages**.
 
-## Features
+## 💠 Features
 
 - [x] **Project** selected verses (+/- parallel text)
   - [x] `Search` Book and Chapter
@@ -39,7 +39,7 @@ Actions
 ![Actions](screens/actions.jpg)
 
 
-## Setup Plugin as Developer (one time only)
+## ⚙ Setup Plugin as Developer (one time only)
 
 - [x] **Download/Clone** this repo
   - [ ] as zip & Unzip it
