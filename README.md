@@ -30,6 +30,9 @@ Primary View + projected
 Parallel View + projected
 ![Parallel](screens/parallel.jpg)
 
+Actions
+![Actions](screens/actions.jpg)
+
 
 ## Setup Plugin as Developer (one time only)
 
