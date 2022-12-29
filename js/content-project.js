@@ -401,7 +401,11 @@ async function selectByKeys(key) {
 }
 
 function initEvents() {
-  const app = document.querySelector("#react-app-Bible");
+  let app = document.querySelector("#react-app-Bible");
+  if (!app) {
+    console.warn("no app found %o, must be logged in", "#react-app-Bible");
+    app = document.querySelector(".bible-reader-sticky-container");
+  }
   if (app) {
     app.addEventListener("click", selectVersesToProject);
     document.addEventListener("keydown", e => {
