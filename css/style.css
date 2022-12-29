@@ -105,6 +105,12 @@ body .bible-reader-arrows-container {
   margin: 4px;
   height: auto !important;
 }
+#liveTextTitle {
+  border: 1px solid #d0d2d2;
+  background: #ffffff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
 #liveText {
   margin: 0;
 }
@@ -196,11 +202,11 @@ body .yv-footer hr {
 .arrow-up:after {
   content: " ";
   position: absolute;
-  left: 15px;
+  left: 16px;
   top: -4px;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid #333333;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #333333;
 }

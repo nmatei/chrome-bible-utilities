@@ -69,7 +69,8 @@ function addLiveTextBox() {
       <span data-key="fill" class="fill"></span>
       <button type="submit" class="action-btn">💬 Project</button>
     </div>
-    <textarea name="liveText" id="liveText" cols="30" rows="6"></textarea>
+    <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
+    <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected"></textarea>
   `;
   document.body.appendChild(form);
   return form;
@@ -77,26 +78,37 @@ function addLiveTextBox() {
 
 function createLiveTextForm() {
   const liveBoxForm = addLiveTextBox();
+  const liveTextTitle = document.getElementById("liveTextTitle");
   const liveText = document.getElementById("liveText");
+
   liveBoxForm.addEventListener("submit", e => {
     e.preventDefault();
-    projectLiveText(liveText.value);
+    projectLiveText(liveTextTitle.value, liveText.value);
   });
+  liveTextTitle.addEventListener(
+    "input",
+    debounce(() => {
+      if (liveBoxForm.realTimeUpdates.checked) {
+        projectLiveText(liveTextTitle.value, liveText.value);
+      }
+    }, 200)
+  );
   liveText.addEventListener(
     "input",
-    debounce(e => {
+    debounce(() => {
       if (liveBoxForm.realTimeUpdates.checked) {
-        projectLiveText(e.target.value);
+        projectLiveText(liveTextTitle.value, liveText.value);
       }
     }, 200)
   );
   return liveBoxForm;
 }
 
-function projectLiveText(text) {
-  const title = `<h1>💬</h1>`;
+function projectLiveText(title, text) {
+  const displayTitle = `<h1>💬 ${title}</h1>`;
+  const display = title || text;
   text = text.replaceAll(/\n/gi, "<br/>");
-  projectText(text ? title + `<p>${text}</p>` : "");
+  projectText(display ? displayTitle + `<p>${text}</p>` : "");
 }
 
 function cleanUp() {
@@ -247,7 +259,7 @@ function mapParallelVerse(nr, isParallel) {
     if (primary === 191 && parallel === 143 && book === "NUM" && chapter === 13) {
       return nr + (isParallel ? -1 : 1);
     }
-    if (primary === 191 && parallel === 143 && book === "PSA" /* && chapter === 13*/) {
+    if (primary === 191 && parallel === 143 && book === "PSA" && chapter > 2) {
       return 0;
     }
   }

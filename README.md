@@ -17,7 +17,7 @@ or in 2 different languages.
   - [x] `ESC` to show blank page (hide all selected verses)
 - [x] 🛠 User Settings (top-left actions)
   - [x] Adjust css variables (padding, colors)
-- [x] Project "live text"
+- [x] 💬 Project "live text"
   - [x] input any text to be projected
   - [ ] Select any text from page and allow it to be projected
 - [x] improved text for copy (hide notes and add space after verse number)

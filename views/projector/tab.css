@@ -30,27 +30,12 @@ h1 {
   color: var(--referenceColor);
   font-size: var(--referenceFontSize);
   margin: 0.2em 0 0.4em 0;
-  /*
-  padding: 0.2em 0.4em;
-  margin: 0;
-  display: inline-block;
-  border: 2px solid var(--referenceColor);
-  border-top-left-radius: 0.8em;
-  border-bottom-right-radius: 0.8em;
-  */
 }
 h2 {
   color: #fff;
   font-size: 0.6em;
   margin: 0.2em 0.4em 0 0.4em;
 }
-/*
-p.parallel.separator:not(p:first-of-type) {
-  border-top: 2px solid lightgrey;
-  padding-top: 0.2em;
-  margin-top: 0.2em;
-}
-*/
 p.parallel.separator:not(p:first-of-type):before {
   display: block;
   content: " ";
