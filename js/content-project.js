@@ -259,7 +259,10 @@ function mapParallelVerse(nr, isParallel) {
     if (primary === 191 && parallel === 143 && book === "NUM" && chapter === 13) {
       return nr + (isParallel ? -1 : 1);
     }
-    if (primary === 191 && parallel === 143 && book === "PSA" && chapter > 2) {
+    if (primary === 191 && parallel === 143 && book === "PSA" && chapter < 10) {
+      return nr + (isParallel ? -1 : 1);
+    }
+    if (primary === 191 && parallel === 143 && book === "PSA" && chapter > 9) {
       return 0;
     }
   }
