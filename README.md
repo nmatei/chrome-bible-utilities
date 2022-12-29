@@ -23,18 +23,21 @@ or in **2 different languages**.
   - [x] input any text to be projected
   - [ ] Select any text from page and allow it to be projected
 - [x] improved text for copy (hide notes and add space after verse number)
+- [x] open Multiple chrome tabs with different chapters
+  - [x] all windows will project to the same projector page
+  - [x] projector page will close only when all tabs from my.bible.com are closed
 
 ## 🎞 Results
 
-Primary View + projected
+**Primary** View + projected
 
 ![Primary](screens/primary.jpg)
 
-Parallel View + projected
+**Parallel** View + projected
 
 ![Parallel](screens/parallel.jpg)
 
-Actions
+**Actions**
 
 ![Actions](screens/actions.jpg)
 
