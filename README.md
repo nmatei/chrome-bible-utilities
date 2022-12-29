@@ -15,6 +15,7 @@ or in **2 different languages**.
   - [x] `CTRL + Click` to add verse to selection (multi select)
   - [x] `ALT + Click` to force project window to be on top (in case is not visible)
   - [x] `ESC` to show blank page (hide all selected verses)
+  - [x] `F11` to enter/exit fullscreen projector window (first focus it)
 - [x] 🛠 User Settings (top-left actions)
   - [x] Adjust css variables (padding, colors)
   - [x] remember last windows position (projector & settings)
