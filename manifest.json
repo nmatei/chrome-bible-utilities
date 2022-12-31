@@ -8,7 +8,7 @@
     "service_worker": "js/background.js"
   },
   "action": {},
-  "permissions": ["activeTab", "tabs", "storage", "scripting"],
+  "permissions": ["activeTab", "tabs", "storage"],
   "host_permissions": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
   "content_scripts": [
     {
