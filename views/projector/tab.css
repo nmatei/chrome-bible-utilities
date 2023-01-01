@@ -8,6 +8,12 @@
   --referenceFontSize: 40px;
   --verseNumberColor: #ffffff;
   --verseColor: #ffffff;
+  --parallelSeparatorTopHeight: 1px;
+  --parallelSeparatorMiddleHeight: 1px;
+  --parallelSeparatorBottomHeight: 1px;
+  --parallelSeparatorTopColor: #d3d3d3;
+  --parallelSeparatorMiddleColor: #ffffff;
+  --parallelSeparatorBottomColor: #d3d3d3;
 }
 
 html {
@@ -40,7 +46,12 @@ p.parallel.separator:not(p:first-of-type):before {
   display: block;
   content: " ";
   position: relative;
-  border-top: 2px solid lightgrey;
+  border-top: var(--parallelSeparatorTopHeight) solid var(--parallelSeparatorTopColor);
+  line-height: 1px;
+  font-size: 1px;
+  height: var(--parallelSeparatorMiddleHeight);
+  background-color: var(--parallelSeparatorMiddleColor);
+  border-bottom: var(--parallelSeparatorBottomHeight) solid var(--parallelSeparatorBottomColor);
   padding-top: 0.2em;
   margin-top: 0.2em;
 }

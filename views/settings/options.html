@@ -48,7 +48,31 @@
           <label for="verseColor">Verse Color</label>
           <input type="color" required id="verseColor" name="verseColor" />
         </div>
+
+        <fieldset>
+          <legend>Parallel Separator</legend>
+          <div class="form-field" style="margin-bottom: 0">
+            <label></label>
+            <label for="parallelSeparatorTopHeight" class="number-top-label">Top</label>
+            <label for="parallelSeparatorMiddleHeight" class="number-top-label">Middle</label>
+            <label for="parallelSeparatorBottomHeight" class="number-top-label">Bottom</label>
+          </div>
+          <div class="form-field" style="margin-top: 0">
+            <label for="parallelSeparatorTopHeight">Heights</label>
+            <input type="number" required min="0" max="20" value="1" id="parallelSeparatorTopHeight" name="parallelSeparatorTopHeight" />
+            <input type="number" required min="0" max="20" value="1" id="parallelSeparatorMiddleHeight" name="parallelSeparatorMiddleHeight" />
+            <input type="number" required min="0" max="20" value="1" id="parallelSeparatorBottomHeight" name="parallelSeparatorBottomHeight" />
+            <div>px</div>
+          </div>
+          <div class="form-field">
+            <label for="parallelSeparatorTopColor">Colors</label>
+            <input type="color" required id="parallelSeparatorTopColor" name="parallelSeparatorTopColor" />
+            <input type="color" required id="parallelSeparatorMiddleColor" name="parallelSeparatorMiddleColor" />
+            <input type="color" required id="parallelSeparatorBottomColor" name="parallelSeparatorBottomColor" />
+          </div>
+        </fieldset>
       </div>
+
       <div id="settings-actions" class="actions">
         <span data-key="fill" class="fill"></span>
         <button data-key="save" class="action-btn" type="submit">💾 Save</button>

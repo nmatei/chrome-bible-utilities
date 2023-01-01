@@ -1,0 +1,20 @@
+{
+  "name": "my.bible.com",
+  "version": "1.0.0",
+  "description": "Project selected Bible verses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "zip": "7z a deploy.zip ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmatei/chrome-bible-utilities.git"
+  },
+  "author": "Nicolae Matei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nmatei/chrome-bible-utilities/issues"
+  },
+  "homepage": "https://github.com/nmatei/chrome-bible-utilities#readme"
+}

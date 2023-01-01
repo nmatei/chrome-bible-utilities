@@ -65,7 +65,7 @@ function adjustBodySize() {
 }
 
 function mapValue(key, value) {
-  if (key.startsWith("rootPadding") || key.endsWith("FontSize")) {
+  if (key.startsWith("rootPadding") || key.endsWith("FontSize") || key.endsWith("Height")) {
     return value + "px";
   }
   return value;

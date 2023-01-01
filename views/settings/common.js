@@ -8,7 +8,13 @@ export function getDefaults() {
     referenceColor: "#ffffff",
     referenceFontSize: "40",
     verseNumberColor: "#ffffff",
-    verseColor: "#ffffff"
+    verseColor: "#ffffff",
+    parallelSeparatorTopHeight: "1",
+    parallelSeparatorMiddleHeight: "1",
+    parallelSeparatorBottomHeight: "1",
+    parallelSeparatorTopColor: "#d3d3d3",
+    parallelSeparatorMiddleColor: "#ffffff",
+    parallelSeparatorBottomColor: "#d3d3d3"
   };
 }
 
