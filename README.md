@@ -6,9 +6,9 @@ This extension will help you **project Bible verses in your Church**,
 You decide which version to display and also can project parallel versions
 or in **2 different languages**.
 
-## 💠 Features
+## 💠 Features & Usage
 
-- [x] **Project selected verses** (+/- parallel text)
+- [x] 🔤 **Project selected verses** (+/- parallel text)
   - [x] `Search` Book and Chapter
   - [x] `Click` on verse number to display it on projector
   - [x] `Up/Down/Left/Right` arrows to navigate to next/preview verses
@@ -41,6 +41,10 @@ or in **2 different languages**.
 
 ![Actions](screens/actions.jpg)
 
+## ⚙ Install Plugin
+
+Install Chrome plugin from:
+Chrome web store [📖 Project verses from bible.com](https://chrome.google.com/webstore/detail/%F0%9F%93%96-project-verses-from-bi/fklnkmnlobkpoiifnbnemdpamheoanpj)
 
 ## ⚙ Setup Plugin as Developer (one time only)
 
