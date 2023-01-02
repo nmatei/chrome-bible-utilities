@@ -158,8 +158,8 @@ function createProjectorTab(settings = {}) {
 function createSettingsTab(settings = {}) {
   return createWindow({
     url: chrome.runtime.getURL(settingsPage),
-    width: 600,
-    height: 500,
+    width: 700,
+    height: 600,
     ...settings
   });
 }

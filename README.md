@@ -25,7 +25,9 @@ or in **2 different languages**.
 - [x] open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
-- [x] improved text for copy (hide notes and add space after verse number)
+- [x] ✨ **Improvements**
+  - [x] 🔎 Search (type Book chapter and verse: Heb 11 1 / Ioan 3 16) -> Enter
+  - [x] text for copy (hide notes and add space after verse number)
 
 ## 🎞 Results
 

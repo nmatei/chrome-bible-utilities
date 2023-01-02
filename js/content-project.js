@@ -143,7 +143,7 @@ function mergeParagraphs(versesInfo) {
 }
 
 function getDisplayText(verses) {
-  let chapters = [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
+  let chapters = getChapterTitles();
   let selectedVerses = [...verses];
   const showParallel = hasParallelView();
   let separator = " separator";
@@ -284,6 +284,37 @@ function setFocusChapter(isParallel) {
   }
 }
 
+async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect) {
+  const focusOrder = ["primary-chapter", "parallel-chapter"];
+  if (isParallel) {
+    focusOrder.reverse();
+  }
+
+  const selectors = [`.row .${focusOrder[0]} .verse.v${verseNumber}`];
+  if (isParallel || hasParallelView()) {
+    const parallelNr = mapParallelVerse(verseNumber, isParallel);
+    if (parallelNr) {
+      selectors.push(`.row .${focusOrder[1]} .verse.v${parallelNr}`);
+    }
+  }
+
+  const verses = document.querySelectorAll(selectors.join(","));
+
+  setFocusChapter(isParallel);
+
+  if (!multiSelect) {
+    deselectAll();
+  }
+
+  if (!wasProjected || multiSelect) {
+    selectedVersesNr = selectVerses(verses);
+  }
+
+  const selectedVerses = document.querySelectorAll(`.verse.${projected}`);
+  await displayVerses(selectedVerses);
+  return selectedVerses;
+}
+
 async function selectVersesToProject(e) {
   const target = e.target;
   if (target.matches(".verse .label")) {
@@ -294,34 +325,9 @@ async function selectVersesToProject(e) {
     const verse = target.closest(".verse");
     const verseNumber = getVerseNumber(verse);
     const isParallel = target.closest(".parallel-chapter");
+    const wasProjected = verse.classList.contains(projected);
 
-    const focusOrder = ["primary-chapter", "parallel-chapter"];
-    if (isParallel) {
-      focusOrder.reverse();
-    }
-
-    const selectors = [`.row .${focusOrder[0]} .verse.v${verseNumber}`];
-    if (isParallel || hasParallelView()) {
-      const parallelNr = mapParallelVerse(verseNumber, isParallel);
-      if (parallelNr) {
-        selectors.push(`.row .${focusOrder[1]} .verse.v${parallelNr}`);
-      }
-    }
-
-    const verses = document.querySelectorAll(selectors.join(","));
-    const projectedVerses = verse.classList.contains(projected);
-
-    setFocusChapter(isParallel);
-
-    if (!multiSelect) {
-      deselectAll();
-    }
-
-    if (!projectedVerses || multiSelect) {
-      selectedVersesNr = selectVerses(verses);
-    }
-
-    await displayVerses(document.querySelectorAll(`.verse.${projected}`));
+    await doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect);
 
     if (e.altKey) {
       await bringTabToFront();
@@ -407,12 +413,16 @@ function initEvents() {
     app = document.querySelector(".bible-reader-sticky-container");
   }
   if (app) {
+    improveSearch();
+
     app.addEventListener("click", selectVersesToProject);
+
     document.addEventListener("keydown", e => {
       if (!e.target.matches("input,textarea")) {
         selectByKeys(e.key);
       }
     });
+
     window.addEventListener("blur", () => {
       document.body.classList.add("focus-lost");
     });
@@ -460,3 +470,53 @@ function debounce(fn, delay) {
  primary.style.paddingTop = `${verses[1].offsetTop - verses[0].offsetTop - 0 + primary.style.paddingTop.replace('px', '') * 1}px`
 
  */
+
+function improveSearch() {
+  document.querySelector(".chapter-picker-container input").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const value = e.target.value;
+      const numbersMatch = value.match(/\s+(\d+)/gi);
+
+      if (numbersMatch) {
+        setTimeout(async () => {
+          const numbers = numbersMatch.map(n => parseInt(n));
+          const list = document.querySelector(".chapter-picker-container .chapter-list");
+          const chapterNr = [...list.querySelectorAll("a")].find(a => a.innerText == numbers[0]);
+          if (chapterNr) {
+            chapterNr.querySelector("li").classList.add("active");
+            chapterNr.click();
+
+            if (numbers.length > 1) {
+              // wait until chapter is loaded then select verse
+              const oldChapters = getChapterTitles();
+              await waitNewTitles(oldChapters);
+              const selectedVerses = await doSelectVerses(numbers[1], false, false, false);
+              if (selectedVerses && selectedVerses.length) {
+                selectedVerses[0].scrollIntoViewIfNeeded(true);
+              }
+            }
+          }
+        }, 200);
+      }
+    }
+  });
+}
+
+function getChapterTitles() {
+  return [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
+}
+
+function waitNewTitles(oldChapters) {
+  return new Promise(resolve => {
+    const refreshIntervalId = setInterval(() => {
+      const chapters = getChapterTitles();
+      // console.info(oldChapters, "vs", chapters);
+      if (oldChapters.every((c, i) => c !== chapters[i])) {
+        clearInterval(refreshIntervalId);
+        setTimeout(() => {
+          resolve();
+        }, 200);
+      }
+    }, 300);
+  });
+}
