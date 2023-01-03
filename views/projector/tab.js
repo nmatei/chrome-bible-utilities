@@ -10,7 +10,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "updateText": {
       const root = document.getElementById("root");
-      root.innerHTML = request.payload;
+      let text = request.payload.text;
+      if (request.payload.markdown) {
+        text = marked.parse(text);
+      }
+      root.innerHTML = text;
       adjustBodySize();
       sendResponse({ status: 200 });
       break;

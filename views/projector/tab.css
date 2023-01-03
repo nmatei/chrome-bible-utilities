@@ -16,6 +16,15 @@
   --parallelSeparatorBottomColor: #d3d3d3;
 }
 
+/* basic reset */
+html,
+body,
+ul,
+p {
+  margin: 0;
+  padding: 0;
+}
+
 html {
   height: 100%;
   overflow: hidden;
@@ -26,22 +35,56 @@ body {
   min-height: 100%;
   background: var(--pageBackgroundColor);
   color: var(--verseColor);
-  margin: 0;
-  padding: 0;
 }
 #root {
   padding: var(--rootPaddingTop) var(--rootPaddingRight) var(--rootPaddingBottom) var(--rootPaddingLeft);
 }
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
   color: var(--referenceColor);
-  font-size: var(--referenceFontSize);
-  margin: 0.2em 0 0.4em 0;
+  font-size: 1.2em;
+  margin: 0.2em 0.2em 0.2em 0.5em;
 }
 h2 {
-  color: #fff;
-  font-size: 0.6em;
-  margin: 0.2em 0.4em 0 0.4em;
+  font-size: 1.15em;
 }
+h3 {
+  font-size: 1.1em;
+}
+h4 {
+  font-size: 1.05em;
+}
+h5 {
+  font-size: 1.04em;
+}
+h6 {
+  font-size: 1.03em;
+}
+
+ul {
+  padding-inline-start: 1em;
+}
+li input[type="checkbox"]:disabled {
+  height: 2.5em;
+  width: 2.5em;
+  cursor: pointer;
+}
+strong {
+  text-shadow: 2px 2px 4px var(--referenceColor);
+}
+
+h1 {
+  margin: 0.2em 0 0.4em 0;
+}
+h1.reference {
+  font-size: var(--referenceFontSize);
+}
+
 p.parallel.separator:not(p:first-of-type):before {
   display: block;
   content: " ";
@@ -56,9 +99,7 @@ p.parallel.separator:not(p:first-of-type):before {
   margin-top: 0.2em;
 }
 
-p {
-  margin: 0;
-  padding: 0;
+p.verse {
   display: inline;
 }
 p > sup {

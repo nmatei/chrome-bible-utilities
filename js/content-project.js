@@ -56,14 +56,14 @@ function addLiveTextBox() {
   form.innerHTML = `
     <div class="actions">
       <label for="realTimeUpdates" title="Live updates">Live
-        <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates" checked/>
+        <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates"/>
       </label>
       <span data-key="fill" class="fill"></span>
       <button type="submit" class="action-btn">💬 Project</button>
       <button type="reset" class="action-btn">Clear</button>
     </div>
     <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
-    <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected"></textarea>
+    <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected (Markdown format)"></textarea>
   `;
   document.body.appendChild(form);
   return form;
@@ -103,10 +103,9 @@ function createLiveTextForm() {
 }
 
 function projectLiveText(title, text) {
-  const displayTitle = `<h1>💬 ${title}</h1>`;
+  const displayTitle = `# 💬 ${title}\n`;
   const display = title || text;
-  text = text.replaceAll(/\n/gi, "<br/>");
-  projectText(display ? displayTitle + `<p>${text}</p>` : "");
+  projectText(display ? displayTitle + text : "", true);
 }
 
 function cleanUp() {
@@ -191,10 +190,10 @@ function getDisplayText(verses) {
     .filter(Boolean);
 
   const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
-    return `<p class="${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
+    return `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
   });
 
-  return `<h1>${chapters.join(" / ")}</h1>` + versesContent.join("\n");
+  return `<h1 class="reference">${chapters.join(" / ")}</h1>` + versesContent.join("\n");
 }
 
 function printSelectedVerses(tab, verses) {
@@ -203,8 +202,14 @@ function printSelectedVerses(tab, verses) {
   projectText(text);
 }
 
-function projectText(text) {
-  return chrome.runtime.sendMessage({ action: "updateText", payload: text });
+function projectText(text, markdown = false) {
+  return chrome.runtime.sendMessage({
+    action: "updateText",
+    payload: {
+      text,
+      markdown
+    }
+  });
 }
 
 async function createProjectTab() {
@@ -406,11 +411,11 @@ async function selectByKeys(key) {
   }
 }
 
-function initEvents() {
-  let app = document.querySelector("#react-app-Bible");
+async function initEvents() {
+  let app = await waitElement("#react-app-Bible", 5000);
   if (!app) {
     console.warn("no app found %o, must be logged in", "#react-app-Bible");
-    app = document.querySelector(".bible-reader-sticky-container");
+    app = await waitElement(".bible-reader-sticky-container", 2000);
   }
   if (app) {
     improveSearch();
@@ -471,8 +476,9 @@ function debounce(fn, delay) {
 
  */
 
-function improveSearch() {
-  document.querySelector(".chapter-picker-container input").addEventListener("keydown", e => {
+async function improveSearch() {
+  const searchInput = await waitElement(".chapter-picker-container input");
+  searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       const value = e.target.value;
       const numbersMatch = value.match(/\s+(\d+)/gi);
@@ -510,7 +516,6 @@ function waitNewTitles(oldChapters) {
   return new Promise(resolve => {
     const refreshIntervalId = setInterval(() => {
       const chapters = getChapterTitles();
-      // console.info(oldChapters, "vs", chapters);
       if (oldChapters.every((c, i) => c !== chapters[i])) {
         clearInterval(refreshIntervalId);
         setTimeout(() => {
@@ -518,5 +523,33 @@ function waitNewTitles(oldChapters) {
         }, 200);
       }
     }, 300);
+  });
+}
+
+/**
+ *
+ * @param {String} selector
+ * @param {Number} timeout
+ * @returns {Promise<null | HTMLElement>}
+ */
+function waitElement(selector, timeout = 30000) {
+  return new Promise((resolve, reject) => {
+    let el = document.querySelector(selector);
+    if (el) {
+      resolve(el);
+      return;
+    }
+    const endTime = Date.now() + timeout;
+    const refreshIntervalId = setInterval(() => {
+      el = document.querySelector(selector);
+      if (el) {
+        clearInterval(refreshIntervalId);
+        resolve(el);
+      } else if (endTime < Date.now()) {
+        clearInterval(refreshIntervalId);
+        //reject("timeout");
+        resolve(null);
+      }
+    }, 100);
   });
 }

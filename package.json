@@ -12,9 +12,12 @@
     "url": "git+https://github.com/nmatei/chrome-bible-utilities.git"
   },
   "author": "Nicolae Matei",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nmatei/chrome-bible-utilities/issues"
   },
-  "homepage": "https://github.com/nmatei/chrome-bible-utilities#readme"
+  "homepage": "https://github.com/nmatei/chrome-bible-utilities#readme",
+  "dependencies": {
+    "marked": "^4.2.5"
+  }
 }

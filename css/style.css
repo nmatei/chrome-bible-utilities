@@ -213,3 +213,26 @@ body .version-copyright {
   border-right: 4px solid transparent;
   border-bottom: 4px solid #333333;
 }
+
+.arrow-left:before {
+  content: " ";
+  position: absolute;
+  left: -6px;
+  top: 15px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid #000000;
+}
+.arrow-left:after {
+  content: " ";
+  position: absolute;
+  left: -4px;
+  top: 16px;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 4px solid #333333;
+}

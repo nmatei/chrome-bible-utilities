@@ -9,7 +9,7 @@ or in **2 different languages**.
 ## 💠 Features & Usage
 
 - [x] 🔤 **Project selected verses** (+/- parallel text)
-  - [x] `Search` Book and Chapter
+  - [x] 🔎 `Search` Book and Chapter
   - [x] `Click` on verse number to display it on projector
   - [x] `Up/Down/Left/Right` arrows to navigate to next/preview verses
   - [x] `CTRL + Click` to add verse to selection (multi select)
@@ -20,9 +20,9 @@ or in **2 different languages**.
   - [x] Adjust css variables (padding, colors)
   - [x] remember last windows position (projector & settings)
 - [x] 💬 **Project "live text"**
-  - [x] input any text to be projected
+  - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
   - [ ] Select any text from page and allow it to be projected
-- [x] open **Multiple chrome tabs** with different chapters
+- [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
 - [x] ✨ **Improvements**
