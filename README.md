@@ -67,11 +67,10 @@ Chrome web store [📖 Project verses from bible.com](https://chrome.google.com/
 
 ## 📋 Developers TODOs (items to improve)
 
-- [ ] Improve search
-  - [ ] Type full verse reference (+shorcuts: Rom 2.2) and press enter to display it automatically
 - [ ] Check if verses are not in sync 
-  - [x] Numbers 13 in RO vs RU has more verses
-  - [x] Chapters in Psalms in RO vs RU have different numbers
+  - [x] `Numbers 13` in `RO` vs `RU` has more verses
+  - [x] Chapters in `Psalms` in RO vs RU have different numbers
+  - [ ] Check more chapters
 - [ ] Sync primary verses to be in same 'line' with parallel
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
 - [ ] User Settings
