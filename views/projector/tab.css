@@ -46,7 +46,9 @@ h4,
 h5,
 h6 {
   font-weight: bold;
+  font-variant-caps: small-caps;
   color: var(--referenceColor);
+  text-shadow: 2px 2px 4px var(--verseColor);
   font-size: 1.2em;
   margin: 0.2em 0.2em 0.2em 0.5em;
 }
@@ -77,12 +79,17 @@ li input[type="checkbox"]:disabled {
 strong {
   text-shadow: 2px 2px 4px var(--referenceColor);
 }
+a {
+  color: var(--verseColor);
+  text-shadow: 2px 2px 4px var(--referenceColor);
+}
 
 h1 {
   margin: 0.2em 0 0.4em 0;
 }
 h1.reference {
   font-size: var(--referenceFontSize);
+  text-shadow: 1px 1px 2px var(--verseColor);
 }
 
 p.parallel.separator:not(p:first-of-type):before {
@@ -114,7 +121,7 @@ p > sup {
   right: 5px;
   gap: 10px;
 }
-.actions a {
+.actions .action-btn {
   display: inline-block;
   cursor: pointer;
   user-select: none;
@@ -124,13 +131,14 @@ p > sup {
   border-radius: 5px;
   border: 2px solid #cccccc30;
   color: #cccccc30;
+  background-color: transparent;
   transition: 0.2s;
 }
-.actions a:hover {
+.actions .action-btn:hover {
   border-color: #cccccc90;
   color: #cccccc90;
 }
-.actions a:active {
+.actions .action-btn:active {
   border-color: #eeeeee;
   color: #eeeeee;
   transition: none;

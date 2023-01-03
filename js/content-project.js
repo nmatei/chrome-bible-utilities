@@ -17,13 +17,15 @@ function createSettingsActions() {
   actions.id = "project-actions";
   actions.className = "actions";
   actions.innerHTML = `
-    <button data-key="settings" class="action-btn" title="Settings">🛠</button>
     <button data-key="live-text" class="action-btn" title="Live Text">💬</button>
+    <button data-key="settings" class="action-btn" title="Settings">🛠</button>
+    <button data-key="help" class="action-btn" title="Help">❔</button>
   `;
   document.body.appendChild(actions);
 
   const liveBoxForm = createLiveTextForm();
   const liveText = document.getElementById("liveText");
+  let helpBox;
 
   actions.addEventListener("click", async e => {
     const target = e.target;
@@ -35,13 +37,25 @@ function createSettingsActions() {
           break;
         }
         case "live-text": {
-          liveBoxForm.style.top = target.offsetTop + target.offsetHeight + 10;
-          liveBoxForm.style.left = target.offsetLeft;
+          // 17 anchor size
+          liveBoxForm.style.top = target.offsetTop + target.offsetHeight / 2 - 17;
+          liveBoxForm.style.left = target.offsetLeft + target.offsetWidth + 10;
           liveBoxForm.classList.toggle("hide-view");
           if (!liveBoxForm.classList.contains("hide-view")) {
             await getProjectTab();
             liveText.focus();
           }
+          target.classList.toggle("active");
+          break;
+        }
+        case "help": {
+          if (!helpBox) {
+            helpBox = addHelpBox();
+          }
+          helpBox.style.top = target.offsetTop + target.offsetHeight / 2 - 17;
+          helpBox.style.left = target.offsetLeft + target.offsetWidth + 10;
+          helpBox.classList.toggle("hide-view");
+          target.classList.toggle("active");
           break;
         }
       }
@@ -51,10 +65,11 @@ function createSettingsActions() {
 
 function addLiveTextBox() {
   const form = document.createElement("form");
-  form.className = "hide-view arrow-up";
+  // form.className = "hide-view arrow-up";
+  form.className = "info-fixed-box hide-view arrow-left";
   form.id = "live-text-box";
   form.innerHTML = `
-    <div class="actions">
+    <div class="actions row-actions">
       <label for="realTimeUpdates" title="Live updates">Live
         <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates"/>
       </label>
@@ -67,6 +82,52 @@ function addLiveTextBox() {
   `;
   document.body.appendChild(form);
   return form;
+}
+
+function addHelpBox() {
+  const helpBox = document.createElement("div");
+  helpBox.className = "info-fixed-box hide-view arrow-left";
+  helpBox.id = "help-text-box";
+  helpBox.innerHTML = `
+    <h2><span class="key-code">❔</span> Help / Usage</h2>
+    <ul>
+      <li>
+        🔤 <strong>Project selected verses</strong>
+        <ul>
+          <li>🔎 <strong class="key-code">Search</strong> - Book and Chapter</li>
+          <li><strong class="key-code">Click</strong> on verse number to display it on projector</li>
+          <li><strong class="key-code">Up/Down/Left/Right</strong> arrows to navigate to next/preview verses</li>
+          <li><strong class="key-code">CTRL + Click</strong> to add verse to selection (multi select)</li>
+          <li><strong class="key-code">ALT + Click</strong> to force project window to be on top (in case is not visible)</li>
+          <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
+          <li><strong class="key-code">F11</strong> to enter/exit fullscreen projector window (first focus it)</li>
+        </ul>
+        <li>
+          💬 <strong>Project "live text"</strong>
+          <ul>
+            <li>input any text to be projected (<a href="https://github.com/markedjs/marked" target="_blank">Markdown</a> format)</li>
+            <li><strong class="key-code">CTRL + Enter</strong> to project live text (inside textarea)</li>
+          </ul>
+        </li>
+        <li>
+          2️⃣ open <strong>Multiple chrome tabs</strong> with different chapters
+          <ul>
+            <li>all windows will project to the same projector page</li>
+            <li>projector page will close only when all tabs from my.bible.com are closed</li>          
+          </ul>
+        </li>
+        <li>
+          ✨ <strong>Improvements</strong>
+          <ul>
+            <li>🔎 Search 1 (part of Book + chapter: <strong class="key-code">Heb 11</strong> / Ioan 3) + Enter</li>
+            <li>🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / <strong class="key-code">Ioan 3 16</strong>) + Enter</li>
+          </ul>
+        </li>
+      </li>
+    </ul>
+  `;
+  document.body.appendChild(helpBox);
+  return helpBox;
 }
 
 function createLiveTextForm() {

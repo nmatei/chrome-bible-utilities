@@ -35,11 +35,12 @@ body .bible-reader-arrows-container {
   position: fixed;
   background: #000000cc;
   z-index: 100;
-  display: inline;
   left: 0;
   top: 0;
   right: unset;
   border-bottom-right-radius: 5px;
+  align-items: stretch;
+  gap: 5px;
 }
 #project-actions:hover {
   background: #000000;
@@ -48,6 +49,10 @@ body .bible-reader-arrows-container {
 .actions {
   padding: 5px;
   display: flex;
+  flex-direction: column;
+}
+.row-actions {
+  flex-direction: row;
   gap: 10px;
   align-items: center;
 }
@@ -73,23 +78,40 @@ body .bible-reader-arrows-container {
   border-color: #eeeeee;
   color: #cccccc90;
 }
+
+.actions .action-btn.active,
 .actions .action-btn:active {
   border-color: #ffffff;
   color: #eeeeee;
   transition: none;
 }
 
-#live-text-box {
+.info-fixed-box {
   display: block;
   position: fixed;
   border: 1px solid #000000;
   background: #333333;
+  box-shadow: 1px 1px 2px #333333;
+  color: #ffffff;
   padding: 10px;
   z-index: 100;
   right: unset;
   left: 0;
   top: 0;
   border-radius: 5px;
+}
+.info-fixed-box h1,
+.info-fixed-box h2 {
+  color: #ffffff;
+  font-weight: bold;
+}
+.key-code {
+  background-color: #222222;
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.3em;
+}
+h2 .key-code {
+  border: 2px solid #ffffff;
 }
 #live-text-box .actions {
   padding: 0 0 10px 0;
