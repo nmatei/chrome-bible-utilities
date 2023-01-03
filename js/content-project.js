@@ -99,6 +99,15 @@ function createLiveTextForm() {
       }
     }, 200)
   );
+  liveText.addEventListener(
+    "keydown",
+    debounce(e => {
+      if (e.ctrlKey && e.key === "Enter") {
+        projectLiveText(liveTextTitle.value, liveText.value);
+      }
+    }, 200)
+  );
+
   return liveBoxForm;
 }
 

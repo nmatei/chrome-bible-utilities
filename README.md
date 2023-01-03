@@ -21,6 +21,7 @@ or in **2 different languages**.
   - [x] remember last windows position (projector & settings)
 - [x] 💬 **Project "live text"**
   - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
+  - [x] `CTRL + Enter` to project live text (inside textarea)
   - [ ] Select any text from page and allow it to be projected
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
