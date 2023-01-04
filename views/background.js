@@ -5,7 +5,7 @@ const projectorStorageKey = "projectorWindow";
 const settingsStorageKey = "settingsWindow";
 const allWindows = [projectorStorageKey, settingsStorageKey];
 
-const updateWindowStates = ["maximized", "fullscreen"];
+const updateWindowStates = ["maximized", "fullscreen", "minimized"];
 
 chrome.action.onClicked.addListener(tab => {
   const url = "https://my.bible.com/bible";
@@ -109,9 +109,10 @@ function createWindow(config) {
   });
 }
 
-async function getWindow(key, createWindowFn) {
+function getWindow(key, createWindowFn) {
   return new Promise(async resolve => {
     const settings = await getWindowSettings(key);
+    console.warn("settings", settings);
     let existingId = settings ? settings.id : "";
     let win;
     if (existingId) {

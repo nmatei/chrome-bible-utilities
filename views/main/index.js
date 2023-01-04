@@ -1,7 +1,5 @@
 const projected = "projected";
-let projectTab;
 let selectedVersesNr = [];
-let selectParallel = true;
 let focusChapter = null;
 
 window.addEventListener("load", () => {
@@ -11,172 +9,6 @@ window.addEventListener("load", () => {
     initEvents();
   }, 100);
 });
-
-function createSettingsActions() {
-  const actions = document.createElement("div");
-  actions.id = "project-actions";
-  actions.className = "actions";
-  actions.innerHTML = `
-    <button data-key="live-text" class="action-btn" title="Live Text">💬</button>
-    <button data-key="settings" class="action-btn" title="Settings">🛠</button>
-    <button data-key="help" class="action-btn" title="Help">❔</button>
-  `;
-  document.body.appendChild(actions);
-
-  const liveBoxForm = createLiveTextForm();
-  const liveText = document.getElementById("liveText");
-  let helpBox;
-
-  actions.addEventListener("click", async e => {
-    const target = e.target;
-    if (target.matches(".action-btn")) {
-      const action = target.getAttribute("data-key");
-      switch (action) {
-        case "settings": {
-          chrome.runtime.sendMessage({ action: "createSettingsTab" });
-          break;
-        }
-        case "live-text": {
-          // 17 anchor size
-          liveBoxForm.style.top = target.offsetTop + target.offsetHeight / 2 - 17;
-          liveBoxForm.style.left = target.offsetLeft + target.offsetWidth + 10;
-          liveBoxForm.classList.toggle("hide-view");
-          if (!liveBoxForm.classList.contains("hide-view")) {
-            await getProjectTab();
-            liveText.focus();
-          }
-          target.classList.toggle("active");
-          break;
-        }
-        case "help": {
-          if (!helpBox) {
-            helpBox = addHelpBox();
-          }
-          helpBox.style.top = target.offsetTop + target.offsetHeight / 2 - 17;
-          helpBox.style.left = target.offsetLeft + target.offsetWidth + 10;
-          helpBox.classList.toggle("hide-view");
-          target.classList.toggle("active");
-          break;
-        }
-      }
-    }
-  });
-}
-
-function addLiveTextBox() {
-  const form = document.createElement("form");
-  // form.className = "hide-view arrow-up";
-  form.className = "info-fixed-box hide-view arrow-left";
-  form.id = "live-text-box";
-  form.innerHTML = `
-    <div class="actions row-actions">
-      <label for="realTimeUpdates" title="Live updates">Live
-        <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates"/>
-      </label>
-      <span data-key="fill" class="fill"></span>
-      <button type="submit" class="action-btn">💬 Project</button>
-      <button type="reset" class="action-btn">Clear</button>
-    </div>
-    <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
-    <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected (Markdown format)"></textarea>
-  `;
-  document.body.appendChild(form);
-  return form;
-}
-
-function addHelpBox() {
-  const helpBox = document.createElement("div");
-  helpBox.className = "info-fixed-box hide-view arrow-left";
-  helpBox.id = "help-text-box";
-  helpBox.innerHTML = `
-    <h2><span class="key-code">❔</span> Help / Usage</h2>
-    <ul>
-      <li>
-        🔤 <strong>Project selected verses</strong>
-        <ul>
-          <li>🔎 <strong class="key-code">Search</strong> - Book and Chapter</li>
-          <li><strong class="key-code">Click</strong> on verse number to display it on projector</li>
-          <li><strong class="key-code">Up/Down/Left/Right</strong> arrows to navigate to next/preview verses</li>
-          <li><strong class="key-code">CTRL + Click</strong> to add verse to selection (multi select)</li>
-          <li><strong class="key-code">ALT + Click</strong> to force project window to be on top (in case is not visible)</li>
-          <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
-          <li><strong class="key-code">F11</strong> to enter/exit fullscreen projector window (first focus it)</li>
-        </ul>
-        <li>
-          💬 <strong>Project "live text"</strong>
-          <ul>
-            <li>input any text to be projected (<a href="https://github.com/markedjs/marked" target="_blank">Markdown</a> format)</li>
-            <li><strong class="key-code">CTRL + Enter</strong> to project live text (inside textarea)</li>
-          </ul>
-        </li>
-        <li>
-          2️⃣ open <strong>Multiple chrome tabs</strong> with different chapters
-          <ul>
-            <li>all windows will project to the same projector page</li>
-            <li>projector page will close only when all tabs from my.bible.com are closed</li>          
-          </ul>
-        </li>
-        <li>
-          ✨ <strong>Improvements</strong>
-          <ul>
-            <li>🔎 Search 1 (part of Book + chapter: <strong class="key-code">Heb 11</strong> / Ioan 3) + Enter</li>
-            <li>🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / <strong class="key-code">Ioan 3 16</strong>) + Enter</li>
-          </ul>
-        </li>
-      </li>
-    </ul>
-  `;
-  document.body.appendChild(helpBox);
-  return helpBox;
-}
-
-function createLiveTextForm() {
-  const liveBoxForm = addLiveTextBox();
-  const liveTextTitle = document.getElementById("liveTextTitle");
-  const liveText = document.getElementById("liveText");
-
-  liveBoxForm.addEventListener("submit", e => {
-    e.preventDefault();
-    projectLiveText(liveTextTitle.value, liveText.value);
-  });
-  liveBoxForm.addEventListener("reset", () => {
-    projectText("");
-  });
-  liveTextTitle.addEventListener(
-    "input",
-    debounce(e => {
-      e.stopPropagation();
-      if (liveBoxForm.realTimeUpdates.checked) {
-        projectLiveText(liveTextTitle.value, liveText.value);
-      }
-    }, 200)
-  );
-  liveText.addEventListener(
-    "input",
-    debounce(e => {
-      e.stopPropagation();
-      if (liveBoxForm.realTimeUpdates.checked) {
-        projectLiveText(liveTextTitle.value, liveText.value);
-      }
-    }, 200)
-  );
-  liveText.addEventListener(
-    "keydown",
-    debounce(e => {
-      if (e.ctrlKey && e.key === "Enter") {
-        projectLiveText(liveTextTitle.value, liveText.value);
-      }
-    }, 200)
-  );
-
-  return liveBoxForm;
-}
-
-function projectLiveText(title, text) {
-  const displayTitle = `# 💬 ${title}\n`;
-  const display = title || text;
-  projectText(display ? displayTitle + text : "", true);
-}
 
 function cleanUp() {
   // remove all notes
@@ -272,33 +104,6 @@ function printSelectedVerses(tab, verses) {
   projectText(text);
 }
 
-function projectText(text, markdown = false) {
-  return chrome.runtime.sendMessage({
-    action: "updateText",
-    payload: {
-      text,
-      markdown
-    }
-  });
-}
-
-async function createProjectTab() {
-  const response = await createChromeWindow();
-  return response ? response.id : null;
-}
-
-function createChromeWindow() {
-  return chrome.runtime.sendMessage({ action: "createTab" });
-}
-
-async function getProjectTab() {
-  let tab = projectTab;
-  if (!tab) {
-    tab = projectTab = await createProjectTab();
-  }
-  return tab;
-}
-
 function deselectAll() {
   document.querySelectorAll(`.verse.${projected}`).forEach(v => {
     v.classList.remove(projected);
@@ -359,25 +164,53 @@ function setFocusChapter(isParallel) {
   }
 }
 
-async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect) {
+function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
+  let numbers = [verseNumber];
+  let [primary] = selectedVersesNr;
+  if (isParallel) {
+    if (selectedVersesNr.length % 2 === 0) {
+      primary = selectedVersesNr[selectedVersesNr.length / 2];
+    } else {
+      // TODO test more cases..
+      //console.debug("selectedVersesNr.length", selectedVersesNr.length);
+    }
+  }
+  numbers.push(primary);
+  numbers.sort((a, b) => a - b);
+  const [first, last] = numbers;
+  numbers = new Array(last - first + 1).fill(0).map((n, i) => first + i);
+  return numbers;
+}
+
+async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect, bulkSelect) {
   const focusOrder = ["primary-chapter", "parallel-chapter"];
   if (isParallel) {
     focusOrder.reverse();
   }
 
-  const selectors = [`.row .${focusOrder[0]} .verse.v${verseNumber}`];
-  if (isParallel || hasParallelView()) {
-    const parallelNr = mapParallelVerse(verseNumber, isParallel);
-    if (parallelNr) {
-      selectors.push(`.row .${focusOrder[1]} .verse.v${parallelNr}`);
-    }
+  let numbers = [verseNumber];
+
+  if (bulkSelect) {
+    numbers = getBulkNumbers(verseNumber, isParallel, selectedVersesNr);
   }
+
+  const isParallelViewEnabled = hasParallelView();
+  const selectors = [];
+  numbers.forEach(number => {
+    selectors.push(`.row .${focusOrder[0]} .verse.v${number}`);
+    if (isParallel || isParallelViewEnabled) {
+      const parallelNr = mapParallelVerse(number, isParallel);
+      if (parallelNr) {
+        selectors.push(`.row .${focusOrder[1]} .verse.v${parallelNr}`);
+      }
+    }
+  });
 
   const verses = document.querySelectorAll(selectors.join(","));
 
   setFocusChapter(isParallel);
 
-  if (!multiSelect) {
+  if (!multiSelect || bulkSelect) {
     deselectAll();
   }
 
@@ -397,12 +230,13 @@ async function selectVersesToProject(e) {
     e.preventDefault();
 
     const multiSelect = e.ctrlKey;
+    const bulkSelect = e.shiftKey;
     const verse = target.closest(".verse");
     const verseNumber = getVerseNumber(verse);
     const isParallel = target.closest(".parallel-chapter");
     const wasProjected = verse.classList.contains(projected);
 
-    await doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect);
+    await doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect, bulkSelect);
 
     if (e.altKey) {
       await bringTabToFront();
@@ -411,13 +245,6 @@ async function selectVersesToProject(e) {
     }
   }
   document.body.classList.remove("focus-lost");
-}
-
-async function bringTabToFront() {
-  const tab = await getProjectTab();
-  if (tab) {
-    await chrome.runtime.sendMessage({ action: "focusTab", payload: { id: tab } });
-  }
 }
 
 async function displayVerses(verses) {
@@ -523,18 +350,6 @@ async function initEvents() {
   }
 }
 
-function debounce(fn, delay) {
-  let timer = null;
-  return function () {
-    const context = this,
-      args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn.apply(context, args);
-    }, delay);
-  };
-}
-
 /**
 
  // TODO sync verses in same 'line'
@@ -593,33 +408,5 @@ function waitNewTitles(oldChapters) {
         }, 200);
       }
     }, 300);
-  });
-}
-
-/**
- *
- * @param {String} selector
- * @param {Number} timeout
- * @returns {Promise<null | HTMLElement>}
- */
-function waitElement(selector, timeout = 30000) {
-  return new Promise((resolve, reject) => {
-    let el = document.querySelector(selector);
-    if (el) {
-      resolve(el);
-      return;
-    }
-    const endTime = Date.now() + timeout;
-    const refreshIntervalId = setInterval(() => {
-      el = document.querySelector(selector);
-      if (el) {
-        clearInterval(refreshIntervalId);
-        resolve(el);
-      } else if (endTime < Date.now()) {
-        clearInterval(refreshIntervalId);
-        //reject("timeout");
-        resolve(null);
-      }
-    }, 100);
   });
 }

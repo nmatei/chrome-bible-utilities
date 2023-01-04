@@ -13,6 +13,7 @@ or in **2 different languages**.
   - [x] `Click` on verse number to display it on projector
   - [x] `Up/Down/Left/Right` arrows to navigate to next/preview verses
   - [x] `CTRL + Click` to add verse to selection (multi select)
+  - [x] `CTRL + Shift + Click` to multi select between last selection
   - [x] `ALT + Click` to force project window to be on top (in case is not visible)
   - [x] `ESC` to show blank page (hide all selected verses)
   - [x] `F11` to enter/exit fullscreen projector window (first focus it)
@@ -27,7 +28,8 @@ or in **2 different languages**.
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
 - [x] ✨ **Improvements**
-  - [x] 🔎 Search (type Book chapter and verse: Heb 11 1 / Ioan 3 16) -> Enter
+  - [x] 🔎 Search 1 (part of Book + chapter: **Heb 11** / Ioan 3) + Enter
+  - [x] 🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / **Ioan 3 16**) + Enter
   - [x] text for copy (hide notes and add space after verse number)
 
 ## 🎞 Results
@@ -77,7 +79,7 @@ Chrome web store [📖 Project verses from bible.com](https://chrome.google.com/
   - [ ] Select what verses to display on main screen
   - [ ] Allow to display on 2 different screens (more than 2 even better)
   - [ ] Allow display inline/block for main screen or projected screen
-  - [ ] Adjust font-size & line-height for main page
+  - [ ] Adjust font-size & line-height main screen or projected screen
   - [ ] Remember last url (or if parallel was opened - store it in storage.sync)
   - [ ] Display Reference version (VDC, НРП)
   - [ ] Customize styles for parallel vs primary

@@ -1,11 +1,11 @@
 {
   "name": "📖 Project verses from bible.com",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Project selected Bible verses (works for parallel as well) from YouVersion bible.com",
   "manifest_version": 3,
   "author": "Matei Nicolae",
   "background": {
-    "service_worker": "js/background.js"
+    "service_worker": "views/background.js"
   },
   "action": {},
   "permissions": ["activeTab", "tabs", "storage"],
@@ -13,8 +13,8 @@
   "content_scripts": [
     {
       "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
-      "js": ["js/content-project.js"],
-      "css": ["css/style.css"]
+      "js": ["views/common/utilities.js", "views/main/runtime-messages.js", "views/main/actions.js", "views/main/index.js"],
+      "css": ["views/main/actions.css", "views/main/overrides.css"]
     }
   ],
   "icons": {

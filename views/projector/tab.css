@@ -31,7 +31,6 @@ html {
 }
 body {
   font-family: Calibri, Arial, sans-serif;
-  font-weight: bold;
   min-height: 100%;
   background: var(--pageBackgroundColor);
   color: var(--verseColor);
@@ -108,6 +107,7 @@ p.parallel.separator:not(p:first-of-type):before {
 
 p.verse {
   display: inline;
+  font-weight: bold;
 }
 p > sup {
   color: var(--verseNumberColor);
