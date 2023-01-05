@@ -112,7 +112,7 @@ function createWindow(config) {
 function getWindow(key, createWindowFn) {
   return new Promise(async resolve => {
     const settings = await getWindowSettings(key);
-    console.warn("settings", settings);
+    //console.warn("settings", settings);
     let existingId = settings ? settings.id : "";
     let win;
     if (existingId) {
@@ -127,8 +127,14 @@ function getWindow(key, createWindowFn) {
       }
     }
 
-    const createSettings = getCreateSettings(settings);
-    win = await createWindowFn(createSettings);
+    const createSettings = mapWindowsSettings(settings);
+    try {
+      win = await createWindowFn(createSettings);
+    } catch (er) {
+      // fix causes:
+      //  - Error: Invalid value for bounds. Bounds must be at least 50% within visible screen space
+      win = await createWindowFn({});
+    }
     await setWindowSettings(key, win.id, settings);
     if (settings && updateWindowStates.includes(settings.state)) {
       await chrome.windows.update(win.id, {
@@ -141,7 +147,8 @@ function getWindow(key, createWindowFn) {
   });
 }
 
-function getCreateSettings(settings = {}) {
+function mapWindowsSettings(settings = {}) {
+  // exclude not allowed props
   const { id, alwaysOnTop, state, ...createSettings } = settings;
   if (!updateWindowStates.includes(state)) {
     createSettings.state = state;

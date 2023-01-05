@@ -54,7 +54,7 @@ or in **2 different languages**.
 
 ## ⚙ Setup Plugin as Developer (one time only)
 
-If you want to try latest versions before they are released, or to change code as you wish, try to install it as Developer
+If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
 
 - [x] **Download/Clone** this repo
   - [ ] as zip & Unzip it
