@@ -10,13 +10,13 @@ or in **2 different languages**.
 
 - [x] 🔤 **Project selected verses** (+/- parallel text)
   - [x] 🔎 `Search` Book and Chapter
-  - [x] `Click` on verse number to display it on projector
-  - [x] `Up/Down/Left/Right` arrows to navigate to next/preview verses
-  - [x] `CTRL + Click` to add verse to selection (multi select)
+  - [x] `Click` on verse number to **display** it on projector
+  - [x] `Up/Down/Left/Right` arrows to navigate to **next/preview** verses
+  - [x] `CTRL + Click` to **add verse** to selection (multi select)
   - [x] `CTRL + Shift + Click` to multi select between last selection
   - [x] `ALT + Click` to force project window to be on top (in case is not visible)
-  - [x] `ESC` to show blank page (hide all selected verses)
-  - [x] `F11` to enter/exit fullscreen projector window (first focus it)
+  - [x] `ESC` to show **blank page** (hide all selected verses)
+  - [x] `F11` to enter/exit **fullscreen** projector window (first focus it)
 - [x] 🛠 User Settings (top-left actions)
   - [x] Adjust css variables (padding, colors)
   - [x] remember last windows position (projector & settings)
@@ -48,10 +48,13 @@ or in **2 different languages**.
 
 ## ⚙ Install Plugin
 
-Install Chrome plugin from:
-Chrome web store [📖 Project verses from bible.com](https://chrome.google.com/webstore/detail/%F0%9F%93%96-project-verses-from-bi/fklnkmnlobkpoiifnbnemdpamheoanpj)
+- [x] Install Chrome plugin from **Chrome web store** [📖 Project verses from bible.com](https://chrome.google.com/webstore/detail/%F0%9F%93%96-project-verses-from-bi/fklnkmnlobkpoiifnbnemdpamheoanpj)
+- [x] 📌 **Pin** extension to see it after search bar for fast access
+  - [x] ![icon](icon-16.png) Click on **Extension** icon
 
 ## ⚙ Setup Plugin as Developer (one time only)
+
+If you want to try latest versions before they are released, or to change code as you wish, try to install it as Developer
 
 - [x] **Download/Clone** this repo
   - [ ] as zip & Unzip it
@@ -76,8 +79,7 @@ Chrome web store [📖 Project verses from bible.com](https://chrome.google.com/
 - [ ] Sync primary verses to be in same 'line' with parallel
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
 - [ ] User Settings
-  - [ ] Select what verses to display on main screen
-  - [ ] Allow to display on 2 different screens (more than 2 even better)
+  - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen or projected screen
   - [ ] Adjust font-size & line-height main screen or projected screen
   - [ ] Remember last url (or if parallel was opened - store it in storage.sync)
@@ -85,5 +87,5 @@ Chrome web store [📖 Project verses from bible.com](https://chrome.google.com/
   - [ ] Customize styles for parallel vs primary
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
-  - [ ] Add host_permissions/matches https://bible.com/bible* https://www.bible.com/bible*
-    - [ ] to be able to use it even not logged in
+- [ ] Add host_permissions/matches https://bible.com/bible* https://www.bible.com/bible*
+  - [ ] to be able to use it even not logged in
