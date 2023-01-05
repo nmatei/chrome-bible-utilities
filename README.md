@@ -80,7 +80,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
 - [ ] User Settings
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
-  - [ ] Allow display inline/block for main screen or projected screen
+  - [ ] Allow display inline/block for main screen
   - [ ] Adjust font-size & line-height main screen or projected screen
   - [ ] Remember last url (or if parallel was opened - store it in storage.sync)
   - [ ] Display Reference version (VDC, НРП)

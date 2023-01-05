@@ -97,6 +97,9 @@ fieldset .form-field label:first-child {
   width: 40px;
   padding: 3px;
 }
+.form-field select {
+  padding: 3px;
+}
 .form-field input[type="number"]:invalid {
   border: 2px solid #ff0000;
   background: #ff000030;

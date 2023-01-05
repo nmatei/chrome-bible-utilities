@@ -167,7 +167,7 @@ function createSettingsTab(settings = {}) {
   return createWindow({
     url: chrome.runtime.getURL(settingsPage),
     width: 700,
-    height: 600,
+    height: 650,
     ...settings
   });
 }

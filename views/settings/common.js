@@ -9,6 +9,7 @@ export function getDefaults() {
     referenceFontSize: "40",
     verseNumberColor: "#ffffff",
     verseColor: "#ffffff",
+    versesDisplay: "inline",
     parallelSeparatorTopHeight: "1",
     parallelSeparatorMiddleHeight: "1",
     parallelSeparatorBottomHeight: "1",

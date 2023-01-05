@@ -8,6 +8,7 @@
   --referenceFontSize: 40px;
   --verseNumberColor: #ffffff;
   --verseColor: #ffffff;
+  --versesDisplay: inline;
   --parallelSeparatorTopHeight: 1px;
   --parallelSeparatorMiddleHeight: 1px;
   --parallelSeparatorBottomHeight: 1px;
@@ -49,7 +50,7 @@ h6 {
   color: var(--referenceColor);
   text-shadow: 2px 2px 4px var(--verseColor);
   font-size: 1.2em;
-  margin: 0.2em 0.2em 0.2em 0.5em;
+  margin: 0.2em 0 0.2em 0;
 }
 h2 {
   font-size: 1.15em;
@@ -65,6 +66,9 @@ h5 {
 }
 h6 {
   font-size: 1.03em;
+}
+#root > *:first-child {
+  margin-top: 0;
 }
 
 ul {
@@ -83,9 +87,6 @@ a {
   text-shadow: 2px 2px 4px var(--referenceColor);
 }
 
-h1 {
-  margin: 0.2em 0 0.4em 0;
-}
 h1.reference {
   font-size: var(--referenceFontSize);
   text-shadow: 1px 1px 2px var(--verseColor);
@@ -106,7 +107,7 @@ p.parallel.separator:not(p:first-of-type):before {
 }
 
 p.verse {
-  display: inline;
+  display: var(--versesDisplay);
   font-weight: bold;
 }
 p > sup {
