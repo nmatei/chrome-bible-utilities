@@ -1,8 +1,8 @@
 // In-page cache of the user's options
-import { applyLoadOptions, getDefaults } from "./common.js";
+import { applyLoadOptions, getCssDefaultProperties } from "./common.js";
 
 // Initialize the form with the user's option settings
-const options = await applyLoadOptions(getDefaults());
+const options = await applyLoadOptions(getCssDefaultProperties());
 
 const optionsForm = document.getElementById("optionsForm");
 
@@ -61,7 +61,7 @@ function initEvents() {
       const action = e.target.getAttribute("data-key");
       switch (action) {
         case "defaults": {
-          Object.assign(options, getDefaults());
+          Object.assign(options, getCssDefaultProperties());
           setFormValues(optionsForm, options);
           previewStyles(options);
           break;

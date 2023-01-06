@@ -1,7 +1,7 @@
-import { applyLoadOptions, getDefaults } from "../settings/common.js";
+import { applyLoadOptions, getCssDefaultProperties } from "../settings/common.js";
 
 // Initialize the form with the user's option settings
-const options = await applyLoadOptions(getDefaults());
+const options = await applyLoadOptions(getCssDefaultProperties());
 setRootStyles(options);
 
 initEvents();

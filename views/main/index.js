@@ -43,6 +43,29 @@ function mergeParagraphs(versesInfo) {
   }, []);
 }
 
+function getReferences(chapters, versesInfo) {
+  return chapters
+    .map((c, i) => {
+      const numbers = versesInfo.filter(v => v.verseNr && (i ? v.parallel : !v.parallel)).map(v => parseInt(v.verseNr.trim()));
+
+      const groupedNumbers = numbers
+        .reduce((acc, n) => {
+          const prev = acc[acc.length - 1];
+          if (prev && prev[1] + 1 === n) {
+            prev[1] = n;
+          } else {
+            acc.push([n, n]);
+          }
+          return acc;
+        }, [])
+        .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
+        .join(",");
+
+      return groupedNumbers ? `${c}:${groupedNumbers}` : "";
+    })
+    .filter(Boolean);
+}
+
 function getDisplayText(verses) {
   let chapters = getChapterTitles();
   let selectedVerses = [...verses];
@@ -70,32 +93,13 @@ function getDisplayText(verses) {
 
   versesInfo = mergeParagraphs(versesInfo);
 
-  chapters = chapters
-    .map((c, i) => {
-      const numbers = versesInfo.filter(v => v.verseNr && (i ? v.parallel : !v.parallel)).map(v => parseInt(v.verseNr.trim()));
-
-      const groupedNumbers = numbers
-        .reduce((acc, n) => {
-          const prev = acc[acc.length - 1];
-          if (prev && prev[1] + 1 === n) {
-            prev[1] = n;
-          } else {
-            acc.push([n, n]);
-          }
-          return acc;
-        }, [])
-        .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
-        .join(",");
-
-      return groupedNumbers ? `${c}:${groupedNumbers}` : "";
-    })
-    .filter(Boolean);
+  const references = getReferences(chapters, versesInfo);
 
   const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
     return `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
   });
 
-  return `<h1 class="reference">${chapters.join(" / ")}</h1>` + versesContent.join("\n");
+  return `<h1 class="reference">${references.join(" / ")}</h1>` + versesContent.join("\n");
 }
 
 function printSelectedVerses(tab, verses) {
@@ -134,13 +138,16 @@ function mapParallelVerse(nr, isParallel) {
     parallel = parseInt(parallel);
     chapter = parseInt(chapter);
 
-    if (primary === 191 && parallel === 143 && book === "NUM" && chapter === 13) {
+    const primary_RO = isBibleInLanguage("ro", primary);
+    const parallel_RU = isBibleInLanguage("ru", parallel);
+
+    if (primary_RO && parallel_RU && book === "NUM" && chapter === 13) {
       return nr + (isParallel ? -1 : 1);
     }
-    if (primary === 191 && parallel === 143 && book === "PSA" && chapter < 10) {
+    if (primary_RO && parallel_RU && book === "PSA" && chapter < 10) {
       return nr + (isParallel ? -1 : 1);
     }
-    if (primary === 191 && parallel === 143 && book === "PSA" && chapter > 9) {
+    if (primary_RO && parallel_RU && book === "PSA" && chapter > 9) {
       return 0;
     }
   }

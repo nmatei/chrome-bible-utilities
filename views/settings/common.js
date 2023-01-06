@@ -1,4 +1,4 @@
-export function getDefaults() {
+export function getCssDefaultProperties() {
   return {
     rootPaddingTop: "65",
     rootPaddingRight: "0",
