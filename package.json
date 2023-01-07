@@ -1,11 +1,11 @@
 {
   "name": "my.bible.com",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Project selected Bible verses",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "zip": "7z a deploy.zip ./"
+    "zip": "7z a ../my.bible.com-%npm_package_version%.zip views icon*.png manifest.json README.md"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/nmatei/chrome-bible-utilities#readme",
   "dependencies": {
-    "marked": "^4.2.5"
+    "marked": "4.2.5"
   }
 }

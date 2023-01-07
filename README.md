@@ -90,3 +90,4 @@ If you want to try the latest versions before they are released, or to change co
     - [ ] Customize size & color
 - [ ] Add host_permissions/matches https://bible.com/bible* https://www.bible.com/bible*
   - [ ] to be able to use it even not logged in
+- [ ] Create tag after each 'deploy'
