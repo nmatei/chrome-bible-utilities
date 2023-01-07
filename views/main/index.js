@@ -370,6 +370,9 @@ async function initEvents() {
 
 async function improveSearch() {
   const searchInput = await waitElement(".chapter-picker-container input");
+  if (!searchInput) {
+    return;
+  }
   searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       const value = e.target.value;

@@ -9,7 +9,7 @@ function addLiveTextBox() {
       </label>
       <span data-key="fill" class="fill"></span>
       <button type="submit" class="action-btn">💬 Project</button>
-      <button type="reset" class="action-btn">Clear</button>
+      <button type="button" class="action-btn" data-key="hide" title="Hide text">🔳</button>
     </div>
     <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
     <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected (Markdown format)"></textarea>
@@ -86,6 +86,9 @@ function createLiveTextForm() {
   liveBoxForm.addEventListener("submit", e => {
     e.preventDefault();
     projectLiveText(liveTextTitle.value, liveText.value);
+  });
+  liveBoxForm.querySelector('button[data-key="hide"]').addEventListener("click", () => {
+    projectText("");
   });
   liveBoxForm.addEventListener("reset", () => {
     projectText("");
