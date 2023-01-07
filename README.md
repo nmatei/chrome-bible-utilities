@@ -91,3 +91,5 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Add host_permissions/matches https://bible.com/bible* https://www.bible.com/bible*
   - [ ] to be able to use it even not logged in
 - [ ] Update manifest.json version after each 'deploy'
+- [ ] Add WebHooks configs (ex. to publish to wireless monitors)
+  - [ ] create integration app that can be installed

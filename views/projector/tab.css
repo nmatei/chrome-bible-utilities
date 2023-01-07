@@ -79,9 +79,9 @@ li input[type="checkbox"]:disabled {
   width: 2.5em;
   cursor: pointer;
 }
-strong {
-  text-shadow: 2px 2px 4px var(--referenceColor);
-}
+/*strong {*/
+/*  text-shadow: 2px 2px 4px var(--referenceColor);*/
+/*}*/
 a {
   color: var(--verseColor);
   text-shadow: 2px 2px 4px var(--referenceColor);
