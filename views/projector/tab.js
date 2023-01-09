@@ -29,9 +29,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function initEvents() {
-  window.addEventListener("resize", () => {
-    adjustBodySize();
-  });
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      adjustBodySize();
+    }, 200)
+  );
   document.addEventListener("keydown", e => {
     selectByKeys(e.key);
   });
@@ -64,8 +67,14 @@ function adjustBodySize() {
   const body = document.body;
   do {
     body.style.fontSize = fontSize + "px";
-    fontSize--;
+    const step = Math.max(1, Math.round(body.offsetHeight / window.innerHeight));
+    fontSize = fontSize - step;
   } while (fontSize > 10 && body.offsetHeight > window.innerHeight);
+  if (fontSize < 52) {
+    body.classList.add("font-size-less-50");
+  } else {
+    body.classList.remove("font-size-less-50");
+  }
 }
 
 function mapValue(key, value) {

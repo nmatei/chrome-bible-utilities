@@ -41,7 +41,7 @@ function addHelpBox() {
           💬 <strong>Project "live text"</strong>
           <ul>
             <li>input any text to be projected (<a href="https://github.com/markedjs/marked" target="_blank">Markdown</a> format)</li>
-            <li><strong class="key-code">CTRL + Enter</strong> to project live text (inside textarea)</li>
+            <li><strong class="key-code">CTRL + Enter</strong> to project live text (inside title or textarea)</li>
           </ul>
         </li>
         <li>
@@ -101,6 +101,14 @@ function createLiveTextForm() {
       }
     }, 200)
   );
+  liveTextTitle.addEventListener(
+    "keydown",
+    debounce(e => {
+      if (e.ctrlKey && e.key === "Enter") {
+        projectLiveText(liveTextTitle.value, liveText.value);
+      }
+    }, 100)
+  );
   liveText.addEventListener(
     "input",
     debounce(() => {
@@ -115,7 +123,7 @@ function createLiveTextForm() {
       if (e.ctrlKey && e.key === "Enter") {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
-    }, 200)
+    }, 100)
   );
 
   return liveBoxForm;
@@ -177,7 +185,7 @@ function createSettingsActions() {
 }
 
 function projectLiveText(title, text) {
-  const displayTitle = `# ${title}\n`;
+  title = title ? `# ${title}\n` : "";
   const display = title || text;
-  projectText(display ? displayTitle + text : "", true);
+  projectText(display ? title + text : "", true);
 }
