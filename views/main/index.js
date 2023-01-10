@@ -138,17 +138,20 @@ function mapParallelVerse(nr, isParallel) {
     parallel = parseInt(parallel);
     chapter = parseInt(chapter);
 
-    const primary_RO = isBibleInLanguage("ro", primary);
-    const parallel_RU = isBibleInLanguage("ru", parallel);
+    const primary_diff = isBibleInAnyLanguages(["ru", "ua"], primary);
+    const parallel_diff = isBibleInAnyLanguages(["ru", "ua"], parallel);
+    const hasDifferences = primary_diff !== parallel_diff;
 
-    if (primary_RO && parallel_RU && book === "NUM" && chapter === 13) {
-      return nr + (isParallel ? -1 : 1);
-    }
-    if (primary_RO && parallel_RU && book === "PSA" && chapter < 10) {
-      return nr + (isParallel ? -1 : 1);
-    }
-    if (primary_RO && parallel_RU && book === "PSA" && chapter > 9) {
-      return 0;
+    //console.warn(nr, { hasDifferences, isParallel, primary_diff, parallel_diff });
+    if (hasDifferences) {
+      if (primary_diff) {
+        // flip
+        isParallel = !isParallel;
+      }
+
+      // TODO - when verses are +/-1
+      //   make sure to reselect Parallel if first time could not select
+      return getRussianTranslationsMapping(book, chapter, nr, isParallel);
     }
   }
   return nr;
@@ -243,7 +246,7 @@ async function selectVersesToProject(e) {
     const isParallel = target.closest(".parallel-chapter");
     const wasProjected = verse.classList.contains(projected);
 
-    await doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect, bulkSelect);
+    await doSelectVerses(verseNumber, !!isParallel, wasProjected, multiSelect, bulkSelect);
 
     if (e.altKey) {
       await bringTabToFront();
