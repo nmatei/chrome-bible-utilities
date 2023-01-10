@@ -3,15 +3,29 @@
  *
  *   https://www.ph4.org/biblia_ruennum.php
  *
- * TODO continue... make it more generic
+ * - TODO consider to create Ukrainians and More RU Mappings
+ * - TODO make relationships between *_MAPPING and BibleVersions
  */
+const BASIC_RU_MAPPING = {
+  "NUM-13": 1,
+  "JOS-6": -1,
+  "1SA-24": 1,
+  "JOB-40": -5,
+  "JOB-41": -8,
+  PSA: [
+    { from: 3, to: 9, add_verses: 1, add_chapters: 0 },
+    // for PSA:10-150 are more cases, add_chapters: -1 will ignore entire chapter for now
+    { from: 10, to: 150, add_verses: 0, add_chapters: -1 }
+  ],
+  "SNG-1": -1,
+  "SNG-7": 1,
+  "DAN-4": -3,
+  "HOS-14": 1,
+  "JON-2": 1
+};
 
+// used only for differences
 const BibleVersions = {
-  // ro: {
-  //   191: "VDC",
-  //   126: "NTR",
-  //   903: "BTF2015"
-  // },
   ru: {
     143: "НРП",
     167: "СИНОД",
@@ -21,7 +35,7 @@ const BibleVersions = {
     400: "SYNO"
   },
   ua: {
-    186: "UBIO",
+    186: "UBIO", // TODO Check NUM.13 they are in sync...
     // 188: "UKRK", // TODO PS 23 is in sync with RO ...
     // TODO PS 23 is in sync with RO ... while ps 9 has +1 verse
     // 204: "UMT",
@@ -40,40 +54,22 @@ function isBibleInAnyLanguages(languageCodes, id) {
   return languageCodes.some(code => isBibleInLanguage(code.toLowerCase(), id));
 }
 
-/**
- * info taken from
- *    https://www.ph4.org/biblia_ruennum.php
- */
-function getRussianTranslationsMapping(book, chapter, nr, isParallel) {
-  if (book === "NUM" && chapter === 13) {
-    return nr + (isParallel ? -1 : 1);
+function getTranslationsMapping(MAPPING, book, chapter, nr, isParallel) {
+  let diff = MAPPING[`${book}-${chapter}`];
+  if (diff) {
+    return nr + diff * (isParallel ? -1 : 1);
   }
-  if (book === "JOS" && chapter === 6) {
-    return nr + (isParallel ? 1 : -1);
-  }
-  if (book === "1SA" && chapter === 24) {
-    return nr + (isParallel ? -1 : 1);
-  }
-  if (book === "SNG" && chapter === 1) {
-    return nr + (isParallel ? 1 : -1);
-  }
-  if (book === "SNG" && chapter === 7) {
-    return nr + (isParallel ? -1 : 1);
-  }
-  if (book === "DAN" && chapter === 4) {
-    return nr + (isParallel ? 3 : -3);
-  }
-  if (book === "HOS" && chapter === 14) {
-    return nr + (isParallel ? -1 : 1);
-  }
-  if (book === "JON" && chapter === 2) {
-    return nr + (isParallel ? -1 : 1);
-  }
-  if (book === "PSA" && chapter > 2 && chapter < 10) {
-    return nr + (isParallel ? -1 : 1);
-  }
-  if (book === "PSA" && chapter > 9) {
-    return 0;
+  diff = MAPPING[book]; // should be Array or undefined
+  if (diff) {
+    const matchDiff = diff.find(match => match.from <= chapter && chapter <= match.to);
+    if (matchDiff) {
+      if (matchDiff.add_chapters) {
+        // can't print from different chapters for now
+        return 0;
+      }
+      const diffNr = matchDiff.add_verses;
+      return nr + diffNr * (isParallel ? -1 : 1);
+    }
   }
   return nr;
 }

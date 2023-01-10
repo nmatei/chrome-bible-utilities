@@ -151,7 +151,7 @@ function mapParallelVerse(nr, isParallel) {
 
       // TODO - when verses are +/-1
       //   make sure to reselect Parallel if first time could not select
-      return getRussianTranslationsMapping(book, chapter, nr, isParallel);
+      return getTranslationsMapping(BASIC_RU_MAPPING, book, chapter, nr, isParallel);
     }
   }
   return nr;

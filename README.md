@@ -73,10 +73,12 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
-- [ ] Check if verses are not in sync 
-  - [x] `Numbers 13` in `RO` vs `RU` has more verses
-  - [x] Chapters in `Psalms` in RO vs RU have different numbers
-  - [ ] Check more chapters
+- [ ] Check if verses are not in sync
+  - [ ] Available Language mappings and version
+    - [x] Russian (НРП)
+    - [ ] Ukrainian () ...
+  - [ ] Chapters in `Psalms 10-150` in * vs RU/UA have different numbers
+  - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) (🙏 need some external help here)
 - [ ] Sync primary verses to be in same 'line' with parallel
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
 - [ ] User Settings
