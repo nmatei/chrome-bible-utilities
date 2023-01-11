@@ -1,13 +1,15 @@
 :root {
-  --rootPaddingTop: 65px;
-  --rootPaddingRight: 0px;
-  --rootPaddingBottom: 40px;
-  --rootPaddingLeft: 0px;
+  --rootPaddingTop: 5px;
+  --rootPaddingRight: 5px;
+  --rootPaddingBottom: 5px;
+  --rootPaddingLeft: 5px;
   --pageBackgroundColor: #000000;
-  --referenceColor: #ffffff;
+  --referenceColor: #d3d3d3;
   --referenceFontSize: 40px;
-  --verseNumberColor: #ffffff;
+  --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
+  --parallelVerseNumberColor: #ededb4;
+  --parallelVerseColor: #eded33;
   --versesDisplay: inline;
   --parallelSeparatorTopHeight: 1px;
   --parallelSeparatorMiddleHeight: 1px;
@@ -122,6 +124,12 @@ p.verse {
 p > sup {
   color: var(--verseNumberColor);
   font-size: 0.6em;
+}
+p.parallel.verse {
+  color: var(--parallelVerseColor);
+}
+p.parallel.verse > sup {
+  color: var(--parallelVerseNumberColor);
 }
 
 .actions {

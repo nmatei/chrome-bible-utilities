@@ -5,7 +5,8 @@ const projectorStorageKey = "projectorWindow";
 const settingsStorageKey = "settingsWindow";
 const allWindows = [projectorStorageKey, settingsStorageKey];
 
-const updateWindowStates = ["maximized", "fullscreen", "minimized"];
+const postCreateWindowStates = ["maximized", "fullscreen"];
+const ignoreCreateWindowStates = [...postCreateWindowStates, "minimized"];
 
 chrome.action.onClicked.addListener(tab => {
   const url = "https://my.bible.com/bible";
@@ -136,7 +137,7 @@ function getWindow(key, createWindowFn) {
       win = await createWindowFn({});
     }
     await setWindowSettings(key, win.id, settings);
-    if (settings && updateWindowStates.includes(settings.state)) {
+    if (settings && postCreateWindowStates.includes(settings.state)) {
       await chrome.windows.update(win.id, {
         state: settings.state
       });
@@ -150,7 +151,7 @@ function getWindow(key, createWindowFn) {
 function mapWindowsSettings(settings = {}) {
   // exclude not allowed props
   const { id, alwaysOnTop, state, ...createSettings } = settings;
-  if (!updateWindowStates.includes(state)) {
+  if (!ignoreCreateWindowStates.includes(state)) {
     createSettings.state = state;
   }
   return createSettings;
