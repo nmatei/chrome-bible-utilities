@@ -1,7 +1,6 @@
-import { applyLoadOptions, getCssDefaultProperties } from "../settings/common.js";
+import { getCssDefaultProperties, getDefaults, initUserOptions } from "../settings/common.js";
 
-// Initialize the form with the user's option settings
-const options = await applyLoadOptions(getCssDefaultProperties());
+const options = await initUserOptions();
 setRootStyles(options);
 
 initEvents();
@@ -63,7 +62,7 @@ async function selectByKeys(key) {
 }
 
 function adjustBodySize() {
-  let fontSize = 100;
+  let fontSize = parseInt(options.maxFontSize);
   const body = document.body;
   do {
     body.style.fontSize = fontSize + "px";
@@ -85,13 +84,17 @@ function mapValue(key, value) {
 }
 
 function mapStyles(styles) {
+  const cssDefaults = getCssDefaultProperties();
   return Object.entries(styles).reduce((acc, [key, value]) => {
-    acc[key] = mapValue(key, value);
+    if (cssDefaults.hasOwnProperty(key)) {
+      acc[key] = mapValue(key, value);
+    }
     return acc;
   }, {});
 }
 
 function setRootStyles(styles) {
+  Object.assign(options, styles);
   styles = mapStyles(styles);
   const root = document.querySelector(":root");
   Object.entries(styles).forEach(([key, value]) => {

@@ -204,10 +204,12 @@ function checkIfLastTabClosed() {
   setTimeout(async () => {
     const tabs = await getBibleTabs();
     if (!tabs.length) {
-      const settings = await getWindowSettings(projectorStorageKey);
-      const existingId = settings ? settings.id : "";
-      if (existingId) {
-        chrome.windows.remove(existingId);
+      for (const key of [projectorStorageKey, settingsStorageKey]) {
+        const settings = await getWindowSettings(key);
+        const existingId = settings ? settings.id : "";
+        if (existingId) {
+          chrome.windows.remove(existingId);
+        }
       }
     } else {
       console.info("There are %d tabs opened", tabs.length, tabs);

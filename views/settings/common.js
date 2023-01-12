@@ -11,6 +11,7 @@ export function getCssDefaultProperties() {
     verseColor: "#ffffff",
     parallelVerseNumberColor: "#ededb4",
     parallelVerseColor: "#eded33",
+    verseFontWeight: "bold",
     versesDisplay: "inline",
     parallelSeparatorTopHeight: "1",
     parallelSeparatorMiddleHeight: "1",
@@ -19,6 +20,29 @@ export function getCssDefaultProperties() {
     parallelSeparatorMiddleColor: "#ffffff",
     parallelSeparatorBottomColor: "#d3d3d3"
   };
+}
+
+export function getUserSettingsDefaults() {
+  return {
+    maxFontSize: "100"
+  };
+}
+
+export function getDefaults() {
+  const cssDefaults = getCssDefaultProperties();
+  const defaults = getUserSettingsDefaults();
+  return {
+    ...cssDefaults,
+    ...defaults
+  };
+}
+
+/**
+ * Initialize the form with the user's option settings
+ * @returns {Promise<Object>}
+ */
+export async function initUserOptions() {
+  return applyLoadOptions(getDefaults());
 }
 
 export async function applyLoadOptions(options) {

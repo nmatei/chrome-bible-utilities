@@ -10,6 +10,7 @@
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
   --parallelVerseColor: #eded33;
+  --verseFontWeight: bold;
   --versesDisplay: inline;
   --parallelSeparatorTopHeight: 1px;
   --parallelSeparatorMiddleHeight: 1px;
@@ -119,7 +120,8 @@ p.parallel.separator:not(p:first-of-type):before {
 
 p.verse {
   display: var(--versesDisplay);
-  font-weight: bold;
+  font-weight: var(--verseFontWeight);
+  color: var(--verseColor);
 }
 p > sup {
   color: var(--verseNumberColor);

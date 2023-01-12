@@ -32,13 +32,18 @@
           <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
         </div>
         <div class="form-field">
-          <label for="referenceColor">Reference Color</label>
-          <input type="color" required id="referenceColor" name="referenceColor" />
+          <label for="maxFontSize">Max Font Size</label>
+          <input type="number" required min="20" max="100" id="maxFontSize" name="maxFontSize" />
+          <div>px</div>
         </div>
         <div class="form-field">
           <label for="referenceFontSize">Reference Font Size</label>
           <input type="number" required min="20" max="100" id="referenceFontSize" name="referenceFontSize" />
           <div>px</div>
+        </div>
+        <div class="form-field">
+          <label for="referenceColor">Reference/Title Color</label>
+          <input type="color" required id="referenceColor" name="referenceColor" />
         </div>
         <div class="form-field" style="margin-bottom: 0">
           <label></label>
@@ -54,6 +59,13 @@
           <label for="verseColor">Verse Color</label>
           <input type="color" required id="verseColor" name="verseColor" />
           <input type="color" required id="parallelVerseColor" name="parallelVerseColor" />
+        </div>
+        <div class="form-field">
+          <label for="verseFontWeight">Verses Font Weight</label>
+          <select required id="verseFontWeight" name="verseFontWeight">
+            <option value="bold" selected>bold</option>
+            <option value="normal">normal</option>
+          </select>
         </div>
         <div class="form-field">
           <label for="versesDisplay">Display Multiple Verses</label>
