@@ -138,20 +138,28 @@ function mapParallelVerse(nr, isParallel) {
     parallel = parseInt(parallel);
     chapter = parseInt(chapter);
 
-    const primary_diff = isBibleInAnyLanguages(["ru", "ua"], primary);
-    const parallel_diff = isBibleInAnyLanguages(["ru", "ua"], parallel);
-    const hasDifferences = primary_diff !== parallel_diff;
-
-    //console.warn(nr, { hasDifferences, isParallel, primary_diff, parallel_diff });
-    if (hasDifferences) {
-      if (primary_diff) {
-        // flip
-        isParallel = !isParallel;
+    const primaryVersion = BibleVersionsMappings[primary];
+    const parallelVersion = BibleVersionsMappings[parallel];
+    if (primaryVersion || parallelVersion) {
+      let substract = 0,
+        add = 0;
+      if (primaryVersion) {
+        substract = getDiffMapping(primaryVersion.mapping, book, chapter, isParallel);
       }
-
-      // TODO - when verses are +/-1
-      //   make sure to reselect Parallel if first time could not select
-      return getTranslationsMapping(BASIC_RU_MAPPING, book, chapter, nr, isParallel);
+      if (parallelVersion) {
+        add = getDiffMapping(parallelVersion.mapping, book, chapter, isParallel);
+      }
+      if (typeof add === "object" || typeof substract === "object") {
+        if (typeof add === typeof substract) {
+          if (add.add_chapters === substract.add_chapters) {
+            return nr + add.add_verses - substract.add_verses;
+          }
+        }
+        // can't print from different chapters for now
+        return 0;
+      }
+      const diff = add - substract;
+      return nr + diff;
     }
   }
   return nr;
@@ -239,7 +247,7 @@ async function selectVersesToProject(e) {
     e.stopPropagation();
     e.preventDefault();
 
-    const multiSelect = e.ctrlKey;
+    const multiSelect = e.ctrlKey || e.metaKey; // metaKey for MacOs
     const bulkSelect = e.shiftKey;
     const verse = target.closest(".verse");
     const verseNumber = getVerseNumber(verse);

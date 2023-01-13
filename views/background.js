@@ -142,9 +142,11 @@ function getWindow(key, createWindowFn) {
         state: settings.state
       });
     }
+    // TODO find best solution for this timeout:
+    //  tmp: simulate onload right after window is created
     setTimeout(() => {
       resolve(win, "created");
-    }, 200);
+    }, 500);
   });
 }
 

@@ -13,7 +13,7 @@ or in **2 different languages**.
   - [x] `Click` on verse number to **display** it on projector
   - [x] `Up/Down/Left/Right` arrows to navigate to **next/preview** verses
   - [x] `CTRL + Click` to **add verse** to selection (multi select)
-  - [x] `CTRL + Shift + Click` to multi select between last selection
+  - [x] `Shift + Click` to multi select between last selection
   - [x] `ALT + Click` to force project window to be on top (in case is not visible)
   - [x] `ESC` to show **blank page** (hide all selected verses)
   - [x] `F11` to enter/exit **fullscreen** projector window (first focus it)
@@ -77,7 +77,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Available Language mappings and version
     - [x] Russian (НРП)
     - [ ] Ukrainian () ...
-  - [ ] Chapters in `Psalms 10-150` in * vs RU/UA have different numbers
+  - [ ] Chapters in `Psalms 10-150` in \* vs RU/UA have different numbers
   - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) (🙏 need some external help here)
 - [ ] Sync primary verses to be in same 'line' with parallel
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
@@ -89,7 +89,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Display Reference version (VDC, НРП)
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
-- [ ] Add host_permissions/matches https://bible.com/bible* https://www.bible.com/bible*
+- [ ] Add host*permissions/matches https://bible.com/bible* https://www.bible.com/bible_
   - [ ] to be able to use it even not logged in
 - [ ] Update manifest.json version after each 'deploy'
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)

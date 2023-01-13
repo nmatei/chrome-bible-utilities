@@ -19,6 +19,7 @@ function addLiveTextBox() {
 }
 
 function addHelpBox() {
+  const isMac = /(Mac)/i.test(navigator.platform);
   const helpBox = document.createElement("div");
   helpBox.className = "info-fixed-box hide-view arrow-left";
   helpBox.id = "help-text-box";
@@ -31,17 +32,17 @@ function addHelpBox() {
           <li>🔎 <strong class="key-code">Search</strong> - Book and Chapter</li>
           <li><strong class="key-code">Click</strong> on verse number to display it on projector</li>
           <li><strong class="key-code">Up/Down/Left/Right</strong> arrows to navigate to next/preview verses</li>
-          <li><strong class="key-code">CTRL + Click</strong> to add verse to selection (multi select)</li>
-          <li><strong class="key-code">CTRL + Shift + Click</strong> to multi select between last selection</li>
+          <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Click</strong> to add verse to selection (multi select)</li>
+          <li><strong class="key-code">Shift + Click</strong> to multi select between last selection</li>
           <li><strong class="key-code">ALT + Click</strong> to force project window to be on top (in case is not visible)</li>
           <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
-          <li><strong class="key-code">F11</strong> to enter/exit fullscreen projector window (first focus it)</li>
+          <li><strong class="key-code">${isMac ? "ˆ⌘F" : "F11"}</strong> to enter/exit fullscreen projector window (first focus it)</li>
         </ul>
         <li>
           💬 <strong>Project "live text"</strong>
           <ul>
             <li>input any text to be projected (<a href="https://github.com/markedjs/marked" target="_blank">Markdown</a> format)</li>
-            <li><strong class="key-code">CTRL + Enter</strong> to project live text (inside title or textarea)</li>
+            <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Enter</strong> to project live text (inside title or textarea)</li>
           </ul>
         </li>
         <li>
@@ -104,7 +105,7 @@ function createLiveTextForm() {
   liveTextTitle.addEventListener(
     "keydown",
     debounce(e => {
-      if (e.ctrlKey && e.key === "Enter") {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
     }, 100)
@@ -120,7 +121,7 @@ function createLiveTextForm() {
   liveText.addEventListener(
     "keydown",
     debounce(e => {
-      if (e.ctrlKey && e.key === "Enter") {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
     }, 100)

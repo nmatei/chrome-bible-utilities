@@ -114,8 +114,7 @@ p.parallel.separator:not(p:first-of-type):before {
   height: var(--parallelSeparatorMiddleHeight);
   background-color: var(--parallelSeparatorMiddleColor);
   border-bottom: var(--parallelSeparatorBottomHeight) solid var(--parallelSeparatorBottomColor);
-  padding-top: 0.2em;
-  margin-top: 0.2em;
+  margin: 10px 0;
 }
 
 p.verse {
