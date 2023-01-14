@@ -18,7 +18,7 @@ or in **2 different languages**.
   - [x] `ESC` to show **blank page** (hide all selected verses)
   - [x] `F11` to enter/exit **fullscreen** projector window (first focus it)
 - [x] 🛠 User Settings (top-left actions)
-  - [x] Adjust css variables (padding, colors)
+  - [x] Adjust css variables (spacing, colors)
   - [x] remember last windows position (projector & settings)
 - [x] 💬 **Project "live text"**
   - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
