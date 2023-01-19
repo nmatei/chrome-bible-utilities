@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "doctoc": "doctoc README.md",
     "zip": "7z a ../my.bible.com-%npm_package_version%.zip views icon*.png manifest.json README.md",
     "preversion": "git fetch --tags && git tag v%npm_package_version% && git push --tags",
     "v": "yarn version --minor --no-git-tag-version",
