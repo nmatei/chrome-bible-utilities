@@ -6,9 +6,11 @@ This extension will help you **project Bible verses in your Church**,
 You decide which version to display and also can project parallel versions
 or in **2 different languages**.
 
+## Table of Contents
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
 
 - [💠 Features & Usage](#-features--usage)
 - [🎞 Results](#%F0%9F%8E%9E-results)
