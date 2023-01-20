@@ -2,6 +2,8 @@ function addLiveTextBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-left";
   form.id = "live-text-box";
+  form.method = "GET";
+  form.action = "#";
   form.innerHTML = `
     <div class="actions row-actions">
       <label for="realTimeUpdates" title="Live updates">Live
@@ -11,8 +13,12 @@ function addLiveTextBox() {
       <button type="submit" class="action-btn">💬 Project</button>
       <button type="button" class="action-btn" data-key="hide" title="Hide text">🔳</button>
     </div>
-    <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
-    <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected (Markdown format)"></textarea>
+    <div>
+      <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
+    </div>
+    <div>
+      <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected (Markdown format)"></textarea>
+    </div>
   `;
   document.body.appendChild(form);
   return form;
@@ -157,9 +163,7 @@ function createSettingsActions() {
           if (!liveBoxForm) {
             liveBoxForm = createLiveTextForm();
           }
-          // 17 anchor size
-          liveBoxForm.style.top = target.offsetTop + target.offsetHeight / 2 - 17;
-          liveBoxForm.style.left = target.offsetLeft + target.offsetWidth + 10;
+          showBy(liveBoxForm, target);
           liveBoxForm.classList.toggle("hide-view");
           if (liveBoxForm.classList.contains("hide-view")) {
             target.classList.remove("active");
@@ -179,8 +183,7 @@ function createSettingsActions() {
           if (!helpBox) {
             helpBox = addHelpBox();
           }
-          helpBox.style.top = target.offsetTop + target.offsetHeight / 2 - 17;
-          helpBox.style.left = target.offsetLeft + target.offsetWidth + 10;
+          showBy(helpBox, target);
           helpBox.classList.toggle("hide-view");
           if (helpBox.classList.contains("hide-view")) {
             target.classList.remove("active");
@@ -192,6 +195,12 @@ function createSettingsActions() {
       }
     }
   });
+}
+
+function showBy(el, target) {
+  // 17 anchor size
+  el.style.top = target.offsetTop + target.offsetHeight / 2 - 17 + "px";
+  el.style.left = target.offsetLeft + target.offsetWidth + 10 + "px";
 }
 
 function projectLiveText(title, text) {

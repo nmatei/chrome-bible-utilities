@@ -22,7 +22,7 @@ function debounce(fn, delay) {
  * @param {Number} timeout
  * @returns {Promise<null | HTMLElement>}
  */
-function waitElement(selector, timeout = 30000) {
+function waitElement(selector, timeout = 30000, retryInterval = 100) {
   return new Promise((resolve, reject) => {
     let el = document.querySelector(selector);
     if (el) {
@@ -40,6 +40,6 @@ function waitElement(selector, timeout = 30000) {
         //reject("timeout");
         resolve(null);
       }
-    }, 100);
+    }, retryInterval);
   });
 }

@@ -9,10 +9,10 @@
   },
   "action": {},
   "permissions": ["activeTab", "tabs", "storage"],
-  "host_permissions": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
+  "host_permissions": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
   "content_scripts": [
     {
-      "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
+      "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
       "js": ["views/common/utilities.js", "views/common/bible-mappings.js", "views/main/runtime-messages.js", "views/main/actions.js", "views/main/index.js"],
       "css": ["views/main/actions.css", "views/main/overrides.css"]
     }

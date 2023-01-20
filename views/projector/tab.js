@@ -52,7 +52,10 @@ function initEvents() {
 }
 
 async function selectByKeys(key) {
-  const [tab] = await chrome.tabs.query({ active: true, url: ["https://my.bible.com/bible/*"] });
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    url: ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"]
+  });
   if (tab) {
     chrome.tabs.sendMessage(tab.id, {
       action: "tabkeydown",

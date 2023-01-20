@@ -1,6 +1,7 @@
 const projected = "projected";
 let selectedVersesNr = [];
 let focusChapter = null;
+let isLoggedIn = false;
 
 window.addEventListener("load", () => {
   setTimeout(() => {
@@ -9,6 +10,13 @@ window.addEventListener("load", () => {
     initEvents();
   }, 100);
 });
+
+function getVerseSelector(focusOrder, number) {
+  if (isLoggedIn) {
+    return `.row .${focusOrder} .verse.v${number}`;
+  }
+  return `.chapter .p .verse.v${number}`;
+}
 
 function cleanUp() {
   // remove all notes
@@ -24,7 +32,7 @@ function cleanUp() {
 }
 
 function hasParallelView() {
-  return !!document.querySelector(".parallel-chapter");
+  return isLoggedIn && !!document.querySelector(".parallel-chapter");
 }
 
 /**
@@ -215,11 +223,11 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
   const isParallelViewEnabled = hasParallelView();
   const selectors = [];
   numbers.forEach(number => {
-    selectors.push(`.row .${focusOrder[0]} .verse.v${number}`);
+    selectors.push(getVerseSelector(focusOrder[0], number));
     if (isParallel || isParallelViewEnabled) {
       const parallelNr = mapParallelVerse(number, isParallel);
       if (parallelNr) {
-        selectors.push(`.row .${focusOrder[1]} .verse.v${parallelNr}`);
+        selectors.push(getVerseSelector(focusOrder[1], parallelNr));
       }
     }
   });
@@ -309,10 +317,10 @@ async function selectByKeys(key) {
       focusOrder.reverse();
     }
 
-    const selectors = [`.row .${focusOrder[0]} .verse.v${primary}`];
+    const selectors = [getVerseSelector(focusOrder[0], primary)];
 
     if (parallel) {
-      selectors.push(`.row .${focusOrder[1]} .verse.v${parallel}`);
+      selectors.push(getVerseSelector(focusOrder[1], parallel));
     }
 
     const verses = document.querySelectorAll(selectors.join(","));
@@ -335,13 +343,16 @@ async function selectByKeys(key) {
 }
 
 async function initEvents() {
-  let app = await waitElement("#react-app-Bible", 5000);
-  if (!app) {
-    console.warn("no app found %o, must be logged in", "#react-app-Bible");
-    app = await waitElement(".bible-reader-sticky-container", 2000);
+  const app = await Promise.any([waitElement("#react-app-Bible", 5000, 200), waitElement(".bible-reader-sticky-container", 5000, 200)]);
+  if (app && app.id === "react-app-Bible") {
+    isLoggedIn = true;
+  } else {
+    console.info("user not loggedIn", app);
   }
   if (app) {
-    improveSearch();
+    if (isLoggedIn) {
+      improveSearch();
+    }
 
     app.addEventListener("click", selectVersesToProject);
 
@@ -388,8 +399,9 @@ async function initEvents() {
  */
 
 async function improveSearch() {
-  const searchInput = await waitElement(".chapter-picker-container input");
+  const searchInput = await waitElement(".chapter-picker-container input", 5000);
   if (!searchInput) {
+    console.warn("searchInput not found");
     return;
   }
   searchInput.addEventListener("keydown", e => {

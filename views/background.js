@@ -239,6 +239,6 @@ function checkIfLastTabClosed() {
 
 function getBibleTabs() {
   return chrome.tabs.query({
-    url: ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"]
+    url: ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"]
   });
 }

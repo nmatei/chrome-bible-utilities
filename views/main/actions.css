@@ -63,8 +63,8 @@
   padding: 10px;
   z-index: 100;
   right: unset;
-  left: 0;
-  top: 0;
+  left: 55px;
+  top: 4px;
   border-radius: 5px;
 }
 .info-fixed-box h1,
@@ -97,16 +97,31 @@ h2 .key-code {
   margin: 4px;
   height: auto !important;
 }
+#live-text-box input[type="text"],
+#live-text-box textarea {
+  font-size: 0.92rem;
+  color: rgba(0, 0, 0, 0.75);
+}
 #liveTextTitle {
   border: 1px solid #d0d2d2;
   background: #ffffff;
   border-radius: 5px;
   margin-bottom: 10px;
+  width: 100%;
+  padding: 0.57rem;
 }
 #liveText {
+  border: 1px solid #d0d2d2;
+  border-radius: 5px;
   margin: 0;
   min-height: 65px;
   min-width: 250px;
+  padding: 0.57rem;
+}
+#liveTextTitle:focus,
+#liveText:focus {
+  outline: none;
+  border-color: #3d79c2;
 }
 
 .arrow-up:before {
