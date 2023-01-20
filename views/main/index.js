@@ -249,6 +249,8 @@ async function selectVersesToProject(e) {
 
     const multiSelect = e.ctrlKey || e.metaKey; // metaKey for MacOs
     const bulkSelect = e.shiftKey;
+    const altKey = e.altKey;
+
     const verse = target.closest(".verse");
     const verseNumber = getVerseNumber(verse);
     const isParallel = target.closest(".parallel-chapter");
@@ -256,7 +258,7 @@ async function selectVersesToProject(e) {
 
     await doSelectVerses(verseNumber, !!isParallel, wasProjected, multiSelect, bulkSelect);
 
-    if (e.altKey) {
+    if (altKey) {
       await bringTabToFront();
       document.body.classList.add("focus-lost");
       return;
@@ -294,8 +296,14 @@ async function selectByKeys(key) {
   if (dir) {
     const focusOrder = ["primary-chapter", "parallel-chapter"];
 
-    let next = selectedVersesNr.map(v => v + dir);
-    const [primary, parallel] = next;
+    const next = selectedVersesNr.map(v => v + dir);
+    let [primary] = next;
+    let parallel;
+
+    const isParallelViewEnabled = hasParallelView();
+    if (isParallelViewEnabled) {
+      parallel = mapParallelVerse(primary, false);
+    }
 
     if (!parallel && focusChapter === "parallel") {
       focusOrder.reverse();
