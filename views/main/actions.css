@@ -40,6 +40,8 @@
   transition: 0.2s;
   line-height: 1em;
   text-align: center;
+  -webkit-appearance: none;
+  background-color: #2b3031;
 }
 .actions .action-btn:hover {
   border-color: #eeeeee;
@@ -69,10 +71,20 @@
 }
 .info-fixed-box h1,
 .info-fixed-box h2 {
+  margin: 0.2rem 0 0.5rem 0;
   color: #ffffff;
   font-weight: bold;
   border-bottom: 2px solid #ffffff;
   padding-bottom: 6px;
+}
+.info-fixed-box ul {
+  padding: 0;
+  margin: 0 0 0 1.1rem;
+  line-height: 1.6;
+}
+.info-fixed-box a {
+  color: #3d79c2;
+  text-decoration: none;
 }
 .key-code {
   background-color: #222222;
@@ -92,6 +104,8 @@ h2 .key-code {
 #live-text-box label {
   display: inline-block;
   color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
 }
 #live-text-box input[type="checkbox"] {
   margin: 4px;
@@ -102,6 +116,20 @@ h2 .key-code {
   font-size: 0.92rem;
   color: rgba(0, 0, 0, 0.75);
 }
+
+#live-text-box ::-webkit-input-placeholder {
+  color: #ccc;
+}
+#live-text-box :-moz-placeholder {
+  color: #ccc;
+}
+#live-text-box ::-moz-placeholder {
+  color: #ccc;
+}
+#live-text-box :-ms-input-placeholder {
+  color: #ccc;
+}
+
 #liveTextTitle {
   border: 1px solid #d0d2d2;
   background: #ffffff;
