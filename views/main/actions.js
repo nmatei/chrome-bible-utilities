@@ -141,6 +141,9 @@ function createSettingsActions() {
   actions.addEventListener("click", e => {
     const target = e.target;
     if (target.matches(".action-btn")) {
+      actions.querySelectorAll(".action-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
       const action = target.getAttribute("data-key");
       switch (action) {
         case "settings": {
@@ -148,6 +151,9 @@ function createSettingsActions() {
           break;
         }
         case "live-text": {
+          if (helpBox) {
+            helpBox.classList.add("hide-view");
+          }
           if (!liveBoxForm) {
             liveBoxForm = createLiveTextForm();
           }
@@ -167,6 +173,9 @@ function createSettingsActions() {
           break;
         }
         case "help": {
+          if (liveBoxForm) {
+            liveBoxForm.classList.add("hide-view");
+          }
           if (!helpBox) {
             helpBox = addHelpBox();
           }
