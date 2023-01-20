@@ -55,8 +55,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true;
     }
     case "focusTab": {
-      chrome.windows.update(request.payload.id, { focused: true }).then(() => {
-        sendResponse({ status: 200 });
+      const id = request.payload.id;
+      chrome.windows.update(id, { focused: true }).then(win => {
+        if (win.height < 300 || win.width < 300) {
+          chrome.windows.update(id, getWinDefaultSize()).then(() => {
+            sendResponse({ status: 200 });
+          });
+        } else {
+          sendResponse({ status: 200 });
+        }
       });
       return true;
     }
@@ -91,6 +98,11 @@ async function setWindowSettings(key, id, settings) {
   if (!settings) {
     settings = {};
   }
+
+  if (settings.height < 300 || settings.width < 300) {
+    Object.assign(settings, getWinDefaultSize());
+  }
+
   chrome.storage.sync.set({
     [key]: {
       ...settings,
@@ -99,12 +111,18 @@ async function setWindowSettings(key, id, settings) {
   });
 }
 
-function createWindow(config) {
-  return chrome.windows.create({
+function getWinDefaultSize() {
+  return {
     width: 800,
     height: 600,
     top: 200,
-    left: 100,
+    left: 100
+  };
+}
+
+function createWindow(config) {
+  return chrome.windows.create({
+    ...getWinDefaultSize(),
     type: "popup",
     ...config
   });
