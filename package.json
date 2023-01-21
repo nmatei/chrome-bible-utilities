@@ -9,7 +9,8 @@
     "zip": "7z a ../my.bible.com-%npm_package_version%.zip views icon*.png manifest.json README.md",
     "preversion": "git fetch --tags && git tag v%npm_package_version% && git push --tags",
     "v": "yarn version --minor --no-git-tag-version",
-    "postversion": "git add \"package.json\" && git status && git commit -m \"increase version\" && git push origin HEAD"
+    "postversion": "git add \"package.json\" && git status && git commit -m \"increase version\" && git push origin HEAD",
+    "deploy": "yarn zip && yarn v"
   },
   "repository": {
     "type": "git",
