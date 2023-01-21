@@ -97,7 +97,7 @@ If you want to try the latest versions before they are released, or to change co
     - [x] Ukrainian (UBIO)
   - [ ] Chapters in `Psalms 10-150` in \* vs RU/UA have different numbers
   - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) 
-    - [x] 🙏 need some external help here (if you find issues please create a [tiket](./issues) with link you've seen)
+    - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
     - [ ] Especially for Ukrainian & Russian
 - [ ] Sync primary verses to be in same 'line' with parallel
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
