@@ -92,11 +92,13 @@ If you want to try the latest versions before they are released, or to change co
 ## 📋 Developers TODOs (items to improve)
 
 - [ ] Check if verses are not in sync
-  - [ ] Available Language mappings and version
-    - [x] Russian (НРП)
-    - [ ] Ukrainian () ...
+  - [x] Available Language mappings and version
+    - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
+    - [x] Ukrainian (UBIO)
   - [ ] Chapters in `Psalms 10-150` in \* vs RU/UA have different numbers
-  - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) (🙏 need some external help here)
+  - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) 
+    - [x] 🙏 need some external help here (if you find issues please create a [tiket](./issues) with link you've seen)
+    - [ ] Especially for Ukrainian & Russian
 - [ ] Sync primary verses to be in same 'line' with parallel
   - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
 - [ ] User Settings
@@ -107,8 +109,6 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Display Reference version (VDC, НРП)
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
-- [ ] Add host*permissions/matches https://bible.com/bible* https://www.bible.com/bible_
-  - [ ] to be able to use it even not logged in
 - [ ] Update manifest.json version after each 'deploy'
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed
