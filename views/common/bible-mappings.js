@@ -90,6 +90,7 @@ const BibleVersionsMappings = {
       "SNG.1": -1,
       "SNG.7": 1,
       "DAN.4": -3,
+      "HOS.2": 2,
       "HOS.14": 1,
       "JON.2": 1
     }
