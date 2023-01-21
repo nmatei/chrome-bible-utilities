@@ -1,4 +1,4 @@
-import { getCssDefaultProperties, getDefaults, initUserOptions } from "../settings/common.js";
+import { BIBLE_TABS_URL, getCssDefaultProperties, initUserOptions } from "../settings/common.js";
 
 const options = await initUserOptions();
 setRootStyles(options);
@@ -54,7 +54,7 @@ function initEvents() {
 async function selectByKeys(key) {
   const [tab] = await chrome.tabs.query({
     active: true,
-    url: ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"]
+    url: BIBLE_TABS_URL
   });
   if (tab) {
     chrome.tabs.sendMessage(tab.id, {

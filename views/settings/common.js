@@ -1,3 +1,10 @@
+export const BIBLE_TABS_URL = [
+  "https://my.bible.com/bible*",
+  "https://my.bible.com/*/bible*",
+  "https://www.bible.com/bible*",
+  "https://www.bible.com/*/bible*"
+];
+
 export function getCssDefaultProperties() {
   return {
     rootPaddingTop: "5",

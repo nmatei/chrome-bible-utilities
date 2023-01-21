@@ -1,3 +1,6 @@
+const BIBLE_TABS_URL = ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"];
+const DEFAULT_URL = "https://my.bible.com/bible";
+
 const projectorPage = "views/projector/tab.html";
 const settingsPage = "views/settings/options.html";
 
@@ -9,12 +12,12 @@ const postCreateWindowStates = ["maximized", "fullscreen"];
 const ignoreCreateWindowStates = [...postCreateWindowStates, "minimized"];
 
 chrome.action.onClicked.addListener(tab => {
-  const url = "https://my.bible.com/bible";
   if (tab.url === "chrome://newtab/") {
     chrome.tabs.remove(tab.id);
   }
-  if (!tab.url.startsWith(url)) {
-    chrome.tabs.create({ url: url });
+
+  if (!BIBLE_TABS_URL.some(url => tab.url.match(url))) {
+    chrome.tabs.create({ url: DEFAULT_URL });
   }
 });
 
@@ -239,6 +242,6 @@ function checkIfLastTabClosed() {
 
 function getBibleTabs() {
   return chrome.tabs.query({
-    url: ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"]
+    url: BIBLE_TABS_URL
   });
 }
