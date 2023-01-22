@@ -70,6 +70,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       return true;
     }
+    case "fullscreen": {
+      getWindowByKey(projectorStorageKey).then(({ win }) => {
+        if (win) {
+          chrome.windows
+            .update(win.id, {
+              state: win.state === "fullscreen" ? "normal" : "fullscreen"
+            })
+            .then(() => {
+              sendResponse({ status: 200 });
+            });
+        }
+      });
+      return true;
+    }
     case "createSettingsTab": {
       getWindow(settingsStorageKey, createSettingsTab).then(async (win, status) => {
         await chrome.windows.update(win.id, { focused: true });
@@ -131,22 +145,30 @@ function createWindow(config) {
   });
 }
 
+async function getWindowByKey(key) {
+  const settings = await getWindowSettings(key);
+  const existingId = settings ? settings.id : "";
+  let win;
+  if (existingId) {
+    try {
+      win = await chrome.windows.get(existingId);
+    } catch (e) {}
+  }
+  return {
+    settings,
+    win
+  };
+}
+
 function getWindow(key, createWindowFn) {
   return new Promise(async resolve => {
-    const settings = await getWindowSettings(key);
-    //console.warn("settings", settings);
-    let existingId = settings ? settings.id : "";
-    let win;
-    if (existingId) {
-      try {
-        win = await chrome.windows.get(existingId);
-      } catch (e) {}
-      if (win) {
-        setTimeout(() => {
-          resolve(win, "existing");
-        }, 100);
-        return;
-      }
+    let { win, settings } = await getWindowByKey(key);
+
+    if (win) {
+      setTimeout(() => {
+        resolve(win, "existing");
+      }, 100);
+      return;
     }
 
     const createSettings = mapWindowsSettings(settings);

@@ -18,6 +18,9 @@
   --parallelSeparatorTopColor: #d3d3d3;
   --parallelSeparatorMiddleColor: #ffffff;
   --parallelSeparatorBottomColor: #d3d3d3;
+
+  /* internal vars */
+  --autoHideTimeout: 5s;
 }
 
 /* basic reset */
@@ -133,6 +136,25 @@ p.parallel.verse > sup {
   color: var(--parallelVerseNumberColor);
 }
 
+.auto-hide:not(.focus) {
+  -moz-animation: hide-el-animation 0s ease-out var(--autoHideTimeout) forwards;
+  -webkit-animation: hide-el-animation 0s ease-out var(--autoHideTimeout) forwards;
+  -o-animation: hide-el-animation 0s ease-out var(--autoHideTimeout) forwards;
+  animation: hide-el-animation 0s ease-out var(--autoHideTimeout) forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hide-el-animation {
+  to {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    border-color: transparent;
+  }
+}
+
 .actions {
   display: flex;
   position: fixed;
@@ -140,7 +162,10 @@ p.parallel.verse > sup {
   right: 5px;
   gap: 10px;
 }
-.actions .action-btn {
+.actions .fill {
+  flex: 1;
+}
+.action-btn {
   display: inline-block;
   cursor: pointer;
   user-select: none;
@@ -153,15 +178,47 @@ p.parallel.verse > sup {
   background-color: transparent;
   transition: 0.2s;
 }
-.actions .action-btn:hover {
+.action-btn:hover {
   border-color: #cccccc90;
   color: #cccccc90;
 }
-.actions .action-btn:active {
+.action-btn:active {
   border-color: #eeeeee;
   color: #eeeeee;
   transition: none;
 }
+
+.action-btn.focus {
+  color: #cccccc30;
+  border-color: #cccccc30;
+  animation-name: focus-el-animation;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  -webkit-animation-name: focus-el-animation;
+  -webkit-animation-duration: 0.2s;
+}
+@keyframes focus-el-animation {
+  0% {
+    /*border-color: #cccccc90;*/
+    /*color: #cccccc90;*/
+    border-color: #cccccc40;
+    color: #cccccc40;
+  }
+  50% {
+    /*border-color: #eeeeee;*/
+    /*color: #eeeeee;*/
+    border-color: #cccccc50;
+    color: #cccccc50;
+  }
+  100% {
+    /*border-color: #cccccc30;*/
+    /*color: #cccccc30;*/
+    border-color: #cccccc30;
+    color: #cccccc30;
+  }
+}
+
 .focus-lost .actions {
   display: none;
 }

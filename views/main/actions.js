@@ -1,3 +1,5 @@
+const isMac = /(Mac)/i.test(navigator.platform);
+
 function addLiveTextBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-left";
@@ -25,7 +27,6 @@ function addLiveTextBox() {
 }
 
 function addHelpBox() {
-  const isMac = /(Mac)/i.test(navigator.platform);
   const helpBox = document.createElement("div");
   helpBox.className = "info-fixed-box hide-view arrow-left";
   helpBox.id = "help-text-box";
@@ -42,7 +43,7 @@ function addHelpBox() {
           <li><strong class="key-code">Shift + Click</strong> to multi select between last selection</li>
           <li><strong class="key-code">ALT + Click</strong> to force project window to be on top (in case is not visible)</li>
           <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
-          <li><strong class="key-code">${isMac ? "ˆ⌘F" : "F11"}</strong> to enter/exit fullscreen projector window (first focus it)</li>
+          <li><strong class="key-code">${isMac ? "⌃⌘F" : "F11"}</strong> to enter/exit fullscreen projector window (first focus it)</li>
         </ul>
         <li>
           💬 <strong>Project "live text"</strong>

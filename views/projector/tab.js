@@ -1,5 +1,7 @@
 import { BIBLE_TABS_URL, getCssDefaultProperties, initUserOptions } from "../settings/common.js";
 
+const isMac = /(Mac)/i.test(navigator.platform);
+
 const options = await initUserOptions();
 setRootStyles(options);
 
@@ -36,6 +38,7 @@ function initEvents() {
   );
   document.addEventListener("keydown", e => {
     selectByKeys(e.key);
+    animateFocusBtn(e.key);
   });
   window.addEventListener("blur", () => {
     document.body.classList.add("focus-lost");
@@ -48,6 +51,42 @@ function initEvents() {
     if (e.target.matches(".action-btn")) {
       selectByKeys(e.target.getAttribute("data-key"));
     }
+  });
+
+  const fullScreenBtn = document.querySelector('.action-btn[data-key="F11"]');
+  if (isMac) {
+    fullScreenBtn.innerText = "⌃⌘F";
+  }
+  fullScreenBtn.addEventListener("click", () => {
+    toggleFullScreen();
+  });
+}
+
+const animateKeys = {
+  //"⌃⌘F": "F11", // TODO test on mac Os (isMac)
+  F11: "F11",
+  ArrowLeft: "ArrowLeft",
+  ArrowUp: "ArrowLeft",
+  ArrowRight: "ArrowRight",
+  ArrowDown: "ArrowRight"
+};
+function animateFocusBtn(key) {
+  key = animateKeys[key];
+  if (key) {
+    const btn = document.querySelector(`.action-btn[data-key="${key}"]`);
+    if (btn) {
+      btn.classList.remove("focus");
+      btn.classList.add("focus");
+      setTimeout(() => {
+        btn.classList.remove("focus");
+      }, 200);
+    }
+  }
+}
+
+function toggleFullScreen() {
+  chrome.runtime.sendMessage({
+    action: "fullscreen"
   });
 }
 
