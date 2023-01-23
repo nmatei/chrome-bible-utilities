@@ -1,5 +1,14 @@
 import { BIBLE_TABS_URL, getCssDefaultProperties, initUserOptions } from "../settings/common.js";
 
+const animateKeys = {
+  //"⌃⌘F": "F11", // TODO test on mac Os (isMac)
+  F11: "F11",
+  ArrowLeft: "ArrowLeft",
+  ArrowUp: "ArrowLeft",
+  ArrowRight: "ArrowRight",
+  ArrowDown: "ArrowRight"
+};
+
 const isMac = /(Mac)/i.test(navigator.platform);
 
 const options = await initUserOptions();
@@ -34,6 +43,7 @@ function initEvents() {
     "resize",
     debounce(() => {
       adjustBodySize();
+      animateFocusBtn("F11");
     }, 200)
   );
   document.addEventListener("keydown", e => {
@@ -60,16 +70,12 @@ function initEvents() {
   fullScreenBtn.addEventListener("click", () => {
     toggleFullScreen();
   });
+
+  setTimeout(() => {
+    animateFocusBtn("F11");
+  }, 1000);
 }
 
-const animateKeys = {
-  //"⌃⌘F": "F11", // TODO test on mac Os (isMac)
-  F11: "F11",
-  ArrowLeft: "ArrowLeft",
-  ArrowUp: "ArrowLeft",
-  ArrowRight: "ArrowRight",
-  ArrowDown: "ArrowRight"
-};
 function animateFocusBtn(key) {
   key = animateKeys[key];
   if (key) {
