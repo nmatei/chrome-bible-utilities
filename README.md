@@ -109,6 +109,5 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Display Reference version (VDC, НРП)
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
-- [ ] Update manifest.json version after each 'deploy'
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed
