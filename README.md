@@ -13,9 +13,9 @@ or in **2 different languages**.
 
 
 - [💠 Features & Usage](#-features--usage)
-- [🎞 Results](#%F0%9F%8E%9E-results)
-- [⚙ Install Plugin](#%E2%9A%99-install-plugin)
-- [⚙ Setup Plugin as Developer (one time only)](#%E2%9A%99-setup-plugin-as-developer-one-time-only)
+- [🎞 Results](#-results)
+- [⚙ Install Plugin](#-install-plugin)
+- [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -71,7 +71,7 @@ or in **2 different languages**.
 - [x] 📌 **Pin** extension to see it after search bar for fast access
   - [x] ![icon](icon-16.png) Click on **Extension** icon
 
-## ⚙ Setup Plugin as Developer (one time only)
+## ⚙ Setup Plugin as Developer
 
 If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
 
@@ -82,7 +82,7 @@ If you want to try the latest versions before they are released, or to change co
 - [x] Open [chrome://extensions/](chrome://extensions/)
   - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
-- [x] Select chrome-bible-utilities folder
+- [x] Select `chrome-bible-utilities` folder
 - [x] 📌 **Pin** extension to see it after search bar for fast access
   - [x] ![icon](icon-16.png) Click on **Extension** icon
   - [x] Will open https://my.bible.com/bible if not opened

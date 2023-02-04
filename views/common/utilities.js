@@ -20,6 +20,7 @@ function debounce(fn, delay) {
  *
  * @param {String} selector
  * @param {Number} timeout
+ * @param {Number} retryInterval
  * @returns {Promise<null | HTMLElement>}
  */
 function waitElement(selector, timeout = 30000, retryInterval = 100) {

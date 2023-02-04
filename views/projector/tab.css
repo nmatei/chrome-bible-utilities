@@ -177,6 +177,7 @@ p.parallel.verse > sup {
   color: #cccccc30;
   background-color: transparent;
   transition: 0.2s;
+  -webkit-appearance: none;
 }
 .action-btn:hover {
   border-color: #cccccc90;

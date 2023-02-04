@@ -451,3 +451,11 @@ function waitNewTitles(oldChapters) {
     }, 300);
   });
 }
+
+// TODO https://www.bible.com/bible/111/GEN.2.NIV
+//  select v3 => error if not logged in
+//    verses[verses.length - 1].content += " " + verse.content;
+//    Cannot read properties of undefined (reading 'content')
+
+// TODO https://www.bible.com/bible/111/GEN.1.NIV
+//  can't select verses if not logged in
