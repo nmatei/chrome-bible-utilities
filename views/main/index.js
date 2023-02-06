@@ -434,6 +434,27 @@ async function improveSearch() {
   });
 }
 
+// TODO continue... to implement
+//   - [ ] Create and store list with Chapters to project
+function openChapter(book, chapter) {
+  let result = "";
+  const bookEl = [...document.querySelectorAll(".book-list li")].find(e => e.innerText.includes(book));
+  if (bookEl) {
+    bookEl.click();
+    result = bookEl.innerText;
+    const chapters = document.querySelectorAll(".chapter-picker-modal .chapter-container .chapter-list a");
+    let chapterEl = [...chapters].find(e => e.innerText == chapter);
+    if (!chapterEl) {
+      chapterEl = chapters[0];
+    }
+    chapterEl.querySelector("li").classList.add("active");
+    chapterEl.click();
+    result += " " + chapterEl.innerText;
+    document.querySelector(".dropdown-arrow-container").click();
+  }
+  return result;
+}
+
 function getChapterTitles() {
   return [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
 }

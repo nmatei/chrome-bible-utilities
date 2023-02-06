@@ -91,6 +91,7 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
+- [ ] Create and store list with Chapters to project
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
