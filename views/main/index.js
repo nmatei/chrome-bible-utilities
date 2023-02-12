@@ -262,7 +262,7 @@ async function selectVersesToProject(e) {
     const verse = target.closest(".verse");
     const verseNumber = getVerseNumber(verse);
     const isParallel = target.closest(".parallel-chapter");
-    const wasProjected = verse.classList.contains(projected);
+    const wasProjected = altKey ? false : verse.classList.contains(projected);
 
     await doSelectVerses(verseNumber, !!isParallel, wasProjected, multiSelect, bulkSelect);
 
@@ -407,8 +407,7 @@ async function improveSearch() {
   searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       const value = e.target.value;
-      const numbersMatch = value.match(/\s+(\d+)/gi);
-
+      const numbersMatch = matchNumbers(value);
       if (numbersMatch) {
         setTimeout(async () => {
           const numbers = numbersMatch.map(n => parseInt(n));

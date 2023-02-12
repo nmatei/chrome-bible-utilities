@@ -15,7 +15,7 @@ function addLiveTextBox() {
       <button type="submit" class="action-btn">💬 Project</button>
       <button type="button" class="action-btn" data-key="hide" title="Hide text">🔳</button>
     </div>
-    <div>
+    <div class="form-field">
       <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
     </div>
     <div>
@@ -73,14 +73,103 @@ function addHelpBox() {
   return helpBox;
 }
 
+function getVerseRow(verse, i) {
+  return `<tr>
+    <td><a data-key="remove" class="action-btn" data-idx="${i}">✖</a></td>
+    <td><a data-key="open">${verse}</a></td>
+  </tr>`;
+}
+
+function mapPinnedVerses(verses) {
+  const pinnedVerses = splitVerses(verses);
+  return pinnedVerses.map(getVerseRow);
+}
+
+function createPinVersesBox(verses) {
+  const form = addVersesBox(verses);
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    console.warn("TODO %o", "add");
+  });
+  form.querySelector("tbody").addEventListener("click", e => {
+    const target = e.target;
+    if (target.matches("a")) {
+      const action = target.dataset.key;
+      switch (action) {
+        case "remove": {
+          console.warn("TODO %o", "remove", target.dataset.idx);
+          break;
+        }
+        case "open": {
+          const value = target.innerText;
+          const match = getVerseInfo(value);
+          console.warn("open", value, match);
+          if (match) {
+            openChapter(match.book, match.chapter);
+          }
+          break;
+        }
+      }
+    }
+  });
+  form.querySelector('button[data-key="edit"]').addEventListener("click", () => {
+    $("#pinned-verses-list").style.display = "none";
+    const editor = $("#pinned-verses-editor");
+    editor.value = verses;
+    editor.style.display = "block";
+  });
+  form.querySelector('button[data-key="save"]').addEventListener("click", () => {
+    const editor = $("#pinned-verses-editor");
+    editor.style.display = "none";
+    $("#pinned-verses-list").style.display = "table";
+    const rows = mapPinnedVerses(editor.value).join("");
+    $("#pinned-verses-list tbody").innerHTML = rows;
+  });
+  return form;
+}
+
+function addVersesBox(verses) {
+  const rows = mapPinnedVerses(verses).join("");
+  const form = document.createElement("form");
+  form.className = "info-fixed-box hide-view arrow-up";
+  form.id = "verses-text-box";
+  form.method = "GET";
+  form.action = "#";
+  form.innerHTML = `
+    <div class="actions row-actions form-field">
+      <input placeholder="pin verse" type="text" name="verse" id="pin-add-verse" class="fill"/>
+      <button type="submit" class="action-btn" data-key="add" title="Add new Verse">➕</button>
+    </div>
+    <div>
+      <textarea id="pinned-verses-editor" cols="22" rows="10" style="display: none"></textarea>
+      <table id="pinned-verses-list">
+       <colgroup>
+          <col span="1" style="width: 30px" />
+          <col span="1" />
+        </colgroup>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="actions row-actions footer-bar">
+      <span class="fill"></span>
+      <button type="button" class="action-btn" data-key="edit" title="Edit All">Edit</button>
+      <button type="button" class="action-btn" data-key="save" title="Save">💾 Save</button>
+    </div>
+  `;
+  document.body.appendChild(form);
+  return form;
+}
+
 function addActionsBox() {
   const actions = document.createElement("div");
   actions.id = "project-actions";
   actions.className = "actions";
+  // verses possible icons? 📑 📚 📖
   actions.innerHTML = `
     <button data-key="live-text" class="action-btn" title="Live Text">💬</button>
     <button data-key="settings" class="action-btn" title="Settings">🛠</button>
     <button data-key="help" class="action-btn" title="Help">❔</button>
+    <button data-key="verses" class="action-btn" title="List/Pin some verses">📌</button>
   `;
   document.body.appendChild(actions);
   return actions;
@@ -144,6 +233,7 @@ function createSettingsActions() {
   const actions = addActionsBox();
   let liveBoxForm;
   let helpBox;
+  let versesBox;
 
   actions.addEventListener("click", e => {
     const target = e.target;
@@ -181,16 +271,15 @@ function createSettingsActions() {
           if (liveBoxForm) {
             liveBoxForm.classList.add("hide-view");
           }
-          if (!helpBox) {
-            helpBox = addHelpBox();
-          }
-          showBy(helpBox, target);
-          helpBox.classList.toggle("hide-view");
-          if (helpBox.classList.contains("hide-view")) {
-            target.classList.remove("active");
-          } else {
-            target.classList.add("active");
-          }
+          helpBox = helpBox || addHelpBox();
+          showBox(helpBox, target);
+          break;
+        }
+        case "verses": {
+          // TODO read it in chrome storage
+          const verses = `Ioan 3 16\nMat 5 15; Evr 10 25; Fapte 2 42, Rom 5:1`;
+          versesBox = versesBox || createPinVersesBox(verses);
+          showBox(versesBox, target);
           break;
         }
       }
@@ -198,10 +287,25 @@ function createSettingsActions() {
   });
 }
 
+function showBox(box, target) {
+  showBy(box, target);
+  box.classList.toggle("hide-view");
+  if (box.classList.contains("hide-view")) {
+    target.classList.remove("active");
+  } else {
+    target.classList.add("active");
+  }
+}
+
 function showBy(el, target) {
-  // 17 anchor size
-  el.style.top = target.offsetTop + target.offsetHeight / 2 - 17 + "px";
-  el.style.left = target.offsetLeft + target.offsetWidth + 10 + "px";
+  if (el.classList.contains("arrow-up")) {
+    el.style.top = target.offsetTop + target.offsetHeight + 10 + "px";
+    el.style.left = target.offsetLeft;
+  } else {
+    // 17 anchor size
+    el.style.top = target.offsetTop + target.offsetHeight / 2 - 17 + "px";
+    el.style.left = target.offsetLeft + target.offsetWidth + 10 + "px";
+  }
 }
 
 function projectLiveText(title, text) {

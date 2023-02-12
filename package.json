@@ -4,7 +4,7 @@
   "description": "Project selected Bible verses",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "doctoc": "doctoc README.md",
     "zip": "7z a ../my.bible.com-%npm_package_version%.zip views icon*.png manifest.json README.md",
     "preversion": "git fetch --tags && git tag v%npm_package_version% && git push --tags",
@@ -23,7 +23,19 @@
     "url": "https://github.com/nmatei/chrome-bible-utilities/issues"
   },
   "homepage": "https://github.com/nmatei/chrome-bible-utilities#readme",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/views/common/utilities.js",
+      "<rootDir>/views/common/bible-mappings.js"
+    ]
+  },
   "dependencies": {
     "marked": "4.2.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "ts-jest": "^29.0.5"
   }
 }
