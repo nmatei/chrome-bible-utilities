@@ -436,8 +436,10 @@ async function improveSearch() {
 // TODO continue... to implement
 //   - [ ] Create and store list with Chapters to project
 function openChapter(book, chapter) {
+  book = book.toLowerCase();
   let result = "";
-  const bookEl = [...document.querySelectorAll(".book-list li")].find(e => e.innerText.includes(book));
+  const bookListItems = document.querySelectorAll(".book-list li");
+  const bookEl = [...bookListItems].find(e => e.innerText.toLowerCase().includes(book));
   if (bookEl) {
     bookEl.click();
     result = bookEl.innerText;

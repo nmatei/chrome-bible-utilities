@@ -107,9 +107,10 @@ function createPinVersesBox() {
         case "open": {
           const value = target.innerText;
           const match = getVerseInfo(value);
-          console.warn("open", value, match);
           if (match) {
             openChapter(match.book, match.chapter);
+            // TODO select verse
+            console.warn("select verse", value, match);
           }
           break;
         }
@@ -128,6 +129,7 @@ function createPinVersesBox() {
     updatePinnedRows(pinnedVerses);
     setPinnedVerses(pinnedVerses);
     input.value = "";
+    input.focus(); // focus in case we clicked on add '+'
   });
   form.querySelector('button[data-key="edit"]').addEventListener("click", e => {
     $("#pinned-verses-list").style.display = "none";
