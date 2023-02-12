@@ -139,6 +139,10 @@ h2 .key-code {
 #verses-text-box .footer-bar.actions {
   margin-top: 10px;
 }
+#pinned-verses-wrapper {
+  max-height: 170px;
+  overflow-y: auto;
+}
 #verses-text-box table {
   width: 100%;
   background: transparent;

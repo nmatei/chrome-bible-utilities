@@ -75,6 +75,11 @@ describe("Test splitVerses", () => {
     expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3", "Rom 2 1", "John 3:16"]);
   });
 
+  it("Multiple separators in the same time", () => {
+    const verses = splitVerses("Ioan 3 16,\nFapte 2 3; Rom 2 1\n;\n John 3:16");
+    expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3", "Rom 2 1", "John 3:16"]);
+  });
+
   it("Trim spaces when split Verses", () => {
     const verses = splitVerses("    Ioan 3 16, Fapte 2 3; Rom 2 1\n John 3:16\n\n");
     expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3", "Rom 2 1", "John 3:16"]);

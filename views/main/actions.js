@@ -1,5 +1,16 @@
 const isMac = /(Mac)/i.test(navigator.platform);
 
+let pinnedVerses = [];
+
+async function getPinnedVerses() {
+  const storageData = await chrome.storage.sync.get("pinnedVerses");
+  return storageData.pinnedVerses || "Mat 5:1";
+}
+
+async function setPinnedVerses(pinnedVerses) {
+  await chrome.storage.sync.set({ pinnedVerses: pinnedVerses.join("\n") });
+}
+
 function addLiveTextBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-left";
@@ -80,24 +91,17 @@ function getVerseRow(verse, i) {
   </tr>`;
 }
 
-function mapPinnedVerses(verses) {
-  const pinnedVerses = splitVerses(verses);
-  return pinnedVerses.map(getVerseRow);
-}
-
-function createPinVersesBox(verses) {
-  const form = addVersesBox(verses);
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    console.warn("TODO %o", "add");
-  });
+function createPinVersesBox() {
+  const form = addVersesBox();
   form.querySelector("tbody").addEventListener("click", e => {
     const target = e.target;
     if (target.matches("a")) {
       const action = target.dataset.key;
       switch (action) {
         case "remove": {
-          console.warn("TODO %o", "remove", target.dataset.idx);
+          pinnedVerses.splice(target.dataset.idx, 1);
+          updatePinnedRows(pinnedVerses);
+          setPinnedVerses(pinnedVerses);
           break;
         }
         case "open": {
@@ -112,24 +116,50 @@ function createPinVersesBox(verses) {
       }
     }
   });
-  form.querySelector('button[data-key="edit"]').addEventListener("click", () => {
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const input = $("#pin-add-verse");
+    const editor = $("#pinned-verses-editor");
+    if (editor.style.display !== "none") {
+      pinnedVerses = splitVerses(editor.value);
+    }
+    pinnedVerses.push(input.value);
+    editor.value = pinnedVerses.join("\n");
+    updatePinnedRows(pinnedVerses);
+    setPinnedVerses(pinnedVerses);
+    input.value = "";
+  });
+  form.querySelector('button[data-key="edit"]').addEventListener("click", e => {
     $("#pinned-verses-list").style.display = "none";
     const editor = $("#pinned-verses-editor");
-    editor.value = verses;
+    editor.value = pinnedVerses.join("\n");
     editor.style.display = "block";
+    e.target.style.display = "none";
+    $('#verses-text-box button[data-key="save"]').style.display = "inline-block";
   });
-  form.querySelector('button[data-key="save"]').addEventListener("click", () => {
+  form.querySelector('button[data-key="save"]').addEventListener("click", async e => {
     const editor = $("#pinned-verses-editor");
     editor.style.display = "none";
     $("#pinned-verses-list").style.display = "table";
-    const rows = mapPinnedVerses(editor.value).join("");
-    $("#pinned-verses-list tbody").innerHTML = rows;
+    pinnedVerses = splitVerses(editor.value);
+    updatePinnedRows(pinnedVerses);
+    setPinnedVerses(pinnedVerses);
+    e.target.style.display = "none";
+    $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
+  });
+  getPinnedVerses().then(verses => {
+    pinnedVerses = splitVerses(verses);
+    updatePinnedRows(pinnedVerses);
   });
   return form;
 }
 
-function addVersesBox(verses) {
-  const rows = mapPinnedVerses(verses).join("");
+function updatePinnedRows(pinnedVerses) {
+  const rows = pinnedVerses.map(getVerseRow).join("");
+  $("#pinned-verses-list tbody").innerHTML = rows;
+}
+
+function addVersesBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-up";
   form.id = "verses-text-box";
@@ -137,23 +167,23 @@ function addVersesBox(verses) {
   form.action = "#";
   form.innerHTML = `
     <div class="actions row-actions form-field">
-      <input placeholder="pin verse" type="text" name="verse" id="pin-add-verse" class="fill"/>
+      <input required placeholder="pin verse" type="text" name="verse" id="pin-add-verse" class="fill"/>
       <button type="submit" class="action-btn" data-key="add" title="Add new Verse">➕</button>
     </div>
-    <div>
-      <textarea id="pinned-verses-editor" cols="22" rows="10" style="display: none"></textarea>
+    <div id="pinned-verses-wrapper">
+      <textarea id="pinned-verses-editor" cols="22" rows="6" style="display: none"></textarea>
       <table id="pinned-verses-list">
        <colgroup>
           <col span="1" style="width: 30px" />
           <col span="1" />
         </colgroup>
-        <tbody>${rows}</tbody>
+        <tbody></tbody>
       </table>
     </div>
     <div class="actions row-actions footer-bar">
       <span class="fill"></span>
-      <button type="button" class="action-btn" data-key="edit" title="Edit All">Edit</button>
-      <button type="button" class="action-btn" data-key="save" title="Save">💾 Save</button>
+      <button type="button" class="action-btn" data-key="edit" title="Edit All">📝 Edit</button>
+      <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾 Save</button>
     </div>
   `;
   document.body.appendChild(form);
@@ -276,9 +306,7 @@ function createSettingsActions() {
           break;
         }
         case "verses": {
-          // TODO read it in chrome storage
-          const verses = `Ioan 3 16\nMat 5 15; Evr 10 25; Fapte 2 42, Rom 5:1`;
-          versesBox = versesBox || createPinVersesBox(verses);
+          versesBox = versesBox || createPinVersesBox();
           showBox(versesBox, target);
           break;
         }
