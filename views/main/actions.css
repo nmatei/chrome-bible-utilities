@@ -131,7 +131,7 @@ h2 .key-code {
 }
 
 #verses-text-box {
-  min-width: 200px;
+  min-width: 165px;
 }
 #verses-text-box .actions {
   padding: 0;
@@ -140,13 +140,16 @@ h2 .key-code {
   margin-top: 10px;
 }
 #pinned-verses-wrapper {
-  max-height: 170px;
+  max-height: 400px;
   overflow-y: auto;
+  border: 2px solid #cccccc90;
+  border-radius: 5px;
 }
 #verses-text-box table {
   width: 100%;
   background: transparent;
   margin-bottom: 0;
+  border: 0;
 }
 #verses-text-box table tr:nth-of-type(even) {
   background: #00000022;
@@ -156,6 +159,21 @@ h2 .key-code {
 }
 #verses-text-box table td:first-child {
   text-align: center;
+}
+#verses-text-box textarea {
+  margin-bottom: 0;
+  min-height: 100px;
+  min-width: 140px;
+  max-height: 390px;
+}
+#verses-text-box a {
+  color: #cccccc90;
+}
+#verses-text-box a:hover {
+  color: #eeeeee;
+}
+#verses-text-box a:active {
+  color: #ffffff;
 }
 
 #pin-add-verse {

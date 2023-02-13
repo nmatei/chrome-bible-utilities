@@ -86,7 +86,7 @@ function addHelpBox() {
 
 function getVerseRow(verse, i) {
   return `<tr>
-    <td><a data-key="remove" class="action-btn" data-idx="${i}">✖</a></td>
+    <td><a data-key="remove" class="action-btn remove-btn" data-idx="${i}" title="Remove">✖</a></td>
     <td><a data-key="open">${verse}</a></td>
   </tr>`;
 }
@@ -109,8 +109,7 @@ function createPinVersesBox() {
           const match = getVerseInfo(value);
           if (match) {
             openChapter(match.book, match.chapter);
-            // TODO select verse
-            console.warn("select verse", value, match);
+            waitAndSelectVerse(match.verse);
           }
           break;
         }
@@ -170,22 +169,22 @@ function addVersesBox() {
   form.innerHTML = `
     <div class="actions row-actions form-field">
       <input required placeholder="pin verse" type="text" name="verse" id="pin-add-verse" class="fill"/>
-      <button type="submit" class="action-btn" data-key="add" title="Add new Verse">➕</button>
+    </div>
+    <div class="actions row-actions form-field">
+      <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
+      <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾</button>
+      <span class="fill"></span>
+      <button type="submit" class="action-btn" data-key="add" title="Add new Verse [Enter]">➕</button>
     </div>
     <div id="pinned-verses-wrapper">
-      <textarea id="pinned-verses-editor" cols="22" rows="6" style="display: none"></textarea>
+      <textarea id="pinned-verses-editor" cols="14" rows="6" style="display: none"></textarea>
       <table id="pinned-verses-list">
        <colgroup>
-          <col span="1" style="width: 30px" />
+          <col span="1" style="width: 25px" />
           <col span="1" />
         </colgroup>
         <tbody></tbody>
       </table>
-    </div>
-    <div class="actions row-actions footer-bar">
-      <span class="fill"></span>
-      <button type="button" class="action-btn" data-key="edit" title="Edit All">📝 Edit</button>
-      <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾 Save</button>
     </div>
   `;
   document.body.appendChild(form);

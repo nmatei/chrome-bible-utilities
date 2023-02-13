@@ -410,22 +410,9 @@ async function improveSearch() {
       const numbersMatch = matchNumbers(value);
       if (numbersMatch) {
         setTimeout(async () => {
-          const numbers = numbersMatch.map(n => parseInt(n));
-          const list = document.querySelector(".chapter-picker-container .chapter-list");
-          const chapterNr = [...list.querySelectorAll("a")].find(a => a.innerText == numbers[0]);
-          if (chapterNr) {
-            chapterNr.querySelector("li").classList.add("active");
-            chapterNr.click();
-
-            if (numbers.length > 1) {
-              // wait until chapter is loaded then select verse
-              const oldChapters = getChapterTitles();
-              await waitNewTitles(oldChapters);
-              const selectedVerses = await doSelectVerses(numbers[1], false, false, false);
-              if (selectedVerses && selectedVerses.length) {
-                selectedVerses[0].scrollIntoViewIfNeeded(true);
-              }
-            }
+          selectChapter(numbersMatch[0]);
+          if (numbersMatch.length > 1) {
+            waitAndSelectVerse(numbersMatch[1]);
           }
         }, 200);
       }
@@ -433,8 +420,6 @@ async function improveSearch() {
   });
 }
 
-// TODO continue... to implement
-//   - [ ] Create and store list with Chapters to project
 function openChapter(book, chapter) {
   book = book.toLowerCase();
   let result = "";
@@ -443,31 +428,53 @@ function openChapter(book, chapter) {
   if (bookEl) {
     bookEl.click();
     result = bookEl.innerText;
-    const chapters = document.querySelectorAll(".chapter-picker-modal .chapter-container .chapter-list a");
-    let chapterEl = [...chapters].find(e => e.innerText == chapter);
-    if (!chapterEl) {
-      chapterEl = chapters[0];
-    }
-    chapterEl.querySelector("li").classList.add("active");
-    chapterEl.click();
-    result += " " + chapterEl.innerText;
+    result += " " + selectChapter(chapter);
     document.querySelector(".dropdown-arrow-container").click();
   }
   return result;
+}
+
+function selectChapter(chapter) {
+  const chapters = document.querySelectorAll(".chapter-picker-modal .chapter-container .chapter-list a");
+  let chapterEl = [...chapters].find(e => e.innerText == chapter);
+  if (!chapterEl) {
+    chapterEl = chapters[0];
+  }
+  chapterEl.querySelector("li").classList.add("active");
+  chapterEl.click();
+  return chapterEl.innerText;
+}
+
+async function waitAndSelectVerse(verse) {
+  const changed = await waitNewTitles();
+  if (changed) {
+    const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
+    if (selectedVerses && selectedVerses.length) {
+      selectedVerses[0].scrollIntoViewIfNeeded(true);
+    }
+  }
 }
 
 function getChapterTitles() {
   return [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
 }
 
-function waitNewTitles(oldChapters) {
+/**
+ * wait until chapter is loaded then select verse
+ * @param timeout
+ * @returns {Promise<Boolean>} - changed - true, expired - false
+ */
+function waitNewTitles(timeout = 10000) {
+  const oldChapters = getChapterTitles();
+  const endTime = Date.now() + timeout;
   return new Promise(resolve => {
     const refreshIntervalId = setInterval(() => {
       const chapters = getChapterTitles();
-      if (oldChapters.every((c, i) => c !== chapters[i])) {
+      const expired = endTime < Date.now();
+      if (expired || oldChapters.every((c, i) => c !== chapters[i])) {
         clearInterval(refreshIntervalId);
         setTimeout(() => {
-          resolve();
+          resolve(!expired);
         }, 200);
       }
     }, 300);
