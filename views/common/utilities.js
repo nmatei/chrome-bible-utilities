@@ -58,8 +58,11 @@ function splitVerses(verses) {
 }
 
 function getVerseInfo(search) {
-  const match = Array.from(search.matchAll(/(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi))[0];
-  // @ts-ignore
+  const fullMatch = Array.from(search.matchAll(/(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi))[0];
+  if (fullMatch) {
+    return fullMatch.groups;
+  }
+  const match = Array.from(search.matchAll(/(?<book>.+)(\s+)(?<chapter>\d+)/gi))[0];
   return match ? match.groups : null;
 }
 

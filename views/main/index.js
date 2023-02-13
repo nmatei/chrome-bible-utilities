@@ -446,11 +446,15 @@ function selectChapter(chapter) {
 }
 
 async function waitAndSelectVerse(verse) {
+  if (!verse) {
+    return false;
+  }
   const changed = await waitNewTitles();
   if (changed) {
     const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
     if (selectedVerses && selectedVerses.length) {
       selectedVerses[0].scrollIntoViewIfNeeded(true);
+      return true;
     }
   }
 }

@@ -6,7 +6,7 @@ type VerseInfo = {
   verse?: string;
 };
 
-function testMatch(match: VerseInfo, book: string, chapter: string, verse: string) {
+function testMatch(match: VerseInfo, book: string, chapter: string, verse?: string) {
   expect(match).toBeDefined();
   expect(match.book).toBe(book);
   expect(match.chapter).toBe(chapter);
@@ -53,6 +53,12 @@ describe("Test regular expression matches for getVerseInfo", () => {
   it("[Numbers] in Chapter & [.] as verse separator", () => {
     const match = getVerseInfo("1 Corinteni 2.5");
     testMatch(match, "1 Corinteni", "2", "5");
+  });
+
+  // ===
+  it("[no verse] when get verse info", () => {
+    const match = getVerseInfo("Ioan 3");
+    testMatch(match, "Ioan", "3");
   });
 });
 
