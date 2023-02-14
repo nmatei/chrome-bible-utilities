@@ -206,6 +206,20 @@ h2 .key-code {
   border-color: #3d79c2;
 }
 
+#help-text-box .title {
+  font-size: 1.2em;
+  margin-top: 0.3em;
+}
+#help-text-box a {
+  color: #9dc9ff;
+}
+#help-text-box a:hover {
+  color: #eeeeee;
+}
+#help-text-box a:active {
+  color: #ffffff;
+}
+
 .arrow-up:before {
   content: " ";
   position: absolute;

@@ -8,9 +8,7 @@ type VerseInfo = {
 
 function testMatch(match: VerseInfo, book: string, chapter: string, verse?: string) {
   expect(match).toBeDefined();
-  expect(match.book).toBe(book);
-  expect(match.chapter).toBe(chapter);
-  expect(match.verse).toBe(verse);
+  expect(match).toEqual({ book, chapter, verse });
 }
 
 describe("Test regular expression matches for getVerseInfo", () => {
@@ -59,6 +57,12 @@ describe("Test regular expression matches for getVerseInfo", () => {
   it("[no verse] when get verse info", () => {
     const match = getVerseInfo("Ioan 3");
     testMatch(match, "Ioan", "3");
+  });
+
+  // ===
+  it("[more verses] when get verse info", () => {
+    const match = getVerseInfo("Mat 17:24-27");
+    testMatch(match, "Mat", "17", "24");
   });
 });
 

@@ -45,7 +45,7 @@ function addHelpBox() {
     <h2><span class="key-code">❔</span> Help / Usage</h2>
     <ul>
       <li>
-        🔤 <strong>Project selected verses</strong>
+        <div class="title">🔤 <strong>Project selected verses</strong></div>
         <ul>
           <li>🔎 <strong class="key-code">Search</strong> - Book and Chapter</li>
           <li><strong class="key-code">Click</strong> on verse number to display it on projector</li>
@@ -57,24 +57,32 @@ function addHelpBox() {
           <li><strong class="key-code">${isMac ? "⌃⌘F" : "F11"}</strong> to enter/exit fullscreen projector window (first focus it)</li>
         </ul>
         <li>
-          💬 <strong>Project "live text"</strong>
+          <div class="title">💬 <strong>Project "live text"</strong></div>
           <ul>
             <li>input any text to be projected (<a href="https://github.com/markedjs/marked" target="_blank">Markdown</a> format)</li>
             <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Enter</strong> to project live text (inside title or textarea)</li>
           </ul>
         </li>
         <li>
-          2️⃣ open <strong>Multiple chrome tabs</strong> with different chapters
+          <div class="title">2️⃣ open <strong>Multiple chrome tabs</strong> with different chapters</div>
           <ul>
             <li>all windows will project to the same projector page</li>
             <li>projector page will close only when all tabs from my.bible.com are closed</li>          
           </ul>
         </li>
         <li>
-          ✨ <strong>Improvements</strong>
+          <div class="title">✨ <strong>Improvements</strong></div>
           <ul>
             <li>🔎 Search 1 (part of Book + chapter: <strong class="key-code">Heb 11</strong> / Ioan 3) + Enter</li>
             <li>🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / <strong class="key-code">Ioan 3 16</strong>) + Enter</li>
+          </ul>
+        </li>
+        <li>
+          <div class="title">👋 GitHub Project 
+            <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & 
+            <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a></div>
+          <ul>
+            <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">tikets</a></li>          
           </ul>
         </li>
       </li>
@@ -109,6 +117,7 @@ function createPinVersesBox() {
           const match = getVerseInfo(value);
           if (match) {
             openChapter(match.book, match.chapter);
+            // TODO click on same bok & chapter will not project selected verse
             waitAndSelectVerse(match.verse);
           }
           break;
