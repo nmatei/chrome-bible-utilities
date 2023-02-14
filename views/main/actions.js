@@ -9,6 +9,7 @@ async function getPinnedVerses() {
 
 async function setPinnedVerses(pinnedVerses) {
   await chrome.storage.sync.set({ pinnedVerses: pinnedVerses.join("\n") });
+  // TODO notify other tabs to update values
 }
 
 function addLiveTextBox() {
@@ -132,7 +133,8 @@ function createPinVersesBox() {
     if (editor.style.display !== "none") {
       pinnedVerses = splitVerses(editor.value);
     }
-    pinnedVerses.push(input.value);
+    const newVerses = splitVerses(input.value);
+    pinnedVerses = [...pinnedVerses, ...newVerses];
     editor.value = pinnedVerses.join("\n");
     updatePinnedRows(pinnedVerses);
     setPinnedVerses(pinnedVerses);
@@ -177,7 +179,7 @@ function addVersesBox() {
   form.action = "#";
   form.innerHTML = `
     <div class="actions row-actions form-field">
-      <input required placeholder="pin verse" type="text" name="verse" id="pin-add-verse" class="fill"/>
+      <input required placeholder="Pin verses" type="text" name="verse" id="pin-add-verse" class="fill" title="for Multiple references use [ , ] or [ ; ]"/>
     </div>
     <div class="actions row-actions form-field">
       <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
