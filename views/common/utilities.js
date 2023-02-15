@@ -1,6 +1,9 @@
 function $(selector) {
   return document.querySelector(selector);
 }
+function $$(selector) {
+  return [...document.querySelectorAll(selector)];
+}
 
 /**
  *
@@ -49,20 +52,25 @@ function waitElement(selector, timeout = 30000, retryInterval = 100) {
   });
 }
 
-function matchNumbers(value) {
-  return value.match(/\s+(\d+)/gi);
-}
+const referenceSplitterRegExp = /\s*[;,\n]\s*/;
+const verseRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi;
+const chapterRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)/gi;
 
 function splitVerses(verses) {
-  return verses.trim().split(/\s*[;,\n]\s*/);
+  verses = verses.trim();
+  if (!verses) {
+    return [];
+  }
+  return verses.split(referenceSplitterRegExp);
 }
 
 function getVerseInfo(search) {
-  const fullMatch = Array.from(search.matchAll(/(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi))[0];
+  search = search.trim();
+  const fullMatch = Array.from(search.matchAll(verseRefRegExp))[0];
   if (fullMatch) {
     return fullMatch.groups;
   }
-  const match = Array.from(search.matchAll(/(?<book>.+)(\s+)(?<chapter>\d+)/gi))[0];
+  const match = Array.from(search.matchAll(chapterRefRegExp))[0];
   return match ? match.groups : null;
 }
 
@@ -71,7 +79,6 @@ if (typeof module === "object" && typeof module.exports === "object") {
     $,
     debounce,
     waitElement,
-    matchNumbers,
     splitVerses,
     getVerseInfo
   };

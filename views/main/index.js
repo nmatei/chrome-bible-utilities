@@ -407,14 +407,12 @@ async function improveSearch() {
   searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       const value = e.target.value;
-      const numbersMatch = matchNumbers(value);
-      if (numbersMatch) {
-        setTimeout(async () => {
-          selectChapter(numbersMatch[0]);
-          if (numbersMatch.length > 1) {
-            waitAndSelectVerse(numbersMatch[1]);
-          }
-        }, 200);
+      const match = getVerseInfo(value);
+      if (match) {
+        setTimeout(() => {
+          selectChapter(match.chapter);
+          waitAndSelectVerse(match.verse);
+        }, 10);
       }
     }
   });
@@ -457,6 +455,7 @@ async function waitAndSelectVerse(verse) {
       return true;
     }
   }
+  return false;
 }
 
 function getChapterTitles() {
@@ -478,6 +477,9 @@ function waitNewTitles(timeout = 10000) {
       if (expired || oldChapters.every((c, i) => c !== chapters[i])) {
         clearInterval(refreshIntervalId);
         setTimeout(() => {
+          if (expired) {
+            console.info("waitNewTitles.timeout", oldChapters, chapters);
+          }
           resolve(!expired);
         }, 200);
       }

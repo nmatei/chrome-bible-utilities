@@ -168,12 +168,16 @@ h2 .key-code {
 }
 #verses-text-box a {
   color: #cccccc90;
+  transition: 0.2s;
 }
 #verses-text-box a:hover {
-  color: #eeeeee;
+  color: #eeeeee !important;
 }
 #verses-text-box a:active {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+#verses-text-box a.focus {
+  color: #eeeeee;
 }
 
 #pin-add-verse {
@@ -264,4 +268,33 @@ h2 .key-code {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
   border-right: 5px solid #333333;
+}
+
+.spin {
+  position: relative;
+}
+.spin:after {
+  content: "";
+  position: absolute;
+  border-width: 3px;
+  border-style: solid;
+  border-color: transparent #fff #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  animation: 2s linear 0s normal none infinite running spin;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+#verses-text-box a.remove-btn.spin {
+  color: #cccccc22;
 }

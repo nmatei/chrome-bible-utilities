@@ -64,6 +64,12 @@ describe("Test regular expression matches for getVerseInfo", () => {
     const match = getVerseInfo("Mat 17:24-27");
     testMatch(match, "Mat", "17", "24");
   });
+
+  // ===
+  it("trim text before in verse separator", () => {
+    const match = getVerseInfo("  Ioan 3 16  ");
+    testMatch(match, "Ioan", "3", "16");
+  });
 });
 
 describe("Test splitVerses", () => {
@@ -85,13 +91,18 @@ describe("Test splitVerses", () => {
     expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3", "Rom 2 1", "John 3:16"]);
   });
 
-  it("Multiple separators in the same time", () => {
+  it("[Multiple separators] in the same time", () => {
     const verses = splitVerses("Ioan 3 16,\nFapte 2 3; Rom 2 1\n;\n John 3:16");
     expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3", "Rom 2 1", "John 3:16"]);
   });
 
-  it("Trim spaces when split Verses", () => {
+  it("[Trim spaces] when split Verses", () => {
     const verses = splitVerses("    Ioan 3 16, Fapte 2 3; Rom 2 1\n John 3:16\n\n");
     expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3", "Rom 2 1", "John 3:16"]);
+  });
+
+  it("[Only spaces] should return empty array when split Verses", () => {
+    const verses = splitVerses("    ");
+    expect(verses).toEqual([]);
   });
 });
