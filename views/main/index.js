@@ -401,7 +401,7 @@ async function initEvents() {
 async function improveSearch() {
   const searchInput = await waitElement(".chapter-picker-container input", 5000);
   if (!searchInput) {
-    console.warn("searchInput not found");
+    console.info("searchInput not found");
     return;
   }
   searchInput.addEventListener("keydown", e => {
