@@ -115,3 +115,4 @@ If you want to try the latest versions before they are released, or to change co
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed 
+- [ ] More tests when user is not logged (before release)

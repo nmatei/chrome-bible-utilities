@@ -2,6 +2,10 @@
  * not logged-in classes: yv-bible-text
  */
 
+.yv-sticky-header-content {
+  padding-left: 55px;
+}
+
 body .row,
 body.c_pages.a_privacy .privacy_content {
   max-width: 90rem;
@@ -42,9 +46,11 @@ body .yv-bible-text .verse .label,
 }
 
 body #current-ui-view {
-  padding: 110px 0 20px 0;
+  padding: 110px 0 20px 55px;
+  /* 55px for top-left actions */
 }
 body .yv-header .yv-sticky-header-content {
+  padding-left: 55px;
   height: 60px;
 }
 body .reader-header {

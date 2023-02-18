@@ -1,4 +1,5 @@
-import { getVerseInfo, splitVerses } from "../views/common/utilities";
+import { getReferencePreview, getVerseInfo, splitVerses } from "../views/common/utilities";
+import { getUrlMatch } from "../views/main/selectors";
 
 type VerseInfo = {
   book?: string;
@@ -104,5 +105,46 @@ describe("Test splitVerses", () => {
   it("[Only spaces] should return empty array when split Verses", () => {
     const verses = splitVerses("    ");
     expect(verses).toEqual([]);
+  });
+});
+
+describe("Get reference [preview] tests", () => {
+  it("[Full] info for getReferencePreview", () => {
+    const preview = getReferencePreview("Ioan", "3", "16");
+    expect(preview).toEqual("Ioan 3:16");
+  });
+
+  it("[No verse] for getReferencePreview", () => {
+    const preview = getReferencePreview("Ioan", "3");
+    expect(preview).toEqual("Ioan 3");
+  });
+
+  it("[No chapter] for getReferencePreview", () => {
+    const preview = getReferencePreview("Ioan");
+    expect(preview).toEqual("Ioan");
+  });
+});
+
+describe("Test URL Url Matches", () => {
+  it("getUrlMatch 1", () => {
+    const match = getUrlMatch("https://my.bible.com/bible/191/PSA.23.VDC?parallel=186");
+    expect(match).toBeDefined();
+    expect(match.groups).toEqual({
+      primary: "191",
+      book: "PSA",
+      chapter: "23",
+      parallel: "186"
+    });
+  });
+
+  it("getUrlMatch 2", () => {
+    const match = getUrlMatch("https://my.bible.com/bible/191/JOB.40.VDC?parallel=186");
+    expect(match).toBeDefined();
+    expect(match.groups).toEqual({
+      primary: "191",
+      book: "JOB",
+      chapter: "40",
+      parallel: "186"
+    });
   });
 });

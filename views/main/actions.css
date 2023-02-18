@@ -151,6 +151,19 @@ h2 .key-code {
   margin-bottom: 0;
   border: 0;
 }
+#verses-text-box table tfoot {
+  background: transparent;
+}
+#verses-text-box tfoot td {
+  color: #cccccc90;
+  font-weight: normal;
+  font-size: 0.7em;
+  font-style: italic;
+}
+#ref-preview.matched {
+  color: #eeeeee;
+  font-style: normal;
+}
 #verses-text-box table tr:nth-of-type(even) {
   background: #00000022;
 }

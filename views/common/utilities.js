@@ -1,8 +1,13 @@
 function $(selector) {
   return document.querySelector(selector);
 }
+
 function $$(selector) {
   return [...document.querySelectorAll(selector)];
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -74,12 +79,14 @@ function getVerseInfo(search) {
   return match ? match.groups : null;
 }
 
+function getReferencePreview(book, chapter = "", verse = "") {
+  return `${book} ${chapter}${verse ? ":" + verse : ""}`.trim();
+}
+
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
-    $,
-    debounce,
-    waitElement,
     splitVerses,
-    getVerseInfo
+    getVerseInfo,
+    getReferencePreview
   };
 }

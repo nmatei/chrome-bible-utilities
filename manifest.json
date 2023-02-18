@@ -15,8 +15,10 @@
       "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
       "js": [
         "views/common/utilities.js",
+        "views/common/latinizeText.js",
         "views/common/bible-mappings.js",
         "views/main/runtime-messages.js",
+        "views/main/selectors.js",
         "views/main/actions/pin-verses.js",
         "views/main/actions.js",
         "views/main/index.js"

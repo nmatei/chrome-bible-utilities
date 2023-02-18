@@ -123,3 +123,47 @@ function getDiffMapping(MAPPING, book, chapter, isParallel) {
   }
   return 0;
 }
+
+// TODO make it more generic
+function mapParallelVerse(nr, isParallel, urlMatch) {
+  if (urlMatch) {
+    // console.debug("groups", urlMatch.groups);
+    let { primary, book, chapter, parallel } = urlMatch.groups;
+    primary = parseInt(primary);
+    parallel = parseInt(parallel);
+    chapter = parseInt(chapter);
+
+    const primaryVersion = BibleVersionsMappings[primary];
+    const parallelVersion = BibleVersionsMappings[parallel];
+    if (primaryVersion || parallelVersion) {
+      let substract = 0,
+        add = 0;
+      if (primaryVersion) {
+        substract = getDiffMapping(primaryVersion.mapping, book, chapter, isParallel);
+      }
+      if (parallelVersion) {
+        add = getDiffMapping(parallelVersion.mapping, book, chapter, isParallel);
+      }
+      if (typeof add === "object" || typeof substract === "object") {
+        if (typeof add === typeof substract) {
+          if (add.add_chapters === substract.add_chapters) {
+            return nr + add.add_verses - substract.add_verses;
+          }
+        }
+        // can't print from different chapters for now
+        return 0;
+      }
+      const diff = add - substract;
+      return nr + diff;
+    }
+  }
+  return nr;
+}
+
+if (typeof module === "object" && typeof module.exports === "object") {
+  module.exports = {
+    BibleVersionsMappings,
+    getDiffMapping,
+    mapParallelVerse
+  };
+}

@@ -2,6 +2,7 @@ const projected = "projected";
 let selectedVersesNr = [];
 let focusChapter = null;
 let isLoggedIn = false;
+let booksCache;
 
 window.addEventListener("load", () => {
   setTimeout(() => {
@@ -11,28 +12,21 @@ window.addEventListener("load", () => {
   }, 100);
 });
 
-function getVerseSelector(focusOrder, number) {
-  if (isLoggedIn) {
-    return `.row .${focusOrder} .verse.v${number}`;
-  }
-  return `.chapter .p .verse.v${number}`;
-}
-
 function cleanUp() {
   // remove all notes
-  document.querySelectorAll(".note").forEach(n => {
+  $$(".note").forEach(n => {
     n.innerHTML = "";
     n.className = "";
   });
 
   // add spaces after label
-  document.querySelectorAll(".verse .label").forEach(l => {
+  $$(".verse .label").forEach(l => {
     l.innerHTML = l.innerHTML.trim() + " ";
   });
 }
 
 function hasParallelView() {
-  return isLoggedIn && !!document.querySelector(".parallel-chapter");
+  return isLoggedIn && !!$(".parallel-chapter");
 }
 
 /**
@@ -76,10 +70,9 @@ function getReferences(chapters, versesInfo) {
 
 function getDisplayText(verses) {
   let chapters = getChapterTitles();
-  let selectedVerses = [...verses];
   const showParallel = hasParallelView();
   let separator = " separator";
-  let versesInfo = selectedVerses.map(v => {
+  let versesInfo = verses.map(v => {
     const label = v.querySelector(":scope > .label");
     const verseNr = label ? label.innerText : "";
     let cls = "";
@@ -117,7 +110,7 @@ function printSelectedVerses(tab, verses) {
 }
 
 function deselectAll() {
-  document.querySelectorAll(`.verse.${projected}`).forEach(v => {
+  $$(`.verse.${projected}`).forEach(v => {
     v.classList.remove(projected);
   });
 }
@@ -126,7 +119,7 @@ function selectVerses(verses, deselect) {
   if (deselect === true) {
     deselectAll();
   }
-  return [...verses]
+  return verses
     .map(v => {
       v.classList.toggle(projected);
 
@@ -134,43 +127,6 @@ function selectVerses(verses, deselect) {
       return label ? parseInt(label.innerText) : 0;
     })
     .filter(Boolean);
-}
-
-// TODO make it more generic
-function mapParallelVerse(nr, isParallel) {
-  const match = Array.from(window.location.href.matchAll(/(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(.+)\?parallel\=(?<parallel>\d+)/gi))[0];
-  if (match) {
-    // console.debug("groups", match.groups);
-    let { primary, book, chapter, parallel } = match.groups;
-    primary = parseInt(primary);
-    parallel = parseInt(parallel);
-    chapter = parseInt(chapter);
-
-    const primaryVersion = BibleVersionsMappings[primary];
-    const parallelVersion = BibleVersionsMappings[parallel];
-    if (primaryVersion || parallelVersion) {
-      let substract = 0,
-        add = 0;
-      if (primaryVersion) {
-        substract = getDiffMapping(primaryVersion.mapping, book, chapter, isParallel);
-      }
-      if (parallelVersion) {
-        add = getDiffMapping(parallelVersion.mapping, book, chapter, isParallel);
-      }
-      if (typeof add === "object" || typeof substract === "object") {
-        if (typeof add === typeof substract) {
-          if (add.add_chapters === substract.add_chapters) {
-            return nr + add.add_verses - substract.add_verses;
-          }
-        }
-        // can't print from different chapters for now
-        return 0;
-      }
-      const diff = add - substract;
-      return nr + diff;
-    }
-  }
-  return nr;
 }
 
 function getVerseNumber(verse) {
@@ -222,17 +178,18 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
 
   const isParallelViewEnabled = hasParallelView();
   const selectors = [];
+  const urlMatch = isParallel || isParallelViewEnabled ? getUrlMatch(window.location.href) : undefined;
   numbers.forEach(number => {
     selectors.push(getVerseSelector(focusOrder[0], number));
     if (isParallel || isParallelViewEnabled) {
-      const parallelNr = mapParallelVerse(number, isParallel);
+      const parallelNr = mapParallelVerse(number, isParallel, urlMatch);
       if (parallelNr) {
         selectors.push(getVerseSelector(focusOrder[1], parallelNr));
       }
     }
   });
 
-  const verses = document.querySelectorAll(selectors.join(","));
+  const verses = $$(selectors.join(","));
 
   setFocusChapter(isParallel);
 
@@ -244,7 +201,7 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
     selectedVersesNr = selectVerses(verses);
   }
 
-  const selectedVerses = document.querySelectorAll(`.verse.${projected}`);
+  const selectedVerses = $$(`.verse.${projected}`);
   await displayVerses(selectedVerses);
   return selectedVerses;
 }
@@ -310,7 +267,8 @@ async function selectByKeys(key) {
 
     const isParallelViewEnabled = hasParallelView();
     if (isParallelViewEnabled) {
-      parallel = mapParallelVerse(primary, false);
+      const urlMatch = getUrlMatch(window.location.href);
+      parallel = mapParallelVerse(primary, false, urlMatch);
     }
 
     if (!parallel && focusChapter === "parallel") {
@@ -323,7 +281,7 @@ async function selectByKeys(key) {
       selectors.push(getVerseSelector(focusOrder[1], parallel));
     }
 
-    const verses = document.querySelectorAll(selectors.join(","));
+    const verses = $$(selectors.join(","));
     if (verses.length) {
       selectedVersesNr = next;
     } else {
@@ -342,13 +300,30 @@ async function selectByKeys(key) {
   }
 }
 
+async function prepareNotLoggedInCacheBooks() {
+  const arrow = getDropDownArrow();
+  if (arrow) {
+    arrow.click();
+    await waitElement(noLoggedInBookSelector(), 2000);
+    const cancel = await waitElement(notLoggedInBookListCancel(), 500);
+    if (cancel) {
+      cancel.click();
+    }
+  }
+}
+
 async function initEvents() {
   const app = await Promise.any([waitElement("#react-app-Bible", 5000, 200), waitElement(".bible-reader-sticky-container", 5000, 200)]);
+
   if (app && app.id === "react-app-Bible") {
     isLoggedIn = true;
   } else {
     console.info("user not loggedIn", app);
+    await prepareNotLoggedInCacheBooks();
   }
+
+  booksCache = getBooks().map(e => e.innerText);
+
   if (app) {
     if (isLoggedIn) {
       improveSearch();
@@ -409,8 +384,8 @@ async function improveSearch() {
       const value = e.target.value;
       const match = getVerseInfo(value);
       if (match) {
-        setTimeout(() => {
-          selectChapter(match.chapter);
+        setTimeout(async () => {
+          await selectChapter(match.chapter);
           waitAndSelectVerse(match.verse);
         }, 10);
       }
@@ -418,27 +393,55 @@ async function improveSearch() {
   });
 }
 
-function openChapter(book, chapter) {
-  book = book.toLowerCase();
+function findBookText(book) {
+  book = latinizeText(book.toLowerCase());
+  return booksCache.find(e => latinizeText(e.toLowerCase()).includes(book));
+}
+
+function findBookEl(book) {
+  const bookListItems = getBooks();
+  book = latinizeText(book.toLowerCase());
+  return bookListItems.find(e => latinizeText(e.innerText.toLowerCase()).includes(book));
+}
+
+async function openChapter(book, chapter) {
   let result = "";
-  const bookListItems = document.querySelectorAll(".book-list li");
-  const bookEl = [...bookListItems].find(e => e.innerText.toLowerCase().includes(book));
+  let bookEl = findBookEl(book);
+  const dropDownArrow = getDropDownArrow();
+  if (!bookEl) {
+    // fixing search one single book
+    // then and click outside => will remove all 'books li' from DOM
+    dropDownArrow.click();
+    await sleep(100);
+    bookEl = findBookEl(book);
+    dropDownArrow.click();
+    console.debug("second try of search bookEl", bookEl);
+  }
   if (bookEl) {
     bookEl.click();
     result = bookEl.innerText;
-    result += " " + selectChapter(chapter);
-    document.querySelector(".dropdown-arrow-container").click();
+    result += " " + (await selectChapter(chapter));
+    dropDownArrow.click();
   }
   return result;
 }
 
-function selectChapter(chapter) {
-  const chapters = document.querySelectorAll(".chapter-picker-modal .chapter-container .chapter-list a");
-  let chapterEl = [...chapters].find(e => e.innerText == chapter);
+async function getMatchChapter(chapter) {
+  if (!isLoggedIn) {
+    await waitElement(chaptersSelector(), 1000);
+  }
+  const chapters = getChapters();
+  let chapterEl = chapters.find(e => e.innerText == chapter);
   if (!chapterEl) {
     chapterEl = chapters[0];
   }
-  chapterEl.querySelector("li").classList.add("active");
+  return chapterEl;
+}
+
+async function selectChapter(chapter) {
+  const chapterEl = await getMatchChapter(chapter);
+  const activeEl = chapterEl.querySelector("li");
+  activeEl && activeEl.classList.add("active");
   chapterEl.click();
   return chapterEl.innerText;
 }
@@ -456,10 +459,6 @@ async function waitAndSelectVerse(verse) {
     }
   }
   return false;
-}
-
-function getChapterTitles() {
-  return [...document.querySelectorAll(".reader h1")].map(h => h.innerHTML.trim());
 }
 
 /**

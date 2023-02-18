@@ -19,6 +19,7 @@ function getVerseRow(verse, i) {
 
 function createPinVersesBox() {
   const form = addVersesBox();
+  const preview = $("#ref-preview");
   form.querySelector("tbody").addEventListener("click", e => {
     const target = e.target;
     if (target.matches("a")) {
@@ -37,8 +38,28 @@ function createPinVersesBox() {
       }
     }
   });
+  $("#pin-add-verse").addEventListener(
+    "input",
+    debounce(e => {
+      const newVerses = splitVerses(e.target.value);
+      if (!newVerses.length) {
+        preview.innerText = "^ search ^";
+        return;
+      }
+      const match = getVerseInfo(newVerses[0]);
+      const book = match ? match.book : newVerses[0];
+      const bookText = findBookText(book);
+      if (bookText) {
+        preview.classList.add("matched");
+      } else {
+        preview.classList.remove("matched");
+      }
+      preview.innerText = getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
+    }, 100)
+  );
   form.addEventListener("submit", async e => {
     e.preventDefault();
+    preview.innerText = "";
     const input = $("#pin-add-verse");
     const newVerses = splitVerses(input.value);
     if (!newVerses.length) {
@@ -107,7 +128,7 @@ async function openPinReference(target) {
   if (match) {
     const icon = target.closest("tr").querySelector('a[data-key="remove"]');
     icon.classList.add("spin");
-    openChapter(match.book, match.chapter);
+    await openChapter(match.book, match.chapter);
     // TODO click on same book & chapter will not project selected verse
     await waitAndSelectVerse(match.verse);
     icon.classList.remove("spin");
@@ -143,6 +164,9 @@ function addVersesBox() {
           <col span="1" />
         </colgroup>
         <tbody></tbody>
+        <tfoot>
+          <tr><td colspan="2" id="ref-preview"></td></tr>
+        </tfoot>
       </table>
     </div>
   `;

@@ -219,7 +219,7 @@ function showBox(box, target) {
 function showBy(el, target) {
   if (el.classList.contains("arrow-up")) {
     el.style.top = target.offsetTop + target.offsetHeight + 10 + "px";
-    el.style.left = target.offsetLeft;
+    el.style.left = target.offsetLeft + "px";
   } else {
     // 17 anchor size
     el.style.top = target.offsetTop + target.offsetHeight / 2 - 17 + "px";
