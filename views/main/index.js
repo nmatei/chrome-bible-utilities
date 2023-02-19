@@ -225,11 +225,8 @@ async function selectVersesToProject(e) {
 
     if (altKey) {
       await bringTabToFront();
-      document.body.classList.add("focus-lost");
-      return;
     }
   }
-  document.body.classList.remove("focus-lost");
 }
 
 async function displayVerses(verses) {
@@ -300,14 +297,19 @@ async function selectByKeys(key) {
   }
 }
 
-async function prepareNotLoggedInCacheBooks() {
-  const arrow = getDropDownArrow();
-  if (arrow) {
-    arrow.click();
-    await waitElement(noLoggedInBookSelector(), 2000);
-    const cancel = await waitElement(notLoggedInBookListCancel(), 500);
-    if (cancel) {
-      cancel.click();
+async function waitBooksElements() {
+  if (isLoggedIn) {
+    await waitElement(booksSelector(), 5000);
+  } else {
+    const arrow = chapterPickerArrow();
+    if (arrow) {
+      arrow.click();
+      // works only after 'first' expand
+      await waitElement(booksSelector(), 5000);
+      const cancel = await waitElement(notLoggedInBookListCancel(), 500);
+      if (cancel) {
+        cancel.click();
+      }
     }
   }
 }
@@ -319,9 +321,9 @@ async function initEvents() {
     isLoggedIn = true;
   } else {
     console.info("user not loggedIn", app);
-    await prepareNotLoggedInCacheBooks();
   }
 
+  await waitBooksElements();
   booksCache = getBooks().map(e => e.innerText);
 
   if (app) {
@@ -386,7 +388,7 @@ async function improveSearch() {
       if (match) {
         setTimeout(async () => {
           await selectChapter(match.chapter);
-          waitAndSelectVerse(match.verse);
+          await waitAndSelectVerse(match);
         }, 10);
       }
     }
@@ -407,7 +409,7 @@ function findBookEl(book) {
 async function openChapter(book, chapter) {
   let result = "";
   let bookEl = findBookEl(book);
-  const dropDownArrow = getDropDownArrow();
+  const dropDownArrow = chapterPickerArrow();
   if (!bookEl) {
     // fixing search one single book
     // then and click outside => will remove all 'books li' from DOM
@@ -446,11 +448,13 @@ async function selectChapter(chapter) {
   return chapterEl.innerText;
 }
 
-async function waitAndSelectVerse(verse) {
+async function waitAndSelectVerse(match, title) {
+  const verse = match.verse;
   if (!verse) {
     return false;
   }
-  const changed = await waitNewTitles();
+  const [chapter] = getChapterTitles();
+  const changed = chapter === title || (await waitNewTitles());
   if (changed) {
     const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
     if (selectedVerses && selectedVerses.length) {

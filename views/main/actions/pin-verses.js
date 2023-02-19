@@ -32,7 +32,9 @@ function createPinVersesBox() {
           break;
         }
         case "open": {
-          openPinReference(target);
+          openPinReference(target).then(() => {
+            e.altKey && bringTabToFront();
+          });
           break;
         }
       }
@@ -90,9 +92,10 @@ function createPinVersesBox() {
       if (focused) {
         await openPinReference(focused);
         focused.classList.remove("focus");
-        setTimeout(() => {
+        setTimeout(async () => {
           const input = $("#pin-add-verse");
           input.focus();
+          e.altKey && (await bringTabToFront());
         }, 10);
       }
     }
@@ -128,9 +131,8 @@ async function openPinReference(target) {
   if (match) {
     const icon = target.closest("tr").querySelector('a[data-key="remove"]');
     icon.classList.add("spin");
-    await openChapter(match.book, match.chapter);
-    // TODO click on same book & chapter will not project selected verse
-    await waitAndSelectVerse(match.verse);
+    const title = await openChapter(match.book, match.chapter);
+    await waitAndSelectVerse(match, title);
     icon.classList.remove("spin");
   }
 }

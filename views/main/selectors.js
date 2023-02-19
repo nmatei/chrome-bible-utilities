@@ -1,29 +1,37 @@
-function getDropDownArrow() {
+function chapterPickerArrow() {
   if (isLoggedIn) {
     return $(".dropdown-arrow-container");
   }
   return $('[data-vars-event-category="Chapter Picker"]');
 }
 
-function getBooks() {
+function booksSelector() {
   if (isLoggedIn) {
-    return $$(".book-list li");
+    return ".book-list li";
   }
-  // works only after 'first' expand
-  return $$(noLoggedInBookSelector());
-}
-
-function noLoggedInBookSelector() {
   return "#bible-book-list .list li";
 }
+
 function notLoggedInBookListCancel() {
   return '#bible-book-list [data-vars-event-action="Cancel"]';
 }
+
 function chaptersSelector() {
   if (isLoggedIn) {
     return ".chapter-picker-modal .chapter-container .chapter-list a";
   }
   return '#bible-chapter-list a[data-vars-event-action="Select Chapter"]';
+}
+
+function getVerseSelector(focusOrder, number) {
+  if (isLoggedIn) {
+    return `.row .${focusOrder} .verse.v${number}`;
+  }
+  return `.chapter > div .verse.v${number}`;
+}
+
+function getBooks() {
+  return $$(booksSelector());
 }
 
 function getChapters() {
@@ -32,13 +40,6 @@ function getChapters() {
 
 function getChapterTitles() {
   return $$(".reader h1").map(h => h.innerHTML.trim());
-}
-
-function getVerseSelector(focusOrder, number) {
-  if (isLoggedIn) {
-    return `.row .${focusOrder} .verse.v${number}`;
-  }
-  return `.chapter > div .verse.v${number}`;
 }
 
 const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(.+)\?parallel\=(?<parallel>\d+)/gi;
