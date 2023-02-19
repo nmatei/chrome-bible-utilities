@@ -28,7 +28,7 @@ or in **2 different languages**.
   - [x] `Up/Down/Left/Right` arrows to navigate to **next/preview** verses
   - [x] `CTRL + Click` to **add verse** to selection (multi select)
   - [x] `Shift + Click` to multi select between last selection
-  - [x] `ALT + Click` to force project window to be on top (in case is not visible)
+  - [x] `ALT + Click` on verse number or Pinned reference, to force project window to be on top (in case is not visible)
   - [x] `ESC` to show **blank page** (hide all selected verses)
   - [x] `F11` to enter/exit **fullscreen** projector window (first focus it)
 - [x] 🛠 User Settings (top-left actions)
@@ -118,4 +118,3 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed 
 - [ ] More tests when user is not logged (before release)
-- 

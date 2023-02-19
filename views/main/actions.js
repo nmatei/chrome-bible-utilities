@@ -26,6 +26,7 @@ function addLiveTextBox() {
   return form;
 }
 
+// TODO Fix help arrow - not visible because of 'overflow'
 function addHelpBox() {
   const helpBox = document.createElement("div");
   helpBox.className = "info-fixed-box hide-view arrow-left";
