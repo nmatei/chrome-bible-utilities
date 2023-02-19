@@ -223,6 +223,10 @@ h2 .key-code {
   border-color: #3d79c2;
 }
 
+#help-text-box {
+  max-height: 400px;
+  overflow: auto;
+}
 #help-text-box .title {
   font-size: 1.2em;
   margin-top: 0.3em;

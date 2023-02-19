@@ -43,7 +43,9 @@ or in **2 different languages**.
   - [x] projector page will close only when all tabs from my.bible.com are closed
 - [x] 📌 List/Pin some verses (references)
   - [x] Store verses (references) for future selection and project them faster
+  - [x] `Enter` to add one/more references (`,` or `;` as separator) in 'Pin verses' input
   - [x] `Enter + Enter` to project added reference to List/Pin
+  - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
 - [x] ✨ **Improvements**
   - [x] 🔎 Search 1 (part of Book + chapter: **Heb 11** / Ioan 3) + Enter
   - [x] 🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / **Ioan 3 16**) + Enter
@@ -116,3 +118,4 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed 
 - [ ] More tests when user is not logged (before release)
+- 

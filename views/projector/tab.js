@@ -19,13 +19,7 @@ initEvents();
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "updateText": {
-      const root = document.getElementById("root");
-      let text = request.payload.text;
-      if (request.payload.markdown) {
-        text = marked.parse(text);
-      }
-      root.innerHTML = text;
-      adjustBodySize();
+      updateText(request.payload.text, request.payload.markdown);
       sendResponse({ status: 200 });
       break;
     }
@@ -37,6 +31,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
   }
 });
+
+function updateText(text, markdown) {
+  const root = document.getElementById("root");
+  if (markdown) {
+    text = marked.parse(text);
+  }
+  root.innerHTML = text;
+  adjustBodySize();
+}
 
 function initEvents() {
   window.addEventListener(
@@ -106,6 +109,10 @@ async function selectByKeys(key) {
       action: "tabkeydown",
       payload: key
     });
+  } else {
+    if (key === "Escape") {
+      updateText("");
+    }
   }
 }
 

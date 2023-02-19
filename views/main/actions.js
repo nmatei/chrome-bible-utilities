@@ -41,7 +41,8 @@ function addHelpBox() {
           <li><strong class="key-code">Up/Down/Left/Right</strong> arrows to navigate to next/preview verses</li>
           <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Click</strong> to add verse to selection (multi select)</li>
           <li><strong class="key-code">Shift + Click</strong> to multi select between last selection</li>
-          <li><strong class="key-code">ALT + Click</strong> to force project window to be on top (in case is not visible)</li>
+          <li><strong class="key-code">ALT + Click</strong> on verse number or Pinned reference, <br/>to force project window to be on top (in case is not visible)</li>
+          <li><strong class="key-code">Enter + Enter</strong> to project added reference to 📌 List/Pin</li>
           <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
           <li><strong class="key-code">${isMac ? "⌃⌘F" : "F11"}</strong> to enter/exit fullscreen projector window (first focus it)</li>
         </ul>
@@ -69,10 +70,9 @@ function addHelpBox() {
         <li>
           <div class="title">👋 GitHub Project 
             <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & 
-            <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a></div>
-          <ul>
-            <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">tikets</a></li>          
-          </ul>
+            <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a> &
+            <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">📩 Support tikets</a>
+          </div>
         </li>
       </li>
     </ul>

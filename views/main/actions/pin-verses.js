@@ -156,7 +156,7 @@ function addVersesBox() {
       <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
       <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾</button>
       <span class="fill"></span>
-      <button type="submit" class="action-btn" data-key="add" title="Add new Verse [ Enter ]">➕</button>
+      <button type="submit" class="action-btn" data-key="add" title="Add new Verse [ Enter ] (second [ Enter ] to project)">➕</button>
     </div>
     <div id="pinned-verses-wrapper">
       <textarea id="pinned-verses-editor" cols="14" rows="6" style="display: none"></textarea>
