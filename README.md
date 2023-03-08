@@ -35,7 +35,7 @@ or in **2 different languages**.
   - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
   - [x] `CTRL + Enter` to project live text (inside title or textarea)
   - [ ] Select any text from page and allow it to be projected
-- [x] 📌 List/Pin some references (verses)
+- [x] 📌 **List/Pin some references** (verses)
   - [x] Store references for future selection and project them faster
   - [x] `Enter` to add references (`,` or `;` as separator) in 'Pin verses' input 🔍
   - [x] `Enter + Enter` to project added reference
@@ -49,7 +49,7 @@ or in **2 different languages**.
   - [x] 🔎 Search 1 (part of Book + chapter: **Heb 11** / Ioan 3) + Enter
   - [x] 🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / **Ioan 3 16**) + Enter
   - [x] text for copy (hide notes and add space after verse number)
-- [x] 🛠 User Settings (top-left actions)
+- [x] 🛠 **User Settings** (top-left actions)
   - [x] Adjust css variables (spacing, colors)
   - [x] remember last windows position (projector & settings)
 
