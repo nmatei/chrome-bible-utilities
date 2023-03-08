@@ -33,25 +33,36 @@ function addHelpBox() {
   helpBox.id = "help-text-box";
   helpBox.innerHTML = `
     <h2><span class="key-code">❔</span> Help / Usage</h2>
+    <div class="info-text-content-wrapper">
     <ul>
       <li>
         <div class="title">🔤 <strong>Project selected verses</strong></div>
         <ul>
           <li>🔎 <strong class="key-code">Search</strong> - Book and Chapter</li>
           <li><strong class="key-code">Click</strong> on verse number to display it on projector</li>
-          <li><strong class="key-code">Up/Down/Left/Right</strong> arrows to navigate to next/preview verses</li>
+          <li><strong class="key-code">Up / Down / Left / Right</strong> arrows to navigate to next/preview verses</li>
           <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Click</strong> to add verse to selection (multi select)</li>
           <li><strong class="key-code">Shift + Click</strong> to multi select between last selection</li>
           <li><strong class="key-code">ALT + Click</strong> on verse number or Pinned reference, <br/>to force project window to be on top (in case is not visible)</li>
-          <li><strong class="key-code">Enter + Enter</strong> to project added reference to 📌 List/Pin</li>
           <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
           <li><strong class="key-code">${isMac ? "⌃⌘F" : "F11"}</strong> to enter/exit fullscreen projector window (first focus it)</li>
         </ul>
         <li>
-          <div class="title">💬 <strong>Project "live text"</strong></div>
+          <div class="title">💬 <strong>Project "live text"</strong> (fast and simple slide)</div>
           <ul>
             <li>input any text to be projected (<a href="https://github.com/markedjs/marked" target="_blank">Markdown</a> format). <a href="https://raw.githubusercontent.com/nmatei/chrome-bible-utilities/master/screens/README.md" target="_blank">Examples</a></li>
             <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Enter</strong> to project live text (inside title or textarea)</li>
+          </ul>
+        </li>
+        <li>
+          <div class="title">📌 <strong>List/Pin some references</strong> (verses)</div>
+          <ul>
+            <li>Store references for future selection and project them faster</li>
+            <li><strong class="key-code">Enter</strong> to add references (<strong class="key-code">,</strong> or <strong class="key-code">;</strong> as separator) in 'Pin verses' input 🔍</li>
+            <li><strong class="key-code">Enter + Enter</strong> to project added reference to List/Pin</li>
+            <li><strong class="key-code">ALT + Click</strong> on Reference - force project (on top)</li>
+            <li>📝 <strong>Edit All</strong> to Copy/Paste/Edit multiple References</li>
+            <li>➕ will pin current Reference if search input is empty</li>
           </ul>
         </li>
         <li>
@@ -69,14 +80,16 @@ function addHelpBox() {
           </ul>
         </li>
         <li>
-          <div class="title">👋 GitHub Project 
-            <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & 
-            <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a> &
-            <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">📩 Support tikets</a>
-          </div>
+          <div class="title">👋 GitHub Project</div>
+          <ul>
+            <li>📃 External <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & Screenshots</li>
+            <li>👩‍💻 Source <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a></li>
+            <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">tikets</a></li>          
+          </ul>  
         </li>
       </li>
     </ul>
+    </div>
   `;
   document.body.appendChild(helpBox);
   return helpBox;

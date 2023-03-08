@@ -1,3 +1,5 @@
+const projected = "projected";
+
 function chapterPickerArrow() {
   if (isLoggedIn) {
     return $(".dropdown-arrow-container");
@@ -40,6 +42,15 @@ function getChapters() {
 
 function getChapterTitles() {
   return $$(".reader h1").map(h => h.innerHTML.trim());
+}
+
+function selectedSelector() {
+  return `.verse.${projected}`;
+}
+
+function getVerseNr(verseEl) {
+  const label = verseEl ? verseEl.querySelector(":scope > .label") : null;
+  return label ? label.innerText : "";
 }
 
 const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(.+)\?parallel\=(?<parallel>\d+)/gi;

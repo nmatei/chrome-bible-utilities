@@ -1,4 +1,3 @@
-const projected = "projected";
 let selectedVersesNr = [];
 let focusChapter = null;
 let isLoggedIn = false;
@@ -73,8 +72,7 @@ function getDisplayText(verses) {
   const showParallel = hasParallelView();
   let separator = " separator";
   let versesInfo = verses.map(v => {
-    const label = v.querySelector(":scope > .label");
-    const verseNr = label ? label.innerText : "";
+    const verseNr = getVerseNr(v);
     let cls = "";
     let parallel = false;
     if (showParallel) {
@@ -110,7 +108,7 @@ function printSelectedVerses(tab, verses) {
 }
 
 function deselectAll() {
-  $$(`.verse.${projected}`).forEach(v => {
+  $$(selectedSelector()).forEach(v => {
     v.classList.remove(projected);
   });
 }
@@ -201,7 +199,7 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
     selectedVersesNr = selectVerses(verses);
   }
 
-  const selectedVerses = $$(`.verse.${projected}`);
+  const selectedVerses = $$(selectedSelector());
   await displayVerses(selectedVerses);
   return selectedVerses;
 }
@@ -450,12 +448,9 @@ async function selectChapter(chapter) {
 
 async function waitAndSelectVerse(match, title) {
   const verse = match.verse;
-  if (!verse) {
-    return false;
-  }
   const [chapter] = getChapterTitles();
   const changed = chapter === title || (await waitNewTitles());
-  if (changed) {
+  if (verse && changed) {
     const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
     if (selectedVerses && selectedVerses.length) {
       selectedVerses[0].scrollIntoViewIfNeeded(true);

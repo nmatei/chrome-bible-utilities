@@ -74,13 +74,11 @@
   margin: 0.2rem 0 0.5rem 0;
   color: #ffffff;
   font-weight: bold;
-  border-bottom: 2px solid #ffffff;
-  padding-bottom: 6px;
 }
 .info-fixed-box ul {
   padding: 0;
   margin: 0 0 0 1.1rem;
-  line-height: 1.6;
+  line-height: 1.75em;
 }
 .info-fixed-box a {
   color: #3d79c2;
@@ -90,6 +88,7 @@
   background-color: #222222;
   padding: 0.2rem 0.3rem;
   border-radius: 0.3em;
+  border: 1px solid #ffffff;
 }
 h2 .key-code {
   border: 2px solid #ffffff;
@@ -157,13 +156,22 @@ h2 .key-code {
 #verses-text-box tfoot td {
   color: #cccccc90;
   font-weight: normal;
-  font-size: 0.7em;
   font-style: italic;
+}
+#ref-preview {
+  padding: 3px 5px;
+  margin: 0;
+  display: inline;
+  font-size: 0.7em;
 }
 #ref-preview.matched {
   color: #eeeeee;
   font-style: normal;
 }
+#ref-preview:empty {
+  display: none;
+}
+
 #verses-text-box table tr:nth-of-type(even) {
   background: #00000022;
 }
@@ -193,8 +201,19 @@ h2 .key-code {
   color: #eeeeee;
 }
 
+#pin-search-bar:after {
+  content: "🔍";
+  position: absolute;
+  right: 14px;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+}
 #pin-add-verse {
   width: 120px;
+  padding-right: 28px !important;
 }
 
 .info-fixed-box .form-field {
@@ -225,7 +244,15 @@ h2 .key-code {
 
 #help-text-box {
   max-height: 400px;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.info-text-content-wrapper {
+  flex: 1;
+  padding: 5px;
+  overflow-y: auto;
+  border: 2px solid #cccccc90;
+  border-radius: 5px;
 }
 #help-text-box .title {
   font-size: 1.2em;

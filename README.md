@@ -25,31 +25,33 @@ or in **2 different languages**.
 - [x] 🔤 **Project selected verses** (+/- parallel text)
   - [x] 🔎 `Search` Book and Chapter
   - [x] `Click` on verse number to **display** it on projector
-  - [x] `Up/Down/Left/Right` arrows to navigate to **next/preview** verses
+  - [x] `Up / Down / Left / Right` arrows to navigate to **next/preview** verses
   - [x] `CTRL + Click` to **add verse** to selection (multi select)
   - [x] `Shift + Click` to multi select between last selection
   - [x] `ALT + Click` on verse number or Pinned reference, to force project window to be on top (in case is not visible)
   - [x] `ESC` to show **blank page** (hide all selected verses)
   - [x] `F11` to enter/exit **fullscreen** projector window (first focus it)
-- [x] 🛠 User Settings (top-left actions)
-  - [x] Adjust css variables (spacing, colors)
-  - [x] remember last windows position (projector & settings)
-- [x] 💬 **Project "live text"**
+- [x] 💬 **Project "live text"** (fast and simple slide)
   - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
   - [x] `CTRL + Enter` to project live text (inside title or textarea)
   - [ ] Select any text from page and allow it to be projected
+- [x] 📌 List/Pin some references (verses)
+  - [x] Store references for future selection and project them faster
+  - [x] `Enter` to add references (`,` or `;` as separator) in 'Pin verses' input 🔍
+  - [x] `Enter + Enter` to project added reference
+  - [x] `ALT + Click` on Reference - force project (on top)
+  - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
+  - [x] ➕ will pin current Reference if search input is empty
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
-- [x] 📌 List/Pin some verses (references)
-  - [x] Store verses (references) for future selection and project them faster
-  - [x] `Enter` to add one/more references (`,` or `;` as separator) in 'Pin verses' input
-  - [x] `Enter + Enter` to project added reference to List/Pin
-  - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
 - [x] ✨ **Improvements**
   - [x] 🔎 Search 1 (part of Book + chapter: **Heb 11** / Ioan 3) + Enter
   - [x] 🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / **Ioan 3 16**) + Enter
   - [x] text for copy (hide notes and add space after verse number)
+- [x] 🛠 User Settings (top-left actions)
+  - [x] Adjust css variables (spacing, colors)
+  - [x] remember last windows position (projector & settings)
 
 ## 🎞 Results
 
@@ -117,4 +119,6 @@ If you want to try the latest versions before they are released, or to change co
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed 
-- [ ] More tests when user is not logged (before release)
+- [ ] More tests when user is not logged (before release) 
+- [ ] after change language re-cache books (booksCache)
+- [ ] highlight current book & chapter in Pin list (current slide)

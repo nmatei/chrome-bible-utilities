@@ -65,7 +65,11 @@ function createPinVersesBox() {
     const input = $("#pin-add-verse");
     const newVerses = splitVerses(input.value);
     if (!newVerses.length) {
-      return;
+      // Pin current Reference if 'input' is empty
+      const [chapter] = getChapterTitles();
+      const v = $(selectedSelector());
+      const verseNr = getVerseNr(v);
+      newVerses.push((chapter + " " + verseNr).trim());
     }
     const editor = $("#pinned-verses-editor");
     if (editor.style.display !== "none") {
@@ -149,8 +153,8 @@ function addVersesBox() {
   form.method = "GET";
   form.action = "#";
   form.innerHTML = `
-    <div class="actions row-actions form-field">
-      <input placeholder="Pin verses" type="text" autocomplete="off" id="pin-add-verse" class="fill" title="for Multiple references use [ , ] or [ ; ]"/>
+    <div id="pin-search-bar" class="actions row-actions form-field">
+      <input placeholder="Add Ref's" type="text" autocomplete="off" id="pin-add-verse" class="fill" title="for Multiple References use [ , ] or [ ; ] then press [ Enter ]"/>
     </div>
     <div class="actions row-actions form-field">
       <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
@@ -167,7 +171,11 @@ function addVersesBox() {
         </colgroup>
         <tbody></tbody>
         <tfoot>
-          <tr><td colspan="2" id="ref-preview"></td></tr>
+          <tr>
+            <td colspan="2">
+              <button type="submit" class="action-btn" id="ref-preview" title="Click to Add it in List"></button>
+            </td>
+          </tr>
         </tfoot>
       </table>
     </div>
