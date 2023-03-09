@@ -17,6 +17,10 @@ function getVerseRow(verse, i) {
   </tr>`;
 }
 
+function getFocusReference() {
+  return $('#pinned-verses-list a.focus[data-key="open"]');
+}
+
 function createPinVersesBox() {
   const form = addVersesBox();
   const preview = $("#ref-preview");
@@ -65,17 +69,13 @@ function createPinVersesBox() {
     const input = $("#pin-add-verse");
     const newVerses = splitVerses(input.value);
     if (!newVerses.length) {
-      // Pin current Reference if 'input' is empty
-      const [chapter] = getChapterTitles();
-      const v = $(selectedSelector());
-      const verseNr = getVerseNr(v);
-      newVerses.push((chapter + " " + verseNr).trim());
+      return;
     }
     const editor = $("#pinned-verses-editor");
     if (editor.style.display !== "none") {
       pinnedVerses = splitVerses(editor.value);
     }
-    pinnedVerses = [...pinnedVerses, ...newVerses];
+    pinnedVerses = [...new Set([...pinnedVerses, ...newVerses])];
     editor.value = pinnedVerses.join("\n");
     updatePinnedRows(pinnedVerses);
     setPinnedVerses(pinnedVerses);
@@ -92,7 +92,7 @@ function createPinVersesBox() {
   });
   form.querySelector("#pin-add-verse").addEventListener("keydown", async e => {
     if (e.key === "Enter" && !e.target.value) {
-      const focused = $('#pinned-verses-list a.focus[data-key="open"]');
+      const focused = getFocusReference();
       if (focused) {
         await openPinReference(focused);
         focused.classList.remove("focus");
@@ -122,6 +122,21 @@ function createPinVersesBox() {
     e.target.style.display = "none";
     $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
   });
+
+  // TODO think of a better solution to improve this flow
+  //   I don't like it know
+  // form.querySelector('button[data-key="add"]').addEventListener("click", async e => {
+  //   const input = $("#pin-add-verse");
+  //   if (!input.value) {
+  //     // Pin current Reference if 'input' is empty
+  //     const [chapter] = getChapterTitles();
+  //     const v = $(selectedSelector());
+  //     const verseNr = getVerseNr(v);
+  //     input.value = (chapter + " " + verseNr).trim();
+  //     e.preventDefault();
+  //   }
+  // });
+
   getPinnedVerses().then(verses => {
     pinnedVerses = splitVerses(verses);
     updatePinnedRows(pinnedVerses);
