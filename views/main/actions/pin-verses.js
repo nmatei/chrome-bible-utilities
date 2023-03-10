@@ -27,101 +27,22 @@ function createPinVersesBox() {
   form.querySelector("tbody").addEventListener("click", e => {
     const target = e.target;
     if (target.matches("a")) {
-      const action = target.dataset.key;
-      switch (action) {
-        case "remove": {
-          pinnedVerses.splice(target.dataset.idx, 1);
-          updatePinnedRows(pinnedVerses);
-          setPinnedVerses(pinnedVerses);
-          break;
-        }
-        case "open": {
-          openPinReference(target).then(() => {
-            e.altKey && bringTabToFront();
-          });
-          break;
-        }
-      }
+      onReferenceClick(target, e);
     }
   });
   $("#pin-add-verse").addEventListener(
     "input",
     debounce(e => {
-      const newVerses = splitVerses(e.target.value);
-      if (!newVerses.length) {
-        preview.innerText = "^ search ^";
-        return;
-      }
-      const match = getVerseInfo(newVerses[0]);
-      const book = match ? match.book : newVerses[0];
-      const bookText = findBookText(book);
-      if (bookText) {
-        preview.classList.add("matched");
-      } else {
-        preview.classList.remove("matched");
-      }
-      preview.innerText = getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
+      onReferenceSearch(e, preview);
     }, 100)
   );
   form.addEventListener("submit", async e => {
     e.preventDefault();
-    preview.innerText = "";
-    const input = $("#pin-add-verse");
-    const newVerses = splitVerses(input.value);
-    if (!newVerses.length) {
-      return;
-    }
-    const editor = $("#pinned-verses-editor");
-    if (editor.style.display !== "none") {
-      pinnedVerses = splitVerses(editor.value);
-    }
-    pinnedVerses = [...new Set([...pinnedVerses, ...newVerses])];
-    editor.value = pinnedVerses.join("\n");
-    updatePinnedRows(pinnedVerses);
-    setPinnedVerses(pinnedVerses);
-    input.value = "";
-    input.focus(); // focus in case we clicked on add '+'
-    const firstAddedRow = $$("#pinned-verses-list tbody td").find(e => e.innerText === newVerses[0]);
-    if (firstAddedRow) {
-      const link = firstAddedRow.querySelector('[data-key="open"]');
-      link.classList.add("focus");
-      setTimeout(() => {
-        link.classList.remove("focus");
-      }, 5000);
-    }
+    onReferenceSubmit(preview);
   });
-  form.querySelector("#pin-add-verse").addEventListener("keydown", async e => {
-    if (e.key === "Enter" && !e.target.value) {
-      const focused = getFocusReference();
-      if (focused) {
-        await openPinReference(focused);
-        focused.classList.remove("focus");
-        setTimeout(async () => {
-          const input = $("#pin-add-verse");
-          input.focus();
-          e.altKey && (await bringTabToFront());
-        }, 10);
-      }
-    }
-  });
-  form.querySelector('button[data-key="edit"]').addEventListener("click", e => {
-    $("#pinned-verses-list").style.display = "none";
-    const editor = $("#pinned-verses-editor");
-    editor.value = pinnedVerses.join("\n");
-    editor.style.display = "block";
-    e.target.style.display = "none";
-    $('#verses-text-box button[data-key="save"]').style.display = "inline-block";
-  });
-  form.querySelector('button[data-key="save"]').addEventListener("click", async e => {
-    const editor = $("#pinned-verses-editor");
-    editor.style.display = "none";
-    $("#pinned-verses-list").style.display = "table";
-    pinnedVerses = splitVerses(editor.value);
-    updatePinnedRows(pinnedVerses);
-    setPinnedVerses(pinnedVerses);
-    e.target.style.display = "none";
-    $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
-  });
+  form.querySelector("#pin-add-verse").addEventListener("keydown", onReferenceKeydown);
+  form.querySelector('button[data-key="edit"]').addEventListener("click", onReferenceEdit);
+  form.querySelector('button[data-key="save"]').addEventListener("click", onReferenceSave);
 
   // TODO think of a better solution to improve this flow
   //   I don't like it know
@@ -142,6 +63,104 @@ function createPinVersesBox() {
     updatePinnedRows(pinnedVerses);
   });
   return form;
+}
+
+function onReferenceClick(target, e) {
+  const action = target.dataset.key;
+  switch (action) {
+    case "remove": {
+      pinnedVerses.splice(target.dataset.idx, 1);
+      updatePinnedRows(pinnedVerses);
+      setPinnedVerses(pinnedVerses);
+      break;
+    }
+    case "open": {
+      openPinReference(target).then(() => {
+        e.altKey && bringTabToFront();
+      });
+      break;
+    }
+  }
+}
+
+function onReferenceSearch(e, preview) {
+  const newVerses = splitVerses(e.target.value);
+  if (!newVerses.length) {
+    preview.innerText = "^ search ^";
+    return;
+  }
+  const match = getVerseInfo(newVerses[0]);
+  const book = match ? match.book : newVerses[0];
+  const bookText = findBookText(book);
+  if (bookText) {
+    preview.classList.add("matched");
+  } else {
+    preview.classList.remove("matched");
+  }
+  preview.innerText = getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
+}
+
+function onReferenceSubmit(preview) {
+  preview.innerText = "";
+  const input = $("#pin-add-verse");
+  const newVerses = splitVerses(input.value);
+  if (!newVerses.length) {
+    return;
+  }
+  const editor = $("#pinned-verses-editor");
+  if (editor.style.display !== "none") {
+    pinnedVerses = splitVerses(editor.value);
+  }
+  pinnedVerses = [...new Set([...pinnedVerses, ...newVerses])];
+  editor.value = pinnedVerses.join("\n");
+  updatePinnedRows(pinnedVerses);
+  setPinnedVerses(pinnedVerses);
+  input.value = "";
+  input.focus(); // focus in case we clicked on add '+'
+  const firstAddedRow = $$("#pinned-verses-list tbody td").find(e => e.innerText === newVerses[0]);
+  if (firstAddedRow) {
+    const link = firstAddedRow.querySelector('[data-key="open"]');
+    link.classList.add("focus");
+    link.scrollIntoViewIfNeeded(true);
+    setTimeout(() => {
+      link.classList.remove("focus");
+    }, 5000);
+  }
+}
+
+async function onReferenceKeydown(e) {
+  if (e.key === "Enter" && !e.target.value) {
+    const focused = getFocusReference();
+    if (focused) {
+      await openPinReference(focused);
+      focused.classList.remove("focus");
+      setTimeout(async () => {
+        const input = $("#pin-add-verse");
+        input.focus();
+        e.altKey && (await bringTabToFront());
+      }, 10);
+    }
+  }
+}
+
+function onReferenceEdit(e) {
+  $("#pinned-verses-list").style.display = "none";
+  const editor = $("#pinned-verses-editor");
+  editor.value = pinnedVerses.join("\n");
+  editor.style.display = "block";
+  e.target.style.display = "none";
+  $('#verses-text-box button[data-key="save"]').style.display = "inline-block";
+}
+
+function onReferenceSave(e) {
+  const editor = $("#pinned-verses-editor");
+  editor.style.display = "none";
+  $("#pinned-verses-list").style.display = "table";
+  pinnedVerses = splitVerses(editor.value);
+  updatePinnedRows(pinnedVerses);
+  setPinnedVerses(pinnedVerses);
+  e.target.style.display = "none";
+  $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
 }
 
 async function openPinReference(target) {
@@ -177,7 +196,7 @@ function addVersesBox() {
       <span class="fill"></span>
       <button type="submit" class="action-btn" data-key="add" title="Add new Verse [ Enter ] (second [ Enter ] to project)">➕</button>
     </div>
-    <div id="pinned-verses-wrapper">
+    <div class="info-text-content-wrapper">
       <textarea id="pinned-verses-editor" cols="14" rows="6" style="display: none"></textarea>
       <table id="pinned-verses-list">
        <colgroup>
