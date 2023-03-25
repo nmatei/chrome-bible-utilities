@@ -32,6 +32,10 @@ p {
   padding: 0;
 }
 
+ol {
+  margin-left: 0.65em;
+}
+
 html {
   height: 100%;
   overflow: hidden;
