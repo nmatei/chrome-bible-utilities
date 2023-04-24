@@ -6,7 +6,9 @@ async function getPinnedVerses() {
 }
 
 async function setPinnedVerses(pinnedVerses) {
-  await chrome.storage.sync.set({ pinnedVerses: pinnedVerses.join("\n") });
+  await chrome.storage.sync.set({
+    pinnedVerses: pinnedVerses.join("\n")
+  });
   // TODO notify other tabs to update values
 }
 
@@ -21,6 +23,10 @@ function getFocusReference() {
   return $('#pinned-verses-list a.focus[data-key="open"]');
 }
 
+/**
+ *
+ * @returns {HTMLFormElement}
+ */
 function createPinVersesBox() {
   const form = addVersesBox();
   const preview = $("#ref-preview");

@@ -40,6 +40,13 @@ function getChapters() {
   return $$(chaptersSelector());
 }
 
+function getTitles() {
+  return $$(".reader h1").map(h => ({
+    content: h.innerHTML.trim(),
+    parallel: !!h.closest(".parallel-chapter")
+  }));
+}
+
 function getChapterTitles() {
   return $$(".reader h1").map(h => h.innerHTML.trim());
 }

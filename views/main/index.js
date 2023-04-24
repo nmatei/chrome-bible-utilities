@@ -4,10 +4,11 @@ let isLoggedIn = false;
 let booksCache;
 
 window.addEventListener("load", () => {
-  setTimeout(() => {
+  setTimeout(async () => {
     cleanUp();
     createSettingsActions();
-    initEvents();
+    await loadDisplaySettings();
+    await initEvents();
   }, 100);
 });
 
@@ -46,8 +47,8 @@ function mergeParagraphs(versesInfo) {
 
 function getReferences(chapters, versesInfo) {
   return chapters
-    .map((c, i) => {
-      const numbers = versesInfo.filter(v => v.verseNr && (i ? v.parallel : !v.parallel)).map(v => parseInt(v.verseNr.trim()));
+    .map(chapter => {
+      let numbers = versesInfo.filter(verse => verse.verseNr && chapter.parallel === verse.parallel).map(verse => parseInt(verse.verseNr.trim()));
 
       const groupedNumbers = numbers
         .reduce((acc, n) => {
@@ -62,14 +63,32 @@ function getReferences(chapters, versesInfo) {
         .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
         .join(",");
 
-      return groupedNumbers ? `${c}:${groupedNumbers}` : "";
+      return groupedNumbers ? `${chapter.content}:${groupedNumbers}` : "";
     })
     .filter(Boolean);
 }
 
-function getDisplayText(verses) {
-  let chapters = getChapterTitles();
-  const showParallel = hasParallelView();
+//TODO continue
+function getOtherChapter(url) {
+  return new Promise((resolve, reject) => {
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = url;
+    iframe.onload = function () {
+      const doc = iframe.contentWindow.document;
+      const verses = [...doc.querySelectorAll(".row .verse")];
+      console.warn("doc", verses);
+      const versesInfo = getVersesInfo(verses, false);
+      resolve(versesInfo);
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 100);
+    };
+    document.body.appendChild(iframe);
+  });
+}
+
+function getVersesInfo(verses, showParallel) {
   let separator = " separator";
   let versesInfo = verses.map(v => {
     const verseNr = getVerseNr(v);
@@ -78,7 +97,7 @@ function getDisplayText(verses) {
     if (showParallel) {
       if (v.closest(".parallel-chapter")) {
         cls = `parallel${separator}`;
-        separator = ""; // only first well be separator
+        separator = ""; // only first parallel verse will have separator
         parallel = true;
       }
     }
@@ -90,21 +109,38 @@ function getDisplayText(verses) {
     };
   });
 
-  versesInfo = mergeParagraphs(versesInfo);
+  return mergeParagraphs(versesInfo);
+}
+
+function getDisplayText(verses) {
+  const showParallel = hasParallelView();
+  let chapters = getTitles();
+  let versesInfo = getVersesInfo(verses, showParallel);
+  const displays = displaySettings;
+  // TODO make it more general/nice
+  if (displays !== 3) {
+    chapters = chapters.filter(({ parallel }) => displays && parallel === (displays === 2));
+    versesInfo = versesInfo.filter(({ parallel }) => displays && parallel === (displays === 2));
+  }
 
   const references = getReferences(chapters, versesInfo);
-
   const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
     return `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
   });
 
-  return `<h1 class="reference">${references.join(" / ")}</h1>` + versesContent.join("\n");
+  const reference = references.length ? `<h1 class="reference">${references.join(" / ")}</h1> ` : "";
+  return reference + versesContent.join("\n");
 }
 
-function printSelectedVerses(tab, verses) {
+async function printSelectedVerses(verses) {
   cleanUp();
   const text = verses.length ? getDisplayText(verses) : "";
-  projectText(text);
+  let tab = projectTab;
+  if (text || tab) {
+    tab = await getProjectTab();
+    projectText(text);
+  }
+  return tab;
 }
 
 function deselectAll() {
@@ -187,6 +223,13 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
     }
   });
 
+  // TODO cache results...
+  // console.time("getOtherChapter");
+  // getOtherChapter("https://my.bible.com/bible/143/PSA.1.НРП").then(v => {
+  //   console.info("verses info", v);
+  //   console.timeEnd("getOtherChapter");
+  // });
+
   const verses = $$(selectors.join(","));
 
   setFocusChapter(isParallel);
@@ -228,9 +271,7 @@ async function selectVersesToProject(e) {
 }
 
 async function displayVerses(verses) {
-  const tab = await getProjectTab();
-  printSelectedVerses(tab, verses);
-  return tab;
+  return printSelectedVerses(verses);
 }
 
 async function selectByKeys(key) {

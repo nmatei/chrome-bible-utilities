@@ -1,9 +1,9 @@
-function $(selector) {
-  return document.querySelector(selector);
+function $(selector, parent) {
+  return (parent || document).querySelector(selector);
 }
 
-function $$(selector) {
-  return [...document.querySelectorAll(selector)];
+function $$(selector, parent) {
+  return [...(parent || document).querySelectorAll(selector)];
 }
 
 function sleep(ms) {

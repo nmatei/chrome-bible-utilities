@@ -19,6 +19,8 @@
         "views/common/bible-mappings.js",
         "views/main/runtime-messages.js",
         "views/main/selectors.js",
+        "views/main/actions/settings.js",
+        "views/main/actions/help.js",
         "views/main/actions/pin-verses.js",
         "views/main/actions.js",
         "views/main/index.js"

@@ -50,6 +50,7 @@ or in **2 different languages**.
   - [x] 🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / **Ioan 3 16**) + Enter
   - [x] text for copy (hide notes and add space after verse number)
 - [x] 🛠 **User Settings** (top-left actions)
+  - [x] Toggle 1️⃣ primary OR 2️⃣ parallel verses to be projected
   - [x] Adjust css variables (spacing, colors)
   - [x] remember last windows position (projector & settings)
 
@@ -122,3 +123,5 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] More tests when user is not logged (before release)
 - [ ] after change language re-cache books (booksCache)
 - [ ] highlight current book & chapter in Pin list (current slide)
+- [ ] store most used versions to fast access them
+- [ ] if window is too small, try to make sure title is displayed in one row (even size is declared bigger, reduce it a bit)
