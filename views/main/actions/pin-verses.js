@@ -1,5 +1,7 @@
 let pinnedVerses = [];
 
+const numberOnlyRegExp = /^\s*\d+\s*$/;
+
 async function getPinnedVerses() {
   const storageData = await chrome.storage.sync.get("pinnedVerses");
   return storageData.pinnedVerses || "Mat 5:1";
@@ -30,7 +32,7 @@ function getFocusReference() {
 function createPinVersesBox() {
   const form = addVersesBox();
   const preview = $("#ref-preview");
-  form.querySelector("tbody").addEventListener("click", e => {
+  $("tbody", form).addEventListener("click", e => {
     const target = e.target;
     if (target.matches("a")) {
       onReferenceClick(target, e);
@@ -46,9 +48,9 @@ function createPinVersesBox() {
     e.preventDefault();
     onReferenceSubmit(preview);
   });
-  form.querySelector("#pin-add-verse").addEventListener("keydown", onReferenceKeydown);
-  form.querySelector('button[data-key="edit"]').addEventListener("click", onReferenceEdit);
-  form.querySelector('button[data-key="save"]').addEventListener("click", onReferenceSave);
+  $("#pin-add-verse", form).addEventListener("keydown", onReferenceKeydown);
+  $('button[data-key="edit"]', form).addEventListener("click", onReferenceEdit);
+  $('button[data-key="save"]', form).addEventListener("click", onReferenceSave);
 
   // TODO think of a better solution to improve this flow
   //   I don't like it know
@@ -90,7 +92,14 @@ function onReferenceClick(target, e) {
 }
 
 function onReferenceSearch(e, preview) {
-  const newVerses = splitVerses(e.target.value);
+  let value = e.target.value;
+  if (numberOnlyRegExp.test(value)) {
+    const titles = getChapterTitles();
+    if (titles && titles[0]) {
+      value = titles[0] + ":" + value;
+    }
+  }
+  const newVerses = splitVerses(value);
   if (!newVerses.length) {
     preview.innerText = "^ search ^";
     return;
@@ -109,7 +118,14 @@ function onReferenceSearch(e, preview) {
 function onReferenceSubmit(preview) {
   preview.innerText = "";
   const input = $("#pin-add-verse");
-  const newVerses = splitVerses(input.value);
+  let value = input.value;
+  if (numberOnlyRegExp.test(value)) {
+    const titles = getChapterTitles();
+    if (titles && titles[0]) {
+      value = titles[0] + ":" + value;
+    }
+  }
+  const newVerses = splitVerses(value);
   if (!newVerses.length) {
     return;
   }

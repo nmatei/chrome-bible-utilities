@@ -37,6 +37,7 @@ function addHelpBox() {
             <li><strong class="key-code">ALT + Click</strong> on Reference - force project (on top)</li>
             <li><strong class="key-code">📝</strong> <strong>Edit All</strong> to Copy/Paste/Edit multiple References</li>
             <li><strong class="key-code">➕</strong> will pin current Reference if search input is empty</li>
+            <li><strong class="key-code">number + Enter</strong> in 'Search pin' will pin current chapter</li>
           </ul>
         </li>
         <li>

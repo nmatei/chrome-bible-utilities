@@ -42,6 +42,7 @@ or in **2 different languages**.
   - [x] `ALT + Click` on Reference - force project (on top)
   - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
   - [x] ➕ will pin current Reference if search input is empty
+  - [x] `number + Enter` in 'Search pin' will pin current chapter
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
@@ -125,3 +126,4 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] highlight current book & chapter in Pin list (current slide)
 - [ ] store most used versions to fast access them
 - [ ] if window is too small, try to make sure title is displayed in one row (even size is declared bigger, reduce it a bit)
+- [ ] replace - with &#8209;
