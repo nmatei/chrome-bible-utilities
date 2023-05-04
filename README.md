@@ -126,4 +126,3 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] highlight current book & chapter in Pin list (current slide)
 - [ ] store most used versions to fast access them
 - [ ] if window is too small, try to make sure title is displayed in one row (even size is declared bigger, reduce it a bit)
-- [ ] replace - with &#8209;

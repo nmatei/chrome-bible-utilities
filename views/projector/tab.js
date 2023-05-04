@@ -37,6 +37,7 @@ function updateText(text, markdown) {
   if (markdown) {
     text = marked.parse(text);
   }
+  text = text.replaceAll("-", "&#8209;");
   root.innerHTML = text;
   adjustBodySize();
 }
