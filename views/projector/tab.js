@@ -43,6 +43,9 @@ function updateText(text, markdown) {
 }
 
 function initEvents() {
+  // TODO check if we want to have clock?
+  initClock();
+
   window.addEventListener(
     "resize",
     debounce(() => {
@@ -159,4 +162,11 @@ function setRootStyles(styles) {
   Object.entries(styles).forEach(([key, value]) => {
     root.style.setProperty("--" + key, value);
   });
+}
+
+function initClock() {
+  const root = document.getElementById("root");
+  const date = new Date();
+  root.dataset.text = date.toTimeString().substring(0, 5);
+  setTimeout(initClock, (60 - date.getSeconds()) * 1000);
 }
