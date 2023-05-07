@@ -125,3 +125,5 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] after change language re-cache books (booksCache)
 - [ ] highlight current book & chapter in Pin list (current slide)
 - [ ] store most used versions to fast access them
+- [ ] after update - add notification about new features.
+- [ ] clock config position

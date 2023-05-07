@@ -1,7 +1,7 @@
 #project-actions {
   position: fixed;
   background: #000000cc;
-  z-index: 100;
+  z-index: 2000;
   left: 0;
   top: 0;
   right: unset;
@@ -43,6 +43,7 @@
   text-align: center;
   -webkit-appearance: none;
   background-color: #2b3031;
+  font-family: "Helvetica Neue", Arial, "Liberation Sans", FreeSans, sans-serif;
 }
 .actions .action-btn:hover {
   border-color: #eeeeee;
@@ -64,7 +65,7 @@
   box-shadow: 1px 1px 2px #333333;
   color: #ffffff;
   padding: 10px;
-  z-index: 100;
+  z-index: 2000;
   right: unset;
   left: 55px;
   top: 4px;
@@ -86,6 +87,7 @@
   padding: 0;
   margin: 0 0 0 1.1rem;
   line-height: 1.75em;
+  list-style-type: circle;
 }
 .info-fixed-box a {
   color: #3d79c2;
@@ -96,6 +98,7 @@
   padding: 0.2rem 0.3rem;
   border-radius: 0.3em;
   border: 1px solid #ffffff;
+  font-family: ArialMT, Helvetica Neue, Arial, Liberation Sans, FreeSans, sans-serif;
 }
 .title .key-code {
   border: 2px solid #ffffff;
@@ -235,8 +238,9 @@ h2 .key-code {
   background: #ffffff;
   border-radius: 5px;
   width: 100%;
-  padding: 0.57rem;
+  padding: 0.57rem !important;
   margin: 0;
+  color: #121212;
 }
 
 #liveText {
