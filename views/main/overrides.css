@@ -53,6 +53,11 @@ body .yv-header .yv-sticky-header-content {
   padding-left: 55px;
   height: 60px;
 }
+/* links like: https://www.bible.com/ro/bible/126/JAS.5.13-18.NTR */
+header.z-banner {
+  padding-left: 55px;
+}
+
 body .reader-header {
   height: 50px;
 }

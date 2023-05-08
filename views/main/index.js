@@ -403,16 +403,23 @@ async function initEvents() {
   }
 }
 
-/**
-
- // TODO sync verses in same 'line'
- var v = 39
- var verses = document.querySelectorAll(`.row .primary-chapter .verse.v${v}, .row .parallel-chapter .verse.v${v}`);
- console.info(verses[0].offsetTop, verses[1].offsetTop)
- var primary = document.querySelector('.primary-chapter');
- primary.style.paddingTop = `${verses[1].offsetTop - verses[0].offsetTop - 0 + primary.style.paddingTop.replace('px', '') * 1}px`
-
- */
+// TODO not used yet...
+function syncParallelLines() {
+  const primary = $$(".row .primary-chapter .verse .label").map(l => l.closest(".verse"));
+  const parallel = $$(".row .parallel-chapter .verse .label").map(l => l.closest(".verse"));
+  primary.forEach((v1, i) => {
+    const v2 = parallel[i];
+    v1.style.marginTop = "0px"; // reset
+    v2.style.marginTop = "0px"; // reset
+    const diff = v1.offsetTop - v2.offsetTop;
+    //console.warn("%o - %o = %o", v1.offsetTop, v2.offsetTop, diff);
+    if (diff < 0) {
+      v1.style.marginTop = `${diff * -1}px`;
+    } else {
+      v2.style.marginTop = `${diff}px`;
+    }
+  });
+}
 
 async function improveSearch() {
   const searchInput = await waitElement(".chapter-picker-container input", 5000);
@@ -452,11 +459,15 @@ async function openChapter(book, chapter) {
   if (!bookEl) {
     // fixing search one single book
     // then and click outside => will remove all 'books li' from DOM
-    dropDownArrow.click();
-    await sleep(100);
-    bookEl = findBookEl(book);
-    dropDownArrow.click();
-    console.debug("second try of search bookEl", bookEl);
+    if (dropDownArrow) {
+      dropDownArrow.click();
+      await sleep(100);
+      bookEl = findBookEl(book);
+      dropDownArrow.click();
+      //console.debug("second try of search bookEl", bookEl);
+    } else {
+      console.warn("dropDownArrow not present");
+    }
   }
   if (bookEl) {
     bookEl.click();
