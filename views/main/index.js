@@ -385,6 +385,8 @@ async function initEvents() {
       document.body.classList.remove("focus-lost");
     });
 
+    window.addEventListener("resize", debounce(syncParallelLines, 200));
+
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       switch (request.action) {
         case "tabkeydown": {
@@ -403,10 +405,17 @@ async function initEvents() {
   }
 }
 
-// TODO not used yet...
 function syncParallelLines() {
-  const primary = $$(".row .primary-chapter .verse .label").map(l => l.closest(".verse"));
-  const parallel = $$(".row .parallel-chapter .verse .label").map(l => l.closest(".verse"));
+  //console.warn("syncParallelLines");
+  if (!hasParallelView()) {
+    return;
+  }
+  const primary = $$(".row .primary-chapter .verse > .label").map(l => l.closest(".verse"));
+  const parallel = $$(".row .parallel-chapter .verse > .label").map(l => l.closest(".verse"));
+  if (primary.length !== parallel.length) {
+    console.info("difference in nr of verses");
+    return;
+  }
   primary.forEach((v1, i) => {
     const v2 = parallel[i];
     v1.style.marginTop = "0px"; // reset
@@ -502,6 +511,7 @@ async function waitAndSelectVerse(match, title) {
   const verse = match.verse;
   const [chapter] = getChapterTitles();
   const changed = chapter === title || (await waitNewTitles());
+  syncParallelLines();
   if (verse && changed) {
     const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
     if (selectedVerses && selectedVerses.length) {
