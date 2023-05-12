@@ -375,12 +375,15 @@ async function initEvents() {
 
       $(versionSelector()).addEventListener(
         "click",
-        debounce(e => {
+        debounce(async e => {
           if (e.target.closest("a")) {
             console.info("version changed");
+            // UI not changed if we don't expand
+            await bookArrowExpandAndCollapse();
             cacheBooks();
           }
-        }, 5000)
+        }, 2000)
+        // 2 sec to make sure books are reloaded
       );
     }
 
@@ -473,6 +476,15 @@ function findBookEl(book) {
   const bookListItems = getBooks();
   book = latinizeText(book.toLowerCase());
   return bookListItems.find(e => latinizeText(e.innerText.toLowerCase()).includes(book));
+}
+
+async function bookArrowExpandAndCollapse() {
+  const dropDownArrow = chapterPickerArrow();
+  if (dropDownArrow) {
+    dropDownArrow.click();
+    await sleep(100);
+    dropDownArrow.click();
+  }
 }
 
 async function openChapter(book, chapter) {
