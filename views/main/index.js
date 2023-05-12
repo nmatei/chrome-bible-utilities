@@ -527,10 +527,14 @@ async function getMatchChapter(chapter) {
 
 async function selectChapter(chapter) {
   const chapterEl = await getMatchChapter(chapter);
-  const activeEl = chapterEl.querySelector("li");
-  activeEl && activeEl.classList.add("active");
-  chapterEl.click();
-  return chapterEl.innerText;
+  if (chapterEl) {
+    const activeEl = chapterEl.querySelector("li");
+    activeEl && activeEl.classList.add("active");
+    chapterEl.click();
+    return chapterEl.innerText;
+  }
+  console.info("chapter %o not found", chapter);
+  return "";
 }
 
 async function waitAndSelectVerse(match, title) {

@@ -4,14 +4,18 @@ function chapterPickerArrow() {
   if (isLoggedIn) {
     return $(".dropdown-arrow-container");
   }
-  return $('[data-vars-event-category="Chapter Picker"]');
+  // TODO find a better way
+  return $(".top-header-mobile .p-2 button");
+  // return $('[data-vars-event-category="Chapter Picker"]');
 }
 
 function booksSelector() {
   if (isLoggedIn) {
     return ".book-list li";
   }
-  return "#bible-book-list .list li";
+  // TODO find a better way
+  return ".top-header-mobile .z-popover li";
+  //return "#bible-book-list .list li";
 }
 
 function versionSelector() {
