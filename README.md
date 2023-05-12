@@ -114,16 +114,15 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] User Settings
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
-  - [ ] Adjust font-size & line-height main screen
   - [ ] Remember last url (or if parallel was opened - store it in storage.sync)
   - [ ] Display Reference version (VDC, НРП)
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed 
-- [ ] More tests when user is not logged (before release)
-- [ ] after change language re-cache books (booksCache)
+- [ ] More tests when user is not logged (before release) 
 - [ ] highlight current book & chapter in Pin list (current slide)
 - [ ] store most used versions to fast access them
 - [ ] after update - add notification about new features.
 - [ ] clock config position
+- [ ] i18n

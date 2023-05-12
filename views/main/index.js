@@ -353,6 +353,10 @@ async function waitBooksElements() {
   }
 }
 
+function cacheBooks() {
+  booksCache = getBooks().map(e => e.innerText);
+}
+
 async function initEvents() {
   const app = await Promise.any([waitElement("#react-app-Bible", 5000, 200), waitElement(".bible-reader-sticky-container", 5000, 200)]);
 
@@ -363,11 +367,21 @@ async function initEvents() {
   }
 
   await waitBooksElements();
-  booksCache = getBooks().map(e => e.innerText);
+  cacheBooks();
 
   if (app) {
     if (isLoggedIn) {
       improveSearch();
+
+      $(versionSelector()).addEventListener(
+        "click",
+        debounce(e => {
+          if (e.target.closest("a")) {
+            console.info("version changed");
+            cacheBooks();
+          }
+        }, 5000)
+      );
     }
 
     app.addEventListener("click", selectVersesToProject);

@@ -14,6 +14,10 @@ function booksSelector() {
   return "#bible-book-list .list li";
 }
 
+function versionSelector() {
+  return ".version-list";
+}
+
 function notLoggedInBookListCancel() {
   return '#bible-book-list [data-vars-event-action="Cancel"]';
 }
