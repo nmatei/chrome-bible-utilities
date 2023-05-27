@@ -42,7 +42,7 @@ or in **2 different languages**.
   - [x] `ALT + Click` on Reference - force project (on top)
   - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
   - [x] ➕ will pin current Reference if search input is empty
-  - [x] `number + Enter` in 'Search pin' will pin current chapter
+  - [x] 'Search pin': `16`, `2-4`, `2:4`, `2 4`, `+Enter` - pin current chapter or verses
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
@@ -126,3 +126,4 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] after update - add notification about new features.
 - [ ] clock config position
 - [ ] i18n
+- [ ] Show title on pinned verse (if is not full name)

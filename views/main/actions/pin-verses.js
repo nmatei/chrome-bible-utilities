@@ -1,7 +1,5 @@
 let pinnedVerses = [];
 
-const numberOnlyRegExp = /^\s*\d+\s*$/;
-
 async function getPinnedVerses() {
   const storageData = await chrome.storage.sync.get("pinnedVerses");
   return storageData.pinnedVerses || "Mat 5:1";
@@ -91,12 +89,27 @@ function onReferenceClick(target, e) {
   }
 }
 
+function getBookName(title) {
+  const match = getVerseInfo(title);
+  return match ? match.book : "";
+}
+
 function onReferenceSearch(e, preview) {
   let value = e.target.value;
-  if (numberOnlyRegExp.test(value)) {
+  let verses = "";
+  let chapterAndVerses = "";
+  if (searchVersesNrsRegExp.test(value)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      value = titles[0] + ":" + value;
+      verses = value;
+      value = titles[0] + ":" + verses;
+    }
+  } else if (searchChapterNrRegExp.test(value)) {
+    const titles = getChapterTitles();
+    if (titles && titles[0]) {
+      const book = getBookName(titles[0]);
+      chapterAndVerses = value;
+      value = book + " " + chapterAndVerses;
     }
   }
   const newVerses = splitVerses(value);
@@ -112,17 +125,37 @@ function onReferenceSearch(e, preview) {
   } else {
     preview.classList.remove("matched");
   }
+  adjustMatch(match, chapterAndVerses, verses);
   preview.innerText = getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
+}
+
+function adjustMatch(match, chapterAndVerses, verses) {
+  if (match) {
+    if (chapterAndVerses) {
+      //console.warn("match.chapter %s:%s => %o", match.chapter, match.verse, chapterAndVerses);
+      match.chapter = chapterAndVerses;
+      match.verse = "";
+    } else if (verses) {
+      //console.warn("match.verses %s:%s => %s:%s", match.chapter, match.verse, match.chapter, verses);
+      match.verse = verses;
+    }
+  }
 }
 
 function onReferenceSubmit(preview) {
   preview.innerText = "";
   const input = $("#pin-add-verse");
   let value = input.value;
-  if (numberOnlyRegExp.test(value)) {
+  if (searchVersesNrsRegExp.test(value)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      value = titles[0] + ":" + value;
+      value = titles[0] + ":" + value.replaceAll(multiSpaceRegExp, " ");
+    }
+  } else if (searchChapterNrRegExp.test(value)) {
+    const titles = getChapterTitles();
+    if (titles && titles[0]) {
+      const book = getBookName(titles[0]);
+      value = book + " " + value.replaceAll(multiSpaceRegExp, " ");
     }
   }
   const newVerses = splitVerses(value);

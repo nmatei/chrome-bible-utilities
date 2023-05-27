@@ -61,6 +61,10 @@ const referenceSplitterRegExp = /\s*[;,\n]\s*/;
 const verseRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi;
 const chapterRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)/gi;
 
+const multiSpaceRegExp = /\s+/g;
+const searchVersesNrsRegExp = /^\s*\d+\s*(-\s*\d+)?\s*$/;
+const searchChapterNrRegExp = /^\s*\d+\s*[:\s]\s*\d+\s*(-\s*\d+)?\s*$/;
+
 function splitVerses(verses) {
   verses = verses.trim();
   if (!verses) {
@@ -87,6 +91,8 @@ if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     splitVerses,
     getVerseInfo,
-    getReferencePreview
+    getReferencePreview,
+    searchVersesNrsRegExp,
+    searchChapterNrRegExp
   };
 }

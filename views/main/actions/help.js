@@ -38,6 +38,13 @@ function addHelpBox() {
             <li><strong class="key-code">📝</strong> <strong>Edit All</strong> to Copy/Paste/Edit multiple References</li>
             <li><strong class="key-code">➕</strong> will pin current Reference if search input is empty</li>
             <li><strong class="key-code">number + Enter</strong> in 'Search pin' will pin current chapter</li>
+            <li>'Search pin': 
+              <strong class="key-code">16</strong>, 
+              <strong class="key-code">2-4</strong>, 
+              <strong class="key-code">2:4</strong>, 
+              <strong class="key-code">2 4</strong>, 
+              <strong class="key-code">+Enter</strong> - pin current chapter or verses
+            </li>
           </ul>
         </li>
         <li>
