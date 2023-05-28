@@ -95,23 +95,9 @@ function getBookName(title) {
 }
 
 function onReferenceSearch(e, preview) {
-  let value = e.target.value;
-  let verses = "";
-  let chapterAndVerses = "";
-  if (searchVersesNrsRegExp.test(value)) {
-    const titles = getChapterTitles();
-    if (titles && titles[0]) {
-      verses = value;
-      value = titles[0] + ":" + verses;
-    }
-  } else if (searchChapterNrRegExp.test(value)) {
-    const titles = getChapterTitles();
-    if (titles && titles[0]) {
-      const book = getBookName(titles[0]);
-      chapterAndVerses = value;
-      value = book + " " + chapterAndVerses;
-    }
-  }
+  let value = cleanSpaces(e.target.value);
+  const search = getSearchShortcuts(value);
+  value = search.value;
   const newVerses = splitVerses(value);
   if (!newVerses.length) {
     preview.innerText = "^ search ^";
@@ -125,7 +111,7 @@ function onReferenceSearch(e, preview) {
   } else {
     preview.classList.remove("matched");
   }
-  adjustMatch(match, chapterAndVerses, verses);
+  adjustMatch(match, search.chapterAndVerses, search.verses);
   preview.innerText = getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
 }
 
@@ -142,22 +128,34 @@ function adjustMatch(match, chapterAndVerses, verses) {
   }
 }
 
-function onReferenceSubmit(preview) {
-  preview.innerText = "";
-  const input = $("#pin-add-verse");
-  let value = input.value;
+function cleanSpaces(text) {
+  return text.replaceAll(multiSpaceRegExp, " ").trim();
+}
+
+function getSearchShortcuts(value) {
+  let verses, chapterAndVerses;
   if (searchVersesNrsRegExp.test(value)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      value = titles[0] + ":" + value.replaceAll(multiSpaceRegExp, " ");
+      verses = value;
+      value = titles[0] + ":" + verses;
     }
   } else if (searchChapterNrRegExp.test(value)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
       const book = getBookName(titles[0]);
-      value = book + " " + value.replaceAll(multiSpaceRegExp, " ");
+      chapterAndVerses = value;
+      value = book + " " + chapterAndVerses;
     }
   }
+  return { value, verses, chapterAndVerses };
+}
+
+function onReferenceSubmit(preview) {
+  preview.innerText = "";
+  const input = $("#pin-add-verse");
+  let value = cleanSpaces(input.value);
+  value = getSearchShortcuts(value).value;
   const newVerses = splitVerses(value);
   if (!newVerses.length) {
     return;
