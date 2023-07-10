@@ -58,8 +58,6 @@ function waitElement(selector, timeout = 30000, retryInterval = 100) {
 }
 
 const referenceSplitterRegExp = /\s*[;,\n]\s*/;
-const verseRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi;
-const chapterRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)/gi;
 
 const multiSpaceRegExp = /\s+/g;
 const searchVersesNrsRegExp = /^\s*\d+\s*(-\s*\d+)?\s*$/;
@@ -73,25 +71,9 @@ function splitVerses(verses) {
   return verses.split(referenceSplitterRegExp);
 }
 
-function getVerseInfo(search) {
-  search = search.trim();
-  const fullMatch = Array.from(search.matchAll(verseRefRegExp))[0];
-  if (fullMatch) {
-    return fullMatch.groups;
-  }
-  const match = Array.from(search.matchAll(chapterRefRegExp))[0];
-  return match ? match.groups : null;
-}
-
-function getReferencePreview(book, chapter = "", verse = "") {
-  return `${book} ${chapter}${verse ? ":" + verse : ""}`.trim();
-}
-
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     splitVerses,
-    getVerseInfo,
-    getReferencePreview,
     searchVersesNrsRegExp,
     searchChapterNrRegExp
   };

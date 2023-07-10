@@ -223,8 +223,44 @@ async function openPinReference(target) {
     const icon = target.closest("tr").querySelector('a[data-key="remove"]');
     icon.classList.add("spin");
     const title = await openChapter(match.book, match.chapter);
+    await checkCacheVersesInfo();
     await waitAndSelectVerse(match, title);
     icon.classList.remove("spin");
+  }
+}
+
+async function checkCacheVersesInfo() {
+  const parallelEnabled = hasParallelView();
+  const urlParams = parallelEnabled ? getUrlParams() : undefined;
+  if (urlParams) {
+    const targetRef = youVersionReferenceMap(urlParams, 1, false);
+    if (targetRef.chapter !== urlParams.chapter) {
+      console.info(urlParams, " -> target", targetRef);
+      const loadUrl = createChapterUrl({
+        primary: urlParams.parallel,
+        book: urlParams.book,
+        chapter: targetRef.chapter
+      });
+      if (loadUrl) {
+        await cacheVersesInfo(loadUrl);
+      }
+    }
+  }
+}
+
+async function cacheVersesInfo(loadUrl) {
+  if (loadUrl && !getCacheVerses(loadUrl)) {
+    const verseNr = $(selectedSelector() + " > .label");
+    if (verseNr) {
+      verseNr.classList.add("spin");
+    }
+    console.time("getOtherChapter");
+    const versesInfo = await getOtherChapter(loadUrl);
+    cacheVerses(loadUrl, versesInfo);
+    console.timeEnd("getOtherChapter");
+    if (verseNr) {
+      verseNr.classList.remove("spin");
+    }
   }
 }
 

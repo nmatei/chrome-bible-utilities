@@ -17,15 +17,17 @@
         "views/common/utilities.js",
         "views/common/latinizeText.js",
         "views/common/bible-mappings.js",
+        "views/common/cache-verses.js",
+        "views/youversion/mappings.js",
+        "views/youversion/selectors.js",
         "views/main/runtime-messages.js",
-        "views/main/selectors.js",
         "views/main/actions/settings.js",
         "views/main/actions/help.js",
         "views/main/actions/pin-verses.js",
         "views/main/actions.js",
         "views/main/index.js"
       ],
-      "css": ["views/main/actions.css", "views/main/overrides.css"]
+      "css": ["views/main/actions.css", "views/youversion/overrides.css"]
     }
   ],
   "icons": {

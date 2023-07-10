@@ -74,8 +74,32 @@ function getUrlMatch(url) {
   return Array.from(url.matchAll(urlMatchRegExp))[0];
 }
 
+function parseUrlMatch(urlMatch) {
+  if (urlMatch) {
+    // console.debug("groups", urlMatch.groups);
+    const { primary, book, chapter, parallel } = urlMatch.groups;
+    return {
+      book: book,
+      primary: parseInt(primary),
+      parallel: parseInt(parallel),
+      chapter: parseInt(chapter)
+    };
+  }
+  return null;
+}
+
+function getUrlParams(href) {
+  const urlMatch = getUrlMatch(href || window.location.href);
+  return parseUrlMatch(urlMatch);
+}
+
+function createChapterUrl({ book, chapter, primary }) {
+  return `https://my.bible.com/bible/${primary}/${book}.${chapter}`;
+}
+
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
-    getUrlMatch
+    getUrlMatch,
+    getUrlParams
   };
 }

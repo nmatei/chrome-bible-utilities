@@ -43,6 +43,8 @@ or in **2 different languages**.
   - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
   - [x] ➕ will pin current Reference if search input is empty
   - [x] 'Search pin': `16`, `2-4`, `2:4`, `2 4`, `+Enter` - pin current chapter or verses
+  - [ ] 📄 **Copy** all pin verses to clipboard
+  - [ ] ↕ **drag & drop** to reorder verses
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
@@ -100,17 +102,17 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
-- [ ] Create and store list with Chapters to project
+- [ ] Appears as not logged in (but I'm logged in)
+  - [ ] https://www.bible.com/ro/bible/191/EXO.12.VDC
+  - [ ] https://www.bible.com/ro/bible/191/PSA.103.VDC
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
     - [x] Ukrainian (UBIO)
-  - [ ] Chapters in `Psalms 10-150` in \* vs RU/UA have different numbers
+      - [ ] Chapters in `Psalms 10-150` in \* vs UA have different numbers
   - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) 
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
     - [ ] Especially for Ukrainian & Russian
-- [ ] Sync primary verses to be in same 'line' with parallel
-  - [ ] If parallel/primary is selected (focused) - second view primary/parallel should scroll
 - [ ] User Settings
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen

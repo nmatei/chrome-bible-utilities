@@ -46,9 +46,11 @@ function mergeParagraphs(versesInfo) {
 }
 
 function getReferences(chapters, versesInfo) {
+  //console.warn("chapters %o, versesInfo %o", chapters, versesInfo);
   return chapters
     .map(chapter => {
-      let numbers = versesInfo.filter(verse => verse.verseNr && chapter.parallel === verse.parallel).map(verse => parseInt(verse.verseNr.trim()));
+      const verses = versesInfo.filter(verse => verse.verseNr && chapter.parallel === verse.parallel);
+      let numbers = verses.map(verse => parseInt(verse.verseNr.trim()));
 
       const groupedNumbers = numbers
         .reduce((acc, n) => {
@@ -63,12 +65,18 @@ function getReferences(chapters, versesInfo) {
         .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
         .join(",");
 
-      return groupedNumbers ? `${chapter.content}:${groupedNumbers}` : "";
+      // console.warn("%o -> grouped %o", numbers, groupedNumbers, verses);
+      let baseRef = chapter.content;
+      const v1 = verses[0];
+      if (v1.chapter) {
+        baseRef = baseRef.replace(/\d+\s*$/, v1.chapter);
+        //console.info("title chapter changed to %o", baseRef);
+      }
+      return groupedNumbers ? `${baseRef}:${groupedNumbers}` : "";
     })
     .filter(Boolean);
 }
 
-//TODO continue
 function getOtherChapter(url) {
   return new Promise((resolve, reject) => {
     const iframe = document.createElement("iframe");
@@ -77,7 +85,8 @@ function getOtherChapter(url) {
     iframe.onload = function () {
       const doc = iframe.contentWindow.document;
       const verses = [...doc.querySelectorAll(".row .verse")];
-      console.warn("doc", verses);
+      //console.warn("doc", verses);
+      // TODO cleanup comments
       const versesInfo = getVersesInfo(verses, false);
       resolve(versesInfo);
       setTimeout(() => {
@@ -112,11 +121,55 @@ function getVersesInfo(verses, showParallel) {
   return mergeParagraphs(versesInfo);
 }
 
+function addMissingVerses(versesInfo, isParallel) {
+  const urlParams = getUrlParams();
+  const targetRef = youVersionReferenceMap(urlParams, parseInt(versesInfo[0].verseNr), isParallel);
+  const loadUrl = createChapterUrl({
+    primary: isParallel ? urlParams.primary : urlParams.parallel,
+    book: urlParams.book,
+    chapter: targetRef.chapter
+  });
+  const cache = getCacheVerses(loadUrl);
+  if (cache) {
+    versesInfo = [
+      ...(isParallel ? [] : versesInfo),
+      ...versesInfo.map((v, i) => {
+        // for multi select
+        const targetRef = youVersionReferenceMap(urlParams, parseInt(v.verseNr), isParallel);
+        return {
+          ...{
+            ...cache[targetRef.verse - 1],
+            cls: (isParallel ? "" : "parallel") + (i ? "" : " separator"),
+            parallel: !isParallel,
+            chapter: targetRef.chapter
+          }
+        };
+      }),
+      ...(isParallel ? versesInfo : [])
+    ];
+  }
+  return versesInfo;
+}
+
+function addVersesFromCache(versesInfo) {
+  // will enter only when parallel version is other chapter
+  if (!versesInfo.some(v => v.parallel === true)) {
+    versesInfo = addMissingVerses(versesInfo, false);
+  } else if (!versesInfo.some(v => v.parallel === false)) {
+    versesInfo = addMissingVerses(versesInfo, true);
+  }
+  return versesInfo;
+}
+
 function getDisplayText(verses) {
-  const showParallel = hasParallelView();
+  const parallelEnabled = hasParallelView();
+  let versesInfo = getVersesInfo(verses, parallelEnabled);
   let chapters = getTitles();
-  let versesInfo = getVersesInfo(verses, showParallel);
   const displays = displaySettings;
+
+  if (displays > 1 && parallelEnabled) {
+    versesInfo = addVersesFromCache(versesInfo);
+  }
   // TODO make it more general/nice
   if (displays !== 3) {
     chapters = chapters.filter(({ parallel }) => displays && parallel === (displays === 2));
@@ -125,7 +178,10 @@ function getDisplayText(verses) {
 
   const references = getReferences(chapters, versesInfo);
   const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
-    return `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>` : ""}${content}</p>`;
+    return `<p class="verse ${cls}">
+      ${verseNr ? `<sup>${verseNr}</sup>` : ""}
+      ${content}
+    </p>`;
   });
 
   const reference = references.length ? `<h1 class="reference">${references.join(" / ")}</h1> ` : "";
@@ -210,25 +266,30 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
     numbers = getBulkNumbers(verseNumber, isParallel, selectedVersesNr);
   }
 
-  const isParallelViewEnabled = hasParallelView();
+  const parallelEnabled = hasParallelView();
   const selectors = [];
-  const urlMatch = isParallel || isParallelViewEnabled ? getUrlMatch(window.location.href) : undefined;
+  const urlParams = isParallel || parallelEnabled ? getUrlParams() : undefined;
+
+  let loadUrl = "";
   numbers.forEach(number => {
     selectors.push(getVerseSelector(focusOrder[0], number));
-    if (isParallel || isParallelViewEnabled) {
-      const parallelNr = mapParallelVerse(number, isParallel, urlMatch);
-      if (parallelNr) {
-        selectors.push(getVerseSelector(focusOrder[1], parallelNr));
+    if (isParallel || parallelEnabled) {
+      const targetRef = youVersionReferenceMap(urlParams, number, isParallel);
+      //console.warn("target reference %o", targetRef);
+      if (targetRef.chapter === urlParams.chapter) {
+        selectors.push(getVerseSelector(focusOrder[1], targetRef.verse));
+      } else {
+        if (!loadUrl) {
+          loadUrl = createChapterUrl({
+            primary: isParallel ? urlParams.primary : urlParams.parallel,
+            book: urlParams.book,
+            chapter: targetRef.chapter
+          });
+          //console.warn("missing %o", isParallel ? "primary" : "parallel", targetRef, loadUrl);
+        }
       }
     }
   });
-
-  // TODO cache results...
-  // console.time("getOtherChapter");
-  // getOtherChapter("https://my.bible.com/bible/143/PSA.1.НРП").then(v => {
-  //   console.info("verses info", v);
-  //   console.timeEnd("getOtherChapter");
-  // });
 
   const verses = $$(selectors.join(","));
 
@@ -241,6 +302,8 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
   if (!wasProjected || multiSelect) {
     selectedVersesNr = selectVerses(verses);
   }
+
+  await cacheVersesInfo(loadUrl);
 
   const selectedVerses = $$(selectedSelector());
   await displayVerses(selectedVerses);
@@ -301,19 +364,24 @@ async function selectByKeys(key) {
     let [primary] = next;
     let parallel;
 
-    const isParallelViewEnabled = hasParallelView();
-    if (isParallelViewEnabled) {
-      const urlMatch = getUrlMatch(window.location.href);
-      parallel = mapParallelVerse(primary, false, urlMatch);
+    const parallelEnabled = hasParallelView();
+    if (parallelEnabled) {
+      const urlParams = getUrlParams();
+      // TODO find 'correct' value for last param
+      const targetRef = youVersionReferenceMap(urlParams, primary, focusChapter === "parallel");
+      console.warn("key %o", targetRef);
+      if (targetRef.chapter === urlParams.chapter) {
+        parallel = targetRef.verse;
+      }
     }
 
-    if (!parallel && focusChapter === "parallel") {
+    if (focusChapter === "parallel") {
       focusOrder.reverse();
     }
 
     const selectors = [getVerseSelector(focusOrder[0], primary)];
 
-    if (parallel) {
+    if (typeof parallel === "number") {
       selectors.push(getVerseSelector(focusOrder[1], parallel));
     }
 

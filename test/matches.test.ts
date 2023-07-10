@@ -1,5 +1,6 @@
-import { getReferencePreview, getVerseInfo, splitVerses } from "../views/common/utilities";
-import { getUrlMatch } from "../views/main/selectors";
+import { getReferencePreview, getVerseInfo } from "../views/common/bible-mappings";
+import { splitVerses } from "../views/common/utilities";
+import { getUrlMatch } from "../views/youversion/selectors";
 
 type VerseInfo = {
   book?: string;
@@ -7,7 +8,7 @@ type VerseInfo = {
   verse?: string;
 };
 
-function testMatch(match: VerseInfo, book: string, chapter: string, verse?: string) {
+function testMatch(match: VerseInfo, book: string, chapter: number | string, verse?: number | string) {
   expect(match).toBeDefined();
   expect(match).toEqual({ book, chapter, verse });
 }
@@ -15,43 +16,43 @@ function testMatch(match: VerseInfo, book: string, chapter: string, verse?: stri
 describe("Test regular expression matches for getVerseInfo", () => {
   it("[Space] as verse separator", () => {
     const match = getVerseInfo("Ioan 3 16");
-    testMatch(match, "Ioan", "3", "16");
+    testMatch(match, "Ioan", 3, 16);
   });
   it("[:] as verse separator", () => {
     const match = getVerseInfo("Ioan 3:16");
-    testMatch(match, "Ioan", "3", "16");
+    testMatch(match, "Ioan", 3, 16);
   });
   it("[.] as verse separator", () => {
     const match = getVerseInfo("Ioan 3.16");
-    testMatch(match, "Ioan", "3", "16");
+    testMatch(match, "Ioan", 3, 16);
   });
 
   // ===
   it("[Space] in Chapter & [Space] as verse separator", () => {
     const match = getVerseInfo("Faptele Apostolilor 2 42");
-    testMatch(match, "Faptele Apostolilor", "2", "42");
+    testMatch(match, "Faptele Apostolilor", 2, 42);
   });
   it("[Space] in Chapter & [:] as verse separator", () => {
     const match = getVerseInfo("Faptele Apostolilor 2:42");
-    testMatch(match, "Faptele Apostolilor", "2", "42");
+    testMatch(match, "Faptele Apostolilor", 2, 42);
   });
   it("[Space] in Chapter & [.] as verse separator", () => {
     const match = getVerseInfo("Faptele Apostolilor 2.42");
-    testMatch(match, "Faptele Apostolilor", "2", "42");
+    testMatch(match, "Faptele Apostolilor", 2, 42);
   });
 
   // ===
   it("[Numbers] in Chapter & [Space] as verse separator", () => {
     const match = getVerseInfo("1 Corinteni 2 5");
-    testMatch(match, "1 Corinteni", "2", "5");
+    testMatch(match, "1 Corinteni", 2, 5);
   });
   it("[Numbers] in Chapter & [:] as verse separator", () => {
     const match = getVerseInfo("1 Corinteni 2:5");
-    testMatch(match, "1 Corinteni", "2", "5");
+    testMatch(match, "1 Corinteni", 2, 5);
   });
   it("[Numbers] in Chapter & [.] as verse separator", () => {
     const match = getVerseInfo("1 Corinteni 2.5");
-    testMatch(match, "1 Corinteni", "2", "5");
+    testMatch(match, "1 Corinteni", 2, 5);
   });
 
   // ===
@@ -63,13 +64,13 @@ describe("Test regular expression matches for getVerseInfo", () => {
   // ===
   it("[more verses] when get verse info", () => {
     const match = getVerseInfo("Mat 17:24-27");
-    testMatch(match, "Mat", "17", "24");
+    testMatch(match, "Mat", 17, 24);
   });
 
   // ===
   it("trim text before in verse separator", () => {
     const match = getVerseInfo("  Ioan 3 16  ");
-    testMatch(match, "Ioan", "3", "16");
+    testMatch(match, "Ioan", 3, 16);
   });
 });
 

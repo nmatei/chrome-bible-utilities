@@ -1,169 +1,317 @@
 /**
- * The difference between the numbering of the Russian and English Bible
+ * The difference between the numbering of the
+ *      Russian and English Bible
  *
  *   https://www.ph4.org/biblia_ruennum.php
  *
- *   Important link to Test when change mappings:
- *
- *    - https://my.bible.com/bible/191/JOB.40.VDC?parallel=186
- *    - https://my.bible.com/bible/191/PSA.23.VDC?parallel=186
- *    - https://my.bible.com/bible/143/PSA.22.%D0%9D%D0%A0%D0%9F?parallel=186
- *    - https://my.bible.com/bible/143/PSA.7.%D0%9D%D0%A0%D0%9F?parallel=186
- *    - https://my.bible.com/bible/186/PSA.7.UBIO?parallel=191
- *    - https://my.bible.com/bible/186/PSA.23.UBIO?parallel=191
- *    - https://my.bible.com/bible/191/NUM.13.%D0%BD%D1%80%D0%BF?parallel=143
- *    - https://my.bible.com/bible/143/NUM.13.%D0%BD%D1%80%D0%BF?parallel=191
- *    - https://my.bible.com/bible/191/JOS.6.%D0%BD%D1%80%D0%BF?parallel=186
- *    - https://my.bible.com/bible/191/JOS.6.%D0%BD%D1%80%D0%BF?parallel=143
- *
+ * TODO consider to create an npm package
  */
-const BASIC_RU_MAPPING = {
+
+const verseRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi;
+const chapterRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)/gi;
+
+function getVerseInfo(search) {
+  search = search.trim();
+  const fullMatch = Array.from(search.matchAll(verseRefRegExp))[0];
+  if (fullMatch) {
+    const groups = fullMatch.groups;
+    return {
+      book: groups.book,
+      chapter: parseInt(groups.chapter),
+      verse: parseInt(groups.verse)
+    };
+  }
+  const match = Array.from(search.matchAll(chapterRefRegExp))[0];
+  return match ? match.groups : null;
+}
+
+function getReferencePreview(book, chapter = "", verse = "") {
+  return `${book} ${chapter}${verse ? ":" + verse : ""}`.trim();
+}
+
+function applyReversedMapping(mapping) {
+  Object.entries(mapping).forEach(([book, value]) => {
+    if (typeof value === "object") {
+      if (value.source) {
+        value.target = Object.entries(value.source).reduce((target, [chapters, entries]) => {
+          //console.warn("calc %o", chapters, entries);
+          let [start, end] = chapters.split(/\s*-\s*/).map(c => parseInt(c));
+          const single = typeof end === "undefined";
+          if (single) {
+            end = start;
+          }
+          while (start <= end) {
+            if (!single) {
+              // clone values for individual chapters
+              value.source[start] = entries;
+            }
+            entries.forEach(entry => {
+              const targetChapter = start + entry.diff[0];
+              target[targetChapter] = target[targetChapter] || [];
+              const targetEntry = {
+                diff: [parseInt(-entry.diff[0]), parseInt(-entry.diff[1])]
+              };
+              if (entry.from) {
+                targetEntry.from = [entry.from[0] + entry.diff[1], entry.from[1] + entry.diff[1]];
+              }
+              target[targetChapter].push(targetEntry);
+            });
+            start++;
+          }
+
+          if (!single) {
+            // delete pair, leave only single chapter
+            delete value.source[chapters];
+          }
+
+          return target;
+        }, {});
+      }
+    }
+  });
+  return mapping;
+}
+
+const BASIC_RU_MAPPING = applyReversedMapping({
   "NUM.13": 1,
   "JOS.6": -1,
   "1SA.24": 1,
-  "JOB.40": -5,
-  "JOB.41": -8,
-  PSA: [
-    { from: 3, to: 9, add_verses: 1, add_chapters: 0 },
-    // for PSA:10-150 are more cases, add_chapters: -1 will ignore entire chapter for now
-    { from: 10, to: 150, add_verses: 0, add_chapters: -1 }
-  ],
+  JOB: {
+    // TODO use maps to generate source and target
+    // maps: {
+    //   "40:1-5": [-1, 30], // 40:1-5  -> 39:31-35
+    //   "40:6-24": [0, -5], // 40:6-24 -> 40:-5
+    //   "41:1-8": [-1, 19], // 41:1-8	 -> 40:20-27
+    //   "41:9-34": [0, -8] //  41:9-34 -> 41:-8
+    // },
+    source: {
+      40: [
+        { from: [1, 5], diff: [-1, 30] }, // 40:1-5  -> 39:31-35
+        { from: [6, 24], diff: [0, -5] } //  40:6-24 -> 40:-5
+      ],
+      41: [
+        { from: [1, 8], diff: [-1, 19] }, // 41:1-8	  -> 40:20-27
+        { from: [9, 34], diff: [0, -8] } //  41:9-34	-> 41:-8
+      ]
+    }
+  },
+  PSA: {
+    source: {
+      "3-8": [{ diff: [0, 1] }],
+      9: [{ from: [1, 20], diff: [0, 1] }],
+      10: [{ from: [1, 18], diff: [-1, 21] }],
+      11: [{ diff: [-1, 0] }],
+      "12-13": [{ diff: [-1, 1] }],
+      "14-17": [{ diff: [-1, 0] }],
+      "18-22": [{ diff: [-1, 1] }],
+      "23-29": [{ diff: [-1, 0] }],
+      "30-31": [{ diff: [-1, 1] }],
+      "32-33": [{ diff: [-1, 0] }],
+      34: [{ diff: [-1, 1] }],
+      35: [{ diff: [-1, 0] }],
+      36: [{ diff: [-1, 1] }],
+      37: [{ diff: [-1, 0] }],
+      "38-42": [{ diff: [-1, 1] }],
+      43: [{ diff: [-1, 0] }],
+      "44-49": [{ diff: [-1, 1] }],
+      50: [{ diff: [-1, 0] }],
+      "51-52": [{ diff: [-1, 2] }],
+      53: [{ diff: [-1, 1] }],
+      54: [{ diff: [-1, 2] }],
+      "55-59": [{ diff: [-1, 1] }],
+      60: [{ diff: [-1, 2] }],
+      "61-65": [{ diff: [-1, 1] }],
+      66: [{ diff: [-1, 0] }],
+      "67-70": [{ diff: [-1, 1] }],
+      "71-74": [{ diff: [-1, 0] }],
+      "75-77": [{ diff: [-1, 1] }],
+      "78-79": [{ diff: [-1, 0] }],
+      "80-81": [{ diff: [-1, 1] }],
+      82: [{ diff: [-1, 0] }],
+      "83-85": [{ diff: [-1, 1] }],
+      86: [{ diff: [-1, 0] }],
+      87: [
+        { from: [1, 1], diff: [-1, 1] },
+        { from: [2, 2], diff: [-1, 0] },
+        { from: [3, 7], diff: [-1, 0] }
+      ],
+      "88-89": [{ diff: [-1, 1] }],
+      90: [
+        { from: [1, 5], diff: [-1, 1] },
+        { from: [6, 17], diff: [-1, 0] }
+      ],
+      91: [{ diff: [-1, 0] }],
+      92: [{ diff: [-1, 1] }],
+      "93-101": [{ diff: [-1, 0] }],
+      102: [{ diff: [-1, 1] }],
+      "103-107": [{ diff: [-1, 0] }],
+      108: [{ diff: [-1, 1] }],
+      "109-112": [{ diff: [-1, 0] }],
+      113: [{ from: [1, 9], diff: [-1, 0] }],
+      114: [{ from: [1, 8], diff: [-1, 0] }],
+      115: [{ from: [1, 18], diff: [-2, 8] }],
+      116: [
+        { from: [1, 9], diff: [-2, 0] },
+        { from: [10, 19], diff: [-1, -9] }
+      ],
+      "117-146": [{ diff: [-1, 0] }],
+      147: [
+        { from: [1, 11], diff: [-1, 0] },
+        { from: [12, 20], diff: [0, -11] }
+      ]
+    }
+  },
   "SNG.1": -1,
   "SNG.7": 1,
   "DAN.4": -3,
   "HOS.14": 1,
   "JON.2": 1
-};
+});
 
-// TODO get one EN version as 'basic' and use all others as 'diff'
-//   diff from EN version
-const BibleVersionsMappings = {
-  143: {
+const BibleMappings = {
+  НРП: {
     language: "ru",
     version: "НРП",
     mapping: {
       ...BASIC_RU_MAPPING
     }
   },
-  167: {
+  СИНОД: {
     language: "ru",
     version: "СИНОД",
     mapping: {
       ...BASIC_RU_MAPPING
     }
   },
-  385: {
+  CARS: {
     language: "ru",
     version: "CARS",
     mapping: {
       ...BASIC_RU_MAPPING
     }
   },
-  840: {
+  "CARS-A": {
     language: "ru",
     version: "CARS-A",
     mapping: {
       ...BASIC_RU_MAPPING
     }
   },
-  400: {
+  SYNO: {
     language: "ru",
     version: "SYNO",
     mapping: {
       ...BASIC_RU_MAPPING
     }
   },
-  // 313: {language: "ru", version: "BTI"}, // TODO ROM 13 is in sync with RO ...
-
-  186: {
+  // [UA]
+  UBIO: {
     language: "ua",
     version: "UBIO",
-    // TODO check all mappigns
-    mapping: {
+    mapping: applyReversedMapping({
       "1SA.24": 1,
       //"JOB.40": -5,
       "JOB.41": -8,
-      PSA: [
-        { from: 3, to: 9, add_verses: 1, add_chapters: 0 },
-        { from: 10, to: 150, add_verses: 0, add_chapters: -1 }
-      ],
+      // TODO
+      // PSA: {
+      //   diffs: [
+      //     { from: 3, to: 9, chapters: 0, verses: 1 },
+      //     { from: 10, to: 150, chapters: -1, verses: 0 }
+      //   ]
+      // },
       "SNG.1": -1,
       "SNG.7": 1,
       "DAN.4": -3,
       "HOS.2": 2,
       "HOS.14": 1,
       "JON.2": 1
-    }
+    })
   }
-
-  // 186: "UBIO", // TODO Check NUM.13 they are in sync...
-  // // 188: "UKRK", // TODO PS 23 is in sync with RO ...
-  // // TODO PS 23 is in sync with RO ... while ps 9 has +1 verse
-  // // 204: "UMT",
-  // 3269: "НПУ",
-  // 1755: "УТТ",
-  // 3149: "НУП" // check
 };
 
-function getDiffMapping(MAPPING, book, chapter, isParallel) {
-  let diff = MAPPING[`${book}.${chapter}`];
-  if (diff) {
-    return diff * (isParallel ? -1 : 1);
+function findChapterDiff(mapping, chapter, verse, isParallel) {
+  const chapterDiff = mapping[isParallel ? "target" : "source"][chapter];
+  if (chapterDiff) {
+    //console.warn("chapterDiff %o", `${chapter}:${verse}`, chapterDiff);
+    const match = chapterDiff.find(({ from }) => {
+      if (from) {
+        const [start, end] = from;
+        //console.debug("search verse %o", `${chapter}:${verse}`, start, end);
+        return start <= verse && verse <= end;
+      } else {
+        // entire chapter
+        return true;
+      }
+    });
+    if (match) {
+      return {
+        chapters: match.diff[0],
+        verses: match.diff[1]
+      };
+    }
   }
-  diff = MAPPING[book]; // should be Array or undefined
-  if (diff) {
-    const matchDiff = diff.find(match => match.from <= chapter && chapter <= match.to);
+  return null;
+}
+
+function getDiffMappings(MAPPING, book, chapter, verse, isParallel = false) {
+  let mapping = MAPPING[`${book}.${chapter}`];
+  if (mapping) {
+    return mapping * (isParallel ? -1 : 1);
+  }
+  mapping = MAPPING[book];
+  if (typeof mapping === "object") {
+    const matchDiff = findChapterDiff(mapping, chapter, verse, isParallel);
     if (matchDiff) {
-      if (matchDiff.add_chapters) {
+      if (matchDiff.chapters) {
         return matchDiff;
       }
-      const diffNr = matchDiff.add_verses;
-      return diffNr * (isParallel ? -1 : 1);
+      return matchDiff.verses;
     }
   }
   return 0;
 }
 
-// TODO make it more generic
-function mapParallelVerse(nr, isParallel, urlMatch) {
-  if (urlMatch) {
-    // console.debug("groups", urlMatch.groups);
-    let { primary, book, chapter, parallel } = urlMatch.groups;
-    primary = parseInt(primary);
-    parallel = parseInt(parallel);
-    chapter = parseInt(chapter);
+function addDiffOperation(target, ref, to, operation = "add") {
+  if (to) {
+    const add = getDiffMappings(to.mapping, ref.book, ref.chapter, ref.verse, operation === "subtract");
 
-    const primaryVersion = BibleVersionsMappings[primary];
-    const parallelVersion = BibleVersionsMappings[parallel];
-    if (primaryVersion || parallelVersion) {
-      let substract = 0,
-        add = 0;
-      if (primaryVersion) {
-        substract = getDiffMapping(primaryVersion.mapping, book, chapter, isParallel);
-      }
-      if (parallelVersion) {
-        add = getDiffMapping(parallelVersion.mapping, book, chapter, isParallel);
-      }
-      if (typeof add === "object" || typeof substract === "object") {
-        if (typeof add === typeof substract) {
-          if (add.add_chapters === substract.add_chapters) {
-            return nr + add.add_verses - substract.add_verses;
-          }
-        }
-        // can't print from different chapters for now
-        return 0;
-      }
-      const diff = add - substract;
-      return nr + diff;
+    if (typeof add === "number") {
+      target.verse += add;
+    } else {
+      target.chapter += add.chapters;
+      target.verse += add.verses;
     }
   }
-  return nr;
+}
+
+/**
+ *
+ * @param {string|{book: string,chapter: string, verse: string}} ref
+ * @param {string} from
+ * @param {string} to
+ * @param {boolean} [asString]
+ * @returns {{chapter: (number|string), book: string, verse: (number|string)}|string}
+r */
+function bibleReferenceMap(ref, from, to, asString = true) {
+  if (typeof ref === "string") {
+    ref = getVerseInfo(ref);
+  }
+  const target = { ...ref };
+  addDiffOperation(target, ref, BibleMappings[to], "add");
+  addDiffOperation(target, ref, BibleMappings[from], "subtract");
+
+  //return JSON.stringify({ ref, add, target });
+  if (asString) {
+    return getReferencePreview(target.book, target.chapter, target.verse);
+  }
+  return target;
 }
 
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
-    BibleVersionsMappings,
-    getDiffMapping,
-    mapParallelVerse
+    BASIC_RU_MAPPING,
+    getVerseInfo,
+    getReferencePreview,
+    bibleReferenceMap
   };
 }
