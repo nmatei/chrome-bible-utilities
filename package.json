@@ -12,7 +12,7 @@
     "v": "yarn version --minor --no-git-tag-version",
     "postversion": "yarn sync-version && git add \"package.json\" && git add \"manifest.json\" && git status && git commit -m \"increase version to v%npm_package_version%\" && git push origin HEAD",
     "sync-version": "node scripts/sync-version.js && prettier --write manifest.json",
-    "deploy": "yarn zip && yarn v"
+    "deploy": "yarn test && yarn zip && yarn v"
   },
   "repository": {
     "type": "git",

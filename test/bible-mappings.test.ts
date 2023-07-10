@@ -7,9 +7,8 @@ describe("Bible reference map for [RU][НРП]", () => {
   const noChangesMatches = [
     "[VDC] NUM 9:2 -> [НРП] NUM 9:2",
     "[VDC] JOB 1:5 -> [НРП] JOB 1:5",
-    "[НРП] JOB 1:5 -> [VDC] JOB 1:5",
     "[VDC] PSA 1:3 -> [НРП] PSA 1:3",
-    "[НРП] PSA 1:5 -> [VDC] PSA 1:5"
+    "[VDC] PSA 1:5 -> [НРП] PSA 1:5"
   ];
 
   const changesMatches = [
@@ -41,6 +40,15 @@ describe("Bible reference map for [RU][НРП]", () => {
 
   test.each(noChangesMatches)("Reference should not be changed: %s", match => {
     const [fromVerse, toVerse] = match.split(targetSplitter);
+    const [, from, fromRef] = fromVerse.match(versionSplitter);
+    const [, to, toRef] = toVerse.match(versionSplitter);
+
+    const ref = bibleReferenceMap(fromRef, from, to);
+    expect(ref).toBe(toRef);
+  });
+
+  test.each(noChangesMatches)("Reverse reference should not be changed: %s", match => {
+    const [toVerse, fromVerse] = match.split(targetSplitter); // intentionally changed
     const [, from, fromRef] = fromVerse.match(versionSplitter);
     const [, to, toRef] = toVerse.match(versionSplitter);
 
