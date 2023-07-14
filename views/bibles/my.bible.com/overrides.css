@@ -1,0 +1,27 @@
+body .yv-bible-text .verse .label,
+.verse .label {
+  cursor: pointer;
+  padding: 5px 5px 5px 8px !important;
+  border-radius: 4px;
+  border: 2px solid var(--verseNumberBorderColor);
+  font-weight: bold;
+}
+.verse .label:after {
+  content: " ";
+}
+.verse .label:hover {
+  background: var(--verseNumberBackgroundHover);
+  border-color: var(--verseNumberBorderColorHover);
+}
+.verse.projected .label {
+  background: var(--verseNumberBackgroundProjected) !important;
+  color: var(--verseNumberColorProjected) !important;
+}
+.focus-lost .verse.projected .label {
+  background: var(--verseNumberBackgroundProjectedFocusLost) !important;
+}
+.focus-primary .yv-bible-text .verse.projected .label,
+.focus-parallel .parallel-chapter .verse.projected .label,
+.focus-primary .primary-chapter .verse.projected .label {
+  border-color: var(--verseNumberBorderColorProjected) !important;
+}

@@ -17,33 +17,6 @@ body .bible-reader-arrows-container {
 body .yv-bible-text .verse .label {
   top: 0;
 }
-body .yv-bible-text .verse .label,
-.verse .label {
-  cursor: pointer;
-  padding: 5px 5px 5px 8px;
-  border-radius: 4px;
-  border: 2px solid #dcdcdc;
-  font-weight: bold;
-}
-.verse .label:after {
-  content: " ";
-}
-.verse .label:hover {
-  background: #eaf3fc;
-  border-color: #d7237c88;
-}
-.verse.projected .label {
-  background: #000 !important;
-  color: #fff !important;
-}
-.focus-lost .verse.projected .label {
-  background: #999 !important;
-}
-.focus-primary .yv-bible-text .verse.projected .label,
-.focus-parallel .parallel-chapter .verse.projected .label,
-.focus-primary .primary-chapter .verse.projected .label {
-  border-color: #d7237c !important;
-}
 
 body #current-ui-view {
   padding: 110px 0 20px 55px;

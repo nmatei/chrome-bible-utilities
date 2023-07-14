@@ -369,7 +369,7 @@ async function selectByKeys(key) {
       const urlParams = getUrlParams();
       // TODO find 'correct' value for last param
       const targetRef = youVersionReferenceMap(urlParams, primary, focusChapter === "parallel");
-      console.warn("key %o", targetRef);
+      //console.debug("key %o", targetRef);
       if (targetRef.chapter === urlParams.chapter) {
         parallel = targetRef.verse;
       }

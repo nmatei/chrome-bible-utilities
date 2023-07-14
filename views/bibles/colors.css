@@ -1,0 +1,9 @@
+:root {
+  --verseNumberBorderColor: #d3d3d3;
+  --verseNumberBackgroundHover: #eaf3fc;
+  --verseNumberBorderColorHover: #d7237c88;
+  --verseNumberColorProjected: #fff;
+  --verseNumberBorderColorProjected: #d7237c;
+  --verseNumberBackgroundProjected: #000;
+  --verseNumberBackgroundProjectedFocusLost: #000;
+}

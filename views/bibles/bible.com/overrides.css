@@ -1,0 +1,26 @@
+[class^="ChapterContent_label"] {
+  cursor: pointer;
+  padding: 5px 5px 5px 8px !important;
+  border-radius: 4px;
+  border: 2px solid var(--verseNumberBorderColor);
+  font-weight: bold;
+}
+[class^="ChapterContent_label"]:after {
+  content: " ";
+}
+[class^="ChapterContent_label"]:hover {
+  background: var(--verseNumberBackgroundHover);
+  border-color: var(--verseNumberBorderColorHover);
+}
+[class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+  background: var(--verseNumberBackgroundProjected) !important;
+  color: var(--verseNumberColorProjected) !important;
+}
+.focus-lost [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+  background: var(--verseNumberBackgroundProjectedFocusLost) !important;
+}
+/* TODO test */
+.focus-parallel .parallel-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"],
+.focus-primary .primary-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+  border-color: var(--verseNumberBorderColorProjected) !important;
+}
