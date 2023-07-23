@@ -1,4 +1,10 @@
-[class^="ChapterContent_label"] {
+body [class^="ChapterContent_verse"] {
+  line-height: 1.6em;
+  display: block;
+}
+
+body [class^="ChapterContent_label"] {
+  display: inline;
   cursor: pointer;
   padding: 5px 5px 5px 8px !important;
   border-radius: 4px;
@@ -19,6 +25,11 @@
 .focus-lost [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
   background: var(--verseNumberBackgroundProjectedFocusLost) !important;
 }
+
+[class^="ChapterContent_note"] {
+  display: none !important;
+}
+
 /* TODO test */
 .focus-parallel .parallel-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"],
 .focus-primary .primary-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {

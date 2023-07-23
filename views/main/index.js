@@ -1,6 +1,6 @@
+//let selectedVerses = {};
 let selectedVersesNr = [];
 let focusChapter = null;
-let isLoggedIn = false;
 let booksCache;
 
 window.addEventListener("load", () => {
@@ -14,10 +14,10 @@ window.addEventListener("load", () => {
 
 function cleanUp() {
   // remove all notes
-  $$(".note").forEach(n => {
-    n.innerHTML = "";
-    n.className = "";
-  });
+  // $$(".note").forEach(n => {
+  //   n.innerHTML = "";
+  //   n.className = "";
+  // });
 
   // add spaces after label
   $$(".verse .label").forEach(l => {
@@ -26,7 +26,7 @@ function cleanUp() {
 }
 
 function hasParallelView() {
-  return isLoggedIn && !!$(".parallel-chapter");
+  return !!$(parallelViewSelector);
 }
 
 /**
@@ -104,7 +104,7 @@ function getVersesInfo(verses, showParallel) {
     let cls = "";
     let parallel = false;
     if (showParallel) {
-      if (v.closest(".parallel-chapter")) {
+      if (v.closest(parallelViewSelector)) {
         cls = `parallel${separator}`;
         separator = ""; // only first parallel verse will have separator
         parallel = true;
@@ -112,7 +112,7 @@ function getVersesInfo(verses, showParallel) {
     }
     return {
       verseNr,
-      content: v.innerText.substring(verseNr.length),
+      content: v.innerText.substring(verseNr.length) || "",
       parallel,
       cls
     };
@@ -213,18 +213,15 @@ function selectVerses(verses, deselect) {
     .map(v => {
       v.classList.toggle(projected);
 
-      const label = v.querySelector(":scope > .label");
+      const label = v.querySelector(`:scope > ${verseLabelSelectorMatch}`);
       return label ? parseInt(label.innerText) : 0;
     })
     .filter(Boolean);
 }
 
 function getVerseNumber(verse) {
-  const match = Array.from(verse.className.matchAll(/v(?<nr>\d+)/gi))[0];
-  if (match) {
-    return match.groups.nr * 1;
-  }
-  return 1;
+  const label = verse.querySelector(verseLabelSelectorMatch);
+  return label ? label.innerText.trim() * 1 : 1;
 }
 
 function setFocusChapter(isParallel) {
@@ -255,9 +252,9 @@ function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
 }
 
 async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect, bulkSelect) {
-  const focusOrder = ["primary-chapter", "parallel-chapter"];
+  const views = [primaryViewSelector, parallelViewSelector];
   if (isParallel) {
-    focusOrder.reverse();
+    views.reverse();
   }
 
   let numbers = [verseNumber];
@@ -267,17 +264,17 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
   }
 
   const parallelEnabled = hasParallelView();
-  const selectors = [];
+  const verses = [];
   const urlParams = isParallel || parallelEnabled ? getUrlParams() : undefined;
 
   let loadUrl = "";
   numbers.forEach(number => {
-    selectors.push(getVerseSelector(focusOrder[0], number));
+    verses.push(getVerseEl(views[0], number));
     if (isParallel || parallelEnabled) {
       const targetRef = youVersionReferenceMap(urlParams, number, isParallel);
       //console.warn("target reference %o", targetRef);
       if (targetRef.chapter === urlParams.chapter) {
-        selectors.push(getVerseSelector(focusOrder[1], targetRef.verse));
+        verses.push(getVerseEl(views[1], targetRef.verse));
       } else {
         if (!loadUrl) {
           loadUrl = createChapterUrl({
@@ -290,8 +287,6 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
       }
     }
   });
-
-  const verses = $$(selectors.join(","));
 
   setFocusChapter(isParallel);
 
@@ -312,7 +307,7 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
 
 async function selectVersesToProject(e) {
   const target = e.target;
-  if (target.matches(".verse .label")) {
+  if (target.matches(verseLabelSelectorMatch)) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -320,12 +315,18 @@ async function selectVersesToProject(e) {
     const bulkSelect = e.shiftKey;
     const altKey = e.altKey;
 
-    const verse = target.closest(".verse");
+    const verse = target.closest(verseSelectorMatch);
     const verseNumber = getVerseNumber(verse);
-    const isParallel = target.closest(".parallel-chapter");
+    const isParallel = target.closest(parallelViewSelector);
     const wasProjected = altKey ? false : verse.classList.contains(projected);
 
     await doSelectVerses(verseNumber, !!isParallel, wasProjected, multiSelect, bulkSelect);
+
+    // const parallelEnabled = hasParallelView();
+    // const verses = $$(selectedSelector());
+    // const versesInfo = getVersesInfo(verses, parallelEnabled);
+    // selectedVerses[verseNumber] = versesInfo;
+    // console.warn("selectedVerses", selectedVerses);
 
     if (altKey) {
       await bringTabToFront();
@@ -358,7 +359,7 @@ async function selectByKeys(key) {
   }
 
   if (dir) {
-    const focusOrder = ["primary-chapter", "parallel-chapter"];
+    const view = [primaryViewSelector, parallelViewSelector];
 
     const next = selectedVersesNr.map(v => v + dir);
     let [primary] = next;
@@ -376,16 +377,15 @@ async function selectByKeys(key) {
     }
 
     if (focusChapter === "parallel") {
-      focusOrder.reverse();
+      view.reverse();
     }
 
-    const selectors = [getVerseSelector(focusOrder[0], primary)];
+    const verses = [getVerseEl(view[0], primary)];
 
     if (typeof parallel === "number") {
-      selectors.push(getVerseSelector(focusOrder[1], parallel));
+      verses.push(getVerseEl(view[1], parallel));
     }
 
-    const verses = $$(selectors.join(","));
     if (verses.length) {
       selectedVersesNr = next;
     } else {
@@ -404,132 +404,56 @@ async function selectByKeys(key) {
   }
 }
 
-async function waitBooksElements() {
-  if (isLoggedIn) {
-    await waitElement(booksSelector(), 5000);
-  } else {
-    const arrow = chapterPickerArrow();
-    if (arrow) {
-      arrow.click();
-      // works only after 'first' expand
-      await waitElement(booksSelector(), 5000);
-      const cancel = await waitElement(notLoggedInBookListCancel(), 500);
-      if (cancel) {
-        cancel.click();
-      }
-    }
-  }
-}
-
-function cacheBooks() {
-  booksCache = getBooks().map(e => e.innerText);
-}
-
 async function initEvents() {
-  const app = await Promise.any([waitElement("#react-app-Bible", 5000, 200), waitElement(".bible-reader-sticky-container", 5000, 200)]);
+  await Promise.any([waitElement(appReadySelector, 5000, 200), waitElement(".bible-reader-sticky-container", 5000, 200)]);
 
-  if (app && app.id === "react-app-Bible") {
-    isLoggedIn = true;
-  } else {
-    console.info("user not loggedIn", app);
-  }
+  await cacheBooks();
+  //console.info("books", booksCache);
 
-  await waitBooksElements();
-  cacheBooks();
-
-  if (app) {
-    if (isLoggedIn) {
-      improveSearch();
-
-      $(versionSelector()).addEventListener(
-        "click",
-        debounce(async e => {
-          if (e.target.closest("a")) {
-            console.info("version changed");
-            // UI not changed if we don't expand
-            await bookArrowExpandAndCollapse();
-            cacheBooks();
-          }
-        }, 2000)
-        // 2 sec to make sure books are reloaded
-      );
-    }
-
-    app.addEventListener("click", selectVersesToProject);
-
-    document.addEventListener("keydown", e => {
-      if (!e.target.matches("input,textarea")) {
-        selectByKeys(e.key);
-      }
-    });
-
-    window.addEventListener("blur", () => {
-      document.body.classList.add("focus-lost");
-    });
-    window.addEventListener("focus", () => {
-      document.body.classList.remove("focus-lost");
-    });
-
-    window.addEventListener("resize", debounce(syncParallelLines, 200));
-
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      switch (request.action) {
-        case "tabkeydown": {
-          selectByKeys(request.payload);
-          sendResponse({ status: "keydown" });
-          break;
+  const versionEl = $(versionSelector());
+  versionEl &&
+    versionEl.addEventListener(
+      "click",
+      debounce(async e => {
+        if (e.target.closest("a")) {
+          console.info("version changed");
+          // UI not changed if we don't expand
+          await bookArrowExpandAndCollapse();
+          await cacheBooks();
         }
-        case "windowRemoved": {
-          deselectAll();
-          projectTab = null;
-          sendResponse({ status: 200 });
-          break;
-        }
-      }
-    });
-  }
-}
+      }, 2000)
+      // 2 sec to make sure books are reloaded
+    );
 
-function syncParallelLines() {
-  //console.warn("syncParallelLines");
-  if (!hasParallelView()) {
-    return;
-  }
-  const primary = $$(".row .primary-chapter .verse > .label").map(l => l.closest(".verse"));
-  const parallel = $$(".row .parallel-chapter .verse > .label").map(l => l.closest(".verse"));
-  if (primary.length !== parallel.length) {
-    console.info("difference in nr of verses");
-    return;
-  }
-  primary.forEach((v1, i) => {
-    const v2 = parallel[i];
-    v1.style.marginTop = "0px"; // reset
-    v2.style.marginTop = "0px"; // reset
-    const diff = v1.offsetTop - v2.offsetTop;
-    //console.warn("%o - %o = %o", v1.offsetTop, v2.offsetTop, diff);
-    if (diff < 0) {
-      v1.style.marginTop = `${diff * -1}px`;
-    } else {
-      v2.style.marginTop = `${diff}px`;
+  document.addEventListener("click", selectVersesToProject);
+
+  document.addEventListener("keydown", e => {
+    if (!e.target.matches("input,textarea")) {
+      selectByKeys(e.key);
     }
   });
-}
 
-async function improveSearch() {
-  const searchInput = await waitElement(".chapter-picker-container input", 5000);
-  if (!searchInput) {
-    console.info("searchInput not found");
-    return;
-  }
-  searchInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      const value = e.target.value;
-      const match = getVerseInfo(value);
-      if (match) {
-        setTimeout(async () => {
-          await selectChapter(match.chapter);
-          await waitAndSelectVerse(match);
-        }, 10);
+  window.addEventListener("blur", () => {
+    document.body.classList.add("focus-lost");
+  });
+  window.addEventListener("focus", () => {
+    document.body.classList.remove("focus-lost");
+  });
+
+  window.addEventListener("resize", debounce(syncParallelLines, 200));
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.action) {
+      case "tabkeydown": {
+        selectByKeys(request.payload);
+        sendResponse({ status: "keydown" });
+        break;
+      }
+      case "windowRemoved": {
+        deselectAll();
+        projectTab = null;
+        sendResponse({ status: 200 });
+        break;
       }
     }
   });
@@ -553,56 +477,6 @@ async function bookArrowExpandAndCollapse() {
     await sleep(100);
     dropDownArrow.click();
   }
-}
-
-async function openChapter(book, chapter) {
-  let result = "";
-  let bookEl = findBookEl(book);
-  const dropDownArrow = chapterPickerArrow();
-  if (!bookEl) {
-    // fixing search one single book
-    // then and click outside => will remove all 'books li' from DOM
-    if (dropDownArrow) {
-      dropDownArrow.click();
-      await sleep(100);
-      bookEl = findBookEl(book);
-      dropDownArrow.click();
-      //console.debug("second try of search bookEl", bookEl);
-    } else {
-      console.warn("dropDownArrow not present");
-    }
-  }
-  if (bookEl) {
-    bookEl.click();
-    result = bookEl.innerText;
-    result += " " + (await selectChapter(chapter));
-    dropDownArrow.click();
-  }
-  return result;
-}
-
-async function getMatchChapter(chapter) {
-  if (!isLoggedIn) {
-    await waitElement(chaptersSelector(), 1000);
-  }
-  const chapters = getChapters();
-  let chapterEl = chapters.find(e => e.innerText == chapter);
-  if (!chapterEl) {
-    chapterEl = chapters[0];
-  }
-  return chapterEl;
-}
-
-async function selectChapter(chapter) {
-  const chapterEl = await getMatchChapter(chapter);
-  if (chapterEl) {
-    const activeEl = chapterEl.querySelector("li");
-    activeEl && activeEl.classList.add("active");
-    chapterEl.click();
-    return chapterEl.innerText;
-  }
-  console.info("chapter %o not found", chapter);
-  return "";
 }
 
 async function waitAndSelectVerse(match, title) {

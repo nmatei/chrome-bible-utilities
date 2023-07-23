@@ -164,6 +164,7 @@ function setRootStyles(styles) {
   });
 }
 
+// TODO margins are not moving clock
 function initClock() {
   const root = document.getElementById("root");
   const date = new Date();

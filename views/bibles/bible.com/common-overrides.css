@@ -42,18 +42,6 @@ body .chapter-picker-modal .chapter-container .chapter-list li {
   height: 40px;
 }
 
-body .yv-bible-text .verse,
-body .bible-reader .verse {
-  line-height: 1.6em;
-  display: block;
-}
-
-/*
-body.display-block .bible-reader .verse {
-  display: block;
-}
-*/
-
 body .yv-bible-text .verse.projected,
 body .bible-reader .verse.projected {
   background: #cccccc80;

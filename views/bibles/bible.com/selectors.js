@@ -1,0 +1,122 @@
+const projected = "projected";
+
+const appReadySelector = '[class^="ChapterContent_bible-reader"]';
+const titlesSelector = '[class^="ChapterContent_reader"] h1';
+const verseSelectorMatch = '[class^="ChapterContent_verse"]';
+const verseLabelSelectorMatch = '[class^="ChapterContent_label"]';
+const verseContentSelector = '[class^="ChapterContent_content"]';
+const primaryViewSelector = '[class^="ChapterContent_verse"]';
+const parallelViewSelector = '.md\\:block [class^="ChapterContent_yv-bible-text"] [class^="ChapterContent_verse"]';
+
+function chapterPickerArrow() {
+  const title = $(titlesSelector).innerHTML;
+  const buttons = $$('.z-docked [id^="headlessui-popover-button"]');
+  return buttons.find(b => b.innerText === title);
+}
+
+function versionSelector() {
+  //TODO
+  return ".version-list";
+}
+
+function bookListCancel() {
+  return ".z-popover .justify-center button";
+}
+
+function booksSelector() {
+  return ".w-full .z-popover li button";
+}
+
+function chaptersSelector() {
+  return ".z-popover li a";
+}
+
+async function openChapter(book, chapter) {
+  let result = "";
+  let bookEl = findBookEl(book);
+  const dropDownArrow = chapterPickerArrow();
+  if (!bookEl) {
+    // fixing search one single book
+    // then and click outside => will remove all 'books li' from DOM
+    if (dropDownArrow) {
+      dropDownArrow.click();
+      await sleep(100);
+      bookEl = findBookEl(book);
+      //console.warn("bookEl", bookEl);
+
+      if (bookEl) {
+        bookEl.click();
+        result = bookEl.innerText;
+        await sleep(200);
+        result += " " + (await selectChapter(chapter));
+      }
+
+      //console.warn("bookEl", bookEl, result);
+      //dropDownArrow.click();
+    } else {
+      console.warn("dropDownArrow not present");
+    }
+  }
+  return result;
+}
+
+async function selectChapter(chapter) {
+  const chapterEl = await getMatchChapter(chapter);
+  if (chapterEl) {
+    const activeEl = chapterEl.querySelector("li");
+    activeEl && activeEl.classList.add("active");
+    chapterEl.click();
+    return chapterEl.innerText;
+  }
+  console.info("chapter %o not found", chapter);
+  return "";
+}
+
+async function getMatchChapter(chapter) {
+  const chapters = getChapters();
+  let chapterEl = chapters.find(e => e.innerText == chapter);
+  if (!chapterEl) {
+    chapterEl = chapters[0];
+  }
+  return chapterEl;
+}
+
+function selectedSelector() {
+  return `.${projected}${verseSelectorMatch}`;
+}
+
+function getVerseNr(verseEl) {
+  const label = verseEl ? $(`:scope > ${verseLabelSelectorMatch}`, verseEl) : null;
+  return label ? label.innerText : "";
+}
+
+function getVerseContents(verseEl) {
+  return $$(verseContentSelector, verseEl);
+}
+
+function getVerseSelector(view, number) {
+  // TODO use data-usfm?
+  return `${view} ${verseLabelSelectorMatch}`; // TODO number not used
+}
+
+function getVerseEl(view, number) {
+  const label = $$(getVerseSelector(view, number)).find(label => label.innerText.trim() == number);
+  return label ? label.closest(verseSelectorMatch) : null;
+}
+
+async function cacheBooks() {
+  const arrow = chapterPickerArrow();
+  if (arrow) {
+    arrow.click();
+    await sleep(200);
+    booksCache = getBooks().map(e => e.innerText);
+    const cancel = await waitElement(bookListCancel(), 500);
+    if (cancel) {
+      cancel.click();
+    }
+  }
+}
+
+function syncParallelLines() {
+  //...
+}

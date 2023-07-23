@@ -31,11 +31,13 @@
     },
     {
       "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
-      "css": ["views/bibles/my.bible.com/overrides.css"]
+      "css": ["views/bibles/my.bible.com/overrides.css"],
+      "js": ["views/bibles/my.bible.com/selectors.js"]
     },
     {
       "matches": ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
-      "css": ["views/bibles/bible.com/overrides.css"]
+      "css": ["views/bibles/bible.com/overrides.css"],
+      "js": ["views/bibles/bible.com/selectors.js"]
     }
   ],
   "icons": {

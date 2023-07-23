@@ -1,45 +1,3 @@
-const projected = "projected";
-
-function chapterPickerArrow() {
-  if (isLoggedIn) {
-    return $(".dropdown-arrow-container");
-  }
-  // TODO find a better way
-  return $(".top-header-mobile .p-2 button");
-  // return $('[data-vars-event-category="Chapter Picker"]');
-}
-
-function booksSelector() {
-  if (isLoggedIn) {
-    return ".book-list li";
-  }
-  // TODO find a better way
-  return ".top-header-mobile .z-popover li";
-  //return "#bible-book-list .list li";
-}
-
-function versionSelector() {
-  return ".version-list";
-}
-
-function notLoggedInBookListCancel() {
-  return '#bible-book-list [data-vars-event-action="Cancel"]';
-}
-
-function chaptersSelector() {
-  if (isLoggedIn) {
-    return ".chapter-picker-modal .chapter-container .chapter-list a";
-  }
-  return '#bible-chapter-list a[data-vars-event-action="Select Chapter"]';
-}
-
-function getVerseSelector(focusOrder, number) {
-  if (isLoggedIn) {
-    return `.row .${focusOrder} .verse.v${number}`;
-  }
-  return `.chapter > div .verse.v${number}`;
-}
-
 function getBooks() {
   return $$(booksSelector());
 }
@@ -49,23 +7,14 @@ function getChapters() {
 }
 
 function getTitles() {
-  return $$(".reader h1").map(h => ({
+  return $$(titlesSelector).map(h => ({
     content: h.innerHTML.trim(),
-    parallel: !!h.closest(".parallel-chapter")
+    parallel: !!h.closest(parallelViewSelector)
   }));
 }
 
 function getChapterTitles() {
-  return $$(".reader h1").map(h => h.innerHTML.trim());
-}
-
-function selectedSelector() {
-  return `.verse.${projected}`;
-}
-
-function getVerseNr(verseEl) {
-  const label = verseEl ? verseEl.querySelector(":scope > .label") : null;
-  return label ? label.innerText : "";
+  return $$(titlesSelector).map(h => h.innerHTML.trim());
 }
 
 const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(.+)\?parallel\=(?<parallel>\d+)/gi;

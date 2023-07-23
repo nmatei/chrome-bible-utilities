@@ -229,6 +229,9 @@ h2 .key-code {
   width: 120px;
   padding-right: 28px !important;
 }
+#pinned-verses-list a {
+  cursor: pointer;
+}
 
 .info-fixed-box .form-field {
   margin-bottom: 10px;

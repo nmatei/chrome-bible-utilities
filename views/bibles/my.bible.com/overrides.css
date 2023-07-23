@@ -1,4 +1,9 @@
-body .yv-bible-text .verse .label,
+body .yv-bible-text .verse,
+body .bible-reader .verse {
+  line-height: 1.6em;
+  display: block;
+}
+
 .verse .label {
   cursor: pointer;
   padding: 5px 5px 5px 8px !important;
@@ -20,6 +25,10 @@ body .yv-bible-text .verse .label,
 .focus-lost .verse.projected .label {
   background: var(--verseNumberBackgroundProjectedFocusLost) !important;
 }
+.note {
+  display: none !important;
+}
+
 .focus-primary .yv-bible-text .verse.projected .label,
 .focus-parallel .parallel-chapter .verse.projected .label,
 .focus-primary .primary-chapter .verse.projected .label {
