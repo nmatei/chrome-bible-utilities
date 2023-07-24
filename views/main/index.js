@@ -269,12 +269,12 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
 
   let loadUrl = "";
   numbers.forEach(number => {
-    verses.push(getVerseEl(views[0], number));
+    verses.push(...getVerseEls(views[0], number));
     if (isParallel || parallelEnabled) {
       const targetRef = youVersionReferenceMap(urlParams, number, isParallel);
       //console.warn("target reference %o", targetRef);
       if (targetRef.chapter === urlParams.chapter) {
-        verses.push(getVerseEl(views[1], targetRef.verse));
+        verses.push(...getVerseEls(views[1], targetRef.verse));
       } else {
         if (!loadUrl) {
           loadUrl = createChapterUrl({
@@ -380,10 +380,10 @@ async function selectByKeys(key) {
       view.reverse();
     }
 
-    const verses = [getVerseEl(view[0], primary)];
+    const verses = getVerseEls(view[0], primary);
 
     if (typeof parallel === "number") {
-      verses.push(getVerseEl(view[1], parallel));
+      verses.push(...getVerseEls(view[1], parallel));
     }
 
     if (verses.length) {

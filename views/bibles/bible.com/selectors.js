@@ -5,7 +5,7 @@ const titlesSelector = '[class^="ChapterContent_reader"] h1';
 const verseSelectorMatch = '[class^="ChapterContent_verse"]';
 const verseLabelSelectorMatch = '[class^="ChapterContent_label"]';
 const verseContentSelector = '[class^="ChapterContent_content"]';
-const primaryViewSelector = '[class^="ChapterContent_verse"]';
+const primaryViewSelector = '[class^="ChapterContent_chapter"]';
 const parallelViewSelector = '.md\\:block [class^="ChapterContent_yv-bible-text"] [class^="ChapterContent_verse"]';
 
 function chapterPickerArrow() {
@@ -95,13 +95,11 @@ function getVerseContents(verseEl) {
 }
 
 function getVerseSelector(view, number) {
-  // TODO use data-usfm?
-  return `${view} ${verseLabelSelectorMatch}`; // TODO number not used
+  return `${view} [data-usfm$=".${number}"]`;
 }
 
-function getVerseEl(view, number) {
-  const label = $$(getVerseSelector(view, number)).find(label => label.innerText.trim() == number);
-  return label ? label.closest(verseSelectorMatch) : null;
+function getVerseEls(view, number) {
+  return $$(getVerseSelector(view, number));
 }
 
 async function cacheBooks() {
@@ -118,5 +116,29 @@ async function cacheBooks() {
 }
 
 function syncParallelLines() {
-  //...
+  if (!hasParallelView()) {
+    return;
+  }
+  const v1 = $(primaryViewSelector);
+  const v2 = $(parallelViewSelector);
+  const versesSelector = `${verseSelectorMatch} > ${verseLabelSelectorMatch}`;
+  const primary = $$(versesSelector, v1).map(l => l.closest(verseSelectorMatch));
+  const parallel = $$(versesSelector, v2).map(l => l.closest(verseSelectorMatch));
+  if (primary.length !== parallel.length) {
+    // TODO find
+    console.info("difference in nr of verses");
+    return;
+  }
+  primary.forEach((v1, i) => {
+    const v2 = parallel[i];
+    v1.style.marginTop = "0px"; // reset
+    v2.style.marginTop = "0px"; // reset
+    const diff = v1.offsetTop - v2.offsetTop;
+    //console.warn("%o - %o = %o", v1.offsetTop, v2.offsetTop, diff);
+    if (diff < 0) {
+      v1.style.marginTop = `${diff * -1}px`;
+    } else {
+      v2.style.marginTop = `${diff}px`;
+    }
+  });
 }

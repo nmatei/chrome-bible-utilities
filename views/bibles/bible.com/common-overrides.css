@@ -1,7 +1,3 @@
-/**
- * not logged-in classes: yv-bible-text
- */
-
 .yv-sticky-header-content {
   padding-left: 55px;
 }
@@ -12,10 +8,6 @@ body.c_pages.a_privacy .privacy_content {
 }
 body .bible-reader-arrows-container {
   max-width: 100%;
-}
-
-body .yv-bible-text .verse .label {
-  top: 0;
 }
 
 body #current-ui-view {
@@ -42,22 +34,14 @@ body .chapter-picker-modal .chapter-container .chapter-list li {
   height: 40px;
 }
 
-body .yv-bible-text .verse.projected,
 body .bible-reader .verse.projected {
   background: #cccccc80;
 }
-body .yv-bible-text .label,
 body .bible-reader.primary-chapter .label,
 body .bible-reader.parallel-chapter .label {
   display: inline;
 }
 
-#react-app-Footer {
-  /* display: none; */
-}
-body .verse-action-footer.open {
-  /* display: none; */
-}
 body .yv-footer .yv-footer-vertical-link-list li:first-child {
   margin-top: 10px;
 }

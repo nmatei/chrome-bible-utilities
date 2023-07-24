@@ -1,4 +1,3 @@
-body .yv-bible-text .verse,
 body .bible-reader .verse {
   line-height: 1.6em;
   display: block;
@@ -29,7 +28,6 @@ body .bible-reader .verse {
   display: none !important;
 }
 
-.focus-primary .yv-bible-text .verse.projected .label,
 .focus-parallel .parallel-chapter .verse.projected .label,
 .focus-primary .primary-chapter .verse.projected .label {
   border-color: var(--verseNumberBorderColorProjected) !important;

@@ -86,11 +86,11 @@ function getVerseContents(verseEl) {
 }
 
 function getVerseSelector(view, number) {
-  return `.row ${view} .verse.v${number}`;
+  return `${view} [data-usfm$=".${number}"]`;
 }
 
-function getVerseEl(view, number) {
-  return $(getVerseSelector(view, number));
+function getVerseEls(view, number) {
+  return $$(getVerseSelector(view, number));
 }
 
 async function waitBooksElements() {
@@ -103,12 +103,14 @@ async function cacheBooks() {
 }
 
 function syncParallelLines() {
-  //console.warn("syncParallelLines");
   if (!hasParallelView()) {
     return;
   }
-  const primary = $$(".row .primary-chapter .verse > .label").map(l => l.closest(verseSelectorMatch));
-  const parallel = $$(".row .parallel-chapter .verse > .label").map(l => l.closest(verseSelectorMatch));
+  const v1 = $(primaryViewSelector);
+  const v2 = $(parallelViewSelector);
+  const versesSelector = `${verseSelectorMatch} > ${verseLabelSelectorMatch}`;
+  const primary = $$(versesSelector, v1).map(l => l.closest(verseSelectorMatch));
+  const parallel = $$(versesSelector, v2).map(l => l.closest(verseSelectorMatch));
   if (primary.length !== parallel.length) {
     console.info("difference in nr of verses");
     return;

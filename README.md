@@ -102,14 +102,6 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
-- [ ] Appears as not logged in (but I'm logged in)
-  - [ ] https://www.bible.com/bible/191/PSA.9.VDC
-    - [ ] pin cursor pointer for links
-    - [ ] new line for verses
-  - [ ] https://www.bible.com/ro/bible/191/EXO.12.VDC
-  - [ ] https://www.bible.com/ro/bible/191/PSA.103.VDC
-- [ ] not all words are displayed from verse
-  - [ ] Ps 106:7 https://my.bible.com/bible/191/PSA.106.VDC?parallel=114
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
