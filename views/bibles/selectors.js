@@ -42,10 +42,6 @@ function getUrlParams(href) {
   return parseUrlMatch(urlMatch);
 }
 
-function createChapterUrl({ book, chapter, primary }) {
-  return `https://my.bible.com/bible/${primary}/${book}.${chapter}`;
-}
-
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     getUrlMatch,

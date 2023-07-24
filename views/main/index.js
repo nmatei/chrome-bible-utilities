@@ -84,7 +84,7 @@ function getOtherChapter(url) {
     iframe.src = url;
     iframe.onload = function () {
       const doc = iframe.contentWindow.document;
-      const verses = [...doc.querySelectorAll(".row .verse")];
+      const verses = [...doc.querySelectorAll(`${verseSelectorMatch}`)];
       //console.warn("doc", verses);
       // TODO cleanup comments
       const versesInfo = getVersesInfo(verses, false);

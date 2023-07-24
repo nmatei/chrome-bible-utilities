@@ -94,12 +94,12 @@ function getVerseContents(verseEl) {
   return $$(verseContentSelector, verseEl);
 }
 
-function getVerseSelector(view, number) {
-  return `${view} [data-usfm$=".${number}"]`;
+function getVerseSelector(number) {
+  return `[data-usfm$=".${number}"]`;
 }
 
 function getVerseEls(view, number) {
-  return $$(getVerseSelector(view, number));
+  return $$(getVerseSelector(number), $(view));
 }
 
 async function cacheBooks() {
@@ -113,6 +113,10 @@ async function cacheBooks() {
       cancel.click();
     }
   }
+}
+
+function createChapterUrl({ book, chapter, primary }) {
+  return `https://www.bible.com/bible/${primary}/${book}.${chapter}`;
 }
 
 function syncParallelLines() {
