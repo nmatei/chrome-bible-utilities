@@ -254,10 +254,10 @@ async function cacheVersesInfo(loadUrl) {
     if (verseNr) {
       verseNr.classList.add("spin");
     }
-    console.time("getOtherChapter");
+    //console.time("getOtherChapter");
     const versesInfo = await getOtherChapter(loadUrl);
     cacheVerses(loadUrl, versesInfo);
-    console.timeEnd("getOtherChapter");
+    //console.timeEnd("getOtherChapter");
     if (verseNr) {
       verseNr.classList.remove("spin");
     }

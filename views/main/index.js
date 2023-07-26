@@ -5,25 +5,11 @@ let booksCache;
 
 window.addEventListener("load", () => {
   setTimeout(async () => {
-    cleanUp();
     createSettingsActions();
     await loadDisplaySettings();
     await initEvents();
   }, 100);
 });
-
-function cleanUp() {
-  // remove all notes
-  // $$(".note").forEach(n => {
-  //   n.innerHTML = "";
-  //   n.className = "";
-  // });
-
-  // add spaces after label
-  $$(".verse .label").forEach(l => {
-    l.innerHTML = l.innerHTML.trim() + " ";
-  });
-}
 
 function hasParallelView() {
   return !!$(parallelViewSelector);
@@ -46,7 +32,6 @@ function mergeParagraphs(versesInfo) {
 }
 
 function getReferences(chapters, versesInfo) {
-  //console.warn("chapters %o, versesInfo %o", chapters, versesInfo);
   return chapters
     .map(chapter => {
       const verses = versesInfo.filter(verse => verse.verseNr && chapter.parallel === verse.parallel);
@@ -65,7 +50,6 @@ function getReferences(chapters, versesInfo) {
         .map(p => (p[0] === p[1] ? p[0] : `${p[0]}-${p[1]}`))
         .join(",");
 
-      // console.warn("%o -> grouped %o", numbers, groupedNumbers, verses);
       let baseRef = chapter.content;
       const v1 = verses[0];
       if (v1.chapter) {
@@ -84,9 +68,8 @@ function getOtherChapter(url) {
     iframe.src = url;
     iframe.onload = function () {
       const doc = iframe.contentWindow.document;
+      cleanUp(doc);
       const verses = [...doc.querySelectorAll(`${verseSelectorMatch}`)];
-      //console.warn("doc", verses);
-      // TODO cleanup comments
       const versesInfo = getVersesInfo(verses, false);
       resolve(versesInfo);
       setTimeout(() => {
@@ -136,9 +119,10 @@ function addMissingVerses(versesInfo, isParallel) {
       ...versesInfo.map((v, i) => {
         // for multi select
         const targetRef = youVersionReferenceMap(urlParams, parseInt(v.verseNr), isParallel);
+        const element = cache[Math.max(0, targetRef.verse - 1)];
         return {
           ...{
-            ...cache[targetRef.verse - 1],
+            ...element,
             cls: (isParallel ? "" : "parallel") + (i ? "" : " separator"),
             parallel: !isParallel,
             chapter: targetRef.chapter
@@ -189,7 +173,6 @@ function getDisplayText(verses) {
 }
 
 async function printSelectedVerses(verses) {
-  cleanUp();
   const text = verses.length ? getDisplayText(verses) : "";
   let tab = projectTab;
   if (text || tab) {

@@ -42,6 +42,16 @@ function getUrlParams(href) {
   return parseUrlMatch(urlMatch);
 }
 
+// TODO let comments visible in main app,
+//  and remove them only in project tab
+function cleanUp(parent) {
+  // remove all notes
+  $$(notesSelector, parent || document).forEach(n => {
+    n.innerHTML = "";
+    n.className = "";
+  });
+}
+
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     getUrlMatch,

@@ -6,7 +6,8 @@ const verseSelectorMatch = '[class^="ChapterContent_verse"]';
 const verseLabelSelectorMatch = '[class^="ChapterContent_label"]';
 const verseContentSelector = '[class^="ChapterContent_content"]';
 const primaryViewSelector = '[class^="ChapterContent_chapter"]';
-const parallelViewSelector = '.md\\:block [class^="ChapterContent_yv-bible-text"] [class^="ChapterContent_verse"]';
+const parallelViewSelector = '.md\\:block [class^="ChapterContent_yv-bible-text"]';
+const notesSelector = '[class^="ChapterContent_note"]';
 
 function chapterPickerArrow() {
   const title = $(titlesSelector).innerHTML;

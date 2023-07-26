@@ -7,6 +7,7 @@ const verseLabelSelectorMatch = ".label";
 const verseContentSelector = ".content";
 const primaryViewSelector = ".primary-chapter";
 const parallelViewSelector = ".parallel-chapter";
+const notesSelector = ".note";
 
 function chapterPickerArrow() {
   return $(".dropdown-arrow-container");
