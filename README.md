@@ -118,8 +118,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
-  - [ ] create integration app that can be installed 
-- [ ] More tests when user is not logged (before release) 
+  - [ ] create integration app that can be installed  
 - [ ] highlight current book & chapter in Pin list (current slide)
 - [ ] store most used versions to fast access them
 - [ ] after update - add notification about new features.

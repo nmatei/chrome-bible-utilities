@@ -85,8 +85,8 @@ div#root:after {
   display: none;
   content: attr(data-text);
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: var(--rootPaddingTop);
+  right: var(--rootPaddingRight);
   padding: 0 10px;
   font-size: 3vw;
   color: var(--referenceColor);
