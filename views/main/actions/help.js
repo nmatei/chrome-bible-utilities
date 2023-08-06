@@ -68,13 +68,6 @@ function addHelpBox() {
           </ul>
         </li>
         <li>
-          <div class="title">✨ <strong>Improvements</strong></div>
-          <ul>
-            <li>🔎 Search 1 (part of Book + chapter: <strong class="key-code">Heb 11</strong> / Ioan 3) + Enter</li>
-            <li>🔎 Search 2 (part of Book + chapter + verse: Heb 11 1 / <strong class="key-code">Ioan 3 16</strong>) + Enter</li>
-          </ul>
-        </li>
-        <li>
           <div class="title">👋 GitHub Project</div>
           <ul>
             <li>📃 External <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & Screenshots</li>
