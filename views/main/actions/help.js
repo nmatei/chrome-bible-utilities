@@ -44,6 +44,7 @@ function addHelpBox() {
               <strong class="key-code">2 4</strong> + 
               <strong class="key-code">Enter</strong> pin current chapter or verses
             </li>
+            <li><strong class="key-code">::</strong> <strong>drag & drop</strong> to reorder verses</li>
           </ul>
         </li>
         <li>
