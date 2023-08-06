@@ -27,7 +27,7 @@ function getFocusReference() {
   return $('#pinned-verses-list a.focus[data-key="open"]');
 }
 
-function initDragDrop(tbody) {
+function initDragDrop(tbody, save) {
   let row;
   tbody.addEventListener("dragstart", e => {
     row = e.target;
@@ -37,8 +37,10 @@ function initDragDrop(tbody) {
     //e.dataTransfer.setData("text", row.querySelector("a[data-key=open]").innerText);
   });
   tbody.addEventListener("drop", e => {
-    // TODO save order
-    console.info("save new order");
+    const text = $$("#pinned-verses-list a[data-key=open]")
+      .map(a => a.innerText)
+      .join("\n");
+    save(text);
   });
   tbody.addEventListener("dragend", e => {
     row.classList.remove("drag-row");
@@ -69,7 +71,10 @@ function createPinVersesBox() {
       onReferenceClick(target, e);
     }
   });
-  initDragDrop($("tbody", form));
+  initDragDrop($("tbody", form), verses => {
+    pinnedVerses = splitVerses(verses);
+    setPinnedVerses(pinnedVerses);
+  });
   $("#pin-add-verse").addEventListener(
     "input",
     debounce(e => {

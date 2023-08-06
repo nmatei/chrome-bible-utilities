@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.12.0
+
+- [x] ↕ **drag & drop** to reorder verses
+- [x] highlight current Pin
+
 ## 1.11.0
 
 - [x] Improved search in pin verses
