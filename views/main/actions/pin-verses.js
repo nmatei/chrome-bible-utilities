@@ -84,9 +84,17 @@ function onReferenceClick(target, e) {
       openPinReference(target).then(() => {
         e.altKey && bringTabToFront();
       });
+      selectPinned(target.closest("tr"));
       break;
     }
   }
+}
+
+function selectPinned(row) {
+  $$("#pinned-verses-list tr").forEach(row => {
+    row.classList.remove("selected");
+  });
+  row.classList.add("selected");
 }
 
 function getBookName(title) {
@@ -175,6 +183,7 @@ function onReferenceSubmit(preview) {
     const link = firstAddedRow.querySelector('[data-key="open"]');
     link.classList.add("focus");
     link.scrollIntoViewIfNeeded(true);
+    selectPinned(link.closest("tr"));
     setTimeout(() => {
       link.classList.remove("focus");
     }, 5000);

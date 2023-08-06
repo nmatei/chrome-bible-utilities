@@ -229,6 +229,9 @@ h2 .key-code {
   width: 120px;
   padding-right: 28px !important;
 }
+#pinned-verses-list {
+  padding: 2px;
+}
 #pinned-verses-list a {
   cursor: pointer;
 }
@@ -358,6 +361,13 @@ h2 .key-code {
   }
 }
 
+#verses-text-box td:first-child {
+  border-left: 3px solid transparent;
+}
+#verses-text-box .selected td:first-child {
+  /*var(--verseNumberBorderColor)*/
+  border-left-color: #fff;
+}
 #verses-text-box a.remove-btn.spin {
   color: #cccccc22;
 }
