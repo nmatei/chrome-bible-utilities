@@ -112,7 +112,7 @@ function onReferenceSearch(e, preview) {
     preview.classList.remove("matched");
   }
   adjustMatch(match, search.chapterAndVerses, search.verses);
-  preview.innerText = getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
+  preview.innerText = "➕ " + getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
 }
 
 function adjustMatch(match, chapterAndVerses, verses) {

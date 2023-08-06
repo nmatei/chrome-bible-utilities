@@ -179,7 +179,7 @@ h2 .key-code {
   font-size: 0.7em;
 }
 #ref-preview.matched {
-  color: #eeeeee;
+  color: yellow;
   font-style: normal;
 }
 #ref-preview:empty {
