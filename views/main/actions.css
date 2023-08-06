@@ -205,6 +205,7 @@ h2 .key-code {
   color: #cccccc90;
   transition: 0.2s;
 }
+.drag-row a,
 #verses-text-box a:hover {
   color: #eeeeee !important;
 }
@@ -233,6 +234,7 @@ h2 .key-code {
   padding: 2px;
 }
 #pinned-verses-list a {
+  display: block;
   cursor: pointer;
 }
 
@@ -361,8 +363,27 @@ h2 .key-code {
   }
 }
 
+/*.drag-drop-cell {*/
+/*  cursor: grab;*/
+/*}*/
+.remove-cell {
+  text-align: center;
+  user-select: none;
+}
 #verses-text-box td:first-child {
   border-left: 3px solid transparent;
+}
+.drag-row a.remove-btn {
+  display: none !important;
+}
+.drag-row td:first-child::before {
+  content: "::";
+  color: #fff;
+  font-weight: bold;
+}
+
+#verses-text-box .drag-row td:first-child {
+  border-left-color: var(--verseNumberBorderColor);
 }
 #verses-text-box .selected td:first-child {
   /*var(--verseNumberBorderColor)*/

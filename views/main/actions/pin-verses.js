@@ -13,14 +13,47 @@ async function setPinnedVerses(pinnedVerses) {
 }
 
 function getVerseRow(verse, i) {
-  return `<tr>
-    <td><a data-key="remove" class="action-btn remove-btn" data-idx="${i}" title="Remove">✖</a></td>
-    <td><a data-key="open">${verse}</a></td>
+  return `<tr draggable="true">
+    <td class="remove-cell">
+      <a data-key="remove" class="action-btn remove-btn" data-idx="${i}" title="Remove">✖</a>
+    </td>
+    <td>
+      <a data-key="open">${verse}</a>
+    </td>
   </tr>`;
 }
 
 function getFocusReference() {
   return $('#pinned-verses-list a.focus[data-key="open"]');
+}
+
+function initDragDrop(tbody) {
+  let row;
+  tbody.addEventListener("dragstart", e => {
+    row = e.target;
+    row.classList.add("drag-row");
+    e.dataTransfer.effectAllowed = "move";
+    // TODO ... display only a part of text
+    //e.dataTransfer.setData("text", row.querySelector("a[data-key=open]").innerText);
+  });
+  tbody.addEventListener("drop", e => {
+    // TODO save order
+    console.info("save new order");
+  });
+  tbody.addEventListener("dragend", e => {
+    row.classList.remove("drag-row");
+  });
+  tbody.addEventListener("dragover", e => {
+    const tr = e.target.closest("tr");
+    e.preventDefault();
+    const tbody = tr.closest("tbody");
+    let children = Array.from(tbody.children);
+    if (children.indexOf(tr) > children.indexOf(row)) {
+      tr.after(row);
+    } else {
+      tr.before(row);
+    }
+  });
 }
 
 /**
@@ -36,6 +69,7 @@ function createPinVersesBox() {
       onReferenceClick(target, e);
     }
   });
+  initDragDrop($("tbody", form));
   $("#pin-add-verse").addEventListener(
     "input",
     debounce(e => {
@@ -298,8 +332,8 @@ function addVersesBox() {
       <textarea id="pinned-verses-editor" cols="14" rows="6" style="display: none"></textarea>
       <table id="pinned-verses-list">
        <colgroup>
-          <col span="1" style="width: 25px" />
-          <col span="1" />
+          <col style="width: 25px" />
+          <col />
         </colgroup>
         <tbody></tbody>
         <tfoot>

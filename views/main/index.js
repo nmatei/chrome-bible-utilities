@@ -1,7 +1,7 @@
 //let selectedVerses = {};
 let selectedVersesNr = [];
 let focusChapter = null;
-let booksCache;
+let booksCache = [];
 
 window.addEventListener("load", () => {
   setTimeout(async () => {
