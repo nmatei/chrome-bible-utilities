@@ -283,7 +283,7 @@ async function checkCacheVersesInfo() {
   if (urlParams) {
     const targetRef = youVersionReferenceMap(urlParams, 1, false);
     if (targetRef.chapter !== urlParams.chapter) {
-      console.info(urlParams, " -> target", targetRef);
+      //console.info(urlParams, " -> target", targetRef);
       const loadUrl = createChapterUrl({
         primary: urlParams.parallel,
         book: urlParams.book,
