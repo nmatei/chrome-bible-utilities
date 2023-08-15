@@ -87,7 +87,7 @@ function getVerseContents(verseEl) {
 }
 
 function getVerseSelector(number) {
-  return `[data-usfm$=".${number}"]`;
+  return `${verseSelectorMatch}[data-usfm$=".${number}"]`;
 }
 
 function getVerseEls(view, number) {

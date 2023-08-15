@@ -217,7 +217,6 @@ function setFocusChapter(isParallel) {
 }
 
 function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
-  let numbers = [verseNumber];
   let [primary] = selectedVersesNr;
   if (isParallel) {
     if (selectedVersesNr.length % 2 === 0) {
@@ -227,11 +226,7 @@ function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
       //console.debug("selectedVersesNr.length", selectedVersesNr.length);
     }
   }
-  numbers.push(primary);
-  numbers.sort((a, b) => a - b);
-  const [first, last] = numbers;
-  numbers = new Array(last - first + 1).fill(0).map((n, i) => first + i);
-  return numbers;
+  return fillNumbers(verseNumber, primary);
 }
 
 function getVersesContent(number) {

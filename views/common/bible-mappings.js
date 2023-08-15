@@ -7,7 +7,7 @@
  * TODO consider to create an npm package
  */
 
-const verseRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)/gi;
+const verseRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)([\:\s\.]+)(?<verse>\d+)(\s*-\s*)?(?<to>\d+)?/gi;
 const chapterRefRegExp = /(?<book>.+)(\s+)(?<chapter>\d+)/gi;
 
 function getVerseInfo(search) {
@@ -18,7 +18,8 @@ function getVerseInfo(search) {
     return {
       book: groups.book,
       chapter: parseInt(groups.chapter),
-      verse: parseInt(groups.verse)
+      verse: parseInt(groups.verse),
+      to: groups.to ? parseInt(groups.to) : ""
     };
   }
   const match = Array.from(search.matchAll(chapterRefRegExp))[0];

@@ -63,6 +63,14 @@ function waitElement(selector, timeout = 30000, retryInterval = 100) {
   });
 }
 
+function fillNumbers(from, to) {
+  let numbers = [from, to];
+  numbers.sort((a, b) => a - b);
+  const [first, last] = numbers;
+  numbers = new Array(last - first + 1).fill(0).map((n, i) => first + i);
+  return numbers;
+}
+
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
 }

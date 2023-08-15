@@ -280,14 +280,18 @@ async function onReferenceCopy() {
       const verses = [];
       if (match.verse) {
         ref += `:${match.verse}`;
-        const [verseInfo] = getVersesContent(match.verse);
-        //console.warn("content", verseInfo);
-        verses.push(verseInfo.content + "\n");
+        let numbers = [match.verse];
+        if (match.to) {
+          ref += `-${match.to}`;
+          numbers = fillNumbers(match.verse, match.to);
+        }
+        numbers.forEach(number => {
+          const [verseInfo] = getVersesContent(number);
+          verses.push(verseInfo.content + "\n");
+        });
       } else {
         verses.push("...\n");
       }
-      // TODO match all verses (eg. Ioan 3 16-18)
-      //console.warn("title %o, match", title, match);
 
       text.push(`📌 ${ref}`);
       text.push(verses.join("\n"));
