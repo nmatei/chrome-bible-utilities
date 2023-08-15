@@ -43,7 +43,7 @@ or in **2 different languages**.
   - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
   - [x] ➕ will pin current Reference if search input is empty
   - [x] 'Search pin': `16`, `2-4`, `2:4`, `2 4`, `+Enter` - pin current chapter or verses
-  - [ ] 📄 **Copy** all pin verses to clipboard
+  - [x] 📄 **Copy** all pin verses to clipboard
   - [x] ↕ **drag & drop** to reorder verses
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page

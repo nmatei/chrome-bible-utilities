@@ -234,6 +234,11 @@ function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
   return numbers;
 }
 
+function getVersesContent(number) {
+  const verses = getVerseEls(primaryViewSelector, number);
+  return getVersesInfo(verses, false);
+}
+
 async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect, bulkSelect) {
   const views = [primaryViewSelector, parallelViewSelector];
   if (isParallel) {
@@ -462,15 +467,19 @@ async function bookArrowExpandAndCollapse() {
   }
 }
 
-async function waitAndSelectVerse(match, title) {
+async function waitAndSelectVerse(match, title, project = true) {
   const verse = match.verse;
   const [chapter] = getChapterTitles();
   const changed = chapter === title || (await waitNewTitles());
   syncParallelLines();
   if (verse && changed) {
-    const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
-    if (selectedVerses && selectedVerses.length) {
-      selectedVerses[0].scrollIntoViewIfNeeded(true);
+    if (project) {
+      const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
+      if (selectedVerses && selectedVerses.length) {
+        selectedVerses[0].scrollIntoViewIfNeeded(true);
+        return true;
+      }
+    } else {
       return true;
     }
   }

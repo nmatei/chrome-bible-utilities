@@ -1,5 +1,7 @@
 let pinnedVerses = [];
 
+const copyIcon = `<svg width="24px" height="24px" viewBox="100 100 800 800" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" /><path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" /><path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" /><path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" /><path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" /><path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" /><path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" /><path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" /><path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" /><path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" /><path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" /><path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" /></svg>`;
+
 async function getPinnedVerses() {
   const storageData = await chrome.storage.sync.get("pinnedVerses");
   return storageData.pinnedVerses || "Mat 5:1";
@@ -85,6 +87,8 @@ function createPinVersesBox() {
     e.preventDefault();
     onReferenceSubmit(preview);
   });
+
+  $('button[data-key="copy"]', form).addEventListener("click", onReferenceCopy);
   $("#pin-add-verse", form).addEventListener("keydown", onReferenceKeydown);
   $('button[data-key="edit"]', form).addEventListener("click", onReferenceEdit);
   $('button[data-key="save"]', form).addEventListener("click", onReferenceSave);
@@ -264,7 +268,40 @@ function onReferenceSave(e) {
   $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
 }
 
-async function openPinReference(target) {
+async function onReferenceCopy() {
+  const text = [];
+  const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
+  maskWrapper.classList.add("loading-mask");
+  await asyncForEach($$("[data-key=open]"), async target => {
+    const { title, match } = await openPinReference(target, false);
+
+    if (title && match) {
+      let ref = title;
+      const verses = [];
+      if (match.verse) {
+        ref += `:${match.verse}`;
+        const [verseInfo] = getVersesContent(match.verse);
+        //console.warn("content", verseInfo);
+        verses.push(verseInfo.content + "\n");
+      } else {
+        verses.push("...\n");
+      }
+      // TODO match all verses (eg. Ioan 3 16-18)
+      //console.warn("title %o, match", title, match);
+
+      text.push(`# ${ref}`);
+      text.push(verses.join("\n"));
+    } else {
+      //console.log("no match");
+      text.push(`# ${target.innerText}\n`);
+    }
+  });
+  const allVerses = text.join("\n");
+  copyToClipboard(allVerses);
+  maskWrapper.classList.remove("loading-mask");
+}
+
+async function openPinReference(target, project = true) {
   const value = target.innerText;
   const match = getVerseInfo(value);
   if (match) {
@@ -272,9 +309,11 @@ async function openPinReference(target) {
     icon.classList.add("spin");
     const title = await openChapter(match.book, match.chapter);
     await checkCacheVersesInfo();
-    await waitAndSelectVerse(match, title);
+    await waitAndSelectVerse(match, title, project);
     icon.classList.remove("spin");
+    return { title, match };
   }
+  return {};
 }
 
 async function checkCacheVersesInfo() {
@@ -328,6 +367,7 @@ function addVersesBox() {
       <input placeholder="Add Ref's" type="text" autocomplete="off" id="pin-add-verse" class="fill" title="for Multiple References use [ , ] or [ ; ] then press [ Enter ]"/>
     </div>
     <div class="actions row-actions form-field">
+      <button type="button" class="action-btn svg-icon" data-key="copy" title="Copy to clipboard">${copyIcon}</button>
       <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
       <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾</button>
       <span class="fill"></span>

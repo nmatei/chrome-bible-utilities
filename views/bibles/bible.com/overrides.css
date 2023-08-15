@@ -35,3 +35,7 @@ body [class^="ChapterContent_label"] {
 .focus-primary .primary-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
   border-color: var(--verseNumberBorderColorProjected) !important;
 }
+
+#realTimeUpdates {
+  display: inline-block;
+}
