@@ -289,11 +289,11 @@ async function onReferenceCopy() {
       // TODO match all verses (eg. Ioan 3 16-18)
       //console.warn("title %o, match", title, match);
 
-      text.push(`# ${ref}`);
+      text.push(`📌 ${ref}`);
       text.push(verses.join("\n"));
     } else {
       //console.log("no match");
-      text.push(`# ${target.innerText}\n`);
+      text.push(`📋 ${target.innerText}\n`);
     }
   });
   const allVerses = text.join("\n");
