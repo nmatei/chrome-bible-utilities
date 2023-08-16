@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.13.0
+
+- [x] 📄 **Copy** all pin verses to clipboard
+
 ## 1.12.0
 
 - [x] ↕ **drag & drop** to reorder verses
