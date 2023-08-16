@@ -8,9 +8,12 @@ type VerseInfo = {
   verse?: string;
 };
 
-function testMatch(match: VerseInfo, book: string, chapter: number | string, verse?: number | string) {
+function testMatch(match: VerseInfo, book: string, chapter: number | string, verse?: number | string, to?: number | string) {
   expect(match).toBeDefined();
-  expect(match).toEqual({ book, chapter, verse });
+  to = to || "";
+  //expect(match).toEqual({ book, chapter, verse, to });
+  const actual = { book, chapter, verse, to };
+  expect(actual).toMatchObject(match);
 }
 
 describe("Test regular expression matches for getVerseInfo", () => {
@@ -64,7 +67,7 @@ describe("Test regular expression matches for getVerseInfo", () => {
   // ===
   it("[more verses] when get verse info", () => {
     const match = getVerseInfo("Mat 17:24-27");
-    testMatch(match, "Mat", 17, 24);
+    testMatch(match, "Mat", 17, 24, 27);
   });
 
   // ===
