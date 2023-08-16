@@ -90,6 +90,13 @@ function getVerseSelector(number) {
   return `${verseSelectorMatch}[data-usfm$=".${number}"]`;
 }
 
+function findLastVerseNumber() {
+  const lastVerse = $$(`${verseSelectorMatch} > ${verseLabelSelectorMatch}`)
+    .reverse()
+    .find(l => l.innerText);
+  return lastVerse ? parseInt(lastVerse.innerText) : 1;
+}
+
 function getVerseEls(view, number) {
   return $$(getVerseSelector(number), $(view));
 }

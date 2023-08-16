@@ -75,40 +75,6 @@ function copyToClipboard(text) {
   navigator.clipboard.writeText(text);
 }
 
-function copyToClipboard_v2(text) {
-  const iframe = document.createElement("iframe");
-  iframe.onload = function () {
-    const doc = iframe.contentWindow.document;
-    execCopy(text, doc);
-    setTimeout(() => {
-      document.body.removeChild(iframe);
-    }, 100);
-  };
-  document.body.appendChild(iframe);
-}
-
-function execCopy(text, doc) {
-  if (doc.queryCommandSupported && doc.queryCommandSupported("copy")) {
-    const textarea = doc.createElement("textarea");
-    textarea.textContent = text;
-    // Prevent scrolling to bottom of page in MS Edge.
-    textarea.style.position = "fixed";
-    doc.body.appendChild(textarea);
-    textarea.select();
-    try {
-      // Security exception may be thrown by some browsers.
-      return doc.execCommand("copy");
-    } catch (ex) {
-      //<debug>
-      console.warn("Copy to clipboard failed.", ex);
-      //</debug>
-      return false;
-    } finally {
-      doc.body.removeChild(textarea);
-    }
-  }
-}
-
 const referenceSplitterRegExp = /\s*[;,\n]\s*/;
 
 const multiSpaceRegExp = /\s+/g;

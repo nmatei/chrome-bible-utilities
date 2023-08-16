@@ -278,20 +278,27 @@ async function onReferenceCopy() {
     if (title && match) {
       let ref = title;
       const verses = [];
+      let numbers = [];
       if (match.verse) {
         ref += `:${match.verse}`;
-        let numbers = [match.verse];
+        numbers = [match.verse];
         if (match.to) {
           ref += `-${match.to}`;
           numbers = fillNumbers(match.verse, match.to);
         }
-        numbers.forEach(number => {
-          const [verseInfo] = getVersesContent(number);
-          verses.push(verseInfo.content + "\n");
-        });
       } else {
-        verses.push("...\n");
+        const to = findLastVerseNumber();
+        numbers = fillNumbers(1, to);
       }
+
+      numbers.forEach(number => {
+        const [verseInfo] = getVersesContent(number);
+        let vNumber = "";
+        if (numbers.length > 1) {
+          vNumber = verseInfo.verseNr + " ";
+        }
+        verses.push(vNumber + verseInfo.content + "\n");
+      });
 
       text.push(`📌 ${ref}`);
       text.push(verses.join("\n"));
