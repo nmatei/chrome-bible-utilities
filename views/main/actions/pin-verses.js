@@ -293,15 +293,17 @@ async function onReferenceCopy() {
 
       numbers.forEach(number => {
         const [verseInfo] = getVersesContent(number);
-        let vNumber = "";
-        if (numbers.length > 1) {
-          vNumber = verseInfo.verseNr + " ";
+        if (verseInfo) {
+          let vNumber = "";
+          if (numbers.length > 1) {
+            vNumber = verseInfo.verseNr + " ";
+          }
+          verses.push(vNumber + verseInfo.content);
         }
-        verses.push(vNumber + verseInfo.content + "\n");
       });
 
       text.push(`📌 ${ref}`);
-      text.push(verses.join("\n"));
+      text.push(verses.join("\n") + "\n");
     } else {
       //console.log("no match");
       text.push(`📋 ${target.innerText}\n`);
