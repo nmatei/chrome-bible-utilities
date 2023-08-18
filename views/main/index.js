@@ -52,7 +52,7 @@ function getReferences(chapters, versesInfo) {
 
       let baseRef = chapter.content;
       const v1 = verses[0];
-      if (v1.chapter) {
+      if (v1 && v1.chapter) {
         baseRef = baseRef.replace(/\d+\s*$/, v1.chapter);
         //console.info("title chapter changed to %o", baseRef);
       }

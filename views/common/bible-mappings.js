@@ -74,17 +74,27 @@ function applyReversedMapping(mapping) {
 }
 
 const BASIC_RU_MAPPING = applyReversedMapping({
-  "NUM.13": 1,
-  "JOS.6": -1,
-  "1SA.24": 1,
+  NUM: {
+    source: {
+      12: [{ from: [16, 16], diff: [1, -15] }],
+      13: [{ from: [1, 33], diff: [0, 1] }]
+    }
+  },
+  JOS: {
+    source: {
+      6: [
+        { from: [1, 1], diff: [-1, 15] },
+        { from: [2, 27], diff: [0, -1] }
+      ]
+    }
+  },
+  "1SA": {
+    source: {
+      23: [{ from: [29, 29], diff: [1, -28] }],
+      24: [{ from: [1, 22], diff: [0, 1] }]
+    }
+  },
   JOB: {
-    // TODO use maps to generate source and target
-    // maps: {
-    //   "40:1-5": [-1, 30], // 40:1-5  -> 39:31-35
-    //   "40:6-24": [0, -5], // 40:6-24 -> 40:-5
-    //   "41:1-8": [-1, 19], // 41:1-8	 -> 40:20-27
-    //   "41:9-34": [0, -8] //  41:9-34 -> 41:-8
-    // },
     source: {
       40: [
         { from: [1, 5], diff: [-1, 30] }, // 40:1-5  -> 39:31-35
@@ -162,8 +172,19 @@ const BASIC_RU_MAPPING = applyReversedMapping({
       ]
     }
   },
-  "SNG.1": -1,
-  "SNG.7": 1,
+  SNG: {
+    source: {
+      1: [{ diff: [0, -1] }],
+      6: [{ from: [13, 13], diff: [1, -12] }],
+      7: [{ from: [1, 13], diff: [0, 1] }]
+    }
+  },
+  ISA: {
+    source: {
+      3: [{ from: [20, 26], diff: [0, -1] }]
+    }
+  },
+  // TODO use .source format
   "DAN.4": -3,
   "HOS.14": 1,
   "JON.2": 1

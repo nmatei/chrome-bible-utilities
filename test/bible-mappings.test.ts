@@ -6,14 +6,29 @@ describe("Bible reference map for [RU][НРП]", () => {
 
   const noChangesMatches = [
     "[VDC] NUM 9:2 -> [НРП] NUM 9:2",
+    "[VDC] 1SA 23:1 -> [НРП] 1SA 23:1",
+    "[VDC] 1SA 23:28 -> [НРП] 1SA 23:28",
     "[VDC] JOB 1:5 -> [НРП] JOB 1:5",
     "[VDC] PSA 1:3 -> [НРП] PSA 1:3",
-    "[VDC] PSA 1:5 -> [НРП] PSA 1:5"
+    "[VDC] PSA 1:5 -> [НРП] PSA 1:5",
+    "[VDC] ISA 3:1  -> [НРП] ISA 3:1",
+    "[VDC] ISA 3:18  -> [НРП] ISA 3:18"
   ];
 
+  // https://www.ph4.org/biblia_ruennum.php
   const changesMatches = [
+    // NUMBERS
+    "[VDC] NUM 12:16  -> [НРП] NUM 13:1",
     "[VDC] NUM 13:1  -> [НРП] NUM 13:2",
     "[VDC] NUM 13:33 -> [НРП] NUM 13:34",
+    // JOSUA
+    "[VDC] JOS 6:1 -> [НРП] JOS 5:16",
+    "[VDC] JOS 6:2 -> [НРП] JOS 6:1",
+    "[VDC] JOS 6:27 -> [НРП] JOS 6:26",
+    // 1 SAMUEL
+    "[VDC] 1SA 23:29 -> [НРП] 1SA 24:1",
+    "[VDC] 1SA 24:1 -> [НРП] 1SA 24:2",
+    "[VDC] 1SA 24:22 -> [НРП] 1SA 24:23",
     // JOB (VDC -> НРП)
     "[VDC] JOB 40:1 -> [НРП] JOB 39:31",
     "[VDC] JOB 40:3 -> [НРП] JOB 39:33",
@@ -35,7 +50,16 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] PSA 10:18 -> [НРП] PSA 9:39",
     // PSA 23 (VDC -> НРП)
     "[VDC] PSA 23:1  -> [НРП] PSA 22:1",
-    "[VDC] PSA 22:1  -> [НРП] PSA 21:2"
+    "[VDC] PSA 22:1  -> [НРП] PSA 21:2",
+    //The SONG of SOLOMON
+    "[VDC] SNG 1:2  -> [НРП] SNG 1:1",
+    "[VDC] SNG 1:17  -> [НРП] SNG 1:16",
+    "[VDC] SNG 6:13  -> [НРП] SNG 7:1",
+    "[VDC] SNG 7:1  -> [НРП] SNG 7:2",
+    "[VDC] SNG 7:13  -> [НРП] SNG 7:14",
+    // ISAIAH
+    "[VDC] ISA 3:20  -> [НРП] ISA 3:19",
+    "[VDC] ISA 3:26  -> [НРП] ISA 3:25"
   ];
 
   test.each(noChangesMatches)("Reference should not be changed: %s", match => {
