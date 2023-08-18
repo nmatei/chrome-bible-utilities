@@ -1,4 +1,4 @@
-# ✨ Shortcuts
+# 💠 Features & Usage
 - [x] 🔎 **Search** Chapter
 - [x] **Click** on verse number - **display**
 - [x] **Up/Down/Left/Right** - next/preview
@@ -8,8 +8,10 @@
 - [x] **ESC** - blank page
 - [x] **F11** - enter/exit fullscreen
 
-# 🛠 User Settings
-- [x] Adjust display variables (spacing, colors)
+# 📌 List/Pin some references
+- [x] **Enter + Enter** - add and project
+- [x] **ALT + Click** on Reference - force project
+- [x] **drag & drop** & **Copy** all pin verses
 
 # 💬 **Project "live text"**
 - [x] projected any **Markdown** text
