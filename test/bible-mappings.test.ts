@@ -59,7 +59,24 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] SNG 7:13  -> [НРП] SNG 7:14",
     // ISAIAH
     "[VDC] ISA 3:20  -> [НРП] ISA 3:19",
-    "[VDC] ISA 3:26  -> [НРП] ISA 3:25"
+    "[VDC] ISA 3:26  -> [НРП] ISA 3:25",
+    // DANIEL
+    "[VDC] DAN 4:1  -> [НРП] DAN 3:31",
+    "[VDC] DAN 4:3  -> [НРП] DAN 3:33",
+    "[VDC] DAN 4:4  -> [НРП] DAN 4:1",
+    "[VDC] DAN 4:37  -> [НРП] DAN 4:34",
+    // HOSEA
+    "[VDC] HOS 13:16  -> [НРП] HOS 14:1",
+    "[VDC] HOS 14:1  -> [НРП] HOS 14:2",
+    "[VDC] HOS 14:9  -> [НРП] HOS 14:10",
+    // JONA
+    "[VDC] JON 1:17  -> [НРП] JON 2:1",
+    "[VDC] JON 2:1  -> [НРП] JON 2:2",
+    "[VDC] JON 2:10  -> [НРП] JON 2:11",
+    // ROMANS -- 16:25-27	-> 14:24-26 TODO not sure
+    // 2 CORINTHIANS
+    "[VDC] 2CO 11:33  -> [НРП] 2CO 11:32",
+    "[VDC] 2CO 13:14  -> [НРП] 2CO 13:13"
   ];
 
   test.each(noChangesMatches)("Reference should not be changed: %s", match => {

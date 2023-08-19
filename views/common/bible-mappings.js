@@ -184,10 +184,32 @@ const BASIC_RU_MAPPING = applyReversedMapping({
       3: [{ from: [20, 26], diff: [0, -1] }]
     }
   },
-  // TODO use .source format
-  "DAN.4": -3,
-  "HOS.14": 1,
-  "JON.2": 1
+  DAN: {
+    source: {
+      4: [
+        { from: [1, 3], diff: [-1, 30] },
+        { from: [4, 37], diff: [0, -3] }
+      ]
+    }
+  },
+  HOS: {
+    source: {
+      13: [{ from: [16, 16], diff: [1, -15] }],
+      14: [{ from: [1, 9], diff: [0, 1] }]
+    }
+  },
+  JON: {
+    source: {
+      1: [{ from: [17, 17], diff: [1, -16] }],
+      2: [{ from: [1, 10], diff: [0, 1] }]
+    }
+  },
+  "2CO": {
+    source: {
+      11: [{ from: [33, 33], diff: [0, -1] }],
+      13: [{ from: [14, 14], diff: [0, -1] }]
+    }
+  }
 });
 
 const BibleMappings = {
@@ -235,12 +257,7 @@ const BibleMappings = {
       //"JOB.40": -5,
       "JOB.41": -8,
       // TODO
-      // PSA: {
-      //   diffs: [
-      //     { from: 3, to: 9, chapters: 0, verses: 1 },
-      //     { from: 10, to: 150, chapters: -1, verses: 0 }
-      //   ]
-      // },
+      // PSA: {},
       "SNG.1": -1,
       "SNG.7": 1,
       "DAN.4": -3,
