@@ -31,6 +31,7 @@ function getReferencePreview(book, chapter = "", verse = "") {
 }
 
 function applyReversedMapping(mapping) {
+  mapping = structuredClone(mapping);
   Object.entries(mapping).forEach(([book, value]) => {
     if (typeof value === "object") {
       if (value.source) {
@@ -325,12 +326,12 @@ function addDiffOperation(target, ref, to, operation = "add") {
 
 /**
  *
- * @param {string|{book: string,chapter: string, verse: string}} ref
+ * @param {string|{book: string,chapter: string, verse: string, to: number}} ref
  * @param {string} from
  * @param {string} to
  * @param {boolean} [asString]
  * @returns {{chapter: (number|string), book: string, verse: (number|string)}|string}
-r */
+ */
 function bibleReferenceMap(ref, from, to, asString = true) {
   if (typeof ref === "string") {
     ref = getVerseInfo(ref);
