@@ -40,8 +40,8 @@
     }
   ],
   "icons": {
-    "16": "icon-16.png",
-    "48": "icon-48.png",
-    "128": "icon-128.png"
+    "16": "views/icons/icon-16.png",
+    "48": "views/icons/icon-48.png",
+    "128": "views/icons/icon-128.png"
   }
 }

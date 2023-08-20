@@ -1,6 +1,6 @@
 # Chrome extension to for Bible.com
 
-![icon](icon-48.png)
+![icon](views/icons/icon-48.png)
 
 This extension will help you **project Bible verses in your Church**,
 You decide which version to display and also can project parallel versions
@@ -76,7 +76,7 @@ or in **2 different languages**.
 - [x] Create account on [my.bible.com](https://my.bible.com)
 - [x] Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
 - [x] 📌 **Pin** extension to see it after search bar for fast access
-  - [x] ![icon](icon-16.png) Click on **Extension** icon
+  - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
 ## ⚙ Setup Plugin as Developer
 
@@ -91,7 +91,7 @@ If you want to try the latest versions before they are released, or to change co
 - [x] **Load unpacked** Extension
 - [x] Select `chrome-bible-utilities` folder
 - [x] 📌 **Pin** extension to see it after search bar for fast access
-  - [x] ![icon](icon-16.png) Click on **Extension** icon
+  - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
   - [x] Will open https://my.bible.com/bible if not opened
 - [x] Sign in to YouVersion on https://my.bible.com/sign-in
   - [x] Must be logged in to have parallel view and to enable this plugin
