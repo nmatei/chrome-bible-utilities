@@ -74,7 +74,7 @@ function applyReversedMapping(mapping) {
   return mapping;
 }
 
-const BASIC_RU_MAPPING = applyReversedMapping({
+const basicRuMapping = {
   NUM: {
     source: {
       12: [{ from: [16, 16], diff: [1, -15] }],
@@ -211,6 +211,21 @@ const BASIC_RU_MAPPING = applyReversedMapping({
       13: [{ from: [14, 14], diff: [0, -1] }]
     }
   }
+};
+
+const BASIC_RU_MAPPING = applyReversedMapping(basicRuMapping);
+
+const BASIC_UA_MAPPING = applyReversedMapping({
+  "1SA": basicRuMapping["1SA"],
+  JOB: basicRuMapping.JOB,
+  // TODO
+  // PSA: {},
+  "SNG.1": -1,
+  "SNG.7": 1,
+  "DAN.4": -3,
+  "HOS.2": 2,
+  "HOS.14": 1,
+  "JON.2": 1
 });
 
 const BibleMappings = {
@@ -253,19 +268,9 @@ const BibleMappings = {
   UBIO: {
     language: "ua",
     version: "UBIO",
-    mapping: applyReversedMapping({
-      "1SA.24": 1,
-      //"JOB.40": -5,
-      "JOB.41": -8,
-      // TODO
-      // PSA: {},
-      "SNG.1": -1,
-      "SNG.7": 1,
-      "DAN.4": -3,
-      "HOS.2": 2,
-      "HOS.14": 1,
-      "JON.2": 1
-    })
+    mapping: {
+      ...BASIC_UA_MAPPING
+    }
   }
 };
 
@@ -350,6 +355,7 @@ function bibleReferenceMap(ref, from, to, asString = true) {
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     BASIC_RU_MAPPING,
+    BASIC_UA_MAPPING,
     getVerseInfo,
     getReferencePreview,
     bibleReferenceMap
