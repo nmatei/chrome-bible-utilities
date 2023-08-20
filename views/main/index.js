@@ -116,19 +116,25 @@ function addMissingVerses(versesInfo, isParallel) {
   if (cache) {
     versesInfo = [
       ...(isParallel ? [] : versesInfo),
-      ...versesInfo.map((v, i) => {
-        // for multi select
-        const targetRef = youVersionReferenceMap(urlParams, parseInt(v.verseNr), isParallel);
-        const element = cache[Math.max(0, targetRef.verse - 1)];
-        return {
-          ...{
-            ...element,
-            cls: (isParallel ? "" : "parallel") + (i ? "" : " separator"),
-            parallel: !isParallel,
-            chapter: targetRef.chapter
+      ...versesInfo
+        .map((v, i) => {
+          // for multi select
+          const targetRef = youVersionReferenceMap(urlParams, parseInt(v.verseNr), isParallel);
+          const element = cache[Math.max(0, targetRef.verse - 1)];
+          if (element) {
+            return {
+              ...{
+                ...element,
+                cls: (isParallel ? "" : "parallel") + (i ? "" : " separator"),
+                parallel: !isParallel,
+                chapter: targetRef.chapter
+              }
+            };
+          } else {
+            console.log("!ref not found", targetRef);
           }
-        };
-      }),
+        })
+        .filter(Boolean),
       ...(isParallel ? versesInfo : [])
     ];
   }

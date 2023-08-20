@@ -217,15 +217,31 @@ const BASIC_RU_MAPPING = applyReversedMapping(basicRuMapping);
 
 const BASIC_UA_MAPPING = applyReversedMapping({
   "1SA": basicRuMapping["1SA"],
-  JOB: basicRuMapping.JOB,
-  // TODO
-  // PSA: {},
-  "SNG.1": -1,
-  "SNG.7": 1,
-  "DAN.4": -3,
-  "HOS.2": 2,
-  "HOS.14": 1,
-  "JON.2": 1
+  JOB: {
+    source: {
+      41: [
+        { from: [1, 8], diff: [-1, 24] },
+        { from: [9, 34], diff: [0, -8] }
+      ]
+    }
+  },
+  PSA: basicRuMapping.PSA, // TODO check PSA
+  SNG: basicRuMapping.SNG,
+  DAN: basicRuMapping.DAN,
+  HOS: {
+    source: {
+      1: [{ from: [10, 11], diff: [1, -9] }],
+      2: [{ from: [1, 23], diff: [0, 2] }], // added in UA not RU
+      13: [{ from: [16, 16], diff: [1, -15] }],
+      14: [{ from: [1, 9], diff: [0, 1] }]
+    }
+  },
+  JON: basicRuMapping.JON,
+  "2CO": {
+    source: {
+      13: [{ from: [14, 14], diff: [0, -1] }]
+    }
+  }
 });
 
 const BibleMappings = {
@@ -316,10 +332,11 @@ function getDiffMappings(MAPPING, book, chapter, verse, isParallel = false) {
   return 0;
 }
 
-function addDiffOperation(target, ref, to, operation = "add") {
+function addDiffOperation(target, to, operation = "add") {
+  target = structuredClone(target);
   if (to) {
-    const add = getDiffMappings(to.mapping, ref.book, ref.chapter, ref.verse, operation === "subtract");
-
+    const add = getDiffMappings(to.mapping, target.book, target.chapter, target.verse, operation === "subtract");
+    //console.debug("%o to %o = %o", operation, structuredClone(target), add);
     if (typeof add === "number") {
       target.verse += add;
     } else {
@@ -327,6 +344,7 @@ function addDiffOperation(target, ref, to, operation = "add") {
       target.verse += add.verses;
     }
   }
+  return target;
 }
 
 /**
@@ -341,9 +359,10 @@ function bibleReferenceMap(ref, from, to, asString = true) {
   if (typeof ref === "string") {
     ref = getVerseInfo(ref);
   }
-  const target = { ...ref };
-  addDiffOperation(target, ref, BibleMappings[to], "add");
-  addDiffOperation(target, ref, BibleMappings[from], "subtract");
+  let target = { ...ref };
+  //console.info("%o -> %o", from, to, ref);
+  target = addDiffOperation(target, BibleMappings[from], "subtract");
+  target = addDiffOperation(target, BibleMappings[to], "add");
 
   //return JSON.stringify({ ref, add, target });
   if (asString) {

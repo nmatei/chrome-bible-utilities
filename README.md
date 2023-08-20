@@ -102,10 +102,10 @@ If you want to try the latest versions before they are released, or to change co
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
     - [x] Ukrainian (UBIO)
-      - [ ] Chapters in `Psalms 10-150` in \* vs UA have different numbers
-  - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js) 
+  - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js)
+    - [ ] Especially for 🟨🟦 Ukrainian & ⬜🟦🟥 Russian
+    - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
-    - [ ] Especially for Ukrainian & Russian
 - [ ] User Settings
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
