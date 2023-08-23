@@ -78,6 +78,12 @@ or in **2 different languages**.
 - [x] 📌 **Pin** extension to see it after search bar for fast access
   - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
+## 👋 Support my Work
+
+A simple way to **support my work** & to **improve** your programming skills is to by **My course on Udemy**
+
+- [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://www.udemy.com/course/become-a-web-developer-from-scratch-step-by-step-guide/?couponCode=2023-START-WEB-DEV) - by [Nicolae Matei](https://nmatei.github.io/)
+
 ## ⚙ Setup Plugin as Developer
 
 If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
@@ -120,3 +126,6 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] clock config position
 - [ ] i18n
 - [ ] Show title on pinned verse (if is not full name)
+- [ ] `CTRL + Click` project all verses from selected pin
+- [ ] cleanup chars when add ref from copy/paste
+  - [ ] ‭‭Filipeni‬ 
