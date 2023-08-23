@@ -15,6 +15,7 @@ or in **2 different languages**.
 - [💠 Features & Usage](#-features--usage)
 - [🎞 Results](#-results)
 - [⚙ Install Plugin](#-install-plugin)
+- [👋 Support my Work](#-support-my-work)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
 
@@ -80,7 +81,7 @@ or in **2 different languages**.
 
 ## 👋 Support my Work
 
-A simple way to **support my work** & to **improve** your programming skills is to by **My course on Udemy**
+A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**
 
 - [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://www.udemy.com/course/become-a-web-developer-from-scratch-step-by-step-guide/?couponCode=2023-START-WEB-DEV) - by [Nicolae Matei](https://nmatei.github.io/)
 
