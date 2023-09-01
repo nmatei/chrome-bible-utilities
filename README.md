@@ -75,7 +75,7 @@ or in **2 different languages**.
 ## ⚙ Install Plugin
 
 - [x] Create account on [my.bible.com](https://my.bible.com)
-- [x] Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
+- [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
 - [x] 📌 **Pin** extension to see it after search bar for fast access
   - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
