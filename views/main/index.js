@@ -18,7 +18,7 @@ function hasParallelView() {
 /**
  * if verse is on multiple line (more paragraphs), merge them in 1 (eg. Mica 5:2)
  * @param versesInfo
- * @returns {*}
+ * @returns {array} verses
  */
 function mergeParagraphs(versesInfo) {
   return versesInfo.reduce((verses, verse) => {
@@ -235,8 +235,14 @@ function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
   return fillNumbers(verseNumber, primary);
 }
 
-function getVersesContent(number) {
-  const verses = getVerseEls(primaryViewSelector, number);
+/**
+ *
+ * @param {number} number - verse number
+ * @param {string} view - (primaryViewSelector or parallelViewSelector)
+ * @returns {*}
+ */
+function getVersesContent(number, view = primaryViewSelector) {
+  const verses = getVerseEls(view, number);
   return getVersesInfo(verses, false);
 }
 
@@ -446,11 +452,6 @@ async function initEvents() {
       }
     }
   });
-}
-
-function findBookText(book) {
-  book = latinizeText(book.toLowerCase());
-  return booksCache.find(e => latinizeText(e.toLowerCase()).includes(book));
 }
 
 function findBookEl(book) {

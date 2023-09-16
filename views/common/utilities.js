@@ -89,9 +89,36 @@ function splitVerses(verses) {
   return verses.split(referenceSplitterRegExp);
 }
 
+function findBookText(book, booksCache) {
+  book = latinizeText(book.toLowerCase());
+  return booksCache.find(e => latinizeText(e.toLowerCase()).includes(book));
+}
+
+function improveBookName(book, bookText) {
+  if (!bookText || bookText.startsWith(book)) {
+    return book;
+  }
+  if (bookText.toLowerCase().startsWith(book.toLowerCase())) {
+    return bookText.substring(0, book.length);
+  }
+  return bookText;
+}
+
+function improveReference(from, booksCache) {
+  const match = getVerseInfo(from);
+  if (match) {
+    const book = match.book;
+    const bookText = findBookText(book, booksCache);
+    const improved = improveBookName(book, bookText);
+    return improved + from.substring(book.length);
+  }
+  return from;
+}
+
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     splitVerses,
+    improveReference,
     searchVersesNrsRegExp,
     searchChapterNrRegExp
   };

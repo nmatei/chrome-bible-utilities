@@ -1,4 +1,6 @@
-import { searchVersesNrsRegExp, searchChapterNrRegExp } from "../views/common/utilities";
+import { latinizeText } from "../views/common/latinizeText";
+import { searchVersesNrsRegExp, searchChapterNrRegExp, improveReference } from "../views/common/utilities";
+import { getVerseInfo } from "../views/common/bible-mappings";
 
 describe("Number Format Regex", () => {
   const validVersesFormats = [
@@ -95,5 +97,36 @@ describe("Number Format Regex", () => {
 
   test.each(validVersesFormats)("verse search can't be used for chapter search: %s", format => {
     expect(searchChapterNrRegExp.test(format)).toBe(false);
+  });
+});
+
+describe("Improve reference", () => {
+  const targetSplitter = /\s*->\s*/;
+
+  // prettier-ignore
+  const booksCache = ['Geneza', 'Exodul', 'Leviticul', 'Numeri', 'Deuteronomul', 'Iosua', 'Judecătorii', 'Rut', '1 Samuel', '2 Samuel', '1 Împăraţilor', '2 Împăraţilor', '1 Cronici', '2 Cronici', 'Ezra', 'Neemia', 'Estera', 'Iov', 'Psalmul', 'Proverbele', 'Eclesiastul', 'Cântarea Cântărilor', 'Isaia', 'Ieremia', 'Plângerile', 'Ezechiel', 'Daniel', 'Osea', 'Ioel', 'Amos', 'Obadia', 'Iona', 'Mica', 'Naum', 'Habacuc', 'Ţefania', 'Hagai', 'Zaharia', 'Maleahi', 'Matei', 'Marcu', 'Luca', 'Ioan', 'Faptele Apostolilor', 'Romani', '1 Corinteni', '2 Corinteni', 'Galateni', 'Efeseni', 'Filipeni', 'Coloseni', '1 Tesaloniceni', '2 Tesaloniceni', '1 Timotei', '2 Timotei', 'Tit', 'Filimon', 'Evrei', 'Iacov', '1 Petru', '2 Petru', '1 Ioan', '2 Ioan', '3 Ioan', 'Iuda', 'Apocalipsa']
+
+  const improvements = [
+    "Ps 8      -> Ps 8",
+    "Mat 8 2   -> Mat 8 2",
+    // --
+    "ps 8      -> Ps 8",
+    "rom 2 4   -> Rom 2 4",
+    "1 sam 2 3 -> 1 Sam 2 3",
+    // --
+    "sam 2 3   -> 1 Samuel 2 3",
+    "cor 2 4   -> 1 Corinteni 2 4",
+    "Cor 2 4   -> 1 Corinteni 2 4",
+    "cu 1 3    -> Leviticul 1 3",
+    "lev 1 3   -> Lev 1 3"
+  ];
+
+  global["latinizeText"] = latinizeText;
+  global["getVerseInfo"] = getVerseInfo;
+
+  test.each(improvements)("improve search: %o", search => {
+    const [from, to] = search.split(targetSplitter);
+    const target = improveReference(from, booksCache);
+    expect(target).toBe(to);
   });
 });

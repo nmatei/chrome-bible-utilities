@@ -156,7 +156,7 @@ function onReferenceSearch(e, preview) {
   }
   const match = getVerseInfo(newVerses[0]);
   const book = match ? match.book : newVerses[0];
-  const bookText = findBookText(book);
+  const bookText = findBookText(book, booksCache);
   if (bookText) {
     preview.classList.add("matched");
   } else {
@@ -207,7 +207,7 @@ function onReferenceSubmit(preview) {
   const input = $("#pin-add-verse");
   let value = cleanSpaces(input.value);
   value = getSearchShortcuts(value).value;
-  const newVerses = splitVerses(value);
+  const newVerses = splitVerses(value).map(v => improveReference(v, booksCache));
   if (!newVerses.length) {
     return;
   }
@@ -269,7 +269,7 @@ function onReferenceSave(e) {
 }
 
 async function onReferenceCopy() {
-  const text = [];
+  const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
   maskWrapper.classList.add("loading-mask");
   await asyncForEach($$("[data-key=open]"), async target => {
@@ -302,14 +302,15 @@ async function onReferenceCopy() {
         }
       });
 
-      text.push(`📌 ${ref}`);
-      text.push(verses.join("\n") + "\n");
+      primaryText.push(`📌 ${ref}`);
+      primaryText.push(verses.join("\n") + "\n");
     } else {
       //console.log("no match");
-      text.push(`📋 ${target.innerText}\n`);
+      primaryText.push(`📋 ${target.innerText}\n`);
     }
   });
-  const allVerses = text.join("\n");
+
+  const allVerses = primaryText.join("\n");
   copyToClipboard(allVerses);
   maskWrapper.classList.remove("loading-mask");
 }

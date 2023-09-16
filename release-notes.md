@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.15.0
+
+- [x] improvements when add reference
+
 ## 1.14.0
 
 - [x] Fix mappings for UBIO (Ukrainian)

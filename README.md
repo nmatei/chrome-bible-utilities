@@ -126,7 +126,11 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] after update - add notification about new features.
 - [ ] clock config position
 - [ ] i18n
-- [ ] Show title on pinned verse (if is not full name)
+- [ ] improve Refs
+  - [ ] Show title on pinned verse (if is not full name)
+  - [x] 'cor 2 4' -> '1 Cor 2 4' (missing book number)
+  - [x] 'cu 1 3'  -> 'Lev 1 3' (missing start chars)
+  - [x] 'ps 8'    -> 'Ps 8' (capitalize)
 - [ ] `CTRL + Click` project all verses from selected pin
 - [ ] cleanup chars when add ref from copy/paste
   - [ ] ‭‭Filipeni‬ 
