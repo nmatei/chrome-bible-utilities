@@ -57,11 +57,16 @@ function initEvents() {
     selectByKeys(e.key);
     animateFocusBtn(e.key);
   });
+  if (options.actionsDisplay === "false") {
+    document.body.classList.add("focus-lost");
+  }
   window.addEventListener("blur", () => {
     document.body.classList.add("focus-lost");
   });
   window.addEventListener("focus", () => {
-    document.body.classList.remove("focus-lost");
+    if (options.actionsDisplay === "true") {
+      document.body.classList.remove("focus-lost");
+    }
   });
 
   document.querySelector(".actions").addEventListener("click", e => {
@@ -145,6 +150,11 @@ function mapValue(key, value) {
   return value;
 }
 
+/**
+ * map only css properties from user options
+ * @param styles
+ * @returns {{}}
+ */
 function mapStyles(styles) {
   const cssDefaults = getCssDefaultProperties();
   return Object.entries(styles).reduce((acc, [key, value]) => {

@@ -31,7 +31,8 @@ export function getCssDefaultProperties() {
 
 export function getUserSettingsDefaults() {
   return {
-    maxFontSize: "200"
+    maxFontSize: "200",
+    actionsDisplay: "true"
   };
 }
 
