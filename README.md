@@ -18,6 +18,7 @@ or in **2 different languages**.
 - [👋 Support my Work](#-support-my-work)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
+- [QR Code](#-qr-code)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -118,13 +119,21 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
   - [ ] Display Reference version (VDC, НРП)
+  - [ ] Upload multiple background images and allow to easy switch them
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed
 - [ ] after update - add notification about new features.
 - [ ] clock config position
+- [ ] while copy references - use percentage or {count}/{total}
 - [ ] i18n
 - [ ] `CTRL + Click` project all verses from selected pin
 - [ ] cleanup chars when add ref from copy/paste
   - [ ] ‭‭Filipeni‬ 
+
+## 🎫 QR Code
+
+[bit.ly/project-bible](https://bit.ly/project-bible)
+
+![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
