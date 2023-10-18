@@ -18,7 +18,7 @@ or in **2 different languages**.
 - [👋 Support my Work](#-support-my-work)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
-- [QR Code](#-qr-code)
+- [🎫 QR Code](#-qr-code)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
