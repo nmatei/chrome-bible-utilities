@@ -15,10 +15,10 @@ or in **2 different languages**.
 - [💠 Features & Usage](#-features--usage)
 - [🎞 Results](#-results)
 - [⚙ Install Plugin](#-install-plugin)
+- [🎫 QR Code](#-qr-code)
 - [👋 Support my Work](#-support-my-work)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
-- [🎫 QR Code](#-qr-code)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -86,6 +86,13 @@ A simple way to **support my work** & to **improve** your programming skills is 
 
 - [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://www.udemy.com/course/become-a-web-developer-from-scratch-step-by-step-guide/?couponCode=2023-START-WEB-DEV) - by [Nicolae Matei](https://nmatei.github.io/)
 
+
+## 🎫 QR Code
+
+[bit.ly/project-bible](https://bit.ly/project-bible)
+
+![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
+
 ## ⚙ Setup Plugin as Developer
 
 If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
@@ -131,9 +138,3 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] `CTRL + Click` project all verses from selected pin
 - [ ] cleanup chars when add ref from copy/paste
   - [ ] ‭‭Filipeni‬ 
-
-## 🎫 QR Code
-
-[bit.ly/project-bible](https://bit.ly/project-bible)
-
-![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
