@@ -80,18 +80,19 @@ or in **2 different languages**.
 - [x] 📌 **Pin** extension to see it after search bar for fast access
   - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
-## 👋 Support my Work
-
-A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**
-
-- [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://www.udemy.com/course/become-a-web-developer-from-scratch-step-by-step-guide/?couponCode=2023-START-WEB-DEV) - by [Nicolae Matei](https://nmatei.github.io/)
-
 
 ## 🎫 QR Code
 
 [bit.ly/project-bible](https://bit.ly/project-bible)
 
 ![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
+
+## 👋 Support my Work
+
+A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**
+
+- [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://www.udemy.com/course/become-a-web-developer-from-scratch-step-by-step-guide/?couponCode=2023-START-WEB-DEV) - by [Nicolae Matei](https://nmatei.github.io/)
+
 
 ## ⚙ Setup Plugin as Developer
 
