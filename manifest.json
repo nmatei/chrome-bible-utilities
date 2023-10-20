@@ -1,6 +1,6 @@
 {
   "name": "Project verses from bible.com",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "description": "Project selected Bible verses (works for parallel as well) from YouVersion bible.com",
   "manifest_version": 3,
   "author": "Matei Nicolae",
@@ -9,10 +9,20 @@
   },
   "action": {},
   "permissions": ["activeTab", "tabs", "storage"],
-  "host_permissions": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
+  "host_permissions": [
+    "https://my.bible.com/bible*",
+    "https://my.bible.com/*/bible*",
+    "https://www.bible.com/bible*",
+    "https://www.bible.com/*/bible*"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
+      "matches": [
+        "https://my.bible.com/bible*",
+        "https://my.bible.com/*/bible*",
+        "https://www.bible.com/bible*",
+        "https://www.bible.com/*/bible*"
+      ],
       "js": [
         "views/common/utilities.js",
         "views/common/latinizeText.js",
