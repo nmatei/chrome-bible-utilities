@@ -3,6 +3,7 @@
 ## 1.15.0
 
 - [x] improvements when add reference
+- [x] background images
 
 ## 1.14.0
 
