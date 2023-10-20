@@ -1,3 +1,5 @@
+let indexedDBInstance;
+
 export const BIBLE_TABS_URL = [
   "https://my.bible.com/bible*",
   "https://my.bible.com/*/bible*",
@@ -5,7 +7,7 @@ export const BIBLE_TABS_URL = [
   "https://www.bible.com/*/bible*"
 ];
 
-export function getCssDefaultProperties() {
+function getCssDefaultProperties() {
   return {
     rootPaddingTop: "5",
     rootPaddingRight: "5",
@@ -32,7 +34,9 @@ export function getCssDefaultProperties() {
 export function getUserSettingsDefaults() {
   return {
     maxFontSize: "200",
-    actionsDisplay: "true"
+    actionsDisplay: "true",
+    pageBackgroundImage: "none",
+    pageBackgroundImageKey: -1
   };
 }
 
@@ -43,6 +47,38 @@ export function getDefaults() {
     ...cssDefaults,
     ...defaults
   };
+}
+
+function mapValue(key, value) {
+  if (key.startsWith("rootPadding") || key.endsWith("FontSize") || key.endsWith("Height")) {
+    return value + "px";
+  }
+  return value;
+}
+
+/**
+ * map only css properties from user options
+ * @param styles
+ * @returns {{}}
+ */
+function mapStyles(styles) {
+  const cssDefaults = getCssDefaultProperties();
+  return Object.entries(styles).reduce((acc, [key, value]) => {
+    if (cssDefaults.hasOwnProperty(key)) {
+      acc[key] = mapValue(key, value);
+    }
+    return acc;
+  }, {});
+}
+
+export function applyRootStyles(options) {
+  const styles = mapStyles(options);
+  const root = $(":root");
+  Object.entries(styles).forEach(([key, value]) => {
+    root.style.setProperty("--" + key, value);
+  });
+
+  $(".page-background-image").style.backgroundImage = options.pageBackgroundImage;
 }
 
 /**
@@ -57,5 +93,108 @@ export async function applyLoadOptions(options) {
   const storageData = await chrome.storage.sync.get("options");
   //console.warn("loadOptions", options, storageData.options);
   Object.assign(options, storageData.options);
+
+  indexedDBInstance = indexedDBInstance || (await initFilesDB());
+  const file = await retrieveFile(options.pageBackgroundImageKey);
+  options.pageBackgroundImage = file ? `url(${file.data})` : "none";
   return options;
+}
+
+export function initFilesDB() {
+  // https://blog.bitsrc.io/different-ways-to-store-data-in-browser-706a2afb4e58#:~:text=IndexedDB%20is%20powerful%20and%20can,has%20a%20limited%20storage%20capacity.
+  const openRequest = indexedDB.open("fileDB", 1);
+  openRequest.onupgradeneeded = event => {
+    const db = event.target.result;
+    // Create an object store to store the file
+    const fileStore = db.createObjectStore("files", { autoIncrement: true });
+  };
+
+  return new Promise(resolve => {
+    openRequest.onsuccess = event => {
+      const db = event.target.result;
+      resolve(db);
+    };
+  });
+}
+
+/**
+ * Retrieve the file from IndexedDB and display it
+ */
+export function retrieveFile(fileKey) {
+  const transaction = indexedDBInstance.transaction("files", "readonly");
+  const fileStore = transaction.objectStore("files");
+  const getRequest = fileStore.get(fileKey);
+
+  return new Promise(resolve => {
+    getRequest.onsuccess = event => {
+      const file = event.target.result;
+      if (file) {
+        resolve(file);
+      } else {
+        resolve(null);
+      }
+    };
+  });
+}
+
+/**
+ * Retrieve the file from IndexedDB and display it
+ */
+export function retrieveFiles() {
+  return new Promise(resolve => {
+    const transaction = indexedDBInstance.transaction("files", "readonly");
+    const fileStore = transaction.objectStore("files");
+    const getRequest = fileStore.openCursor();
+    const allFiles = [];
+
+    getRequest.onsuccess = event => {
+      const cursor = event.target.result;
+      if (cursor) {
+        allFiles.push({
+          key: cursor.key,
+          content: cursor.value
+        });
+        cursor.continue();
+      } else {
+        // All files have been collected
+        //console.log("All files retrieved:", allFiles);
+        resolve(allFiles);
+      }
+    };
+  });
+}
+
+/**
+ * Store the file in IndexedDB
+ * @param fileObject
+ */
+export function storeFile(fileObject) {
+  return new Promise((resolve, reject) => {
+    const transaction = indexedDBInstance.transaction("files", "readwrite");
+    const fileStore = transaction.objectStore("files");
+    const addRequest = fileStore.add(fileObject);
+    addRequest.onsuccess = e => {
+      const fileKey = e.target.result;
+      resolve(fileKey);
+    };
+    addRequest.onerror = () => {
+      reject("Error storing file in IndexedDB.");
+    };
+  });
+}
+
+export function removeFile(fileKey) {
+  return new Promise((resolve, reject) => {
+    const transaction = indexedDBInstance.transaction("files", "readwrite");
+    const fileStore = transaction.objectStore("files");
+    const deleteRequest = fileStore.delete(fileKey);
+
+    deleteRequest.onsuccess = () => {
+      //console.log("File removed from IndexedDB.");
+      resolve();
+    };
+    deleteRequest.onerror = () => {
+      reject("Error removing file from IndexedDB.");
+    };
+  });
 }

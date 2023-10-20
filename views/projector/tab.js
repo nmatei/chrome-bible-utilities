@@ -1,4 +1,4 @@
-import { BIBLE_TABS_URL, getCssDefaultProperties, initUserOptions } from "../settings/common.js";
+import { applyRootStyles, BIBLE_TABS_URL, initUserOptions } from "../settings/common.js";
 
 const animateKeys = {
   //"⌃⌘F": "F11", // TODO test on mac Os (isMac)
@@ -12,6 +12,7 @@ const animateKeys = {
 const isMac = /(Mac)/i.test(navigator.platform);
 
 const options = await initUserOptions();
+
 setRootStyles(options);
 
 initEvents();
@@ -143,35 +144,9 @@ function adjustBodySize() {
   }
 }
 
-function mapValue(key, value) {
-  if (key.startsWith("rootPadding") || key.endsWith("FontSize") || key.endsWith("Height")) {
-    return value + "px";
-  }
-  return value;
-}
-
-/**
- * map only css properties from user options
- * @param styles
- * @returns {{}}
- */
-function mapStyles(styles) {
-  const cssDefaults = getCssDefaultProperties();
-  return Object.entries(styles).reduce((acc, [key, value]) => {
-    if (cssDefaults.hasOwnProperty(key)) {
-      acc[key] = mapValue(key, value);
-    }
-    return acc;
-  }, {});
-}
-
 function setRootStyles(styles) {
   Object.assign(options, styles);
-  styles = mapStyles(styles);
-  const root = document.querySelector(":root");
-  Object.entries(styles).forEach(([key, value]) => {
-    root.style.setProperty("--" + key, value);
-  });
+  applyRootStyles(styles);
 }
 
 function initClock() {

@@ -1,8 +1,25 @@
+:root {
+  --rootPaddingTop: 5px;
+  --rootPaddingRight: 5px;
+  --rootPaddingBottom: 5px;
+  --rootPaddingLeft: 5px;
+  --pageBackgroundColor: #000000;
+  --referenceColor: #d3d3d3;
+  --referenceFontSize: 40px;
+  --verseNumberColor: #d3d3d3;
+  --verseColor: #ffffff;
+  --parallelVerseNumberColor: #ededb4;
+  --parallelVerseColor: #eded33;
+  --verseFontWeight: bold;
+}
+
 html {
   height: 100%;
+  width: 100%;
 }
 body {
   min-height: 100%;
+  width: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -29,35 +46,84 @@ h1 {
   border-top: 1px solid #adafaf;
 }
 
-.actions {
+#background-previews {
   display: flex;
   gap: 10px;
+  max-width: calc(100vw - 100px);
+  overflow-x: auto;
+  padding: 10px;
+}
+
+#background-previews .background-preview {
+  cursor: pointer;
+}
+
+/* from tab.css -> body */
+.background-preview {
+  min-width: 141px;
+  width: 141px;
+  height: 80px;
+
+  padding: 5px;
+
+  border: 3px solid #cccccc;
+  border-radius: 4px;
+  background-color: var(--pageBackgroundColor);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: var(--verseColor);
+}
+
+#background-previews .background-preview:hover {
+  outline: 3px solid #0b57d0;
+}
+.background-preview.selected {
+  outline: 3px solid #238500;
+}
+
+#displayScreenPreview {
+  width: 240px;
+  height: 135px;
+  border: 3px solid #0b57d0;
+}
+
+#settings-actions.actions {
   align-items: end;
 }
-.actions .fill {
-  flex: 1;
+.background-preview .actions .action-btn {
+  font-size: 20px;
+  padding: 4px 10px;
+  border-color: #cccccc90;
+  color: #cccccc90;
 }
-.actions .action-btn {
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
+.background-preview:hover .action-btn {
+  background: #000000dd;
+}
+.background-preview .action-btn:hover {
+  border-color: #eeeeee;
+  color: #eeeeee;
+}
+.background-preview .action-btn:active {
+  border-color: #ffffff;
+  color: #9b0000;
+}
+
+#settings-actions.actions .action-btn {
   font-size: 20px;
   padding: 4px 10px;
   margin: 0;
-  border-radius: 5px;
   border: 1px solid #adafaf;
   color: #000000;
-  transition: 0.2s;
   line-height: 1em;
   text-align: center;
 }
-.actions .action-btn:hover {
+#settings-actions.actions .action-btn:hover {
   background: #ffffff;
   border-color: #0b5394;
   color: #0b5394;
 }
-.actions .action-btn:active {
+#settings-actions.actions .action-btn:active {
   border-color: #0b539490;
   color: #0b5394aa;
   transition: none;
