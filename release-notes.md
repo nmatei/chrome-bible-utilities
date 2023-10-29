@@ -3,6 +3,7 @@
 ## 1.16.0
 
 - [x] Settings - clock position
+- [x] `CTRL + Click` project all verses from pin (Mat 6:7-13)
 - [x] Fix a bug on drag and drop references
 
 ## 1.15.0
