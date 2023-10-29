@@ -43,6 +43,7 @@ or in **2 different languages**.
   - [x] `Enter` to add references (`,` or `;` as separator) in 'Pin verses' input 🔍
   - [x] `Enter + Enter` to project added reference
   - [x] `ALT + Click` on Reference - force project (on top)
+  - [x] `CTRL + Click` project all verses from pin (Mat 6:7-13)
   - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references
   - [x] ➕ will pin current Reference if search input is empty
   - [x] 'Search pin': `16`, `2-4`, `2:4`, `2 4`, `+Enter` - pin current chapter or verses
@@ -142,7 +143,6 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] after update - add notification about new features.
 - [ ] while copy references - use percentage or {count}/{total}
 - [ ] i18n
-- [ ] `CTRL + Click` project all verses from selected pin
 - [ ] when 1&2 are not selected to project -> add a 'bullet' on settings button so we know
 - [ ] cleanup chars when add ref from copy/paste
   - [ ] ‭‭Filipeni‬ 

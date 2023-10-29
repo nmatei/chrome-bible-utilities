@@ -128,10 +128,13 @@ function onReferenceClick(target, e) {
       break;
     }
     case "open": {
-      openPinReference(target).then(() => {
-        e.altKey && bringTabToFront();
-        if (e.ctrlKey) {
-          //console.warn("TODO %o", "select interval");
+      const multiSelect = e.ctrlKey || e.metaKey; // metaKey for MacOs
+      openPinReference(target).then(async ({ match }) => {
+        if (multiSelect && match.to) {
+          await doSelectVerses(match.to, false, false, false, true);
+        }
+        if (e.altKey) {
+          await bringTabToFront();
         }
       });
       selectPinned(target.closest("tr"));
