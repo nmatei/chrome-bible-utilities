@@ -88,9 +88,22 @@
                 <option value="false">no</option>
               </select>
             </div>
+            <div class="form-field">
+              <label for="clockPosition">Clock Position</label>
+              <select required id="clockPosition" name="clockPosition">
+                <option value="none" selected>none</option>
+                <option value="top-right">top-right corner</option>
+                <option value="bottom-right">bottom-right corner</option>
+                <option value="bottom-left">bottom-left corner</option>
+              </select>
+            </div>
           </div>
           <div style="padding: 5px">
-            <div id="displayScreenPreview" class="background-preview page-background-image"></div>
+            <div
+              id="displayScreenPreview"
+              class="clock-container background-preview page-background-image"
+              data-text="10:00"
+            ></div>
           </div>
         </div>
 

@@ -35,6 +35,7 @@ export function getUserSettingsDefaults() {
   return {
     maxFontSize: "200",
     actionsDisplay: "true",
+    clockPosition: "top-right",
     pageBackgroundImage: "none",
     pageBackgroundImageKey: -1
   };
@@ -79,6 +80,9 @@ export function applyRootStyles(options) {
   });
 
   $(".page-background-image").style.backgroundImage = options.pageBackgroundImage;
+  const clockClasses = $(".clock-container").classList;
+  clockClasses.remove("clock-none", "clock-top-right", "clock-bottom-right", "clock-bottom-left");
+  clockClasses.add(`clock-${options.clockPosition}`);
 }
 
 /**

@@ -123,6 +123,8 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] User Settings
+  - [x] clock config position (or hide)
+  - [ ] Allow Multiple layouts (to easy switch between them)
   - [x] Allow users to hide arrows (actions) from projecting screen
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
@@ -133,10 +135,14 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed
 - [ ] after update - add notification about new features.
-- [ ] clock config position
 - [ ] while copy references - use percentage or {count}/{total}
 - [ ] i18n
 - [ ] `CTRL + Click` project all verses from selected pin
 - [ ] when 1&2 are not selected to project -> add a 'bullet' on settings button so we know
 - [ ] cleanup chars when add ref from copy/paste
   - [ ] ‭‭Filipeni‬ 
+
+### 🐛 Known bugs
+
+- [ ] fix bug when drag/drop pin - remove will not remove correct pin.
+- [ ] check when parallel chapter is not loaded for RO - RU (Psalms) - add 5sec timeout

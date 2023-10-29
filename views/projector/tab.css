@@ -84,12 +84,10 @@ h6 {
   margin-top: 0;
 }
 
-div#root:after {
+.clock-container:after {
   display: none;
   content: attr(data-text);
   position: absolute;
-  top: var(--rootPaddingTop);
-  right: var(--rootPaddingRight);
   padding: 0 10px;
   font-size: 3vw;
   color: var(--referenceColor);
@@ -100,7 +98,22 @@ div#root:after {
   border: 2px solid #cccccc60;
   transition: 0.2s;
 }
-.focus-lost div#root:after {
+.clock-container.clock-top-right:after {
+  top: var(--rootPaddingTop);
+  right: var(--rootPaddingRight);
+}
+.clock-container.clock-bottom-right:after {
+  bottom: var(--rootPaddingBottom);
+  right: var(--rootPaddingRight);
+}
+.clock-container.clock-bottom-left:after {
+  bottom: var(--rootPaddingBottom);
+  left: var(--rootPaddingLeft);
+}
+.clock-container.clock-none:after {
+  display: none !important;
+}
+.focus-lost .clock-container:after {
   display: block;
 }
 
