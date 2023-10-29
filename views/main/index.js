@@ -61,17 +61,23 @@ function getReferences(chapters, versesInfo) {
     .filter(Boolean);
 }
 
+// TODO https://stackoverflow.com/questions/15532791/getting-around-x-frame-options-deny-in-a-chrome-extension
 function getOtherChapter(url) {
   return new Promise((resolve, reject) => {
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";
     iframe.src = url;
     iframe.onload = function () {
-      const doc = iframe.contentWindow.document;
-      cleanUp(doc);
-      const verses = [...doc.querySelectorAll(`${verseSelectorMatch}`)];
-      const versesInfo = getVersesInfo(verses, false);
-      resolve(versesInfo);
+      try {
+        const doc = iframe.contentWindow.document;
+        cleanUp(doc);
+        const verses = [...doc.querySelectorAll(`${verseSelectorMatch}`)];
+        const versesInfo = getVersesInfo(verses, false);
+        resolve(versesInfo);
+      } catch (e) {
+        console.debug("read iframe error", e);
+        reject("Could not load");
+      }
       setTimeout(() => {
         document.body.removeChild(iframe);
       }, 100);
@@ -400,7 +406,10 @@ async function selectByKeys(key) {
 }
 
 async function initEvents() {
-  await Promise.any([waitElement(appReadySelector, 5000, 200), waitElement(".bible-reader-sticky-container", 5000, 200)]);
+  await Promise.any([
+    waitElement(appReadySelector, 5000, 200),
+    waitElement(".bible-reader-sticky-container", 5000, 200)
+  ]);
 
   await cacheBooks();
   //console.info("books", booksCache);

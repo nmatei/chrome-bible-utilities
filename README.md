@@ -149,4 +149,4 @@ If you want to try the latest versions before they are released, or to change co
 
 ### 🐛 Known bugs
 
-- [ ] check when parallel chapter is not loaded for RO - RU (Psalms) - add 5sec timeout
+- [ ] check when parallel chapter is not loaded for RO - RU (Psalms)

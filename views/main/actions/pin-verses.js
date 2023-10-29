@@ -367,8 +367,12 @@ async function cacheVersesInfo(loadUrl) {
       verseNr.classList.add("spin");
     }
     //console.time("getOtherChapter");
-    const versesInfo = await getOtherChapter(loadUrl);
-    cacheVerses(loadUrl, versesInfo);
+    try {
+      const versesInfo = await getOtherChapter(loadUrl);
+      cacheVerses(loadUrl, versesInfo);
+    } catch (e) {
+      console.debug("Can't get other chapter", e);
+    }
     //console.timeEnd("getOtherChapter");
     if (verseNr) {
       verseNr.classList.remove("spin");
