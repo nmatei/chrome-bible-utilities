@@ -17,6 +17,7 @@ or in **2 different languages**.
 - [⚙ Install Plugin](#-install-plugin)
 - [🎫 QR Code](#-qr-code)
 - [👋 Support my Work](#-support-my-work)
+- [💠 Advanced Features](#-advanced-features)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
 
@@ -112,6 +113,13 @@ If you want to try the latest versions before they are released, or to change co
 - [x] Sign in to YouVersion on https://my.bible.com/sign-in
   - [x] Must be logged in to have parallel view and to enable this plugin
 
+## 💠 Advanced Features
+
+- [x] User Settingsfix bug when drag/drop pin - remove will not remove correct pin.
+  - [x] Clock position (or hide)
+  - [x] hide/show arrows (actions) from projecting screen
+  - [x] Upload multiple background images and allow to easy switch them
+
 ## 📋 Developers TODOs (items to improve)
 
 - [ ] Check if verses are not in sync
@@ -123,13 +131,10 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] User Settings
-  - [x] clock config position (or hide)
   - [ ] Allow Multiple layouts (to easy switch between them)
-  - [x] Allow users to hide arrows (actions) from projecting screen
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
   - [ ] Display Reference version (VDC, НРП)
-  - [x] Upload multiple background images and allow to easy switch them
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
@@ -144,5 +149,4 @@ If you want to try the latest versions before they are released, or to change co
 
 ### 🐛 Known bugs
 
-- [ ] fix bug when drag/drop pin - remove will not remove correct pin.
 - [ ] check when parallel chapter is not loaded for RO - RU (Psalms) - add 5sec timeout

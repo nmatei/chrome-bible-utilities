@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.16.0
+
+- [x] Settings - clock position
+- [x] Fix a bug on drag and drop references
+
 ## 1.15.0
 
 - [x] improvements when add reference

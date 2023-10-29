@@ -14,10 +14,10 @@ async function setPinnedVerses(pinnedVerses) {
   // TODO notify other tabs to update values
 }
 
-function getVerseRow(verse, i) {
+function getVerseRow(verse) {
   return `<tr draggable="true">
     <td class="remove-cell">
-      <a data-key="remove" class="action-btn remove-btn" data-idx="${i}" title="Remove">✖</a>
+      <a data-key="remove" class="action-btn remove-btn" title="Remove">✖</a>
     </td>
     <td>
       <a data-key="open">${verse}</a>
@@ -51,7 +51,7 @@ function initDragDrop(tbody, save) {
     const tr = e.target.closest("tr");
     e.preventDefault();
     const tbody = tr.closest("tbody");
-    let children = Array.from(tbody.children);
+    const children = Array.from(tbody.children);
     if (children.indexOf(tr) > children.indexOf(row)) {
       tr.after(row);
     } else {
@@ -73,9 +73,9 @@ function createPinVersesBox() {
       onReferenceClick(target, e);
     }
   });
-  initDragDrop($("tbody", form), verses => {
+  initDragDrop($("tbody", form), async verses => {
     pinnedVerses = splitVerses(verses);
-    setPinnedVerses(pinnedVerses);
+    await setPinnedVerses(pinnedVerses);
   });
   $("#pin-add-verse").addEventListener(
     "input",
@@ -118,7 +118,11 @@ function onReferenceClick(target, e) {
   const action = target.dataset.key;
   switch (action) {
     case "remove": {
-      pinnedVerses.splice(target.dataset.idx, 1);
+      const tr = target.closest("tr");
+      const tbody = tr.closest("tbody");
+      const children = Array.from(tbody.children);
+      const idx = children.indexOf(tr);
+      pinnedVerses.splice(idx, 1);
       updatePinnedRows(pinnedVerses);
       setPinnedVerses(pinnedVerses);
       break;
@@ -126,6 +130,9 @@ function onReferenceClick(target, e) {
     case "open": {
       openPinReference(target).then(() => {
         e.altKey && bringTabToFront();
+        if (e.ctrlKey) {
+          //console.warn("TODO %o", "select interval");
+        }
       });
       selectPinned(target.closest("tr"));
       break;
@@ -163,7 +170,8 @@ function onReferenceSearch(e, preview) {
     preview.classList.remove("matched");
   }
   adjustMatch(match, search.chapterAndVerses, search.verses);
-  preview.innerText = "➕ " + getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
+  preview.innerText =
+    "➕ " + getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
 }
 
 function adjustMatch(match, chapterAndVerses, verses) {
