@@ -459,3 +459,15 @@ h2 .key-code {
   line-height: initial;
   font-size: initial;
 }
+
+.text-mask::after {
+  content: attr(data-text);
+  animation: none;
+  transition: 1s;
+  color: #e1f0ff;
+  width: auto;
+  height: auto;
+  padding: 2px 5px;
+  border-radius: 4px;
+  border-top-color: #e1f0ff !important;
+}

@@ -141,7 +141,6 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)
   - [ ] create integration app that can be installed
 - [ ] after update - add notification about new features.
-- [ ] while copy references - use percentage or {count}/{total}
 - [ ] i18n
 - [ ] when 1&2 are not selected to project -> add a 'bullet' on settings button so we know
 - [ ] cleanup chars when add ref from copy/paste

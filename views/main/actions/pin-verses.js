@@ -282,8 +282,9 @@ function onReferenceSave(e) {
 async function onReferenceCopy() {
   const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
-  maskWrapper.classList.add("loading-mask");
-  await asyncForEach($$("[data-key=open]"), async target => {
+  maskWrapper.classList.add("loading-mask", "text-mask");
+  await asyncForEach($$("[data-key=open]"), async (target, i, all) => {
+    maskWrapper.dataset.text = `${i} / ${all.length}`;
     const { title, match } = await openPinReference(target, false);
 
     if (title && match) {
@@ -323,7 +324,8 @@ async function onReferenceCopy() {
 
   const allVerses = primaryText.join("\n");
   copyToClipboard(allVerses);
-  maskWrapper.classList.remove("loading-mask");
+  maskWrapper.dataset.text = "";
+  maskWrapper.classList.remove("loading-mask", "text-mask");
 }
 
 async function openPinReference(target, project = true) {
