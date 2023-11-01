@@ -14,15 +14,11 @@
 }
 
 html {
-  height: 100%;
   width: 100%;
 }
 body {
-  min-height: 100%;
   width: 100%;
   margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 h1 {
   color: #0b5394;
@@ -32,12 +28,21 @@ h1 {
   border-bottom: 1px solid #adafaf;
 }
 #optionsForm {
+  height: 100vh;
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden; /* Prevent main from scrolling */
 }
 .form-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden; /* Prevent main from scrolling */
+}
+.content {
+  flex: 1;
+  overflow-y: auto; /* Allow content to scroll when needed */
   padding: 10px;
 }
 #settings-actions {
@@ -174,4 +179,16 @@ fieldset .form-field label:first-child {
   width: 44px;
   padding: 0 3px;
   text-align: center;
+}
+
+@media screen and (max-height: 300px) {
+  #optionsForm {
+    overflow-y: visible;
+  }
+  .form-body {
+    overflow-y: visible;
+  }
+  .content {
+    overflow-y: visible;
+  }
 }

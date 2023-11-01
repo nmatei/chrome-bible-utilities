@@ -8,160 +8,165 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>🛠 Bible Display Options</title>
+    <link rel="stylesheet" href="CustomScrollChrome.css" />
     <link rel="stylesheet" href="options.css" />
     <link rel="stylesheet" href="../common/action-btn.css" />
     <script src="../common/utilities.js"></script>
   </head>
   <body>
     <script defer src="options.js" type="module"></script>
+
     <form id="optionsForm">
       <h1>🛠 Projector Screen Settings</h1>
+
       <div class="form-body">
-        <div class="form-field" style="margin-bottom: 0">
-          <label></label>
-          <label for="rootPaddingTop" class="number-top-label">Top</label>
-          <label for="rootPaddingRight" class="number-top-label">Right</label>
-          <label for="rootPaddingBottom" class="number-top-label">Bottom</label>
-          <label for="rootPaddingLeft" class="number-top-label">Left</label>
-        </div>
-        <div class="form-field" style="margin-top: 0">
-          <label for="rootPaddingTop">Screen Padding</label>
-          <input type="number" required min="0" max="200" name="rootPaddingTop" id="rootPaddingTop" />
-          <input type="number" required min="0" max="200" name="rootPaddingRight" id="rootPaddingRight" />
-          <input type="number" required min="0" max="200" name="rootPaddingBottom" id="rootPaddingBottom" />
-          <input type="number" required min="0" max="200" name="rootPaddingLeft" id="rootPaddingLeft" />
-          <div>px</div>
-        </div>
-        <div style="display: flex; flex-direction: row">
-          <div style="flex: 1">
-            <div class="form-field">
-              <label for="pageBackgroundColor">Background Color</label>
-              <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
-            </div>
-            <div class="form-field">
-              <label for="maxFontSize">Max Font Size</label>
-              <input type="number" required min="20" max="200" id="maxFontSize" name="maxFontSize" />
-              <div>px</div>
-            </div>
-            <div class="form-field">
-              <label for="referenceFontSize">Reference Font Size</label>
-              <input type="number" required min="20" max="200" id="referenceFontSize" name="referenceFontSize" />
-              <div>px</div>
-            </div>
-            <div class="form-field">
-              <label for="referenceColor">Reference/Title Color</label>
-              <input type="color" required id="referenceColor" name="referenceColor" />
-            </div>
-
-            <div class="form-field" style="margin-bottom: 0">
-              <label for="verseNumberColor" class="number-top-label">Primary</label>
-              <label for="parallelVerseNumberColor" class="number-top-label">Parallel</label>
-            </div>
-            <div class="form-field" style="margin-top: 0">
-              <label for="verseNumberColor">Verse Number Color</label>
-              <input type="color" required id="verseNumberColor" name="verseNumberColor" />
-              <input type="color" required id="parallelVerseNumberColor" name="parallelVerseNumberColor" />
-            </div>
-            <div class="form-field">
-              <label for="verseColor">Verse Color</label>
-              <input type="color" required id="verseColor" name="verseColor" />
-              <input type="color" required id="parallelVerseColor" name="parallelVerseColor" />
-            </div>
-            <div class="form-field">
-              <label for="verseFontWeight">Verses Font Weight</label>
-              <select required id="verseFontWeight" name="verseFontWeight">
-                <option value="bold" selected>bold</option>
-                <option value="normal">normal</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="versesDisplay">Display Multiple Verses</label>
-              <select required id="versesDisplay" name="versesDisplay">
-                <option value="inline" selected>inline</option>
-                <option value="block">in new line</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="actionsDisplay">Display Actions <span title="Fullscreen, Back, Next">❔</span></label>
-              <select required id="actionsDisplay" name="actionsDisplay">
-                <option value="true" selected>yes</option>
-                <option value="false">no</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="clockPosition">Clock Position</label>
-              <select required id="clockPosition" name="clockPosition">
-                <option value="none" selected>none</option>
-                <option value="top-right">top-right corner</option>
-                <option value="bottom-right">bottom-right corner</option>
-                <option value="bottom-left">bottom-left corner</option>
-              </select>
-            </div>
-          </div>
-          <div style="padding: 5px">
-            <div
-              id="displayScreenPreview"
-              class="clock-container background-preview page-background-image"
-              data-text="10:00"
-            ></div>
-          </div>
-        </div>
-
-        <fieldset style="max-width: 1920px">
-          <legend>Background Images</legend>
-          <div id="background-previews"></div>
-          <div class="form-field">
-            <label for="pageBackgroundImage">Add Image</label>
-            <input type="file" id="pageBackgroundImage" name="pageBackgroundImage" accept="image/*" />
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Parallel Separator</legend>
+        <section class="content">
           <div class="form-field" style="margin-bottom: 0">
             <label></label>
-            <label for="parallelSeparatorTopHeight" class="number-top-label">Top</label>
-            <label for="parallelSeparatorMiddleHeight" class="number-top-label">Middle</label>
-            <label for="parallelSeparatorBottomHeight" class="number-top-label">Bottom</label>
+            <label for="rootPaddingTop" class="number-top-label">Top</label>
+            <label for="rootPaddingRight" class="number-top-label">Right</label>
+            <label for="rootPaddingBottom" class="number-top-label">Bottom</label>
+            <label for="rootPaddingLeft" class="number-top-label">Left</label>
           </div>
           <div class="form-field" style="margin-top: 0">
-            <label for="parallelSeparatorTopHeight">Heights</label>
-            <input
-              type="number"
-              required
-              min="0"
-              max="20"
-              value="1"
-              id="parallelSeparatorTopHeight"
-              name="parallelSeparatorTopHeight"
-            />
-            <input
-              type="number"
-              required
-              min="0"
-              max="20"
-              value="1"
-              id="parallelSeparatorMiddleHeight"
-              name="parallelSeparatorMiddleHeight"
-            />
-            <input
-              type="number"
-              required
-              min="0"
-              max="20"
-              value="1"
-              id="parallelSeparatorBottomHeight"
-              name="parallelSeparatorBottomHeight"
-            />
+            <label for="rootPaddingTop">Screen Padding</label>
+            <input type="number" required min="0" max="200" name="rootPaddingTop" id="rootPaddingTop" />
+            <input type="number" required min="0" max="200" name="rootPaddingRight" id="rootPaddingRight" />
+            <input type="number" required min="0" max="200" name="rootPaddingBottom" id="rootPaddingBottom" />
+            <input type="number" required min="0" max="200" name="rootPaddingLeft" id="rootPaddingLeft" />
             <div>px</div>
           </div>
-          <div class="form-field">
-            <label for="parallelSeparatorTopColor">Colors</label>
-            <input type="color" required id="parallelSeparatorTopColor" name="parallelSeparatorTopColor" />
-            <input type="color" required id="parallelSeparatorMiddleColor" name="parallelSeparatorMiddleColor" />
-            <input type="color" required id="parallelSeparatorBottomColor" name="parallelSeparatorBottomColor" />
+          <div style="display: flex; flex-direction: row">
+            <div style="flex: 1">
+              <div class="form-field">
+                <label for="pageBackgroundColor">Background Color</label>
+                <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
+              </div>
+              <div class="form-field">
+                <label for="maxFontSize">Max Font Size</label>
+                <input type="number" required min="20" max="200" id="maxFontSize" name="maxFontSize" />
+                <div>px</div>
+              </div>
+              <div class="form-field">
+                <label for="referenceFontSize">Reference Font Size</label>
+                <input type="number" required min="20" max="200" id="referenceFontSize" name="referenceFontSize" />
+                <div>px</div>
+              </div>
+              <div class="form-field">
+                <label for="referenceColor">Reference/Title Color</label>
+                <input type="color" required id="referenceColor" name="referenceColor" />
+              </div>
+
+              <div class="form-field" style="margin-bottom: 0">
+                <label for="verseNumberColor" class="number-top-label">Primary</label>
+                <label for="parallelVerseNumberColor" class="number-top-label">Parallel</label>
+              </div>
+              <div class="form-field" style="margin-top: 0">
+                <label for="verseNumberColor">Verse Number Color</label>
+                <input type="color" required id="verseNumberColor" name="verseNumberColor" />
+                <input type="color" required id="parallelVerseNumberColor" name="parallelVerseNumberColor" />
+              </div>
+              <div class="form-field">
+                <label for="verseColor">Verse Color</label>
+                <input type="color" required id="verseColor" name="verseColor" />
+                <input type="color" required id="parallelVerseColor" name="parallelVerseColor" />
+              </div>
+              <div class="form-field">
+                <label for="verseFontWeight">Verses Font Weight</label>
+                <select required id="verseFontWeight" name="verseFontWeight">
+                  <option value="bold" selected>bold</option>
+                  <option value="normal">normal</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="versesDisplay">Display Multiple Verses</label>
+                <select required id="versesDisplay" name="versesDisplay">
+                  <option value="inline" selected>inline</option>
+                  <option value="block">in new line</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="actionsDisplay">Display Actions <span title="Fullscreen, Back, Next">❔</span></label>
+                <select required id="actionsDisplay" name="actionsDisplay">
+                  <option value="true" selected>yes</option>
+                  <option value="false">no</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="clockPosition">Clock Position</label>
+                <select required id="clockPosition" name="clockPosition">
+                  <option value="none" selected>none</option>
+                  <option value="top-right">top-right corner</option>
+                  <option value="bottom-right">bottom-right corner</option>
+                  <option value="bottom-left">bottom-left corner</option>
+                </select>
+              </div>
+            </div>
+            <div style="padding: 5px">
+              <div
+                id="displayScreenPreview"
+                class="clock-container background-preview page-background-image"
+                data-text="10:00"
+              ></div>
+            </div>
           </div>
-        </fieldset>
+
+          <fieldset style="max-width: 1920px">
+            <legend>Background Images</legend>
+            <div id="background-previews"></div>
+            <div class="form-field">
+              <label for="pageBackgroundImage">Add Image</label>
+              <input type="file" id="pageBackgroundImage" name="pageBackgroundImage" accept="image/*" />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Parallel Separator</legend>
+            <div class="form-field" style="margin-bottom: 0">
+              <label></label>
+              <label for="parallelSeparatorTopHeight" class="number-top-label">Top</label>
+              <label for="parallelSeparatorMiddleHeight" class="number-top-label">Middle</label>
+              <label for="parallelSeparatorBottomHeight" class="number-top-label">Bottom</label>
+            </div>
+            <div class="form-field" style="margin-top: 0">
+              <label for="parallelSeparatorTopHeight">Heights</label>
+              <input
+                type="number"
+                required
+                min="0"
+                max="20"
+                value="1"
+                id="parallelSeparatorTopHeight"
+                name="parallelSeparatorTopHeight"
+              />
+              <input
+                type="number"
+                required
+                min="0"
+                max="20"
+                value="1"
+                id="parallelSeparatorMiddleHeight"
+                name="parallelSeparatorMiddleHeight"
+              />
+              <input
+                type="number"
+                required
+                min="0"
+                max="20"
+                value="1"
+                id="parallelSeparatorBottomHeight"
+                name="parallelSeparatorBottomHeight"
+              />
+              <div>px</div>
+            </div>
+            <div class="form-field">
+              <label for="parallelSeparatorTopColor">Colors</label>
+              <input type="color" required id="parallelSeparatorTopColor" name="parallelSeparatorTopColor" />
+              <input type="color" required id="parallelSeparatorMiddleColor" name="parallelSeparatorMiddleColor" />
+              <input type="color" required id="parallelSeparatorBottomColor" name="parallelSeparatorBottomColor" />
+            </div>
+          </fieldset>
+        </section>
       </div>
 
       <div id="settings-actions" class="actions">
