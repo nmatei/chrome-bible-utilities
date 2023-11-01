@@ -65,6 +65,7 @@ h1 {
 
 /* from tab.css -> body */
 .background-preview {
+  position: relative;
   min-width: 141px;
   width: 141px;
   height: 80px;
@@ -77,7 +78,23 @@ h1 {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+
   color: var(--verseColor);
+}
+
+h2.reference {
+  font-weight: bold;
+  font-variant-caps: small-caps;
+  color: var(--referenceColor);
+  font-size: 2em;
+  margin: 0;
+  text-shadow: 1px 1px 2px var(--verseColor);
+}
+.background-preview p {
+  font-size: 1.3em;
+}
+.clock-container:after {
+  z-index: 1 !important;
 }
 
 #background-previews .background-preview:hover {

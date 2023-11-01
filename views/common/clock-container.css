@@ -1,0 +1,32 @@
+.clock-container:after {
+  display: none;
+  content: attr(data-text);
+  position: absolute;
+  padding: 0 10px;
+  font-size: 3vw;
+  color: var(--referenceColor);
+  opacity: 0.5;
+  font-weight: bold;
+  z-index: -1;
+  border-radius: 5px;
+  border: 2px solid #cccccc60;
+  transition: 0.2s;
+}
+.clock-container.clock-top-right:after {
+  top: var(--rootPaddingTop);
+  right: var(--rootPaddingRight);
+}
+.clock-container.clock-bottom-right:after {
+  bottom: var(--rootPaddingBottom);
+  right: var(--rootPaddingRight);
+}
+.clock-container.clock-bottom-left:after {
+  bottom: var(--rootPaddingBottom);
+  left: var(--rootPaddingLeft);
+}
+.clock-container.clock-none:after {
+  display: none !important;
+}
+.focus-lost .clock-container:after {
+  display: block;
+}
