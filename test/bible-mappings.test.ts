@@ -15,6 +15,20 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] ISA 3:18  -> [НРП] ISA 3:18"
   ];
 
+  const RO_References = {
+    NUM: "Numeri",
+    JOS: "Iosua",
+    "1SA": "1 Samuel",
+    JOB: "Iov",
+    PSA: "Psalm",
+    SNG: "Cântarea Cânt",
+    ISA: "Isaia",
+    DAN: "Daniel",
+    HOS: "Osea",
+    JON: "Iona",
+    "2CO": "2 Corinteni"
+  };
+
   // https://www.ph4.org/biblia_ruennum.php
   // 🟦🟨🟥 vs ⬜🟦🟥
   const RO_vs_RU = [
@@ -160,6 +174,18 @@ describe("Bible reference map for [RU][НРП]", () => {
 
     const ref = bibleReferenceMap(fromRef, from, to);
     expect(ref).toBe(toRef);
+  });
+
+  test("!!! Manual Test RO this references in browser !!!", () => {
+    const references = RO_vs_RU.map(match => {
+      const [fromVerse, toVerse] = match.split(targetSplitter);
+      const [, from, fromRef] = fromVerse.match(versionSplitter);
+      const ref = fromRef.split(/\s+/i);
+      return (RO_References[ref[0]] || ref[0]) + " " + ref[1];
+    }).join("\n");
+    console.debug("\nm==========\n\n");
+    console.info(references);
+    console.debug("\nm==========\n\n");
   });
 });
 
