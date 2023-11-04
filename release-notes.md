@@ -2,6 +2,7 @@
 
 ## 1.17.0
 
+- [x] Visual improvements while selecting chapter in bible.com
 - [x] UI improvements in Settings page
 - [x] Fix loading Parallel chapter for RU (Psalms)
 
