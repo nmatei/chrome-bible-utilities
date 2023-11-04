@@ -2,6 +2,7 @@ const BibleVersionsMappingsIds = {
   // [RU]
   143: "НРП",
   167: "СИНОД",
+  201: "RSP",
   385: "CARS",
   840: "CARS-A",
   400: "SYNO",

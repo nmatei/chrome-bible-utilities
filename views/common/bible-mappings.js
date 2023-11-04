@@ -248,6 +248,15 @@ const BibleMappings = {
   НРП: {
     language: "ru",
     version: "НРП",
+    name: "Новый русский перевод",
+    mapping: {
+      ...BASIC_RU_MAPPING
+    }
+  },
+  RSP: {
+    language: "ru",
+    version: "RSP",
+    name: "Святая Библия: Современный перевод",
     mapping: {
       ...BASIC_RU_MAPPING
     }
