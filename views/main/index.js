@@ -21,11 +21,18 @@ function hasParallelView() {
  * @returns {array} verses
  */
 function mergeParagraphs(versesInfo) {
-  return versesInfo.reduce((verses, verse) => {
-    if (verse.verseNr) {
-      verses.push(verse);
+  return versesInfo.reduce((verses, v) => {
+    const prev = verses[verses.length - 1];
+    if (v.verseNr) {
+      if (prev && prev.parallel === v.parallel && prev.verseNr === v.verseNr) {
+        // fixing the case where some verses are 2 times
+        // https://www.bible.com/bible/191/PSA.23.VDC?parallel=143
+        prev.content = v.content;
+      } else {
+        verses.push(v);
+      }
     } else {
-      verses[verses.length - 1].content += " " + verse.content;
+      prev.content += " " + v.content;
     }
     return verses;
   }, []);
@@ -62,7 +69,7 @@ function getReferences(chapters, versesInfo) {
 }
 
 // TODO https://stackoverflow.com/questions/15532791/getting-around-x-frame-options-deny-in-a-chrome-extension
-function getOtherChapter(url) {
+async function getOtherChapter(url, ref) {
   return new Promise((resolve, reject) => {
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";
@@ -86,10 +93,10 @@ function getOtherChapter(url) {
   });
 }
 
-function getVersesInfo(verses, showParallel) {
+function getVersesInfo(verses, showParallel, labelSelector) {
   let separator = " separator";
   let versesInfo = verses.map(v => {
-    const verseNr = getVerseNr(v);
+    const verseNr = getVerseNr(v, labelSelector);
     let cls = "";
     let parallel = false;
     if (showParallel) {
@@ -268,6 +275,7 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
   const verses = [];
   const urlParams = isParallel || parallelEnabled ? getUrlParams() : undefined;
 
+  let ref;
   let loadUrl = "";
   numbers.forEach(number => {
     verses.push(...getVerseEls(views[0], number));
@@ -278,11 +286,12 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
         verses.push(...getVerseEls(views[1], targetRef.verse));
       } else {
         if (!loadUrl) {
-          loadUrl = createChapterUrl({
+          ref = {
             primary: isParallel ? urlParams.primary : urlParams.parallel,
             book: urlParams.book,
             chapter: targetRef.chapter
-          });
+          };
+          loadUrl = createChapterUrl(ref);
           //console.warn("missing %o", isParallel ? "primary" : "parallel", targetRef, loadUrl);
         }
       }
@@ -299,7 +308,7 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
     selectedVersesNr = selectVerses(verses);
   }
 
-  await cacheVersesInfo(loadUrl);
+  await cacheVersesInfo(loadUrl, ref);
 
   const selectedVerses = $$(selectedSelector());
   await displayVerses(selectedVerses);

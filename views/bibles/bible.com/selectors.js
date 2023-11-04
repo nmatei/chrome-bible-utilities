@@ -86,8 +86,8 @@ function selectedSelector() {
   return `.${projected}${verseSelectorMatch}`;
 }
 
-function getVerseNr(verseEl) {
-  const label = verseEl ? $(`:scope > ${verseLabelSelectorMatch}`, verseEl) : null;
+function getVerseNr(verseEl, labelSelector = verseLabelSelectorMatch) {
+  const label = verseEl ? $(`:scope > ${labelSelector}`, verseEl) : null;
   return label ? label.innerText : "";
 }
 
@@ -138,7 +138,7 @@ function syncParallelLines() {
   const parallel = $$(versesSelector, v2).map(l => l.closest(verseSelectorMatch));
   if (primary.length !== parallel.length) {
     // TODO find
-    console.info("difference in nr of verses");
+    //console.info("difference in nr of verses");
     return;
   }
   primary.forEach((v1, i) => {

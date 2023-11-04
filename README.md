@@ -148,4 +148,5 @@ If you want to try the latest versions before they are released, or to change co
 
 ### 🐛 Known bugs
 
-- [ ] check when parallel chapter is not loaded for RO - RU (Psalms)
+- [ ] my.bible.com is now redirecting to bible.com... what should I do?
+- [ ] Parallel chapter is not loaded RU (Psalms) - verses seems to load 2 times

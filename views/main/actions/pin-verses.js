@@ -350,32 +350,31 @@ async function checkCacheVersesInfo() {
     const targetRef = youVersionReferenceMap(urlParams, 1, false);
     if (targetRef.chapter !== urlParams.chapter) {
       //console.info(urlParams, " -> target", targetRef);
-      const loadUrl = createChapterUrl({
+      const ref = {
         primary: urlParams.parallel,
         book: urlParams.book,
         chapter: targetRef.chapter
-      });
+      };
+      const loadUrl = createChapterUrl(ref);
       if (loadUrl) {
-        await cacheVersesInfo(loadUrl);
+        await cacheVersesInfo(loadUrl, ref);
       }
     }
   }
 }
 
-async function cacheVersesInfo(loadUrl) {
+async function cacheVersesInfo(loadUrl, ref) {
   if (loadUrl && !getCacheVerses(loadUrl)) {
     const verseNr = $(selectedSelector() + " > .label");
     if (verseNr) {
       verseNr.classList.add("spin");
     }
-    //console.time("getOtherChapter");
     try {
-      const versesInfo = await getOtherChapter(loadUrl);
+      const versesInfo = await getChapterFromAPI(ref);
       cacheVerses(loadUrl, versesInfo);
     } catch (e) {
       console.debug("Can't get other chapter", e);
     }
-    //console.timeEnd("getOtherChapter");
     if (verseNr) {
       verseNr.classList.remove("spin");
     }

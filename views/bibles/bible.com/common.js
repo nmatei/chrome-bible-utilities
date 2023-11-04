@@ -52,6 +52,33 @@ function cleanUp(parent) {
   });
 }
 
+async function getChapterFromAPI({ primary, book, chapter }) {
+  const baseUrl = "https://nodejs.bible.com/api/bible/chapter/3.1";
+  const response = await fetch(`${baseUrl}?id=${primary}&reference=${book}.${chapter}`);
+  const json = await response.json();
+
+  if (json) {
+    const div = document.createElement("div");
+    div.innerHTML = json.content;
+    delete json.content;
+    //console.warn('div.querySelectorAll(".note")', div.querySelectorAll(".note"));
+    div.querySelectorAll(".note").forEach(n => {
+      n.style.display = "none";
+      n.innerHTML = "";
+    });
+
+    const verses = [...div.querySelectorAll(".verse")];
+    //console.warn("verses", verses);
+    const versesInfo = getVersesInfo(verses, false, ".label");
+    //console.warn("versesInfo", versesInfo);
+    div.innerHTML = "";
+    return versesInfo;
+  } else {
+    console.warn("can't load chapter", arguments);
+    return undefined;
+  }
+}
+
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     getUrlMatch,

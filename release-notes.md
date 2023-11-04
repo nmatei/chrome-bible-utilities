@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.17.0
+
+- [x] UI improvements in Settings page
+- [x] Fix loading Parallel chapter for RU (Psalms)
+
 ## 1.16.0
 
 - [x] Settings - clock position
