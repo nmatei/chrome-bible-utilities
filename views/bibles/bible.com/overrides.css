@@ -43,3 +43,10 @@ body [class^="ChapterContent_label"] {
 .hide-popovers .z-popover {
   opacity: 0;
 }
+
+.sticky.justify-between a {
+  opacity: 0.5;
+}
+.sticky.justify-between a:hover {
+  opacity: 1;
+}

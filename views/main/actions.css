@@ -211,6 +211,9 @@ h2 .key-code {
   min-height: 200px;
   min-width: 140px;
   max-height: 390px;
+  padding: 5px;
+  resize: both;
+  color: #000000;
 }
 #verses-text-box a {
   color: #cccccc90;
