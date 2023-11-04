@@ -115,6 +115,7 @@ function getVerseEls(view, number) {
 async function cacheBooks() {
   const arrow = chapterPickerArrow();
   if (arrow) {
+    document.body.classList.add("hide-popovers");
     arrow.click();
     await sleep(200);
     booksCache = getBooks().map(e => e.innerText);
@@ -122,6 +123,7 @@ async function cacheBooks() {
     if (cancel) {
       cancel.click();
     }
+    document.body.classList.remove("hide-popovers");
   }
 }
 
