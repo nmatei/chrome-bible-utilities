@@ -39,3 +39,7 @@ body [class^="ChapterContent_label"] {
 #realTimeUpdates {
   display: inline-block;
 }
+
+.hide-popovers .z-popover {
+  opacity: 0;
+}

@@ -92,6 +92,7 @@ h2.reference {
 }
 .background-preview p {
   font-size: 1.3em;
+  font-weight: var(--verseFontWeight);
 }
 .clock-container:after {
   z-index: 1 !important;

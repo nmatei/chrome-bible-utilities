@@ -294,6 +294,9 @@ h2 .key-code {
 #help-text-box .info-text-content-wrapper {
   padding: 5px;
 }
+#verses-text-box .info-text-content-wrapper {
+  padding: 3px;
+}
 #help-text-box a {
   color: #9dc9ff;
 }

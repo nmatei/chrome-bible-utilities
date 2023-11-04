@@ -36,6 +36,7 @@ async function openChapter(book, chapter) {
   let result = "";
   let bookEl = findBookEl(book);
   const dropDownArrow = chapterPickerArrow();
+  document.body.classList.add("hide-popovers");
   if (!bookEl) {
     // fixing search one single book
     // then and click outside => will remove all 'books li' from DOM
@@ -58,6 +59,7 @@ async function openChapter(book, chapter) {
       console.warn("dropDownArrow not present");
     }
   }
+  document.body.classList.remove("hide-popovers");
   return result;
 }
 
