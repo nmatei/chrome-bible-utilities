@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.18.0
+
+- [x] Add Russian mappings for RSP - Святая Библия: Современный перевод
+- [x] Visual improvements
+
 ## 1.17.0
 
 - [x] Visual improvements while selecting chapter in bible.com
