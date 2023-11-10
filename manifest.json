@@ -36,7 +36,12 @@
         "views/main/actions.js",
         "views/main/index.js"
       ],
-      "css": ["views/bibles/colors.css", "views/main/actions.css", "views/bibles/bible.com/common-overrides.css"]
+      "css": [
+        "views/common/CustomScrollChrome.css",
+        "views/bibles/colors.css",
+        "views/main/actions.css",
+        "views/bibles/bible.com/common-overrides.css"
+      ]
     },
     {
       "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],

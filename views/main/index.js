@@ -144,6 +144,8 @@ function addMissingVerses(versesInfo, isParallel) {
               }
             };
           } else {
+            // TODO Iosua 6:1
+            // https://www.bible.com/bible/191/JOS.6.VDC?parallel=201
             console.log("!ref not found", targetRef);
           }
         })

@@ -61,7 +61,7 @@ h6 {
   font-weight: bold;
   font-variant-caps: small-caps;
   color: var(--referenceColor);
-  text-shadow: 2px 2px 4px var(--verseColor);
+  text-shadow: 4px 2px 4px var(--pageBackgroundColor);
   font-size: 1.2em;
   margin: 0.2em 0 0.2em 0;
 }
@@ -112,7 +112,7 @@ a {
 h1.reference {
   /*font-size: var(--referenceFontSize);*/
   font-size: clamp(2vw, var(--referenceFontSize), 8vw);
-  text-shadow: 1px 1px 2px var(--verseColor);
+  text-shadow: 4px 2px 4px var(--pageBackgroundColor);
 }
 
 p.parallel.separator:not(p:first-of-type):before {
@@ -128,11 +128,13 @@ p.parallel.separator:not(p:first-of-type):before {
   margin: 10px 0;
 }
 
+p {
+  text-shadow: 4px 2px 4px var(--pageBackgroundColor);
+}
 p.verse {
   display: var(--versesDisplay);
   font-weight: var(--verseFontWeight);
   color: var(--verseColor);
-  text-shadow: 1px 2px 4px var(--pageBackgroundColor);
 }
 p > sup {
   color: var(--verseNumberColor);

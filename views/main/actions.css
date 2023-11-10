@@ -208,12 +208,14 @@ h2 .key-code {
 }
 #verses-text-box textarea {
   margin-bottom: 0;
+  /*margin: 2px;*/ /* TODO Test with margin 2px */
   min-height: 200px;
   min-width: 140px;
   max-height: 390px;
   padding: 5px;
   resize: both;
   color: #000000;
+  border-radius: 2px;
 }
 #verses-text-box a {
   color: #cccccc90;

@@ -145,8 +145,10 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] when 1&2 are not selected to project -> add a 'bullet' on settings button so we know
 - [ ] cleanup chars when add ref from copy/paste
   - [ ] ‭‭Filipeni‬ 
+- [ ] use TypeScript and a build system?
+  - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
+
 
 ### 🐛 Known bugs
 
-- [ ] my.bible.com is now redirecting to bible.com... what should I do?
 - [ ] Parallel chapter is not loaded RU (Psalms) - verses seems to load 2 times

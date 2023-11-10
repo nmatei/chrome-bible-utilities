@@ -35,3 +35,10 @@ body::-webkit-scrollbar {
 ::-webkit-scrollbar-thumb:window-inactive {
   background-color: rgba(38, 44, 57, 0.2);
 }
+
+.info-fixed-box ::-webkit-scrollbar-thumb {
+  background-color: rgba(122, 122, 122, 0.6);
+}
+.info-fixed-box ::-webkit-scrollbar-thumb:window-inactive {
+  background-color: rgba(122, 122, 122, 0.4);
+}

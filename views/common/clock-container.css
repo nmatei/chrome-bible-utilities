@@ -5,7 +5,8 @@
   padding: 0 10px;
   font-size: 3vw;
   color: var(--referenceColor);
-  opacity: 0.5;
+  text-shadow: 2px 2px 2px var(--pageBackgroundColor);
+  opacity: 0.6;
   font-weight: bold;
   z-index: -1;
   border-radius: 5px;
