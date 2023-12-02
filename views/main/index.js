@@ -182,12 +182,10 @@ function getDisplayText(verses) {
   }
 
   const references = getReferences(chapters, versesInfo);
-  const versesContent = versesInfo.map(({ cls, verseNr, content }) => {
-    return `<p class="verse ${cls}">
-      ${verseNr ? `<sup>${verseNr}</sup>` : ""}
-      ${content}
-    </p>`;
-  });
+  const versesContent = versesInfo.map(
+    ({ cls, verseNr, content }) =>
+      `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>&nbsp;` : ""}${content}</p>`
+  );
 
   const reference = references.length ? `<h1 class="reference">${references.join(" / ")}</h1> ` : "";
   return reference + versesContent.join("\n");
