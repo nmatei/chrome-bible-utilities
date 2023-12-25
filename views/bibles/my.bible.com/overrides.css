@@ -17,6 +17,9 @@ body .bible-reader .verse {
   background: var(--verseNumberBackgroundHover);
   border-color: var(--verseNumberBorderColorHover);
 }
+.verse .label:focus {
+  border-color: var(--verseNumberBorderColorFocus);
+}
 .verse.projected .label {
   background: var(--verseNumberBackgroundProjected) !important;
   color: var(--verseNumberColorProjected) !important;

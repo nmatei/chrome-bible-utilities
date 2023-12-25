@@ -18,6 +18,9 @@ body [class^="ChapterContent_label"] {
   background: var(--verseNumberBackgroundHover);
   border-color: var(--verseNumberBorderColorHover);
 }
+[class^="ChapterContent_label"]:focus {
+  border-color: var(--verseNumberBorderColorFocus);
+}
 [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
   background: var(--verseNumberBackgroundProjected) !important;
   color: var(--verseNumberColorProjected) !important;

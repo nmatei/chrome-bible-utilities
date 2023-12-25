@@ -8,8 +8,18 @@ window.addEventListener("load", () => {
     createSettingsActions();
     await loadDisplaySettings();
     await initEvents();
+    makeVerseFocusable();
   }, 100);
 });
+
+function makeVerseFocusable() {
+  // TODO extract selector
+  const versesSelector = `${verseSelectorMatch} > ${verseLabelSelectorMatch}`;
+  $$(versesSelector).forEach(label => {
+    label.tabIndex = 0;
+    // TODO make them selectable on enter...
+  });
+}
 
 function hasParallelView() {
   return !!$(parallelViewSelector);
