@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.19.0
+
+- [x] Easy focus in search field when type outside
+- [x] Make sure content is not in new line and last char is verse number
+
 ## 1.18.0
 
 - [x] Add Russian mappings for RSP - Святая Библия: Современный перевод

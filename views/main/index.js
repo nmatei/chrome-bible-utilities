@@ -411,6 +411,8 @@ async function selectByKeys(key) {
         focusEl.scrollIntoViewIfNeeded(true);
       }, 600);
     }
+  } else {
+    return false;
   }
 }
 
@@ -440,9 +442,18 @@ async function initEvents() {
 
   document.addEventListener("click", selectVersesToProject);
 
-  document.addEventListener("keydown", e => {
+  document.addEventListener("keydown", async e => {
     if (!e.target.matches("input,textarea")) {
-      selectByKeys(e.key);
+      const consumed = await selectByKeys(e.key);
+      if (consumed === false) {
+        // console.debug("key %o", e.key, /\d+$/.test(e.key), e);
+        // TODO see hot to use it as private var from 'actions'
+        const versesBox = $("#verses-text-box");
+        if (versesBox && !versesBox.classList.contains("hide-view")) {
+          const search = $("#pin-add-verse");
+          search.focus();
+        }
+      }
     }
   });
 
