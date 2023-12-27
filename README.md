@@ -116,7 +116,7 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 💠 Advanced Features
 
-- [x] User Settingsfix bug when drag/drop pin - remove will not remove correct pin.
+- [x] User Settings
   - [x] Clock position (or hide)
   - [x] hide/show arrows (actions) from projecting screen
   - [x] Upload multiple background images and allow to easy switch them
