@@ -3,6 +3,7 @@
 ## 1.19.0
 
 - [x] Easy focus in search field when type outside
+- [x] Improve UX for focus elements by Tab key
 - [x] Make sure content is not in new line and last char is verse number
 
 ## 1.18.0

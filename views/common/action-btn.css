@@ -29,6 +29,7 @@
   transition: none;
 }
 
+.action-btn:focus,
 .action-btn.focus {
   color: #cccccc30;
   border-color: #cccccc30;
@@ -39,6 +40,7 @@
   -webkit-animation-name: focus-el-animation;
   -webkit-animation-duration: 0.2s;
 }
+
 @keyframes focus-el-animation {
   0% {
     /*border-color: #cccccc90;*/

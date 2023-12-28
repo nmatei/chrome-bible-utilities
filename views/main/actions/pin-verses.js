@@ -17,10 +17,10 @@ async function setPinnedVerses(pinnedVerses) {
 function getVerseRow(verse) {
   return `<tr draggable="true">
     <td class="remove-cell">
-      <a data-key="remove" class="action-btn remove-btn" title="Remove">✖</a>
+      <a tabindex="0" data-key="remove" class="action-btn remove-btn" title="Remove">✖</a>
     </td>
     <td>
-      <a data-key="open">${verse}</a>
+      <a tabindex="0" data-key="open">${verse}</a>
     </td>
   </tr>`;
 }
@@ -67,6 +67,12 @@ function initDragDrop(tbody, save) {
 function createPinVersesBox() {
   const form = addVersesBox();
   const preview = $("#ref-preview");
+  $("tbody", form).addEventListener("keypress", e => {
+    const target = e.target;
+    if (target.matches("a") && e.key === "Enter") {
+      onReferenceClick(target, e);
+    }
+  });
   $("tbody", form).addEventListener("click", e => {
     const target = e.target;
     if (target.matches("a")) {
@@ -394,7 +400,9 @@ function addVersesBox() {
   form.action = "#";
   form.innerHTML = `
     <div id="pin-search-bar" class="actions row-actions form-field">
-      <input placeholder="Add Ref's" type="text" autocomplete="off" id="pin-add-verse" class="fill" title="for Multiple References use [ , ] or [ ; ] then press [ Enter ]"/>
+      <input placeholder="Add Ref's" type="text" autocomplete="off" id="pin-add-verse" class="fill" 
+        title="for Multiple References use [ , ] or [ ; ] then press [ Enter ]"
+      />
     </div>
     <div class="actions row-actions form-field">
       <button type="button" class="action-btn svg-icon" data-key="copy" title="Copy to clipboard">${copyIcon}</button>

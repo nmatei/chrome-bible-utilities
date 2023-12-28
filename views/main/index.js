@@ -450,18 +450,28 @@ async function initEvents() {
       // 2 sec to make sure books are reloaded
     );
 
-  document.addEventListener("click", selectVersesToProject);
+  document.addEventListener("click", async e => {
+    if (e.detail !== 0) {
+      document.body.classList.remove("key-focus");
+    }
+    await selectVersesToProject(e);
+  });
 
   document.addEventListener("keydown", async e => {
-    if (!e.target.matches("input,textarea")) {
+    if (e.key === "Tab") {
+      document.body.classList.add("key-focus");
+    } else if (!e.target.matches("input,textarea")) {
       const consumed = await selectByKeys(e.key);
       if (consumed === false) {
-        // console.debug("key %o", e.key, /\d+$/.test(e.key), e);
-        // TODO see hot to use it as private var from 'actions'
-        const versesBox = $("#verses-text-box");
-        if (versesBox && !versesBox.classList.contains("hide-view")) {
-          const search = $("#pin-add-verse");
-          search.focus();
+        if (e.key === "Enter") {
+          await selectVersesToProject(e);
+        } else if (!["CapsLock", "Shift", "Control", " "].some(k => k === e.key)) {
+          // TODO see how to use it as private var from 'actions'
+          const versesBox = $("#verses-text-box");
+          if (versesBox && !versesBox.classList.contains("hide-view")) {
+            const search = $("#pin-add-verse");
+            search.focus();
+          }
         }
       }
     }

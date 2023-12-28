@@ -57,6 +57,10 @@
   transition: none;
 }
 
+.key-focus .actions .action-btn:focus {
+  border-color: var(--elBorderColorFocus);
+}
+
 .info-fixed-box {
   display: block;
   position: fixed;
@@ -126,6 +130,9 @@ h2 .key-code {
   margin: 4px;
   height: auto !important;
 }
+.key-focus #live-text-box input[type="checkbox"]:focus {
+  outline: 2px solid #3d79c2;
+}
 #live-text-box input[type="text"],
 #live-text-box textarea {
   font-size: 0.92rem;
@@ -193,6 +200,9 @@ h2 .key-code {
   color: yellow;
   font-style: normal;
 }
+.key-focus #ref-preview:focus {
+  outline: 2px solid #3d79c2;
+}
 #ref-preview:empty {
   display: none;
 }
@@ -201,7 +211,10 @@ h2 .key-code {
   background: #00000022;
 }
 #verses-text-box table td {
-  padding: 0.2rem;
+  padding: 1px;
+}
+#verses-text-box table td a {
+  padding: 2px;
 }
 #verses-text-box table td:first-child {
   text-align: center;
@@ -230,6 +243,10 @@ h2 .key-code {
 }
 #verses-text-box a.focus {
   color: #eeeeee;
+}
+.key-focus #verses-text-box a:focus {
+  color: #eeeeee;
+  outline: 2px solid #3d79c2;
 }
 #pin-search-bar {
   align-items: center !important;
@@ -263,7 +280,7 @@ h2 .key-code {
   margin-bottom: 10px;
 }
 .info-fixed-box input[type="text"] {
-  border: 1px solid #d0d2d2;
+  border: 2px solid #d0d2d2;
   background: #ffffff;
   border-radius: 5px;
   width: 100%;
@@ -273,7 +290,7 @@ h2 .key-code {
 }
 
 #liveText {
-  border: 1px solid #d0d2d2;
+  border: 2px solid #d0d2d2;
   border-radius: 5px;
   margin: 0;
   min-height: 65px;
