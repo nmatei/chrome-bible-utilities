@@ -199,6 +199,12 @@ fieldset .form-field label:first-child {
   text-align: center;
 }
 
+input:focus,
+select:focus {
+  outline: 1px solid #3d79c2;
+  border-color: #3d79c2;
+}
+
 @media screen and (max-height: 300px) {
   #optionsForm {
     overflow-y: visible;
