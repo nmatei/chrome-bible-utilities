@@ -248,8 +248,11 @@ h2 .key-code {
   color: #eeeeee;
   outline: 2px solid #3d79c2;
 }
-#pin-search-bar {
-  align-items: center !important;
+#pin-search-bar.actions {
+  align-items: center;
+  padding: 2px;
+  background: #ffffff;
+  border-radius: 5px;
 }
 #pin-search-bar:after {
   content: "🔍";
@@ -264,6 +267,9 @@ h2 .key-code {
 #pin-add-verse {
   width: 120px;
   padding-right: 28px !important;
+}
+#pin-add-verse:not(:focus) {
+  border-color: transparent;
 }
 #pinned-verses-list {
   padding: 2px;
