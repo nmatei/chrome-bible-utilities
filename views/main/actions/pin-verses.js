@@ -399,12 +399,12 @@ function addVersesBox() {
   form.method = "GET";
   form.action = "#";
   form.innerHTML = `
-    <div id="pin-search-bar" class="actions row-actions form-field">
+    <div id="pin-search-bar" class="actions row-actions form-field form-field-wrapper">
       <input placeholder="Add Ref's" type="text" autocomplete="off" id="pin-add-verse" class="fill" 
         title="for Multiple References use [ , ] or [ ; ] then press [ Enter ]"
       />
     </div>
-    <div class="actions row-actions form-field">
+    <div class="actions row-actions">
       <button type="button" class="action-btn svg-icon" data-key="copy" title="Copy to clipboard">${copyIcon}</button>
       <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
       <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾</button>

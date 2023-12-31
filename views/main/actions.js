@@ -15,10 +15,10 @@ function addLiveTextBox() {
       <button type="submit" class="action-btn">💬 Project</button>
       <button type="button" class="action-btn" data-key="hide" title="Hide text">🔳</button>
     </div>
-    <div class="form-field">
+    <div class="form-field form-field-wrapper">
       <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
     </div>
-    <div>
+    <div class="form-field-wrapper">
       <textarea name="liveText" id="liveText" cols="30" rows="6" placeholder="Enter Text to be projected (Markdown format)"></textarea>
     </div>
   `;

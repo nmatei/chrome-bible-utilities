@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.20.0
+
+- [x] Improve UX for focus inputs
+
 ## 1.19.0
 
 - [x] Easy focus in search field when type outside

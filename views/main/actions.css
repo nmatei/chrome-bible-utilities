@@ -160,6 +160,7 @@ h2 .key-code {
   flex-direction: column;
 }
 #verses-text-box .actions {
+  margin-bottom: 10px;
   padding: 0;
   align-items: stretch;
   gap: 5px;
@@ -247,12 +248,10 @@ h2 .key-code {
 .key-focus #verses-text-box a:focus {
   color: #eeeeee;
   outline: 2px solid #3d79c2;
+  border-radius: 2px;
 }
 #pin-search-bar.actions {
   align-items: center;
-  padding: 2px;
-  background: #ffffff;
-  border-radius: 5px;
 }
 #pin-search-bar:after {
   content: "🔍";
@@ -267,9 +266,6 @@ h2 .key-code {
 #pin-add-verse {
   width: 120px;
   padding-right: 28px !important;
-}
-#pin-add-verse:not(:focus) {
-  border-color: transparent;
 }
 #pinned-verses-list {
   padding: 2px;
@@ -286,7 +282,6 @@ h2 .key-code {
   margin-bottom: 10px;
 }
 .info-fixed-box input[type="text"] {
-  border: 2px solid #d0d2d2;
   background: #ffffff;
   border-radius: 5px;
   width: 100%;
@@ -294,19 +289,30 @@ h2 .key-code {
   margin: 0;
   color: #121212;
 }
+.form-field-wrapper {
+  padding: 2px !important;
+  background: #ffffff;
+  border-radius: 5px;
+}
+.form-field-wrapper input,
+.form-field-wrapper textarea {
+  border: 2px solid transparent !important;
+}
+.form-field-wrapper input:hover,
+.form-field-wrapper textarea:hover {
+  border-color: #3d79c266 !important;
+}
+.form-field-wrapper input:focus,
+.form-field-wrapper textarea:focus {
+  border-color: #3d79c2 !important;
+}
 
 #liveText {
-  border: 2px solid #d0d2d2;
   border-radius: 5px;
   margin: 0;
   min-height: 65px;
   min-width: 250px;
   padding: 0.57rem;
-}
-#liveTextTitle:focus,
-#liveText:focus {
-  outline: none;
-  border-color: #3d79c2;
 }
 
 #help-text-box {
