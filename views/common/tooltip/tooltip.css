@@ -13,9 +13,11 @@
   border-radius: 4px;
 }
 .context-menu .action-btn {
+  display: flex;
+  align-items: center;
   -webkit-appearance: none;
   margin: 0;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 4px;
   background-color: transparent;
   border: 1px solid transparent;
@@ -26,7 +28,11 @@
 .context-menu .action-btn .menu-icon {
   display: inline-block;
   text-align: center;
-  min-width: 24px;
+  min-width: 32px;
+  min-height: 24px;
+}
+.context-menu .action-btn .action-btn-text {
+  flex: 1;
 }
 
 .context-menu .context-menu-layout {

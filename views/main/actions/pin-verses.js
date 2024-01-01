@@ -84,19 +84,21 @@ function createPinVersesBox() {
 
     const menu = getContextMenu([
       {
-        text: "<span class='menu-icon'>✖</span> Clear all",
+        text: "Copy to clipboard",
+        icon: copyIcon,
+        itemId: "copy",
+        handler: async () => {
+          await onReferenceCopy();
+        }
+      },
+      {
+        text: "Clear all",
+        icon: "✖",
         itemId: "clear",
         handler: () => {
           pinnedVerses = [];
           updatePinnedRows(pinnedVerses);
           setPinnedVerses(pinnedVerses);
-        }
-      },
-      {
-        text: "<span class='menu-icon'>📋</span> Copy to clipboard",
-        itemId: "copy",
-        handler: async () => {
-          await onReferenceCopy();
         }
       }
     ]);

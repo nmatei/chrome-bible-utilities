@@ -46,10 +46,11 @@ function getContextMenu(items) {
 
   const contentItems = items
     .map(
-      (item, i) => `<button type="button" class="action-btn"
+      (item, i) => `<button type="button" class="action-btn ${item.cls ? item.cls : ""}"
       ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
       data-idx="${i}" data-id="${item.itemId}">
-        ${item.text}
+        <span class='menu-icon'>${item.icon || ""}</span>
+        <spam class="action-btn-text">${item.text}</spam>
       </button>`
     )
     .join("");
@@ -58,9 +59,10 @@ function getContextMenu(items) {
   menu.addEventListener("click", e => {
     e.stopPropagation();
     e.preventDefault();
-    if (e.target.matches(".action-btn")) {
-      const item = items[e.target.dataset.idx];
-      item.handler && item.handler(e.target);
+    const btn = e.target.closest(".action-btn");
+    if (btn) {
+      const item = items[btn.dataset.idx];
+      item.handler && item.handler(btn);
     }
   });
   return menu;
