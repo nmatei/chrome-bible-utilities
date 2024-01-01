@@ -122,7 +122,7 @@ function createSettingsActions() {
           if (!liveBoxForm) {
             liveBoxForm = createLiveTextForm();
           }
-          showBy(liveBoxForm, target);
+          showBoxBy(liveBoxForm, target);
           liveBoxForm.classList.toggle("hide-view");
           if (liveBoxForm.classList.contains("hide-view")) {
             target.classList.remove("active");
@@ -154,7 +154,7 @@ function createSettingsActions() {
 }
 
 function showBox(box, target) {
-  showBy(box, target);
+  showBoxBy(box, target);
   box.classList.toggle("hide-view");
   if (box.classList.contains("hide-view")) {
     target.classList.remove("active");
@@ -163,7 +163,8 @@ function showBox(box, target) {
   }
 }
 
-function showBy(el, target) {
+// TODO reuse showBy?
+function showBoxBy(el, target) {
   if (el.classList.contains("arrow-up")) {
     el.style.top = target.offsetTop + target.offsetHeight + 10 + "px";
     el.style.left = target.offsetLeft + "px";

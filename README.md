@@ -151,4 +151,3 @@ If you want to try the latest versions before they are released, or to change co
 
 ### 🐛 Known bugs
 
-- [ ] Parallel chapter is not loaded RU (Psalms) - verses seems to load 2 times

@@ -25,6 +25,7 @@
       ],
       "js": [
         "views/common/utilities.js",
+        "views/common/tooltip/tooltip.js",
         "views/common/latinizeText.js",
         "views/common/bible-mappings.js",
         "views/common/cache-verses.js",
@@ -37,6 +38,7 @@
         "views/main/index.js"
       ],
       "css": [
+        "views/common/tooltip/tooltip.css",
         "views/common/CustomScrollChrome.css",
         "views/bibles/colors.css",
         "views/main/actions.css",

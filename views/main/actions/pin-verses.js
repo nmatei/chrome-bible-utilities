@@ -79,6 +79,29 @@ function createPinVersesBox() {
       onReferenceClick(target, e);
     }
   });
+  $(".info-text-content-wrapper", form).addEventListener("contextmenu", e => {
+    e.preventDefault();
+
+    const menu = getContextMenu([
+      {
+        text: "<span class='menu-icon'>✖</span> Clear all",
+        itemId: "clear",
+        handler: () => {
+          pinnedVerses = [];
+          updatePinnedRows(pinnedVerses);
+          setPinnedVerses(pinnedVerses);
+        }
+      },
+      {
+        text: "<span class='menu-icon'>📋</span> Copy to clipboard",
+        itemId: "copy",
+        handler: async () => {
+          await onReferenceCopy();
+        }
+      }
+    ]);
+    showByCursor(menu, e);
+  });
   initDragDrop($("tbody", form), async verses => {
     pinnedVerses = splitVerses(verses);
     await setPinnedVerses(pinnedVerses);
