@@ -119,9 +119,9 @@ If you want to try the latest versions before they are released, or to change co
 ## 💠 Advanced Features
 
 - [x] User Settings
-  - [x] Clock position (or hide)
-  - [x] hide/show arrows (actions) from projecting screen
-  - [x] Upload multiple background images and allow to easy switch them
+  - [x] **Clock** position (or hide)
+  - [x] **hide/show arrows** (actions) from projecting screen
+  - [x] Upload multiple **background images** and allow to easy switch them
 
 ## 📋 Developers TODOs (items to improve)
 
