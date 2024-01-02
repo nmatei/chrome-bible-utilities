@@ -118,8 +118,8 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 💠 Advanced Features
 
-- [x] User Settings
-  - [x] **Clock** position (or hide)
+- [x] 🛠 **User Settings**
+  - [x] 🕒 **Clock** position (or hide)
   - [x] **hide/show arrows** (actions) from projecting screen
   - [x] Upload multiple **background images** and allow to easy switch them
 
@@ -133,7 +133,7 @@ If you want to try the latest versions before they are released, or to change co
     - [ ] Especially for 🟨🟦 Ukrainian & ⬜🟦🟥 Russian
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
-- [ ] User Settings
+- [ ] 🛠 **User Settings**
   - [ ] Allow Multiple layouts (to easy switch between them)
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
