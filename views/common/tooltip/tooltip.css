@@ -15,15 +15,19 @@
 .context-menu .action-btn {
   display: flex;
   align-items: center;
+  gap: 5px;
   -webkit-appearance: none;
   margin: 0;
-  padding: 4px 8px;
+  padding: 4px 8px 4px 2px;
   border-radius: 4px;
   background-color: transparent;
   border: 1px solid transparent;
   text-align: left;
   color: #333333;
   font-size: 1em;
+}
+.context-menu .action-btn:focus {
+  border-color: var(--elBorderColorFocus);
 }
 .context-menu .action-btn .menu-icon {
   display: inline-block;

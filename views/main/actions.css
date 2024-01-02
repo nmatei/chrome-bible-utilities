@@ -165,15 +165,6 @@ h2 .key-code {
   align-items: stretch;
   gap: 5px;
 }
-.svg-icon {
-  padding: 2px 4px;
-}
-.svg-icon svg {
-  opacity: 0.7;
-}
-.svg-icon:active svg {
-  opacity: 1;
-}
 #verses-text-box .footer-bar.actions {
   margin-top: 10px;
 }

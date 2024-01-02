@@ -65,6 +65,9 @@ function getContextMenu(items) {
       item.handler && item.handler(btn);
     }
   });
+  // setTimeout(() => {
+  //   menu.querySelector(".action-btn").focus();
+  // }, 200);
   return menu;
 }
 

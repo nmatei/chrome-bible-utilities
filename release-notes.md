@@ -2,6 +2,7 @@
 
 ## 1.20.0
 
+- [x] Add Context menu (right click) inside pin list
 - [x] Improve UX for focus inputs
 
 ## 1.19.0

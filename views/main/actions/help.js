@@ -52,7 +52,11 @@ function addHelpBox() {
               <strong class="key-code">Enter</strong> pin current chapter or verses
             </li>
             <li><strong class="key-code">::</strong> <strong>drag & drop</strong> to reorder verses</li>
-            <li><strong class="key-code">📄</strong> <strong>Copy</strong> all pin verses to clipboard</li>
+            <li><strong class="key-code">🖱</strong> <strong>Context menu</strong> (right click) for more actions inside pin list</li>
+            <ul>
+              <li><strong class="key-code" style="display: inline-block;padding: 0 0.3rem; vertical-align: middle;">${copyIcon}</strong> <strong>Copy</strong> all pin verses to clipboard</li>
+              <li><strong class="key-code">✖</strong> Clear all</li>
+            </ul>
           </ul>
         </li>
         <li>

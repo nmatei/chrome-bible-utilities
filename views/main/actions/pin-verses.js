@@ -82,7 +82,19 @@ function createPinVersesBox() {
   $(".info-text-content-wrapper", form).addEventListener("contextmenu", e => {
     e.preventDefault();
 
+    const actions = [];
+    if (e.target.matches("a[data-key=open]")) {
+      actions.push({
+        text: "Project entire reference",
+        icon: "🔠",
+        handler: () => {
+          onReferenceClick(e.target, { ctrlKey: true });
+        }
+      });
+    }
+
     const menu = getContextMenu([
+      ...actions,
       {
         text: "Copy to clipboard",
         icon: copyIcon,
@@ -119,7 +131,6 @@ function createPinVersesBox() {
     onReferenceSubmit(preview);
   });
 
-  $('button[data-key="copy"]', form).addEventListener("click", onReferenceCopy);
   $("#pin-add-verse", form).addEventListener("keydown", onReferenceKeydown);
   $('button[data-key="edit"]', form).addEventListener("click", onReferenceEdit);
   $('button[data-key="save"]', form).addEventListener("click", onReferenceSave);
@@ -430,7 +441,6 @@ function addVersesBox() {
       />
     </div>
     <div class="actions row-actions">
-      <button type="button" class="action-btn svg-icon" data-key="copy" title="Copy to clipboard">${copyIcon}</button>
       <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
       <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾</button>
       <span class="fill"></span>
