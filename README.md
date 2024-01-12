@@ -101,6 +101,13 @@ A simple way to **support my work** & to **improve** your programming skills is 
 - [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://nmatei.github.io/web) - by [Nicolae Matei](https://nmatei.github.io/)
 
 
+## 💠 Advanced Features
+
+- [x] 🛠 **User Settings**
+  - [x] 🕒 **Clock** position (or hide)
+  - [x] **hide/show arrows** (actions) from projecting screen
+  - [x] Upload multiple **background images** and allow to easy switch them
+
 ## ⚙ Setup Plugin as Developer
 
 If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
@@ -118,13 +125,6 @@ If you want to try the latest versions before they are released, or to change co
   - [x] Will open https://my.bible.com/bible if not opened
 - [x] Sign in to YouVersion on https://my.bible.com/sign-in
   - [x] Must be logged in to have parallel view and to enable this plugin
-
-## 💠 Advanced Features
-
-- [x] 🛠 **User Settings**
-  - [x] 🕒 **Clock** position (or hide)
-  - [x] **hide/show arrows** (actions) from projecting screen
-  - [x] Upload multiple **background images** and allow to easy switch them
 
 ## 📋 Developers TODOs (items to improve)
 
