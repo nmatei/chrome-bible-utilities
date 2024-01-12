@@ -465,7 +465,7 @@ async function initEvents() {
       if (consumed === false) {
         if (e.key === "Enter") {
           await selectVersesToProject(e);
-        } else if (!["CapsLock", "Shift", "Control", " "].some(k => k === e.key)) {
+        } else if (!(e.ctrlKey || e.metaKey) && !["CapsLock", "Shift", "Control", " "].some(k => k === e.key)) {
           // TODO see how to use it as private var from 'actions'
           const versesBox = $("#verses-text-box");
           if (versesBox && !versesBox.classList.contains("hide-view")) {

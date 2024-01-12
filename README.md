@@ -15,7 +15,7 @@ or in **2 different languages**.
 - [💠 Features & Usage](#-features--usage)
 - [🎞 Results](#-results)
 - [⚙ Install Plugin](#-install-plugin)
-- [🎫 QR Code](#-qr-code)
+  - [🎫 QR Code](#-qr-code)
 - [👋 Support my Work](#-support-my-work)
 - [💠 Advanced Features](#-advanced-features)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
@@ -79,21 +79,24 @@ or in **2 different languages**.
 
 ## ⚙ Install Plugin
 
-- [x] Create account on [my.bible.com](https://my.bible.com)
 - [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
-- [x] 📌 **Pin** extension to see it after search bar for fast access
-  - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
+- [x] Create account on [my.bible.com](https://my.bible.com)
+  - [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner every time you visit https://my.bible.com
+- [ ] 📌 **Pin** extension to see it after search bar for fast access
+  - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
 
-## 🎫 QR Code
+### 🎫 QR Code
 
 [bit.ly/project-bible](https://bit.ly/project-bible)
 
 ![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
 
+
 ## 👋 Support my Work
 
-A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**
+A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**.
+(Or you can **Gift this course** to someone that will benefit from it).
 
 - [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://nmatei.github.io/web) - by [Nicolae Matei](https://nmatei.github.io/)
 
@@ -149,7 +152,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] ‭‭Filipeni‬ 
 - [ ] use TypeScript and a build system?
   - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
-
+- [ ] 👏 Add link to plugin feedback!
 
 ### 🐛 Known bugs
 
