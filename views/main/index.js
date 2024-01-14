@@ -460,7 +460,8 @@ async function initEvents() {
   document.addEventListener("keydown", async e => {
     if (e.key === "Tab") {
       document.body.classList.add("key-focus");
-    } else if (!e.target.matches("input,textarea")) {
+    } else if (!e.target.matches("input,textarea") || !e.target.value) {
+      // not input or no value in input
       const consumed = await selectByKeys(e.key);
       if (consumed === false) {
         if (e.key === "Enter") {
