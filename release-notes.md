@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.21.0
+
+- [x] allow copy from page (disable auto focus when ctrlKey or metaKey are pressed)
+- [x] use text shadow and for list items in live text
+- [x] allow navigation using keys when focus is on input but empty
+
 ## 1.20.0
 
 - [x] Add Context menu (right click) inside pin list
