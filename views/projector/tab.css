@@ -127,8 +127,8 @@ p.parallel.separator:not(p:first-of-type):before {
   border-bottom: var(--parallelSeparatorBottomHeight) solid var(--parallelSeparatorBottomColor);
   margin: 10px 0;
 }
-
-p {
+p,
+li {
   text-shadow: 4px 2px 4px var(--pageBackgroundColor);
 }
 p.verse {
