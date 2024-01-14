@@ -36,7 +36,7 @@ async function openChapter(book, chapter) {
       dropDownArrow.click();
       await sleep(100);
       bookEl = findBookEl(book);
-      console.warn("bookEl", bookEl);
+      //console.warn("bookEl", bookEl);
       dropDownArrow.click();
       //console.debug("second try of search bookEl", bookEl);
     } else {
