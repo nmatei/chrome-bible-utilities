@@ -4,6 +4,7 @@
   --rootPaddingBottom: 5px;
   --rootPaddingLeft: 5px;
   --pageBackgroundColor: #000000;
+  --pageBackgroundImgOpacity: 0;
   --referenceColor: #d3d3d3;
   --referenceFontSize: 40px;
   --verseNumberColor: #d3d3d3;
@@ -49,6 +50,18 @@ body {
   background-position: center center;
   color: var(--verseColor);
 }
+
+body:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, var(--pageBackgroundImgOpacity));
+  z-index: -1;
+}
+
 #root {
   padding: var(--rootPaddingTop) var(--rootPaddingRight) var(--rootPaddingBottom) var(--rootPaddingLeft);
 }

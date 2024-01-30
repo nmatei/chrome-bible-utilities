@@ -183,11 +183,15 @@ fieldset .form-field label:first-child {
   min-width: 12em;
 }
 .form-field input[type="number"] {
-  width: 40px;
+  width: 45px;
   padding: 3px;
+}
+.form-field input[type="color"] {
+  width: 55px;
 }
 .form-field select {
   padding: 3px;
+  min-width: 100px;
 }
 .form-field input[type="number"]:invalid {
   border: 2px solid #ff0000;

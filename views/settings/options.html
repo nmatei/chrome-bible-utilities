@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -42,6 +42,19 @@
               <div class="form-field">
                 <label for="pageBackgroundColor">Background Color</label>
                 <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
+              </div>
+              <div class="form-field">
+                <label for="pageBackgroundImgOpacity">Background Opacity</label>
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  id="pageBackgroundImgOpacity"
+                  name="pageBackgroundImgOpacity"
+                />
+                <div>(0 - 1)</div>
               </div>
               <div class="form-field">
                 <label for="maxFontSize">Max Font Size</label>
@@ -98,9 +111,9 @@
                 <label for="clockPosition">Clock Position</label>
                 <select required id="clockPosition" name="clockPosition">
                   <option value="none" selected>none</option>
-                  <option value="top-right">top-right corner</option>
-                  <option value="bottom-right">bottom-right corner</option>
-                  <option value="bottom-left">bottom-left corner</option>
+                  <option value="top-right">top-right</option>
+                  <option value="bottom-right">bottom-right</option>
+                  <option value="bottom-left">bottom-left</option>
                 </select>
               </div>
             </div>

@@ -14,6 +14,7 @@ function getCssDefaultProperties() {
     rootPaddingBottom: "5",
     rootPaddingLeft: "5",
     pageBackgroundColor: "#000000",
+    pageBackgroundImgOpacity: "0",
     referenceColor: "#d3d3d3",
     referenceFontSize: "40",
     verseNumberColor: "#d3d3d3",

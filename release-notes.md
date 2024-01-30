@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.22.0
+
+- [x] Background Opacity (make image lighter or darker)
+
 ## 1.21.0
 
 - [x] allow copy from page (disable auto focus when ctrlKey or metaKey are pressed)

@@ -107,6 +107,7 @@ A simple way to **support my work** & to **improve** your programming skills is 
   - [x] 🕒 **Clock** position (or hide)
   - [x] **hide/show arrows** (actions) from projecting screen
   - [x] Upload multiple **background images** and allow to easy switch them
+  - [x] Background Opacity (make image lighter or darker)
 
 ## ⚙ Setup Plugin as Developer
 
