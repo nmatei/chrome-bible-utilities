@@ -13,6 +13,7 @@ or in **2 different languages**.
 
 
 - [💠 Features & Usage](#-features--usage)
+- [📈 Release Notes](#-release-notes)
 - [🎞 Results](#-results)
 - [⚙ Install Plugin](#-install-plugin)
   - [🎫 QR Code](#-qr-code)
@@ -58,6 +59,10 @@ or in **2 different languages**.
   - [x] Toggle 1️⃣ primary OR 2️⃣ parallel verses to be projected
   - [x] Adjust css variables (spacing, colors)
   - [x] remember last windows position (projector & settings)
+
+## 📈 Release Notes
+
+Check [release-notes.md](release-notes.md)
 
 ## 🎞 Results
 
