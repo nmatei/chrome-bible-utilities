@@ -1,4 +1,4 @@
-# 📈 Release Notes
+# 📈 Release Notes (Changelog)
 
 ## 1.22.0
 

@@ -62,7 +62,7 @@ or in **2 different languages**.
 
 ## 📈 Release Notes
 
-Check [release-notes.md](release-notes.md)
+Check [release-notes.md](release-notes.md) changelog
 
 ## 🎞 Results
 
