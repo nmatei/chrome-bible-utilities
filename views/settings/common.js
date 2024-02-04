@@ -58,6 +58,14 @@ function mapValue(key, value) {
   return value;
 }
 
+const mapPreview = {
+  pageBackgroundImgOpacity: value => `${Math.floor(value * 100)}%`
+};
+
+export function mapPreviewValue(key, value) {
+  return mapPreview[key] ? mapPreview[key](value) : value;
+}
+
 /**
  * map only css properties from user options
  * @param styles

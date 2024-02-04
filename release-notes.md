@@ -1,5 +1,9 @@
 # 📈 Release Notes (Changelog)
 
+## 1.23.0
+
+- [x] Use slider input range for Background Opacity
+
 ## 1.22.0
 
 - [x] Background Opacity (make image lighter or darker)

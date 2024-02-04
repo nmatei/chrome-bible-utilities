@@ -5,6 +5,7 @@ import {
   initUserOptions,
   storeFile,
   applyRootStyles,
+  mapPreviewValue,
   retrieveFiles,
   removeFile,
   retrieveFile
@@ -14,6 +15,7 @@ const options = await initUserOptions();
 const optionsForm = $("#optionsForm");
 
 setFormValues(optionsForm, options);
+updateFormPreviewValues(options);
 applyRootStyles(options);
 
 await displayBackgroundImages(options);
@@ -28,8 +30,18 @@ function setFormValues(form, values) {
   });
 }
 
+function updateFormPreviewValues(values) {
+  Object.entries(values).forEach(([key, value]) => {
+    const preview = $(`[data-preview="${key}"]`);
+    if (preview) {
+      preview.innerText = mapPreviewValue(key, value);
+    }
+  });
+}
+
 function previewStyles(options) {
   applyRootStyles(options);
+  updateFormPreviewValues(options);
   return chrome.runtime.sendMessage({
     action: "previewRootStyles",
     payload: options

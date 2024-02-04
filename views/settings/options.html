@@ -44,19 +44,6 @@
                 <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
               </div>
               <div class="form-field">
-                <label for="pageBackgroundImgOpacity">Background Opacity</label>
-                <input
-                  type="number"
-                  required
-                  min="0"
-                  max="1"
-                  step="0.05"
-                  id="pageBackgroundImgOpacity"
-                  name="pageBackgroundImgOpacity"
-                />
-                <div>(0 - 1)</div>
-              </div>
-              <div class="form-field">
                 <label for="maxFontSize">Max Font Size</label>
                 <input type="number" required min="20" max="200" id="maxFontSize" name="maxFontSize" />
                 <div>px</div>
@@ -135,6 +122,19 @@
             <div class="form-field">
               <label for="pageBackgroundImage">Add Image</label>
               <input type="file" id="pageBackgroundImage" name="pageBackgroundImage" accept="image/*" />
+            </div>
+            <div class="form-field">
+              <label for="pageBackgroundImgOpacity">Background Opacity</label>
+              <input
+                type="range"
+                required
+                min="0"
+                max="1"
+                step="0.05"
+                id="pageBackgroundImgOpacity"
+                name="pageBackgroundImgOpacity"
+              />
+              <div data-preview="pageBackgroundImgOpacity">0%</div>
             </div>
           </fieldset>
 
