@@ -3,6 +3,7 @@
 ## 1.23.0
 
 - [x] Use slider input range for Background Opacity
+- [x] Save opened state for each main action button (will open view after refresh)
 
 ## 1.22.0
 

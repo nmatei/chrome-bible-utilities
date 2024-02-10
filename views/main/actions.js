@@ -1,5 +1,21 @@
 const isMac = /(Mac)/i.test(navigator.platform);
 
+let liveBoxForm;
+let helpBox;
+let settingsBox;
+let versesBox;
+
+async function getOpenStates() {
+  const storageData = await chrome.storage.sync.get("openStates");
+  return storageData.openStates || {};
+}
+
+async function setOpenStates(openStates) {
+  await chrome.storage.sync.set({
+    openStates
+  });
+}
+
 function addLiveTextBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-left";
@@ -43,14 +59,14 @@ function addActionsBox() {
 
 function createLiveTextForm() {
   const liveBoxForm = addLiveTextBox();
-  const liveTextTitle = document.getElementById("liveTextTitle");
-  const liveText = document.getElementById("liveText");
+  const liveTextTitle = $("#liveTextTitle");
+  const liveText = $("#liveText");
 
   liveBoxForm.addEventListener("submit", e => {
     e.preventDefault();
     projectLiveText(liveTextTitle.value, liveText.value);
   });
-  liveBoxForm.querySelector('button[data-key="hide"]').addEventListener("click", () => {
+  $('button[data-key="hide"]', liveBoxForm).addEventListener("click", () => {
     projectText("");
   });
   liveBoxForm.addEventListener("reset", () => {
@@ -92,63 +108,66 @@ function createLiveTextForm() {
   return liveBoxForm;
 }
 
+function actionsClick(target) {
+  if (target.matches(".action-btn")) {
+    const action = target.dataset.key;
+    switch (action) {
+      case "settings": {
+        settingsBox = settingsBox || createSettingsBox();
+        showBox(settingsBox, target);
+        break;
+      }
+      case "live-text": {
+        liveBoxForm = liveBoxForm || createLiveTextForm();
+        showBoxBy(liveBoxForm, target);
+        liveBoxForm.classList.toggle("hide-view");
+        if (liveBoxForm.classList.contains("hide-view")) {
+          target.classList.remove("active");
+        } else {
+          target.classList.add("active");
+          getProjectTab().then(() => {
+            const liveText = $("#liveText");
+            liveText.focus();
+          });
+        }
+        break;
+      }
+      case "help": {
+        helpBox = helpBox || addHelpBox();
+        showBox(helpBox, target);
+        break;
+      }
+      case "verses": {
+        versesBox = versesBox || createPinVersesBox();
+        showBox(versesBox, target);
+        break;
+      }
+    }
+  }
+}
+
 /**
  *
  */
-function createSettingsActions() {
+async function createSettingsActions() {
+  const openStates = await getOpenStates();
   const actions = addActionsBox();
-  let liveBoxForm;
-  let helpBox;
-  let settingsBox;
-  let versesBox;
 
   actions.addEventListener("click", e => {
-    const target = e.target;
-    if (target.matches(".action-btn")) {
-      actions.querySelectorAll(".action-btn").forEach(btn => {
-        btn.classList.remove("active");
-      });
-      const action = target.getAttribute("data-key");
-      switch (action) {
-        case "settings": {
-          settingsBox = settingsBox || createSettingsBox();
-          showBox(settingsBox, target);
-          break;
-        }
-        case "live-text": {
-          if (helpBox) {
-            helpBox.classList.add("hide-view");
-          }
-          if (!liveBoxForm) {
-            liveBoxForm = createLiveTextForm();
-          }
-          showBoxBy(liveBoxForm, target);
-          liveBoxForm.classList.toggle("hide-view");
-          if (liveBoxForm.classList.contains("hide-view")) {
-            target.classList.remove("active");
-          } else {
-            target.classList.add("active");
-            getProjectTab().then(() => {
-              const liveText = document.getElementById("liveText");
-              liveText.focus();
-            });
-          }
-          break;
-        }
-        case "help": {
-          if (liveBoxForm) {
-            liveBoxForm.classList.add("hide-view");
-          }
-          helpBox = helpBox || addHelpBox();
-          showBox(helpBox, target);
-          break;
-        }
-        case "verses": {
-          versesBox = versesBox || createPinVersesBox();
-          showBox(versesBox, target);
-          break;
-        }
-      }
+    actionsClick(e.target);
+
+    $$(".action-btn", actions).forEach(btn => {
+      const action = btn.dataset.key;
+      const active = btn.classList.contains("active");
+      openStates[action] = active ? 1 : 0;
+    });
+    setOpenStates(openStates);
+  });
+
+  Object.entries(openStates).forEach(([key, value]) => {
+    if (value === 1) {
+      const target = $(`button[data-key="${key}"]`, actions);
+      actionsClick(target);
     }
   });
 }

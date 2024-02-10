@@ -5,7 +5,7 @@ let booksCache = [];
 
 window.addEventListener("load", () => {
   setTimeout(async () => {
-    createSettingsActions();
+    await createSettingsActions();
     await loadDisplaySettings();
     await initEvents();
     makeVerseFocusable();
