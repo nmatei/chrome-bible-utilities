@@ -59,6 +59,7 @@
 
 .key-focus .actions .action-btn:focus {
   border-color: var(--elBorderColorFocus);
+  filter: none;
 }
 
 .info-fixed-box {
@@ -102,7 +103,13 @@
   padding: 0.2rem 0.3rem;
   border-radius: 0.3em;
   border: 1px solid #ffffff;
-  font-family: ArialMT, Helvetica Neue, Arial, Liberation Sans, FreeSans, sans-serif;
+  font-family:
+    ArialMT,
+    Helvetica Neue,
+    Arial,
+    Liberation Sans,
+    FreeSans,
+    sans-serif;
 }
 .title .key-code {
   border: 2px solid #ffffff;

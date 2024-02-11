@@ -35,3 +35,22 @@ body .bible-reader .verse {
 .focus-primary .primary-chapter .verse.projected .label {
   border-color: var(--verseNumberBorderColorProjected) !important;
 }
+
+body .verse-action-footer .yv-button-bar .yv-button-bar-button .yv-button-bar-button-content {
+  padding: 5px;
+}
+@media only screen and (min-width: 37.5em) {
+  body .color-list .color {
+    width: 20px;
+    height: 20px;
+    margin: 1px 5px 1px 0;
+  }
+}
+body .color-list .carousel-standard {
+  min-height: 28px;
+}
+body .color-list .carousel-standard .slick-arrow-left-container,
+body .color-list .carousel-standard .slick-arrow-right-container {
+  height: 20px;
+}
+/* TODO fix left arrow */
