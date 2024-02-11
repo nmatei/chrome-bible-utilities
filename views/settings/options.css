@@ -211,10 +211,11 @@ fieldset .form-field label:first-child {
   border: 2px solid #ff0000;
   background: #ff000030;
 }
-.number-top-label {
-  width: 44px;
+.input-top-label {
+  width: 48px;
   padding: 0 3px;
   text-align: center;
+  font-weight: bold;
 }
 
 input:focus,
