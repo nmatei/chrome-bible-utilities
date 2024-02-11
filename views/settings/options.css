@@ -213,7 +213,7 @@ fieldset .form-field label:first-child {
 }
 .input-top-label {
   width: 48px;
-  padding: 0 3px;
+  padding: 3px;
   text-align: center;
   font-weight: bold;
 }
