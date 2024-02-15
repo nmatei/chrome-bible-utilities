@@ -1,4 +1,9 @@
-const BIBLE_TABS_URL = ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*", "https://www.bible.com/bible*", "https://www.bible.com/*/bible*"];
+const BIBLE_TABS_URL = [
+  "https://my.bible.com/bible*",
+  "https://my.bible.com/*/bible*",
+  "https://www.bible.com/bible*",
+  "https://www.bible.com/*/bible*"
+];
 const DEFAULT_URL = "https://my.bible.com/bible";
 
 const projectorPage = "views/projector/tab.html";
@@ -44,6 +49,20 @@ async function changeWindowsBounds(win) {
     await setWindowSettings(key, win.id, settings);
   }
 }
+
+// https://stackoverflow.com/questions/11555051/chrome-extension-update-notification
+// chrome.runtime.onInstalled.addListener(details => {
+//   setTimeout(async () => {
+//     await notifyAllWindows({
+//       action: "install",
+//       payload: {
+//         reason: details.reason,
+//         previousVersion: details.previousVersion,
+//         version: chrome.runtime.getManifest().version
+//       }
+//     });
+//   }, 5000);
+// });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
@@ -218,17 +237,21 @@ function createSettingsTab(settings = {}) {
   });
 }
 
+async function notifyAllWindows(message) {
+  const tabs = await getBibleTabs();
+  tabs.forEach(tab => {
+    chrome.tabs.sendMessage(tab.id, message);
+  });
+}
+
 async function notifyOnWindowRemoved(windowId) {
   const settings = await getWindowSettings(projectorStorageKey);
   if (settings && settings.id === windowId) {
     await setWindowSettings(projectorStorageKey, null, settings);
 
-    const tabs = await getBibleTabs();
-    tabs.forEach(tab => {
-      chrome.tabs.sendMessage(tab.id, {
-        action: "windowRemoved",
-        payload: { id: windowId }
-      });
+    await notifyAllWindows({
+      action: "windowRemoved",
+      payload: { id: windowId }
     });
   }
 }

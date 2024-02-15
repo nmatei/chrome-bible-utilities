@@ -500,6 +500,13 @@ async function initEvents() {
         sendResponse({ status: 200 });
         break;
       }
+      // case "install": {
+      //   const helpBtn = $('button[data-key="help"]');
+      //   helpBtn.classList.add("abp-badge");
+      //   helpBtn.title += " (Plugin updated... check release notes)";
+      //   sendResponse({ status: 200 });
+      //   break;
+      // }
     }
   });
 }

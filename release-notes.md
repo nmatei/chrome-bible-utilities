@@ -1,5 +1,7 @@
 # 📈 Release Notes (Changelog)
 
+for [Chrome extension to for Bible.com](README.md)
+
 ## 1.23.0
 
 - [x] Use slider input range for Background Opacity
