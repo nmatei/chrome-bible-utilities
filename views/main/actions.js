@@ -16,6 +16,16 @@ async function setOpenStates(openStates) {
   });
 }
 
+async function getPreviousVersion() {
+  const data = await chrome.storage.sync.get("previousVersion");
+  return data ? data.previousVersion : null;
+}
+async function setPreviousVersion(version) {
+  await chrome.storage.sync.set({
+    previousVersion: version
+  });
+}
+
 function addLiveTextBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-left";
@@ -135,6 +145,9 @@ function actionsClick(target) {
       case "help": {
         helpBox = helpBox || addHelpBox();
         showBox(helpBox, target);
+        if (target.classList.contains("abp-badge")) {
+          setTimeout(hideVersionBadge, 3000);
+        }
         break;
       }
       case "verses": {
@@ -170,7 +183,30 @@ async function createSettingsActions() {
       actionsClick(target);
     }
   });
+
+  const previousVersion = await getPreviousVersion();
+  const version = chrome.runtime.getManifest().version;
+  //console.info("%o vs %o", previousVersion, version);
+  if (previousVersion !== version) {
+    setTimeout(showNewVersionBadge, 2000);
+  }
 }
+
+function showNewVersionBadge() {
+  const helpBtn = $('button[data-key="help"]');
+  helpBtn.classList.add("abp-badge");
+  helpBtn.title = "Help. Plugin updated... check 📈 Release Notes";
+}
+
+async function hideVersionBadge() {
+  const helpBtn = $('button[data-key="help"]');
+  helpBtn.classList.remove("abp-badge");
+  helpBtn.title = "Help";
+  const version = chrome.runtime.getManifest().version;
+  await setPreviousVersion(version);
+}
+// used to simulate updates
+// setPreviousVersion("1.0.0");
 
 function showBox(box, target) {
   showBoxBy(box, target);

@@ -52,13 +52,14 @@ async function changeWindowsBounds(win) {
 
 // https://stackoverflow.com/questions/11555051/chrome-extension-update-notification
 // chrome.runtime.onInstalled.addListener(details => {
+//   const version = chrome.runtime.getManifest().version;
 //   setTimeout(async () => {
 //     await notifyAllWindows({
 //       action: "install",
 //       payload: {
 //         reason: details.reason,
 //         previousVersion: details.previousVersion,
-//         version: chrome.runtime.getManifest().version
+//         version: version
 //       }
 //     });
 //   }, 5000);
@@ -290,3 +291,5 @@ function getBibleTabs() {
     url: BIBLE_TABS_URL
   });
 }
+
+setVersion();

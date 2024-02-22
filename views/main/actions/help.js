@@ -86,7 +86,8 @@ function addHelpBox() {
             <li>📃 External <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & Screenshots</li>
             <li>👩‍💻 Source <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a></li>
             <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">Tickets</a></li>
-            <li>📈 <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/release-notes.md" target="_blank">Release Notes</a></li>
+            <li>📈 <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/release-notes.md" target="_blank" class="abp-badge">Release Notes</a></li>
+            <li>💚 Love this extension? Share <a href="https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj" target="_blank">feedback</a> and help us make it even better!</li>
           </ul>  
         </li>
       </li>

@@ -441,7 +441,7 @@ async function initEvents() {
       "click",
       debounce(async e => {
         if (e.target.closest("a")) {
-          console.info("version changed");
+          // console.info("version changed");
           // UI not changed if we don't expand
           await bookArrowExpandAndCollapse();
           await cacheBooks();
@@ -501,9 +501,7 @@ async function initEvents() {
         break;
       }
       // case "install": {
-      //   const helpBtn = $('button[data-key="help"]');
-      //   helpBtn.classList.add("abp-badge");
-      //   helpBtn.title += " (Plugin updated... check release notes)";
+      //   showNewVersionBadge();
       //   sendResponse({ status: 200 });
       //   break;
       // }

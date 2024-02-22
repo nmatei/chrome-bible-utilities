@@ -523,3 +523,8 @@ h2 .key-code {
   background-color: #ffaa32;
   box-shadow: 0 0 0 2px #ffffff;
 }
+
+a.abp-badge {
+  padding: 0 16px 0 0;
+  display: inline-block;
+}

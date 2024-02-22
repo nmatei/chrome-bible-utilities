@@ -64,6 +64,8 @@ or in **2 different languages**.
 
 Check [release-notes.md](release-notes.md) changelog
 
+💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
+
 ## 🎞 Results
 
 **1️⃣ Primary** View + projected
@@ -158,7 +160,6 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] ‭‭Filipeni‬ 
 - [ ] use TypeScript and a build system?
   - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
-- [ ] 👏 Add link to plugin feedback!
 
 ### 🐛 Known bugs
 
