@@ -291,5 +291,3 @@ function getBibleTabs() {
     url: BIBLE_TABS_URL
   });
 }
-
-setVersion();

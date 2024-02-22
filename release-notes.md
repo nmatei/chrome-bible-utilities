@@ -4,6 +4,10 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
+## 1.24.0
+
+- [x] Bug fixing
+
 ## 1.23.0
 
 - [x] Use slider input range for Background Opacity
