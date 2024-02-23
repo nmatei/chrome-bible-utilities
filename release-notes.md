@@ -6,6 +6,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.24.0
 
+- [x] Show Notification Badge after app updates
 - [x] Bug fixing
 
 ## 1.23.0
