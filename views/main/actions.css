@@ -528,3 +528,19 @@ a.abp-badge {
   padding: 0 16px 0 0;
   display: inline-block;
 }
+
+@keyframes colorChange {
+  0% {
+    background: #ffaa32;
+  }
+  50% {
+    background: #00aaaa;
+  }
+  100% {
+    background: #ffaa32;
+  }
+}
+
+.abp-badge:after {
+  animation: colorChange 2s infinite;
+}

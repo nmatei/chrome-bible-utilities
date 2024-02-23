@@ -146,6 +146,7 @@ function actionsClick(target) {
         helpBox = helpBox || addHelpBox();
         showBox(helpBox, target);
         if (target.classList.contains("abp-badge")) {
+          $(".abp-badge", helpBox).scrollIntoView({ behavior: "smooth" });
           setTimeout(hideVersionBadge, 3000);
         }
         break;
@@ -206,6 +207,7 @@ async function hideVersionBadge() {
   await setPreviousVersion(version);
 }
 // used to simulate updates
+// setPreviousVersion("1.0.0");
 // setPreviousVersion("1.0.0");
 
 function showBox(box, target) {
