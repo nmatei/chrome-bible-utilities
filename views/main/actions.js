@@ -208,7 +208,6 @@ async function hideVersionBadge() {
 }
 // used to simulate updates
 // setPreviousVersion("1.0.0");
-// setPreviousVersion("1.0.0");
 
 function showBox(box, target) {
   showBoxBy(box, target);
