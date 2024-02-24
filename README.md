@@ -128,11 +128,6 @@ If you want to try the latest versions before they are released, or to change co
   - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
 - [x] Select `chrome-bible-utilities` folder
-- [x] 📌 **Pin** extension to see it after search bar for fast access
-  - [x] ![icon](views/icons/icon-16.png) Click on **Extension** icon
-  - [x] Will open https://my.bible.com/bible if not opened
-- [x] Sign in to YouVersion on https://my.bible.com/sign-in
-  - [x] Must be logged in to have parallel view and to enable this plugin
 
 ## 📋 Developers TODOs (items to improve)
 
