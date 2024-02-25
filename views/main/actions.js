@@ -147,7 +147,7 @@ function actionsClick(target) {
         showBox(helpBox, target);
         if (target.classList.contains("abp-badge")) {
           $(".abp-badge", helpBox).scrollIntoView({ behavior: "smooth" });
-          setTimeout(hideVersionBadge, 3000);
+          setTimeout(hideVersionBadge, 5000);
         }
         break;
       }
