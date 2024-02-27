@@ -91,14 +91,22 @@ function createPinVersesBox() {
           onReferenceClick(e.target, { ctrlKey: true });
         }
       });
+      actions.push({
+        text: `Copy ${e.target.innerText}`,
+        icon: copyIcon,
+        itemId: "copy",
+        handler: async () => {
+          await onReferenceCopy([e.target]);
+        }
+      });
     }
 
     const menu = getContextMenu([
       ...actions,
       {
-        text: "Copy to clipboard",
+        text: "Copy all to clipboard",
         icon: copyIcon,
-        itemId: "copy",
+        itemId: "copyAll",
         handler: async () => {
           await onReferenceCopy();
         }
@@ -321,11 +329,12 @@ function onReferenceSave(e) {
   $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
 }
 
-async function onReferenceCopy() {
+async function onReferenceCopy(verses) {
   const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
   maskWrapper.classList.add("loading-mask", "text-mask");
-  await asyncForEach($$("[data-key=open]"), async (target, i, all) => {
+  verses = verses || $$("[data-key=open]");
+  await asyncForEach(verses, async (target, i, all) => {
     maskWrapper.dataset.text = `${i} / ${all.length}`;
     const { title, match } = await openPinReference(target, false);
 

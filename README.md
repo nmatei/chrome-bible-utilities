@@ -50,6 +50,7 @@ or in **2 different languages**.
   - [x] 'Search pin': `16`, `2-4`, `2:4`, `2 4`, `+Enter` - pin current chapter or verses
   - [x] ↕ **drag & drop** to reorder verses
   - [x] 🖱 **Context menu** (right click) for more actions inside pin list
+    - [x] 📄 **Copy** selected verse to clipboard
     - [x] 📄 **Copy** all pin verses to clipboard
     - [x] ✖ Clear all
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
