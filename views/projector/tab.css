@@ -143,6 +143,7 @@ p.parallel.separator:not(p:first-of-type):before {
 p,
 li {
   text-shadow: 4px 2px 4px var(--pageBackgroundColor);
+  line-height: 1.3em;
 }
 p.verse {
   display: var(--versesDisplay);
