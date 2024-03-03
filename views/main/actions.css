@@ -544,3 +544,7 @@ a.abp-badge {
 .abp-badge:after {
   animation: colorChange 2s infinite;
 }
+
+.alert-color {
+  color: #ef4444 !important;
+}

@@ -82,8 +82,9 @@ function createPinVersesBox() {
   $(".info-text-content-wrapper", form).addEventListener("contextmenu", e => {
     e.preventDefault();
 
+    const isVerse = e.target.matches("a[data-key=open]");
     const actions = [];
-    if (e.target.matches("a[data-key=open]")) {
+    if (isVerse) {
       actions.push({
         text: "Project entire reference",
         icon: "🔠",
@@ -101,27 +102,43 @@ function createPinVersesBox() {
       });
     }
 
-    const menu = getContextMenu([
-      ...actions,
-      {
-        text: "Copy all to clipboard",
-        icon: copyIcon,
-        itemId: "copyAll",
-        handler: async () => {
-          await onReferenceCopy();
-        }
-      },
-      {
-        text: "Clear all",
+    actions.push({
+      text: "Copy all to clipboard",
+      icon: copyIcon,
+      itemId: "copyAll",
+      handler: async () => {
+        await onReferenceCopy();
+      }
+    });
+
+    if (isVerse) {
+      actions.push({
+        text: `Clear all except ${e.target.innerText}`,
         icon: "✖",
         itemId: "clear",
+        cls: "alert-color",
         handler: () => {
-          pinnedVerses = [];
+          pinnedVerses = [e.target.innerText];
           updatePinnedRows(pinnedVerses);
           setPinnedVerses(pinnedVerses);
         }
+      });
+    }
+
+    actions.push({
+      text: "Clear all",
+      icon: "✖",
+      itemId: "clearAll",
+      cls: "alert-color",
+      handler: () => {
+        pinnedVerses = [];
+        updatePinnedRows(pinnedVerses);
+        setPinnedVerses(pinnedVerses);
       }
-    ]);
+    });
+
+    const menu = getContextMenu(actions);
+
     showByCursor(menu, e);
   });
   initDragDrop($("tbody", form), async verses => {
