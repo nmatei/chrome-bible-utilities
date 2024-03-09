@@ -7,7 +7,9 @@
     "test": "jest",
     "watch-test": "jest --watch",
     "doctoc": "doctoc README.md",
-    "zip": "7z a ./build/my.bible.com-%npm_package_version%.zip views manifest.json README.md",
+    "zip": "run-os",
+    "zip:macos": "7z a ./build/my.bible.com-$npm_package_version.zip views manifest.json README.md",
+    "zip:windows": "7z a ./build/my.bible.com-%npm_package_version%.zip views manifest.json README.md",
     "preversion": "git fetch --tags && git tag v%npm_package_version% && git push --tags",
     "v": "yarn version --minor --no-git-tag-version",
     "postversion": "yarn sync-version && git add \"package.json\" && git add \"manifest.json\" && git status && git commit -m \"increase version to v%npm_package_version%\" && git push origin HEAD",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
-    "ts-jest": "^29.0.5"
+    "ts-jest": "^29.0.5",
+    "run-script-os": "^1.1.6"
   }
 }
