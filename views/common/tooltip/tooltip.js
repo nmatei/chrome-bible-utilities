@@ -1,7 +1,25 @@
 function showByCursor(el, e, offsets = [0, 0]) {
-  el.style.left = e.clientX + offsets[0] + "px";
-  el.style.top = e.clientY + offsets[1] + "px";
+  let left = e.clientX + offsets[0];
+  let top = e.clientY + offsets[1];
+  let outside = false;
+  setPosition(el, left, top);
   el.style.display = "block";
+  if (top + el.offsetHeight > window.innerHeight) {
+    outside = true;
+    top -= el.offsetHeight;
+  }
+  if (left + el.offsetWidth > window.innerWidth) {
+    outside = true;
+    left -= el.offsetWidth;
+  }
+  if (outside) {
+    setPosition(el, left, top);
+  }
+}
+
+function setPosition(el, left, top) {
+  el.style.left = left + "px";
+  el.style.top = top + "px";
 }
 
 function showBy(el, target, offsets = [0, 0], align = "bottom") {
