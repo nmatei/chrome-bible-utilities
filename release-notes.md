@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.25.0 (🔜 coming soon)
+## 1.26.0 (🔜 coming soon)
+
+- [ ] ...
+
+## 1.25.0
 
 - [x] Copy selected verse to clipboard within right click menu (ContextMenu)
 - [x] Clear all except selected verse within right click menu (ContextMenu)
