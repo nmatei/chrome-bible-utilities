@@ -88,7 +88,7 @@ Check [release-notes.md](release-notes.md) changelog
 ## ⚙ Install Plugin
 
 - [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
-- [x] visit https://my.bible.com/bible
+- [x] visit https://my.bible.com/bible or https://my.bible.com/sign-in
 - [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
 - [ ] 📌 **Pin** extension to see it after search bar for fast access
   - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon
