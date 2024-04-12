@@ -34,9 +34,11 @@
   text-align: center;
   min-width: 32px;
   min-height: 24px;
+  line-height: 1.4em;
 }
 .context-menu .action-btn .action-btn-text {
   flex: 1;
+  line-height: 1.4em;
 }
 
 .context-menu .context-menu-layout {
