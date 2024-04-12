@@ -6,7 +6,8 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.26.0 (🔜 coming soon)
 
-- [ ] ...
+- [x] UX changes - Add Opacity for all boxes (eg. help, pin items)
+- [x] fix ContextMenu position when is out of window bounds
 
 ## 1.25.0
 

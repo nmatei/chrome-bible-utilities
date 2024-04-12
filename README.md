@@ -158,3 +158,4 @@ If you want to try the latest versions before they are released, or to change co
 
 ### 🐛 Known bugs
 
+- [ ] MacOs try to make sure projector window is not hidden when minimized (or identify how to show it back)

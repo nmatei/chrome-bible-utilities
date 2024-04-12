@@ -65,9 +65,9 @@
 .info-fixed-box {
   display: block;
   position: fixed;
-  border: 1px solid #000000;
-  background: #333333;
-  box-shadow: 1px 1px 2px #333333;
+  border: 1px solid rgb(0 0 0 / var(--infoBoxOpacity));
+  background: rgb(0 0 0 / var(--infoBoxOpacity));
+  box-shadow: 1px 1px 2px rgb(0 0 0 / var(--infoBoxOpacity));
   color: #ffffff;
   padding: 10px;
   z-index: 2000;
@@ -207,7 +207,7 @@ h2 .key-code {
 }
 
 #verses-text-box table tr:nth-of-type(even) {
-  background: #00000022;
+  background: #aaaaaa22;
 }
 #verses-text-box table td {
   padding: 1px;
@@ -230,21 +230,21 @@ h2 .key-code {
   border-radius: 2px;
 }
 #verses-text-box a {
-  color: #cccccc90;
+  color: #cccccc;
   transition: 0.2s;
 }
 .drag-row a,
 #verses-text-box a:hover {
-  color: #eeeeee !important;
+  color: #ffffff !important;
 }
 #verses-text-box a:active {
   color: #ffffff !important;
 }
 #verses-text-box a.focus {
-  color: #eeeeee;
+  color: #ffffff;
 }
 .key-focus #verses-text-box a:focus {
-  color: #eeeeee;
+  color: #ffffff;
   outline: 2px solid #3d79c2;
   border-radius: 2px;
 }
