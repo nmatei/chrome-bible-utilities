@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.26.0 (🔜 coming soon)
+## 1.27.0 (🔜 coming soon)
+
+- [ ] Add config for title / chapters font family.
+
+## 1.26.0
 
 - [x] UX changes - Add Opacity for all boxes (eg. help, pin items)
 - [x] fix ContextMenu position when is out of window bounds
