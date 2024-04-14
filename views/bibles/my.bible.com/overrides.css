@@ -1,3 +1,6 @@
+body #current-ui-view {
+  padding-left: 100px;
+}
 body .bible-reader .verse {
   line-height: 1.6em;
   display: block;
