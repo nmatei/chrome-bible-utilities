@@ -7,6 +7,8 @@
   --pageBackgroundImgOpacity: 0;
   --referenceColor: #d3d3d3;
   --referenceFontSize: 40px;
+  --referenceFontFamily: "Calibri";
+  --referenceLetterSpacing: .2rem;
   --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
@@ -87,9 +89,11 @@ h2.reference {
   font-weight: bold;
   font-variant-caps: small-caps;
   color: var(--referenceColor);
-  font-size: 2em;
+  font-family: var(--referenceFontFamily), Calibri, Arial, sans-serif;
+  letter-spacing: var(--referenceLetterSpacing);
+  font-size: 1.8em;
   margin: 0;
-  text-shadow: 1px 1px 2px var(--verseColor);
+  /*text-shadow: 1px 1px 1px var(--verseColor);*/
 }
 .background-preview p {
   font-size: 1.3em;
@@ -222,6 +226,17 @@ input:focus,
 select:focus {
   outline: 1px solid #3d79c2;
   border-color: #3d79c2;
+}
+
+.info-icon {
+  text-decoration: none;
+  border: 1px solid #999999;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
 }
 
 input[type="range"] {

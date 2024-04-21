@@ -6,7 +6,8 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.27.0 (🔜 coming soon)
 
-- [ ] Add config for title / chapters font family.
+- [x] Add config for title / chapters font family.
+- [x] UX improvements for pin verses (left border, hover effect)
 
 ## 1.26.0
 

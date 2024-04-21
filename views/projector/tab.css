@@ -7,6 +7,8 @@
   --pageBackgroundImgOpacity: 0;
   --referenceColor: #d3d3d3;
   --referenceFontSize: 40px;
+  --referenceFontFamily: Calibri;
+  --referenceLetterSpacing: .2rem;
   --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
@@ -71,6 +73,8 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: var(--referenceFontFamily), Calibri, Arial, sans-serif;
+  letter-spacing: var(--referenceLetterSpacing);
   font-weight: bold;
   font-variant-caps: small-caps;
   color: var(--referenceColor);
@@ -123,7 +127,6 @@ a {
 }
 
 h1.reference {
-  /*font-size: var(--referenceFontSize);*/
   font-size: clamp(2vw, var(--referenceFontSize), 8vw);
   text-shadow: 4px 2px 4px var(--pageBackgroundColor);
 }

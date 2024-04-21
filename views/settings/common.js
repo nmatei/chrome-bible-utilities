@@ -17,6 +17,7 @@ function getCssDefaultProperties() {
     pageBackgroundImgOpacity: "0",
     referenceColor: "#d3d3d3",
     referenceFontSize: "40",
+    referenceFontFamily: "Calibri",
     verseNumberColor: "#d3d3d3",
     verseColor: "#ffffff",
     parallelVerseNumberColor: "#ededb4",
