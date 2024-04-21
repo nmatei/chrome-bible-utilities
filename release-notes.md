@@ -4,7 +4,9 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.27.0 (🔜 coming soon)
+## 1.28.0 (🔜 coming soon)
+
+## 1.27.0
 
 - [x] Add config for title / chapters font family.
 - [x] UX improvements for pin verses (left border, hover effect)
