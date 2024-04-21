@@ -436,10 +436,10 @@ h2 .key-code {
 #verses-text-box .drag-row td:first-child {
   border-left-color: var(--verseNumberBorderColor);
 }
-#verses-text-box tr:hover td:first-child {
+#verses-text-box tbody tr:hover td:first-child {
   border-left-color: #ffffff60;
 }
-#verses-text-box .selected td:first-child {
+#verses-text-box tbody .selected td:first-child {
   border-left-color: #ffffff !important;
 }
 #verses-text-box a.remove-btn.spin {
