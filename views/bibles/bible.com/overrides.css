@@ -1,3 +1,6 @@
+main > .w-full > .pbe-12 > .w-full {
+  padding-left: 100px;
+}
 body [class^="ChapterContent_verse"] {
   line-height: 1.6em;
   display: block;
@@ -52,4 +55,8 @@ body [class^="ChapterContent_label"] {
 }
 .sticky.justify-between a:hover {
   opacity: 1;
+}
+
+body .gap-3 {
+  gap: 6px;
 }
