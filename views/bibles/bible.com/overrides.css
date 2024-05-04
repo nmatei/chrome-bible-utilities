@@ -60,3 +60,22 @@ body [class^="ChapterContent_label"] {
 body .gap-3 {
   gap: 6px;
 }
+body .mbs-10 {
+  margin-block-start: 10px;
+}
+body .py-1\.5 {
+  padding-block: 4px;
+}
+body .p-\[14px\] {
+  padding-block: 2px;
+}
+body .w-4 {
+  width: 16px;
+}
+body .h-4 {
+  height: 16px;
+}
+body .p-3 {
+  padding-block: 16px;
+}
+
