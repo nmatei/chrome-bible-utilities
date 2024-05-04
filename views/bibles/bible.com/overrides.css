@@ -69,10 +69,10 @@ body .py-1\.5 {
 body .p-\[14px\] {
   padding-block: 2px;
 }
-body .w-4 {
+body div.fixed .w-4 {
   width: 16px;
 }
-body .h-4 {
+body div.fixed .h-4 {
   height: 16px;
 }
 body .p-3 {
