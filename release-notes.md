@@ -6,6 +6,9 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.28.0 (🔜 coming soon)
 
+- [x] Fix bug when inputs in live updates did not work when input was empty and pin was opened
+- [x] UX improvements when inside bible.com
+
 ## 1.27.0
 
 - [x] Add config for title / chapters font family.
