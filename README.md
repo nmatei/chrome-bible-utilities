@@ -130,6 +130,14 @@ If you want to try the latest versions before they are released, or to change co
 - [x] **Load unpacked** Extension
 - [x] Select `chrome-bible-utilities` folder
 
+## ▶ Build procedure
+
+- make sure all files are commited and pushed
+- `npm install`
+- `npm run deploy`
+- under /build folder you will find latest zip file
+- upload it to [chrome web store](https://chrome.google.com/webstore/developer/dashboard)
+
 ## 📋 Developers TODOs (items to improve)
 
 - [ ] Check if verses are not in sync
