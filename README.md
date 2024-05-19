@@ -20,6 +20,7 @@ or in **2 different languages**.
 - [👋 Support my Work](#-support-my-work)
 - [💠 Advanced Features](#-advanced-features)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
+- [▶ Build procedure](#-build-procedure)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
