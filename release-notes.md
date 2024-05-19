@@ -4,7 +4,9 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.28.0 (🔜 coming soon)
+## 1.29.0 (🔜 coming soon)
+
+## 1.28.0
 
 - [x] Fix bug when inputs in live updates did not work when input was empty and pin was opened
 - [x] UX improvements when inside bible.com
