@@ -458,10 +458,11 @@ async function initEvents() {
   });
 
   document.addEventListener("keydown", async e => {
+    const target = e.target;
     if (e.key === "Tab") {
       document.body.classList.add("key-focus");
-    } else if (!e.target.matches("input,textarea") || !e.target.value) {
-      // not input or no value in input
+    } else if (!target.matches("input,textarea") || (target.matches("#pin-add-verse") && !target.value)) {
+      // - allow navigation using keys when focus is on input but empty
       const consumed = await selectByKeys(e.key);
       if (consumed === false) {
         if (e.key === "Enter") {
