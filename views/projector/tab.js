@@ -16,6 +16,7 @@ const options = await initUserOptions();
 setRootStyles(options);
 
 initEvents();
+createDockBar();
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {

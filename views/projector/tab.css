@@ -8,7 +8,7 @@
   --referenceColor: #d3d3d3;
   --referenceFontSize: 40px;
   --referenceFontFamily: Calibri;
-  --referenceLetterSpacing: .2rem;
+  --referenceLetterSpacing: 0.2rem;
   --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
@@ -23,6 +23,7 @@
   --parallelSeparatorBottomColor: #d3d3d3;
 
   /* internal vars */
+  --infoBoxOpacity: 85%;
   --autoHideTimeout: 5s;
 }
 
