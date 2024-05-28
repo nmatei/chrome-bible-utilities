@@ -281,7 +281,9 @@ function getSearchShortcuts(value) {
 }
 
 function onReferenceSubmit(preview) {
-  preview.innerText = "";
+  if (preview) {
+    preview.innerText;
+  }
   const input = $("#pin-add-verse");
   let value = cleanSpaces(input.value);
   value = getSearchShortcuts(value).value;

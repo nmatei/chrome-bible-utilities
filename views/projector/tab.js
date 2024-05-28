@@ -16,7 +16,6 @@ const options = await initUserOptions();
 setRootStyles(options);
 
 initEvents();
-createDockBar();
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
@@ -47,13 +46,18 @@ function updateText(text, markdown) {
 function initEvents() {
   // TODO check if we want to have clock?
   initClock();
+  const dockBar = createDockBar();
+  dockBar.addEventListener("submit", e => {
+    e.preventDefault();
+    onReferenceSubmit(dockBar);
+  });
 
   window.addEventListener(
     "resize",
     debounce(() => {
       adjustBodySize();
       animateFocusBtn("F11");
-    }, 200)
+    }, 300)
   );
   document.addEventListener("keydown", e => {
     selectByKeys(e.key);
@@ -124,6 +128,27 @@ async function selectByKeys(key) {
     if (key === "Escape") {
       updateText("");
     }
+  }
+}
+
+async function onReferenceSubmit(dockBar) {
+  let [tab] = await chrome.tabs.query({
+    active: true,
+    url: BIBLE_TABS_URL
+  });
+  if (!tab) {
+    [tab] = await chrome.tabs.query({
+      url: BIBLE_TABS_URL
+    });
+  }
+  if (tab) {
+    const input = $("[name=reference]", dockBar);
+    const reference = input.value;
+    input.value = "";
+    const response = await chrome.tabs.sendMessage(tab.id, {
+      action: "referencerequest",
+      payload: reference
+    });
   }
 }
 

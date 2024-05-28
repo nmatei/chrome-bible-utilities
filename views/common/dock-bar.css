@@ -7,7 +7,7 @@
   /*height: 63px;*/
   padding: 5px 0;
   z-index: 1000;
-  transition: bottom 0.6s ease-in-out; /* Animate the bottom property */
+  transition: bottom 0.5s ease-in-out; /* Animate the bottom property */
 }
 #dock-bar:hover,
 #dock-bar.focused {
@@ -60,7 +60,7 @@
   padding-right: 28px !important;
   border-width: 2px !important;
   border-style: solid !important;
-  border-color: transparent !important;
+  border-color: #3d79c266 !important;
   border-image: initial !important;
   border-radius: 5px;
   display: block;
@@ -71,6 +71,9 @@
   background: transparent;
   color: var(--referenceColor);
   outline: 0;
+}
+#dock-bar input:hover {
+  border-color: #3d79c299 !important;
 }
 #dock-bar input:focus {
   border-color: #3d79c2 !important;

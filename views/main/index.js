@@ -501,6 +501,22 @@ async function initEvents() {
         sendResponse({ status: 200 });
         break;
       }
+      case "referencerequest": {
+        const input = $("#pin-add-verse");
+        input.value = request.payload;
+        onReferenceSubmit();
+        const focused = getFocusReference();
+        if (focused) {
+          console.time("openPinReference");
+          // TODO improve time when tab is fullscreen
+          openPinReference(focused).then(() => {
+            focused.classList.remove("focus");
+            console.timeEnd("openPinReference");
+          });
+        }
+        sendResponse({ status: 200 });
+        break;
+      }
       // case "install": {
       //   showNewVersionBadge();
       //   sendResponse({ status: 200 });

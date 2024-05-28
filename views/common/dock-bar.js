@@ -1,11 +1,14 @@
 function addDockBar() {
-  const bar = document.createElement("div");
+  const bar = document.createElement("form");
   bar.id = "dock-bar";
+  bar.method = "GET";
+  bar.action = "#";
   bar.innerHTML = `
     <div id="dock-actions">
       <div class="pin-search-bar row-actions form-field form-field-wrapper">
         <input
-          placeholder="Change Ref's"
+          name="reference"
+          placeholder="Change Reference"
           type="text"
           autocomplete="off"
           class="fill pin-add-verse"
@@ -27,4 +30,5 @@ function createDockBar() {
   input.addEventListener("blur", () => {
     bar.classList.remove("focused");
   });
+  return bar;
 }
