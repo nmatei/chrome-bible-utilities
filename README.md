@@ -42,7 +42,7 @@ or in **2 different languages**.
   - [ ] Select any text from page and allow it to be projected
 - [x] 📌 **List/Pin some references** (verses)
   - [x] Store references for future selection and project them faster
-  - [x] `Enter` to add references (`,` or `;` as separator) in 'Pin verses' input 🔍
+  - [x] `Enter` to add references (`,` or `;` as separator) in **Pin verses 🔍** input
   - [x] `Enter + Enter` to project added reference
   - [x] `ALT + Click` on Reference - force project (on top)
   - [x] `CTRL + Click` project all verses from pin (Mat 6:7-13)
@@ -54,6 +54,9 @@ or in **2 different languages**.
     - [x] 📄 **Copy** selected verse to clipboard
     - [x] 📄 **Copy** all pin verses to clipboard
     - [x] ✖ Clear all
+  - [x] **Change Reference 🔍** from Projector tab - works same as **Add Ref's 🔍**
+    - [x] `Tab` inside projector tab to see bottom dock-bar
+    - [x] 🖱 move mouse at the bottom edge of projector tab
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
