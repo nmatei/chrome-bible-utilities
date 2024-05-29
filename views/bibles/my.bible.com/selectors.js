@@ -34,7 +34,7 @@ async function openChapter(book, chapter) {
     // then and click outside => will remove all 'books li' from DOM
     if (dropDownArrow) {
       dropDownArrow.click();
-      await sleep(100);
+      await backgroundSleep(100);
       bookEl = findBookEl(book);
       //console.warn("bookEl", bookEl);
       dropDownArrow.click();

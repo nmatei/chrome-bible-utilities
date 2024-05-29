@@ -160,6 +160,13 @@ function actionsClick(target) {
   }
 }
 
+function showVersesBox() {
+  const btn = $(`#project-actions button[data-key="verses"]`);
+  if (!btn.classList.contains("active")) {
+    actionsClick(btn);
+  }
+}
+
 /**
  *
  */

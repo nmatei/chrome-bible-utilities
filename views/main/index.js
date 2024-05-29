@@ -502,16 +502,16 @@ async function initEvents() {
         break;
       }
       case "referencerequest": {
+        // make sure pin box is visible
+        showVersesBox();
+
         const input = $("#pin-add-verse");
         input.value = request.payload;
         onReferenceSubmit();
         const focused = getFocusReference();
         if (focused) {
-          console.time("openPinReference");
-          // TODO improve time when tab is fullscreen
           openPinReference(focused).then(() => {
             focused.classList.remove("focus");
-            console.timeEnd("openPinReference");
           });
         }
         sendResponse({ status: 200 });

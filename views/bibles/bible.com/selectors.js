@@ -42,15 +42,14 @@ async function openChapter(book, chapter) {
     // then and click outside => will remove all 'books li' from DOM
     if (dropDownArrow) {
       dropDownArrow.click();
-      await sleep(100);
+      await backgroundSleep(100);
       bookEl = findBookEl(book);
-      //console.warn("bookEl", bookEl);
 
       if (bookEl) {
         bookEl.click();
         result = bookEl.innerText;
-        await sleep(200);
-        result += " " + (await selectChapter(chapter));
+        await backgroundSleep(200);
+        result += " " + selectChapter(chapter);
       }
 
       //console.warn("bookEl", bookEl, result);
@@ -63,8 +62,8 @@ async function openChapter(book, chapter) {
   return result;
 }
 
-async function selectChapter(chapter) {
-  const chapterEl = await getMatchChapter(chapter);
+function selectChapter(chapter) {
+  const chapterEl = getMatchChapter(chapter);
   if (chapterEl) {
     const activeEl = chapterEl.querySelector("li");
     activeEl && activeEl.classList.add("active");
@@ -75,7 +74,7 @@ async function selectChapter(chapter) {
   return "";
 }
 
-async function getMatchChapter(chapter) {
+function getMatchChapter(chapter) {
   const chapters = getChapters();
   let chapterEl = chapters.find(e => e.innerText == chapter);
   if (!chapterEl) {

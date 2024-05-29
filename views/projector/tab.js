@@ -50,6 +50,7 @@ function initEvents() {
   dockBar.addEventListener("submit", e => {
     e.preventDefault();
     onReferenceSubmit(dockBar);
+    dockBar.classList.remove("focused");
   });
 
   window.addEventListener(
@@ -115,10 +116,7 @@ function toggleFullScreen() {
 }
 
 async function selectByKeys(key) {
-  const [tab] = await chrome.tabs.query({
-    active: true,
-    url: BIBLE_TABS_URL
-  });
+  const tab = await getTab();
   if (tab) {
     chrome.tabs.sendMessage(tab.id, {
       action: "tabkeydown",
@@ -131,7 +129,7 @@ async function selectByKeys(key) {
   }
 }
 
-async function onReferenceSubmit(dockBar) {
+async function getTab() {
   let [tab] = await chrome.tabs.query({
     active: true,
     url: BIBLE_TABS_URL
@@ -141,11 +139,16 @@ async function onReferenceSubmit(dockBar) {
       url: BIBLE_TABS_URL
     });
   }
+  return tab;
+}
+
+async function onReferenceSubmit(dockBar) {
+  const tab = await getTab();
   if (tab) {
     const input = $("[name=reference]", dockBar);
     const reference = input.value;
     input.value = "";
-    const response = await chrome.tabs.sendMessage(tab.id, {
+    await chrome.tabs.sendMessage(tab.id, {
       action: "referencerequest",
       payload: reference
     });

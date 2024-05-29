@@ -22,13 +22,13 @@ function addDockBar() {
 }
 
 function createDockBar() {
-  const bar = addDockBar();
-  const input = $(".pin-add-verse", bar);
+  const dockBar = addDockBar();
+  const input = $(".pin-add-verse", dockBar);
   input.addEventListener("focus", () => {
-    bar.classList.add("focused");
+    dockBar.classList.add("focused");
   });
   input.addEventListener("blur", () => {
-    bar.classList.remove("focused");
+    dockBar.classList.remove("focused");
   });
-  return bar;
+  return dockBar;
 }

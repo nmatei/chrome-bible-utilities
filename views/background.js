@@ -120,6 +120,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       return true;
     }
+    case "backgroundSleep": {
+      setTimeout(() => {
+        sendResponse({ status: 200 });
+      }, request.payload);
+      return true;
+    }
   }
 });
 

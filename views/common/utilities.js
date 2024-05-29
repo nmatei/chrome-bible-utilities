@@ -10,6 +10,17 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * use when sleep is needed in background script to be sure is executed correctly.
+ * when a tab is inactive in Chrome it will trotle the setTimeout to 1000ms
+ */
+async function backgroundSleep(ms) {
+  return chrome.runtime.sendMessage({
+    action: "backgroundSleep",
+    payload: ms
+  });
+}
+
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
