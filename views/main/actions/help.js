@@ -57,6 +57,13 @@ function addHelpBox() {
               <li><strong class="key-code" style="display: inline-block;padding: 0 0.3rem; vertical-align: middle;">${copyIcon}</strong> <strong>Copy</strong> all pin verses to clipboard</li>
               <li><strong class="key-code">✖</strong> Clear all</li>
             </ul>
+            <li>
+              <strong class="key-code">Change Reference 🔍</strong> from Projector tab - works same as <strong class="key-code">Add Ref's 🔍</strong>
+            </li>
+            <ul>
+              <li><strong class="key-code">Tab</strong> inside projector tab to see bottom dock-bar</li>
+              <li><strong class="key-code">🖱</strong> move mouse at the bottom edge of projector tab</li>
+            </ul>
           </ul>
         </li>
         <li>
