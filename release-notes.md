@@ -4,9 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.29.0 (🔜 coming soon)
+## 1.30.0 (🔜 coming soon)
 
-- [ ] Request reference from Project TAB (press TAB inside projector tab to request reference, or move to bottom screen)
+## 1.29.0
+
+- [x] Request reference from Project TAB (press TAB inside projector tab to request reference, or move to bottom screen)
 
 ## 1.28.0
 
