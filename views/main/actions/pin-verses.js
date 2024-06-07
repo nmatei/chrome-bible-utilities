@@ -92,6 +92,7 @@ function createPinVersesBox() {
           onReferenceClick(e.target, { ctrlKey: true });
         }
       });
+      actions.push("-");
       actions.push({
         text: `Copy ${e.target.innerText}`,
         icon: copyIcon,
@@ -111,6 +112,7 @@ function createPinVersesBox() {
       }
     });
 
+    actions.push("-");
     if (isVerse) {
       actions.push({
         text: `Clear all except ${e.target.innerText}`,

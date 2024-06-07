@@ -32,8 +32,7 @@ function showBy(el, target, offsets = [0, 0], align = "bottom") {
   } else {
     top += bounds.height;
   }
-  el.style.left = left + offsets[0] + "px";
-  el.style.top = top + offsets[1] + "px";
+  setPosition(el, left + offsets[0], top + offsets[1]);
 }
 
 function createContextMenu(id = "context-menu") {
@@ -63,14 +62,15 @@ function getContextMenu(items) {
   const menu = createContextMenu("context-menu");
 
   const contentItems = items
-    .map(
-      (item, i) => `<button type="button" class="action-btn ${item.cls ? item.cls : ""}"
-      ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
-      data-idx="${i}" data-id="${item.itemId}">
-        <span class='menu-icon'>${item.icon || ""}</span>
-        <spam class="action-btn-text">${item.text}</spam>
-      </button>`
-    )
+    .map((item, i) => {
+      if (item === "-") return `<hr class="separator">`;
+      return `<button type="button" class="action-btn ${item.cls ? item.cls : ""}"
+        ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
+        data-idx="${i}" data-id="${item.itemId}">
+          <span class='menu-icon'>${item.icon || ""}</span>
+          <spam class="action-btn-text">${item.text}</spam>
+        </button>`;
+    })
     .join("");
   menu.innerHTML = `<div class="context-menu-layout">${contentItems}</div>`;
 

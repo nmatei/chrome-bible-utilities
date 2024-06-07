@@ -26,6 +26,12 @@
   color: #333333;
   font-size: 1em;
 }
+.context-menu .separator {
+  border: 0;
+  border-top: 1px solid #e1e7eb;
+  border-bottom: 0;
+  margin: 2px 4px;
+}
 .context-menu .action-btn:focus {
   border-color: var(--elBorderColorFocus);
 }
@@ -166,4 +172,10 @@
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   border-right: 4px solid #ffffff;
+}
+
+@media print {
+  .context-menu {
+    display: none !important;
+  }
 }
