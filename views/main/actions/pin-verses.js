@@ -89,7 +89,19 @@ function createPinVersesBox() {
         text: "Project entire reference",
         icon: "🔠",
         handler: () => {
-          onReferenceClick(e.target, { ctrlKey: true });
+          onReferenceClick(e.target, {
+            ctrlKey: true
+          });
+        }
+      });
+      actions.push({
+        text: "Force Project (bring to front)",
+        icon: "🔠",
+        handler: () => {
+          onReferenceClick(e.target, {
+            ctrlKey: true,
+            altKey: true
+          });
         }
       });
       actions.push("-");
