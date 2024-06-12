@@ -1,3 +1,5 @@
+importScripts("common/utilities.js");
+
 const BIBLE_TABS_URL = [
   "https://my.bible.com/bible*",
   "https://my.bible.com/*/bible*",
@@ -31,13 +33,25 @@ chrome.windows.onRemoved.addListener(windowId => {
   notifyOnWindowRemoved(windowId);
 });
 
-chrome.windows.onBoundsChanged.addListener(win => {
-  changeWindowsBounds(win);
-});
-
 chrome.tabs.onRemoved.addListener(() => {
   checkIfLastTabClosed();
 });
+
+chrome.windows.onBoundsChanged.addListener(
+  debounce(async win => {
+    const updateWin = await changeWindowsBounds(win);
+    //console.warn("updated", updateWin);
+    if (updateWin) {
+      const config = checkMinSize(win);
+      if (config) {
+        //console.warn("small window size detected", config, win);
+        await chrome.windows.update(win.id, {
+          ...config
+        });
+      }
+    }
+  }, 500)
+);
 
 async function changeWindowsBounds(win) {
   const windows = await chrome.storage.sync.get(allWindows);
@@ -47,6 +61,7 @@ async function changeWindowsBounds(win) {
     const [key, settings] = updateWin;
     Object.assign(settings, win);
     await setWindowSettings(key, win.id, settings);
+    return updateWin;
   }
 }
 
@@ -80,8 +95,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "focusTab": {
       const id = request.payload.id;
       chrome.windows.update(id, { focused: true }).then(win => {
-        if (win.height < 300 || win.width < 300) {
-          chrome.windows.update(id, getWinDefaultSize()).then(() => {
+        const config = checkMinSize(win);
+        if (config) {
+          chrome.windows.update(id, config).then(() => {
             sendResponse({ status: 200 });
           });
         } else {
@@ -142,8 +158,9 @@ async function setWindowSettings(key, id, settings) {
     settings = {};
   }
 
-  if (settings.height < 300 || settings.width < 300) {
-    Object.assign(settings, getWinDefaultSize());
+  const config = checkMinSize(settings);
+  if (config) {
+    Object.assign(settings, config);
   }
 
   chrome.storage.sync.set({
@@ -152,6 +169,13 @@ async function setWindowSettings(key, id, settings) {
       id
     }
   });
+}
+
+function getWinMinSize() {
+  return {
+    width: 300,
+    height: 200
+  };
 }
 
 function getWinDefaultSize() {
@@ -290,6 +314,24 @@ function checkIfLastTabClosed() {
       console.info("There are %d tabs opened", tabs.length, tabs);
     }
   }, 100);
+}
+
+function checkMinSize(win) {
+  const minSize = getWinMinSize();
+  let defaultSize = getWinDefaultSize();
+  const config = {};
+  if (win.height < minSize.height) {
+    config.height = minSize.height;
+    if (win.top > 700) {
+      config.top = defaultSize.top;
+      config.left = defaultSize.left;
+    }
+  }
+  if (win.width < minSize.width) {
+    config.width = minSize.width;
+  }
+
+  return Object.keys(config).length ? config : null;
 }
 
 function getBibleTabs() {
