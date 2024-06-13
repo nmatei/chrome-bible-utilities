@@ -44,6 +44,7 @@ or in **2 different languages**.
   - [x] Store references for future selection and project them faster
   - [x] `Enter` to add references (`,` or `;` as separator) in **Pin verses 🔍** input
   - [x] `Enter + Enter` to project added reference
+  - [x] `Shift + Enter` to add and project full reference (Mat 6:7-13)
   - [x] `ALT + Click` on Reference - force project (on top)
   - [x] `CTRL + Click` project all verses from pin (Mat 6:7-13)
   - [x] 📝 **Edit All** to Copy/Paste/Edit multiple references

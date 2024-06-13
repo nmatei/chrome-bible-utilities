@@ -6,6 +6,10 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.30.0 (🔜 coming soon)
 
+- [x] **Shift + Enter** to add and project full reference (Mat 6:7-13)
+- [x] Force Project (bring to front) within right click menu (ContextMenu)
+- [x] bug fix for MacOs - make sure projector window is not hidden when minimized
+
 ## 1.29.0
 
 - [x] Request reference from Project TAB (press TAB inside projector tab to request reference, or move to bottom screen)

@@ -40,6 +40,7 @@ function addHelpBox() {
               in <strong class="key-code">Add Ref's 🔍</strong> input
             </li>
             <li><strong class="key-code">Enter + Enter</strong> to project added reference to List/Pin</li>
+            <li><strong class="key-code">Shift + Enter</strong> to add and project full reference (Mat 6:7-13)</li>
             <li><strong class="key-code">ALT + Click</strong> on Reference - force project (on top)</li>
             <li><strong class="key-code">CTRL + Click</strong> project all verses from pin (Mat 6:7-13)</li>
             <li><strong class="key-code">📝</strong> <strong>Edit All</strong> to Copy/Paste/Edit multiple References</li>
