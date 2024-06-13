@@ -510,8 +510,11 @@ async function initEvents() {
         onReferenceSubmit();
         const focused = getFocusReference();
         if (focused) {
-          openPinReference(focused).then(() => {
+          openPinReference(focused).then(({ match }) => {
             focused.classList.remove("focus");
+            if (request.shiftKey && match && match.to) {
+              doSelectVerses(match.to, false, false, false, true);
+            }
           });
         }
         sendResponse({ status: 200 });

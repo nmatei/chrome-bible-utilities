@@ -60,6 +60,9 @@ function initEvents() {
       animateFocusBtn("F11");
     }, 300)
   );
+
+  initShiftKeyEvents();
+
   document.addEventListener("keydown", e => {
     selectByKeys(e.key);
     animateFocusBtn(e.key);
@@ -150,6 +153,7 @@ async function onReferenceSubmit(dockBar) {
     input.value = "";
     await chrome.tabs.sendMessage(tab.id, {
       action: "referencerequest",
+      shiftKey: isShiftKeyPressed,
       payload: reference
     });
   }

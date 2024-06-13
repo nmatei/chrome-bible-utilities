@@ -193,3 +193,16 @@ p.parallel.verse > sup {
 .focus-lost .actions {
   display: none;
 }
+
+@media screen and (max-width: 900px) {
+  .action-btn {
+    font-size: 20px;
+    padding: 5px 10px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .action-btn {
+    font-size: 16px;
+    padding: 4px 5px;
+  }
+}

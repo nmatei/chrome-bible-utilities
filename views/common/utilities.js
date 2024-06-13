@@ -1,3 +1,5 @@
+let isShiftKeyPressed = false;
+
 function $(selector, parent) {
   return (parent || document).querySelector(selector);
 }
@@ -124,6 +126,19 @@ function improveReference(from, booksCache) {
     return improved + from.substring(book.length);
   }
   return from;
+}
+
+function initShiftKeyEvents() {
+  window.addEventListener("keydown", e => {
+    if (e.key === "Shift") {
+      isShiftKeyPressed = true;
+    }
+  });
+  window.addEventListener("keyup", e => {
+    if (e.key === "Shift") {
+      isShiftKeyPressed = false;
+    }
+  });
 }
 
 if (typeof module === "object" && typeof module.exports === "object") {
