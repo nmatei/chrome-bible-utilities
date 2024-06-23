@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.30.0 (🔜 coming soon)
+## 1.31.0 (🔜 coming soon)
+
+- [x] Visual improvements for Shift key when press
+
+## 1.30.0
 
 - [x] **Shift + Enter** to add and project full reference (Mat 6:7-13)
 - [x] Force Project (bring to front) within right click menu (ContextMenu)

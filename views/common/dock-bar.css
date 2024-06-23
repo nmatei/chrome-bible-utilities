@@ -16,9 +16,8 @@
 #dock-actions {
   box-sizing: content-box;
   height: calc(100% - 15px);
-  border: 1px solid rgb(0 0 0 / var(--infoBoxOpacity));
+  border: 1px solid #dddddd80;
   background: rgb(0 0 0 / var(--infoBoxOpacity));
-  box-shadow: 1px 1px 2px rgb(0 0 0 / var(--infoBoxOpacity));
   color: var(--verseColor);
   width: 250px;
   margin: 2px auto;
@@ -77,6 +76,9 @@
 }
 #dock-bar input:focus {
   border-color: #3d79c2 !important;
+}
+.shift-pressed #dock-bar input:focus {
+  border-color: #00aaaa !important;
 }
 #dock-bar .fill {
   flex: 1 1 0%;

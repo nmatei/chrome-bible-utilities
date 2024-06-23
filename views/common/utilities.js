@@ -132,11 +132,13 @@ function initShiftKeyEvents() {
   window.addEventListener("keydown", e => {
     if (e.key === "Shift") {
       isShiftKeyPressed = true;
+      document.body.classList.add("shift-pressed");
     }
   });
   window.addEventListener("keyup", e => {
     if (e.key === "Shift") {
       isShiftKeyPressed = false;
+      document.body.classList.remove("shift-pressed");
     }
   });
 }

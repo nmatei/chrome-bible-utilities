@@ -305,6 +305,12 @@ h2 .key-code {
   border-color: #3d79c2 !important;
 }
 
+.shift-pressed .form-field-wrapper input:hover,
+.shift-pressed .form-field-wrapper input:focus {
+  --border-color: green !important;
+  outline-color: #00aaaa !important;
+}
+
 #liveText {
   border-radius: 5px;
   margin: 0;
