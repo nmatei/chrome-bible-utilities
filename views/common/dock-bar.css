@@ -83,3 +83,28 @@
 #dock-bar .fill {
   flex: 1 1 0%;
 }
+
+@media screen and (min-width: 1470px) {
+  #dock-bar {
+    bottom: -69px;
+  }
+  #dock-actions {
+    width: 400px;
+    font-size: 30px;
+  }
+  #dock-actions .pin-search-bar {
+    width: 400px;
+  }
+  #dock-bar input {
+    padding: 0.3rem 0.4rem !important;
+    padding-right: 42px !important;
+    font-size: 30px;
+    line-height: 36px;
+  }
+  #dock-actions .pin-search-bar::after {
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+}
