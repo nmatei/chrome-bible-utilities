@@ -31,3 +31,15 @@ function getCacheVerses(ref) {
   //console.warn("get cache", ref, verses);
   return verses;
 }
+
+const autoSelectVerseKey = "autoSelectVerse";
+
+function setAutoSelectVerse(match) {
+  localStorage.setItem(autoSelectVerseKey, JSON.stringify(match));
+}
+
+function getAutoSelectVerse() {
+  const match = localStorage.getItem(autoSelectVerseKey);
+  localStorage.removeItem(autoSelectVerseKey);
+  return JSON.parse(match);
+}
