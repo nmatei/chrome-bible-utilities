@@ -8,7 +8,13 @@ type VerseInfo = {
   verse?: string;
 };
 
-function testMatch(match: VerseInfo, book: string, chapter: number | string, verse?: number | string, to?: number | string) {
+function testMatch(
+  match: VerseInfo,
+  book: string,
+  chapter: number | string,
+  verse?: number | string,
+  to?: number | string
+) {
   expect(match).toBeDefined();
   to = to || "";
   //expect(match).toEqual({ book, chapter, verse, to });
@@ -137,7 +143,8 @@ describe("Test URL Url Matches", () => {
       primary: "191",
       book: "PSA",
       chapter: "23",
-      parallel: "186"
+      parallel: "186",
+      version: "VDC"
     });
   });
 
@@ -148,7 +155,8 @@ describe("Test URL Url Matches", () => {
       primary: "191",
       book: "JOB",
       chapter: "40",
-      parallel: "186"
+      parallel: "186",
+      version: "VDC"
     });
   });
 });
