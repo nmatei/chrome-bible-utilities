@@ -4,7 +4,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 1.31.0 (🔜 coming soon)
+## 1.31.0
 
 - [x] Visual improvements for Shift key when press
 - [x] Display Reference version (VDC, НРП) in the projector tab
