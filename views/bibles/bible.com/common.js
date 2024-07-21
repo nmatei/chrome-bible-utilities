@@ -1,3 +1,9 @@
+function getVersionsName() {
+  return $$(versionsNameSelector)
+    .slice(0, 2)
+    .map(e => e.innerText);
+}
+
 function getBooks() {
   return $$(booksSelector());
 }
@@ -7,17 +13,22 @@ function getChapters() {
 }
 
 function getTitles() {
-  return $$(titlesSelector).map(h => ({
-    content: h.innerHTML.trim(),
-    parallel: !!h.closest(parallelViewSelector)
-  }));
+  return $$(titlesSelector).map(h => {
+    const parallel = !!h.closest(parallelViewSelector);
+    // getUrlParams().version
+    return {
+      version: parallel ? getVersionsName()[1] : getVersionsName()[0],
+      content: h.innerHTML.trim(),
+      parallel
+    };
+  });
 }
 
 function getChapterTitles() {
   return $$(titlesSelector).map(h => h.innerHTML.trim());
 }
 
-const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(.+)\?parallel\=(?<parallel>\d+)/gi;
+const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(?<version>.+)\?parallel\=(?<parallel>\d+)/gi;
 
 function getUrlMatch(url) {
   return Array.from(url.matchAll(urlMatchRegExp))[0];
@@ -26,9 +37,10 @@ function getUrlMatch(url) {
 function parseUrlMatch(urlMatch) {
   if (urlMatch) {
     // console.debug("groups", urlMatch.groups);
-    const { primary, book, chapter, parallel } = urlMatch.groups;
+    const { primary, book, chapter, parallel, version } = urlMatch.groups;
     return {
       book: book,
+      version: version,
       primary: parseInt(primary),
       parallel: parseInt(parallel),
       chapter: parseInt(chapter)

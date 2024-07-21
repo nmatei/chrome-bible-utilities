@@ -168,6 +168,9 @@ function createPinVersesBox() {
     }, 100)
   );
   form.addEventListener("submit", async e => {
+    // TODO add reference to list even if is empty
+    //  (eg. click on add/preview button)
+    // console.warn("submit", e);
     e.preventDefault();
     onReferenceSubmit(preview);
     if (isShiftKeyPressed) {

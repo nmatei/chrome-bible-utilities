@@ -157,7 +157,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Allow Multiple layouts (to easy switch between them)
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
-  - [ ] Display Reference version (VDC, НРП)
+  - [x] Display Reference version (VDC, НРП)
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
 - [ ] Add WebHooks configs (ex. to publish to wireless monitors)

@@ -8,6 +8,7 @@ const verseContentSelector = '[class^="ChapterContent_content"]';
 const primaryViewSelector = '[class^="ChapterContent_chapter"]';
 const parallelViewSelector = '.md\\:block [class^="ChapterContent_yv-bible-text"]';
 const notesSelector = '[class^="ChapterContent_note"]';
+const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
 
 function chapterPickerArrow() {
   const title = $(titlesSelector).innerHTML;

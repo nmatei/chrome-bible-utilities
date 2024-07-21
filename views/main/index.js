@@ -73,7 +73,9 @@ function getReferences(chapters, versesInfo) {
         baseRef = baseRef.replace(/\d+\s*$/, v1.chapter);
         //console.info("title chapter changed to %o", baseRef);
       }
-      return groupedNumbers ? `${baseRef}:${groupedNumbers}` : "";
+      return groupedNumbers
+        ? `${chapter.version ? `<span class="version">${chapter.version}</span> ` : ""}${baseRef}:${groupedNumbers}`
+        : "";
     })
     .filter(Boolean);
 }

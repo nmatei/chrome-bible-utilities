@@ -8,6 +8,7 @@ const verseContentSelector = ".content";
 const primaryViewSelector = ".primary-chapter";
 const parallelViewSelector = ".parallel-chapter";
 const notesSelector = ".note";
+const versionsNameSelector = "button div"; // TODO
 
 function chapterPickerArrow() {
   return $(".dropdown-arrow-container");
