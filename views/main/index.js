@@ -9,6 +9,8 @@ window.addEventListener("load", () => {
     await loadDisplaySettings();
     await initEvents();
     makeVerseFocusable();
+    syncParallelLines();
+    await checkAutoProject();
   }, 100);
 });
 
@@ -551,18 +553,35 @@ async function waitAndSelectVerse(match, title, project = true) {
   const [chapter] = getChapterTitles();
   const changed = chapter === title || (await waitNewTitles());
   syncParallelLines();
-  if (verse && changed) {
-    if (project) {
-      const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
-      if (selectedVerses && selectedVerses.length) {
-        selectedVerses[0].scrollIntoViewIfNeeded(true);
+  if (verse) {
+    if (changed) {
+      if (project) {
+        const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
+        if (selectedVerses && selectedVerses.length) {
+          selectedVerses[0].scrollIntoViewIfNeeded(true);
+          return true;
+        }
+      } else {
         return true;
       }
     } else {
-      return true;
+      if (project) {
+        console.warn(`${chapter} -> ${title} not changed (page refreshed to get new titles)`);
+        setAutoSelectVerse(match);
+        window.location.reload();
+      }
+      return false;
     }
   }
   return false;
+}
+
+async function checkAutoProject() {
+  const match = getAutoSelectVerse();
+  if (match) {
+    const title = getChapterTitles()[0];
+    await waitAndSelectVerse(match, title);
+  }
 }
 
 /**
@@ -570,7 +589,7 @@ async function waitAndSelectVerse(match, title, project = true) {
  * @param timeout
  * @returns {Promise<Boolean>} - changed - true, expired - false
  */
-function waitNewTitles(timeout = 10000) {
+function waitNewTitles(timeout = 5000) {
   const oldChapters = getChapterTitles();
   const endTime = Date.now() + timeout;
   return new Promise(resolve => {
@@ -581,7 +600,7 @@ function waitNewTitles(timeout = 10000) {
         clearInterval(refreshIntervalId);
         setTimeout(() => {
           if (expired) {
-            console.info("waitNewTitles.timeout", oldChapters, chapters);
+            console.warn("waitNewTitles.timeout", oldChapters, chapters);
           }
           resolve(!expired);
         }, 200);

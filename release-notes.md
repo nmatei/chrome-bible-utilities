@@ -7,6 +7,8 @@ for [Chrome extension to for Bible.com](README.md).
 ## 1.31.0 (🔜 coming soon)
 
 - [x] Visual improvements for Shift key when press
+- [x] Display Reference version (VDC, НРП) in the projector tab
+- [x] Bug fixing (issue when chapter was not loaded => auto refresh page and try to select verse again)
 
 ## 1.30.0
 
