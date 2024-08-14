@@ -454,12 +454,16 @@ async function initEvents() {
       // 2 sec to make sure books are reloaded
     );
 
-  document.addEventListener("click", async e => {
-    if (e.detail !== 0) {
-      document.body.classList.remove("key-focus");
-    }
-    await selectVersesToProject(e);
-  });
+  document.addEventListener(
+    "click",
+    async e => {
+      if (e.detail !== 0) {
+        document.body.classList.remove("key-focus");
+      }
+      await selectVersesToProject(e);
+    },
+    true
+  );
 
   document.addEventListener("keydown", async e => {
     const target = e.target;
