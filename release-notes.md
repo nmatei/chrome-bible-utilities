@@ -7,6 +7,7 @@ for [Chrome extension to for Bible.com](README.md).
 ## 1.32.0
 
 - [x] don't let share verse tooltip appear when click on verse number
+- [x] fix scroll into view when selected verse is already loaded (scrolls only if chapter not loaded)
 
 ## 1.31.0
 

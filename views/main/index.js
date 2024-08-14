@@ -201,7 +201,7 @@ function getDisplayText(verses) {
       `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>&nbsp;` : ""}${content}</p>`
   );
 
-  const reference = references.length ? `<h1 class="reference">${references.join(" / ")}</h1> ` : "";
+  const reference = references.length ? `<h1 class="reference">${references.join(" &nbsp; ")}</h1> ` : "";
   return reference + versesContent.join("\n");
 }
 
@@ -562,6 +562,7 @@ async function waitAndSelectVerse(match, title, project = true) {
       if (project) {
         const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
         if (selectedVerses && selectedVerses.length) {
+          await backgroundSleep(100);
           selectedVerses[0].scrollIntoViewIfNeeded(true);
           return true;
         }
