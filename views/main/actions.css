@@ -13,6 +13,11 @@
   background: #000000;
 }
 
+.app-version {
+  color: #ffffffa8;
+  font-weight: normal;
+}
+
 .actions {
   padding: 5px;
   display: flex;
@@ -25,6 +30,11 @@
 }
 .actions .fill {
   flex: 1;
+}
+.win-title {
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
 .actions .action-btn {
   display: inline-block;

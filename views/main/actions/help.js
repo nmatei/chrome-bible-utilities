@@ -1,9 +1,14 @@
 function addHelpBox() {
+  const version = chrome.runtime.getManifest().version; // TODO test version
   const helpBox = document.createElement("div");
   helpBox.className = "info-fixed-box hide-view arrow-left";
   helpBox.id = "help-text-box";
   helpBox.innerHTML = `
-    <h2><span class="key-code">❔</span> Help / Usage</h2>
+    <h2 class="actions win-title">
+      <span class="key-code">❔</span>
+      <span class="fill">Help / Usage</span>
+      <span class="app-version">[ v.${version} ]</span>
+    </h2>
     <div class="info-text-content-wrapper">
     <ul>
       <li>

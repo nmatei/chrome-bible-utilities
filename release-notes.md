@@ -6,6 +6,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.33.0
 
+- [x] display current app version in help title
 - [x] when screen 1 & 2 are not selected to project -> add a 'bullet' on settings button so we know
 
 ## 1.32.0
