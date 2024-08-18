@@ -537,7 +537,7 @@ a.abp-badge {
   display: inline-block;
 }
 
-@keyframes colorChange {
+@keyframes attentionColorChange {
   0% {
     background: #ffaa32;
   }
@@ -549,8 +549,35 @@ a.abp-badge {
   }
 }
 
+@keyframes disabledColorChange {
+  0% {
+    background: #86888933;
+  }
+  45% {
+    background: #86888933;
+  }
+  50% {
+    background: #86888999;
+  }
+  55% {
+    background: #86888933;
+  }
+  100% {
+    background: #86888933;
+  }
+}
+
 .abp-badge:after {
-  animation: colorChange 2s infinite;
+  animation: attentionColorChange 2s infinite;
+}
+.abp-badge-off {
+  background-color: #86888933;
+}
+.abp-badge-off:after {
+  top: 0;
+  right: 0;
+  box-shadow: 0 0 0 2px #aaaaaa;
+  animation: disabledColorChange 10s infinite;
 }
 
 .alert-color {

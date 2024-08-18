@@ -59,7 +59,7 @@ function addActionsBox() {
   // verses possible icons? 📑 📚 📖
   actions.innerHTML = `
     <button data-key="live-text" class="action-btn" title="Live Text">💬</button>
-    <button data-key="settings" class="action-btn" title="Settings">🛠</button>
+    <button data-key="settings" class="action-btn abp-badge-off" title="Settings">🛠</button>
     <button data-key="help" class="action-btn" title="Help">❔</button>
     <button data-key="verses" class="action-btn" title="List/Pin some verses">📌</button>
   `;
@@ -194,6 +194,7 @@ async function createSettingsActions() {
 
   const previousVersion = await getPreviousVersion();
   const version = chrome.runtime.getManifest().version;
+
   //console.info("%o vs %o", previousVersion, version);
   if (previousVersion !== version) {
     setTimeout(showNewVersionBadge, 2000);

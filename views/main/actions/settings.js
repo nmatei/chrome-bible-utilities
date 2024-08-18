@@ -18,6 +18,7 @@ async function toggleDisplaySettings(toggleSettings) {
   await chrome.storage.sync.set({
     displaySettings
   });
+  return displaySettings;
   // TODO notify other tabs to update values
 }
 
@@ -33,7 +34,8 @@ async function setDisplaySettings(e) {
   btn.classList.toggle("active");
   const value = btn.dataset.display * 1;
   const toggle = btn.classList.contains("active") ? value : -value;
-  await toggleDisplaySettings(toggle);
+  const settings = await toggleDisplaySettings(toggle);
+  updateProjectorBadge(settings);
 }
 
 /**
@@ -70,7 +72,6 @@ function addSettingsBox() {
 }
 
 function updateDisplaySettings(settings) {
-  //console.warn("displaySettings", settings);
   $$("#display-settings-box .displays [data-display]").forEach(btn => {
     const display = btn.dataset.display * 1;
     //console.warn("display", btn, display);
@@ -89,4 +90,9 @@ function updateDisplaySettings(settings) {
       }
     }
   });
+  updateProjectorBadge(settings);
+}
+
+function updateProjectorBadge(settings) {
+  $("#project-actions [data-key='settings']").classList.toggle("abp-badge", settings === 0);
 }

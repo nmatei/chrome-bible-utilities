@@ -4,6 +4,10 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
+## 1.33.0
+
+- [x] when screen 1 & 2 are not selected to project -> add a 'bullet' on settings button so we know
+
 ## 1.32.0
 
 - [x] don't let share verse tooltip appear when click on verse number
