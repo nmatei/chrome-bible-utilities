@@ -1,6 +1,6 @@
 {
   "name": "my.bible.com",
-  "version": "1.33.0",
+  "version": "1.34.0",
   "description": "Project selected Bible verses",
   "main": "index.js",
   "scripts": {
