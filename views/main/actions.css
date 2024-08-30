@@ -584,8 +584,6 @@ a.abp-badge {
   background-color: #86888933;
 }
 .abp-badge-off:after {
-  top: 0;
-  right: 0;
   box-shadow: 0 0 0 2px #aaaaaa;
   animation: disabledColorChange 10s infinite;
 }
