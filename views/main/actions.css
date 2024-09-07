@@ -591,3 +591,36 @@ a.abp-badge {
 .alert-color {
   color: #ef4444 !important;
 }
+
+/* https://github.com/JosNun/night-mode-bible */
+.night-mode #project-actions {
+  box-shadow: 1px 1px 2px rgb(120 120 120 / var(--infoBoxOpacity));
+}
+.night-mode .info-fixed-box {
+  border: 1px solid rgb(204 204 204 / var(--infoBoxOpacity));
+  box-shadow: 1px 1px 2px rgb(120 120 120 / var(--infoBoxOpacity));
+}
+.night-mode .arrow-up:before {
+  border-bottom: 6px solid rgb(204 204 204 / var(--infoBoxOpacity));
+}
+.night-mode .arrow-up:after {
+  border-bottom: 5px solid #010103;
+}
+.night-mode .arrow-left:before {
+  border-right: 6px solid rgb(204 204 204 / var(--infoBoxOpacity));
+}
+.night-mode .arrow-left:after {
+  border-right: 5px solid #010103;
+}
+.night-mode .form-field-wrapper {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+.night-mode .info-fixed-box input[type="text"] {
+  background: #646464;
+  color: #f9fafb;
+}
+
+.night-mode [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+  color: var(--verseNumberBackgroundProjected) !important;
+  background: var(--verseNumberColorProjected) !important;
+}
