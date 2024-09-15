@@ -12,6 +12,7 @@ const animateKeys = {
 const isMac = /(Mac)/i.test(navigator.platform);
 
 const options = await initUserOptions();
+let maxFontSize = getMaxFontSize();
 
 setRootStyles(options);
 
@@ -56,6 +57,7 @@ function initEvents() {
   window.addEventListener(
     "resize",
     debounce(() => {
+      maxFontSize = getMaxFontSize();
       adjustBodySize();
       animateFocusBtn("F11");
     }, 300)
@@ -159,9 +161,17 @@ async function onReferenceSubmit(dockBar) {
   }
 }
 
+function getMaxFontSize() {
+  const fontSize = parseInt(options.maxFontSize);
+  // calculate browser width and minimum font size
+  const zoom = Math.round(window.innerWidth / 10);
+  // console.debug("max font size %o -> %o", { fontSize, zoom }, Math.min(fontSize, zoom));
+  return Math.min(fontSize, zoom);
+}
+
 function adjustBodySize() {
   const minFontSize = 10;
-  let fontSize = parseInt(options.maxFontSize);
+  let fontSize = maxFontSize;
   const body = document.body;
   do {
     body.style.fontSize = fontSize + "px";
@@ -170,6 +180,8 @@ function adjustBodySize() {
     //console.debug({ step, zoom, fontSize });
     fontSize = fontSize - step;
   } while (fontSize >= minFontSize && body.offsetHeight > window.innerHeight);
+
+  // TODO add one more class for font-size-less-70
   if (fontSize < 52) {
     body.classList.add("font-size-less-50");
   } else {

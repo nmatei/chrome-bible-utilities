@@ -9,6 +9,7 @@
   --referenceFontSize: 40px;
   --referenceFontFamily: Calibri;
   --referenceLetterSpacing: 0.2rem;
+  --verseFontFamily: Calibri; /* TODO add to options */
   --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
@@ -45,7 +46,7 @@ html {
   overflow: hidden;
 }
 body {
-  font-family: Calibri, Arial, sans-serif;
+  font-family: var(--verseFontFamily), Calibri, Arial, sans-serif;
   min-height: 100%;
   background-color: var(--pageBackgroundColor);
   background-size: cover;
@@ -100,15 +101,6 @@ h6 {
 }
 #root > *:first-child {
   margin-top: 0;
-}
-
-.font-size-less-50 h1,
-.font-size-less-50 h2,
-.font-size-less-50 h3,
-.font-size-less-50 h4,
-.font-size-less-50 h5,
-.font-size-less-50 h6 {
-  text-shadow: 1px 1px 2px var(--verseColor);
 }
 
 ul {
@@ -202,6 +194,21 @@ p.parallel.verse > sup {
 
 .focus-lost .actions {
   display: none;
+}
+
+.font-size-less-50 h1,
+.font-size-less-50 h2,
+.font-size-less-50 h3,
+.font-size-less-50 h4,
+.font-size-less-50 h5,
+.font-size-less-50 h6 {
+  /*           4px 2px 4px var(--pageBackgroundColor); */
+  text-shadow: 1px 1px 2px var(--verseColor);
+}
+.font-size-less-50 p,
+.font-size-less-50 li {
+  /*           4px 2px 4px var(--pageBackgroundColor); */
+  text-shadow: 1px 1px 2px var(--pageBackgroundColor);
 }
 
 @media screen and (max-width: 900px) {

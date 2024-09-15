@@ -68,7 +68,7 @@
   line-height: 24px;
   font-weight: normal;
   background: transparent;
-  color: var(--referenceColor);
+  color: #d3d3d3;
   outline: 0;
 }
 #dock-bar input:hover {

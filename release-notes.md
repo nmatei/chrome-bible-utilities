@@ -4,6 +4,13 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
+## 1.34.0 (🔜 coming soon)
+
+- [ ] Add config for body / verses font family.
+- [ ] Add config for body / verses text shadow.
+- [x] decrease max font size based on win size (for smaller screens or windows)
+- [x] Night mode integration with (https://github.com/JosNun/night-mode-bible)
+
 ## 1.33.0
 
 - [x] display current app version in help title
