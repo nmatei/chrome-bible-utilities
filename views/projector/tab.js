@@ -169,6 +169,32 @@ function getMaxFontSize() {
   return Math.min(fontSize, zoom);
 }
 
+const shadowBreakpoints = {
+  35: [1, 1, 1],
+  50: [1, 1, 2],
+  70: [4, 2, 4]
+};
+
+function getIntervalValue(intervals, limit) {
+  const keys = Object.keys(intervals);
+  const [first] = keys;
+  let value = intervals[first];
+  keys.forEach(function (key) {
+    if (limit >= key) {
+      value = intervals[key];
+    }
+  });
+  return value;
+}
+
+function updateShadows(fontSize) {
+  const [shadowX, shadowY, shadowBlur] = getIntervalValue(shadowBreakpoints, fontSize);
+  const root = $(":root");
+  root.style.setProperty("--shadowOffsetX", shadowX + "px");
+  root.style.setProperty("--shadowOffsetY", shadowY + "px");
+  root.style.setProperty("--shadowBlur", shadowBlur + "px");
+}
+
 function adjustBodySize() {
   const minFontSize = 10;
   let fontSize = maxFontSize;
@@ -181,12 +207,7 @@ function adjustBodySize() {
     fontSize = fontSize - step;
   } while (fontSize >= minFontSize && body.offsetHeight > window.innerHeight);
 
-  // TODO add one more class for font-size-less-70
-  if (fontSize < 52) {
-    body.classList.add("font-size-less-50");
-  } else {
-    body.classList.remove("font-size-less-50");
-  }
+  updateShadows(fontSize + 1);
 }
 
 function setRootStyles(styles) {

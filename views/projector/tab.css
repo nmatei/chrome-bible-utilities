@@ -23,6 +23,11 @@
   --parallelSeparatorMiddleColor: #ffffff;
   --parallelSeparatorBottomColor: #d3d3d3;
 
+  /* not configured from Settings/Options UI */
+  --shadowOffsetX: 4px;
+  --shadowOffsetY: 2px;
+  --shadowBlur: 4px;
+
   /* internal vars */
   --infoBoxOpacity: 85%;
   --autoHideTimeout: 5s;
@@ -80,7 +85,12 @@ h6 {
   font-weight: bold;
   font-variant-caps: small-caps;
   color: var(--referenceColor);
-  text-shadow: 4px 2px 4px var(--pageBackgroundColor);
+  text-shadow:
+    var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor),
+    1px 1px 1px var(--pageBackgroundColor),
+    1px -1px 1px var(--pageBackgroundColor),
+    -1px -1px 1px var(--pageBackgroundColor),
+    -1px 1px 1px var(--pageBackgroundColor);
   font-size: 1.2em;
   margin: 0.2em 0 0.2em 0;
 }
@@ -111,9 +121,6 @@ li input[type="checkbox"]:disabled {
   width: 2.5em;
   cursor: pointer;
 }
-/*strong {*/
-/*  text-shadow: 2px 2px 4px var(--referenceColor);*/
-/*}*/
 a {
   color: var(--verseColor);
   text-shadow: 2px 2px 4px var(--referenceColor);
@@ -121,7 +128,8 @@ a {
 
 h1.reference {
   font-size: clamp(2vw, var(--referenceFontSize), 8vw);
-  text-shadow: 4px 2px 4px var(--pageBackgroundColor);
+  /* TODO config */
+  /*text-transform: uppercase;*/
 }
 
 .version {
@@ -148,7 +156,12 @@ p.parallel.separator:not(p:first-of-type):before {
 }
 p,
 li {
-  text-shadow: 4px 2px 4px var(--pageBackgroundColor);
+  text-shadow:
+    var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor),
+    1px 1px 1px var(--pageBackgroundColor),
+    1px -1px 1px var(--pageBackgroundColor),
+    -1px -1px 1px var(--pageBackgroundColor),
+    -1px 1px 1px var(--pageBackgroundColor);
   line-height: 1.3em;
 }
 p.verse {
@@ -194,21 +207,6 @@ p.parallel.verse > sup {
 
 .focus-lost .actions {
   display: none;
-}
-
-.font-size-less-50 h1,
-.font-size-less-50 h2,
-.font-size-less-50 h3,
-.font-size-less-50 h4,
-.font-size-less-50 h5,
-.font-size-less-50 h6 {
-  /*           4px 2px 4px var(--pageBackgroundColor); */
-  text-shadow: 1px 1px 2px var(--verseColor);
-}
-.font-size-less-50 p,
-.font-size-less-50 li {
-  /*           4px 2px 4px var(--pageBackgroundColor); */
-  text-shadow: 1px 1px 2px var(--pageBackgroundColor);
 }
 
 @media screen and (max-width: 900px) {
