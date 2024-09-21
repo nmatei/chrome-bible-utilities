@@ -1,6 +1,6 @@
-import { latinizeText } from "../views/common/latinizeText";
-import { searchVersesNrsRegExp, searchChapterNrRegExp, improveReference } from "../views/common/utilities";
-import { getVerseInfo } from "../views/common/bible-mappings";
+import { latinizeText } from "../../views/common/latinizeText";
+import { searchVersesNrsRegExp, searchChapterNrRegExp, improveReference } from "../../views/common/utilities";
+import { getVerseInfo } from "../../views/common/bible-mappings";
 
 describe("Number Format Regex", () => {
   const validVersesFormats = [

@@ -1,4 +1,4 @@
-import { BASIC_RU_MAPPING, bibleReferenceMap } from "../views/common/bible-mappings";
+import { BASIC_RU_MAPPING, bibleReferenceMap } from "../../views/common/bible-mappings";
 
 describe("Bible reference map for [RU][НРП]", () => {
   const targetSplitter = /\s*->\s*/;

@@ -1,4 +1,4 @@
-import { latinizeText } from "../views/common/latinizeText";
+import { latinizeText } from "../../views/common/latinizeText";
 
 describe("Test replaceDiacritics", () => {
   it("Test chars with [includeUpperCase]", () => {

@@ -1,6 +1,6 @@
-import { getReferencePreview, getVerseInfo } from "../views/common/bible-mappings";
-import { splitVerses } from "../views/common/utilities";
-import { getUrlMatch } from "../views/bibles/bible.com/common";
+import { getReferencePreview, getVerseInfo } from "../../views/common/bible-mappings";
+import { splitVerses } from "../../views/common/utilities";
+import { getUrlMatch } from "../../views/bibles/bible.com/common";
 
 type VerseInfo = {
   book?: string;

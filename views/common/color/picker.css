@@ -1,0 +1,16 @@
+.color-picker {
+  display: flex;
+  gap: 5px;
+  align-items: stretch;
+}
+
+.color-picker input[type="text"] {
+  width: 60px;
+  font-family: monospace;
+}
+.color-picker input[type="color"] {
+  width: 30px;
+}
+.color-picker input:invalid {
+  border-color: red;
+}
