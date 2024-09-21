@@ -154,6 +154,7 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] 🛠 **User Settings**
+  - [ ] Allow to easy select font family from drop down (or add your own)
   - [ ] Allow Multiple layouts (to easy switch between them)
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen

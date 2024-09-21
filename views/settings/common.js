@@ -19,6 +19,7 @@ function getCssDefaultProperties() {
     referenceFontSize: "40",
     referenceFontFamily: "Calibri",
     verseNumberColor: "#d3d3d3",
+    verseFontFamily: "Calibri",
     verseColor: "#ffffff",
     parallelVerseNumberColor: "#ededb4",
     parallelVerseColor: "#eded33",

@@ -8,7 +8,8 @@
   --referenceColor: #d3d3d3;
   --referenceFontSize: 40px;
   --referenceFontFamily: "Calibri";
-  --referenceLetterSpacing: .2rem;
+  --verseFontFamily: "Calibri";
+  --referenceLetterSpacing: 0.2rem;
   --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
@@ -93,11 +94,21 @@ h2.reference {
   letter-spacing: var(--referenceLetterSpacing);
   font-size: 1.8em;
   margin: 0;
-  /*text-shadow: 1px 1px 1px var(--verseColor);*/
+  text-shadow:
+    1px 1px 1px var(--pageBackgroundColor),
+    1px -1px 1px var(--pageBackgroundColor),
+    -1px -1px 1px var(--pageBackgroundColor),
+    -1px 1px 1px var(--pageBackgroundColor);
 }
 .background-preview p {
   font-size: 1.3em;
+  font-family: var(--verseFontFamily), Calibri, Arial, sans-serif;
   font-weight: var(--verseFontWeight);
+  text-shadow:
+    1px 1px 1px var(--pageBackgroundColor),
+    1px -1px 1px var(--pageBackgroundColor),
+    -1px -1px 1px var(--pageBackgroundColor),
+    -1px 1px 1px var(--pageBackgroundColor);
 }
 .clock-container:after {
   z-index: 1 !important;
