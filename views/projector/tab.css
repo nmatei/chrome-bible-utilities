@@ -127,6 +127,9 @@ a {
 }
 
 h1.reference {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: clamp(2vw, var(--referenceFontSize), 8vw);
   /* TODO config */
   /*text-transform: uppercase;*/
@@ -137,7 +140,7 @@ h1.reference {
   opacity: 0.7;
   display: inline-block;
   border: 1px solid var(--referenceColor);
-  padding: 3px 10px;
+  padding: 3px 6px;
   vertical-align: middle;
   border-radius: 4px;
 }

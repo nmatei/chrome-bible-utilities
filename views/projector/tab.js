@@ -164,7 +164,7 @@ async function onReferenceSubmit(dockBar) {
 function getMaxFontSize() {
   const fontSize = parseInt(options.maxFontSize);
   // calculate browser width and minimum font size
-  const zoom = Math.round(window.innerWidth / 10);
+  const zoom = Math.round(window.innerWidth / 12);
   // console.debug("max font size %o -> %o", { fontSize, zoom }, Math.min(fontSize, zoom));
   return Math.min(fontSize, zoom);
 }
