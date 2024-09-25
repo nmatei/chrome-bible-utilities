@@ -12,6 +12,19 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function setFormValues(form, values) {
+  Object.entries(values).forEach(([key, value]) => {
+    const input = form[key];
+    if (input && input.type !== "file") {
+      input.value = value;
+      if (typeof input.setAttribute === "function") {
+        // Ensure the attribute is updated
+        input.setAttribute("value", value);
+      }
+    }
+  });
+}
+
 /**
  * use when sleep is needed in background script to be sure is executed correctly.
  * when a tab is inactive in Chrome it will trotle the setTimeout to 1000ms

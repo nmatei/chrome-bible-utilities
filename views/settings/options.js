@@ -21,15 +21,6 @@ applyRootStyles(options);
 await displayBackgroundImages(options);
 initEvents();
 
-function setFormValues(form, values) {
-  Object.entries(values).forEach(([key, value]) => {
-    const input = form[key];
-    if (input && input.type !== "file") {
-      input.value = value;
-    }
-  });
-}
-
 function updateFormPreviewValues(values) {
   Object.entries(values).forEach(([key, value]) => {
     const preview = $(`[data-preview="${key}"]`);

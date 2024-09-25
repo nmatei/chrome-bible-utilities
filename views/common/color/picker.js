@@ -1,7 +1,12 @@
-export function createColorPicker({ id, value, required }) {
+function createColorPickerWrapper(id) {
   const wrapper = document.createElement("div");
-  wrapper.className = "color-picker";
+  wrapper.id = id;
+  return wrapper;
+}
 
+export function createColorPicker({ renderTo, id, name, value, required }) {
+  const wrapper = renderTo ? $(renderTo) : createColorPickerWrapper(renderTo);
+  wrapper.className = "color-picker";
   const color = document.createElement("input");
   color.type = "text";
   color.value = value;
@@ -14,23 +19,52 @@ export function createColorPicker({ id, value, required }) {
   if (id) {
     picker.id = id;
   }
+  name = name || id;
+  picker.name = name;
   picker.value = value;
   picker.required = required;
 
-  picker.addEventListener("input", () => {
+  // Create a MutationObserver instance
+  const observer = new MutationObserver(mutationsList => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "attributes" && mutation.attributeName === "value") {
+        //console.info("Input value changed to:", picker.value);
+        // Add your custom logic here
+        pickerValueChanged();
+      }
+    }
+  });
+
+  // Configure the observer to watch for attribute changes
+  observer.observe(picker, {
+    attributes: true, // Observe attribute changes
+    attributeFilter: ["value"] // Only observe changes to the 'value' attribute
+  });
+
+  function pickerValueChanged() {
+    //console.warn("picker input", picker.value);
     color.value = picker.value;
     color.setCustomValidity("");
     wrapper.value = color.value;
     const event = new Event("input", { bubbles: true });
     wrapper.dispatchEvent(event);
-  });
+  }
+
+  picker.addEventListener("input", pickerValueChanged);
+
+  // picker.addEventListener("change", function (e) {
+  //   console.info("Color picker value changed to:", picker.value, e);
+  // });
+
   color.addEventListener(
     "input",
     debounce(() => {
-      picker.value = color.value;
       if (validateColorInput(color)) {
-        const event = new Event("input", { bubbles: true });
-        picker.dispatchEvent(event);
+        picker.value = color.value;
+        const inputEvent = new Event("input", { bubbles: true });
+        picker.dispatchEvent(inputEvent);
+        const changeEvent = new Event("change", { bubbles: true });
+        picker.dispatchEvent(changeEvent);
       }
     }, 200)
   );
