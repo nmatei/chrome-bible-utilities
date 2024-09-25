@@ -201,7 +201,7 @@ function getDisplayText(verses) {
       `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>&nbsp;` : ""}${content}</p>`
   );
 
-  const reference = references.length ? `<h1 class="reference">${references.join(" &nbsp; ")}</h1> ` : "";
+  const reference = references.length ? `<h1 class="reference">${references.join(" ")}</h1> ` : "";
   return reference + versesContent.join("\n");
 }
 

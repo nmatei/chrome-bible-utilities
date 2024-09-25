@@ -1,3 +1,7 @@
+/**
+ * @global marked
+ */
+
 import { applyRootStyles, BIBLE_TABS_URL, initUserOptions } from "../settings/common.js";
 
 const animateKeys = {
@@ -27,6 +31,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     case "previewRootStyles": {
       setRootStyles(request.payload);
+      maxFontSize = getMaxFontSize();
       adjustBodySize();
       sendResponse({ status: 200 });
       break;
@@ -37,10 +42,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 function updateText(text, markdown) {
   const root = document.getElementById("root");
   if (markdown) {
-    text = marked.parse(text);
+    text = window.marked.parse(text);
   }
   text = text.replaceAll("-", "&#8209;");
   root.innerHTML = text;
+
+  adjustRefFontSize();
   adjustBodySize();
 }
 
@@ -58,6 +65,7 @@ function initEvents() {
     "resize",
     debounce(() => {
       maxFontSize = getMaxFontSize();
+      adjustRefFontSize();
       adjustBodySize();
       animateFocusBtn("F11");
     }, 300)
@@ -193,6 +201,26 @@ function updateShadows(fontSize) {
   root.style.setProperty("--shadowOffsetX", shadowX + "px");
   root.style.setProperty("--shadowOffsetY", shadowY + "px");
   root.style.setProperty("--shadowBlur", shadowBlur + "px");
+}
+
+function decreaseFontSize(el) {
+  if (el && el.scrollWidth > el.offsetWidth) {
+    const computedStyle = window.getComputedStyle(el);
+    const fontSize = computedStyle.fontSize;
+    const newFontSize = parseInt(fontSize) - 1;
+    el.style.fontSize = newFontSize + "px";
+    return true;
+  }
+  return false;
+}
+
+function adjustRefFontSize() {
+  const ref = $("h1.reference");
+  if (ref && ref.style.fontSize) {
+    // reset it to initial value from css then let it decrease to fit the screen if needed
+    ref.style.fontSize = "";
+  }
+  while (decreaseFontSize(ref)) {}
 }
 
 function adjustBodySize() {

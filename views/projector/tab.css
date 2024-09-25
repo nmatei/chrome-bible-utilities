@@ -9,7 +9,7 @@
   --referenceFontSize: 40px;
   --referenceFontFamily: Calibri;
   --referenceLetterSpacing: 0.2rem;
-  --verseFontFamily: Calibri; /* TODO add to options */
+  --verseFontFamily: Calibri;
   --verseNumberColor: #d3d3d3;
   --verseColor: #ffffff;
   --parallelVerseNumberColor: #ededb4;
@@ -131,6 +131,7 @@ h1.reference {
   align-items: center;
   gap: 10px;
   font-size: clamp(2vw, var(--referenceFontSize), 8vw);
+  text-wrap: nowrap;
   /* TODO config */
   /*text-transform: uppercase;*/
 }
