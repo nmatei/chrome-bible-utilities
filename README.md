@@ -58,6 +58,7 @@ or in **2 different languages**.
   - [x] **Change Reference 🔍** from Projector tab - works same as **Add Ref's 🔍**
     - [x] `Tab` inside projector tab to see bottom dock-bar
     - [x] 🖱 move mouse at the bottom edge of projector tab
+    - [x] Type any reference and use same shortcuts to project it (`Enter` or `Shift + Enter` for multiple verses)
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
   - [x] projector page will close only when all tabs from my.bible.com are closed
@@ -65,6 +66,7 @@ or in **2 different languages**.
   - [x] Toggle 1️⃣ primary OR 2️⃣ parallel verses to be projected
   - [x] Adjust css variables (spacing, colors)
   - [x] remember last windows position (projector & settings)
+  - [x] ☽ Try Night mode integration with [JosNun/night-mode-bible](https://github.com/JosNun/night-mode-bible)
 
 ## 📈 Release Notes
 
