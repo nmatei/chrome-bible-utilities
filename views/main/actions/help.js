@@ -46,8 +46,8 @@ function addHelpBox() {
             </li>
             <li><strong class="key-code">Enter + Enter</strong> to project added reference to List/Pin</li>
             <li><strong class="key-code">Shift + Enter</strong> to add and project full reference (Mat 6:7-13)</li>
-            <li><strong class="key-code">ALT + Click</strong> on Reference - force project (on top)</li>
             <li><strong class="key-code">CTRL + Click</strong> project all verses from pin (Mat 6:7-13)</li>
+            <li><strong class="key-code">ALT + Click</strong> on Reference - force project (on top)</li>
             <li><strong class="key-code">📝</strong> <strong>Edit All</strong> to Copy/Paste/Edit multiple References</li>
             <li><strong class="key-code">➕</strong> will pin current Reference if search input is empty</li>
             <li>
@@ -69,6 +69,9 @@ function addHelpBox() {
             <ul>
               <li><strong class="key-code">Tab</strong> inside projector tab to see bottom dock-bar</li>
               <li><strong class="key-code">🖱</strong> move mouse at the bottom edge of projector tab</li>
+              <li>Type any reference and use same shortcuts to project it <br />
+                  (<strong class="key-code">Enter</strong> or <strong class="key-code">Shift + Enter</strong> for multiple verses)
+              </li>
             </ul>
           </ul>
         </li>
@@ -101,6 +104,7 @@ function addHelpBox() {
             <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">Tickets</a></li>
             <li>📈 <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/release-notes.md" target="_blank" class="abp-badge">Release Notes</a> - see what are the latest fixes and features</li>
             <li>💚 Love this extension? Share <a href="https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj" target="_blank">feedback</a> and help us make it even better!</li>
+            <li>☽ Try Night mode integration with <a href="https://chromewebstore.google.com/detail/night-mode-bible/ebiieffikaglhelcnogmmijmlejdhngk" target="_blank">JosNun/night-mode-bible</a></li>
           </ul>  
         </li>
       </li>
