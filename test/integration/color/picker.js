@@ -2,16 +2,14 @@ import { createColorPicker } from "../../../views/common/color/picker.js";
 
 const referenceColor = createColorPicker({
   id: "referenceColor",
+  label: "Reference/Title Color",
   value: "#000000",
   name: "referenceColor",
   required: true
 });
-
-$("#referenceColor-wrapper").appendChild(referenceColor);
-
 const backgroundColor = createColorPicker({
-  renderTo: "#backgroundColor-wrapper",
   id: "backgroundColor",
+  label: "Background Color",
   value: "#000000",
   name: "backgroundColor",
   required: true
@@ -27,7 +25,6 @@ setFormValues(optionsForm, {
 referenceColor.addEventListener("input", () => {
   $("h1").style.color = referenceColor.value;
 });
-
 backgroundColor.addEventListener("input", () => {
   document.body.style.backgroundColor = backgroundColor.value;
 });

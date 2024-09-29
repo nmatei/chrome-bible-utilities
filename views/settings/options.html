@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../common/CustomScrollChrome.css" />
     <link rel="stylesheet" href="../common/clock-container.css" />
     <link rel="stylesheet" href="../common/action-btn.css" />
+    <link rel="stylesheet" href="../common/color/picker.css" />
     <link rel="stylesheet" href="options.css" />
     <script src="../common/utilities.js"></script>
   </head>
@@ -39,10 +40,7 @@
           </div>
           <div style="display: flex; flex-direction: row">
             <div style="flex: 1">
-              <div class="form-field">
-                <label for="pageBackgroundColor">Background Color</label>
-                <input type="color" required id="pageBackgroundColor" name="pageBackgroundColor" />
-              </div>
+              <div id="pageBackgroundColor-field"></div>
               <div class="form-field">
                 <label for="maxFontSize">Max Font Size</label>
                 <input type="number" required min="20" max="200" id="maxFontSize" name="maxFontSize" />
@@ -73,11 +71,7 @@
                   ℹ
                 </a>
               </div>
-              <div class="form-field">
-                <label for="referenceColor">Reference/Title Color</label>
-                <input type="color" required id="referenceColor" name="referenceColor" />
-              </div>
-
+              <div id="referenceColor-field"></div>
               <div class="form-field">
                 <label for="verseFontFamily">Verse Font Family</label>
                 <input
@@ -100,18 +94,18 @@
 
               <div class="form-field" style="margin-bottom: 0">
                 <label for="verseNumberColor"></label>
-                <label for="verseNumberColor" class="input-top-label">Primary</label>
-                <label for="parallelVerseNumberColor" class="input-top-label">Parallel</label>
+                <label for="verseNumberColor-input" class="input-top-label" style="width: 92px">Primary</label>
+                <label for="parallelVerseNumberColor-input" class="input-top-label" style="width: 92px">Parallel</label>
               </div>
               <div class="form-field" style="margin-top: 0">
                 <label for="verseNumberColor">Verse Number Color</label>
-                <input type="color" required id="verseNumberColor" name="verseNumberColor" />
-                <input type="color" required id="parallelVerseNumberColor" name="parallelVerseNumberColor" />
+                <div id="verseNumberColor-field"></div>
+                <div id="parallelVerseNumberColor-field"></div>
               </div>
-              <div class="form-field">
+              <div class="form-field" style="margin-top: 0">
                 <label for="verseColor">Verse Color</label>
-                <input type="color" required id="verseColor" name="verseColor" />
-                <input type="color" required id="parallelVerseColor" name="parallelVerseColor" />
+                <div id="verseColor-field"></div>
+                <div id="parallelVerseColor-field"></div>
               </div>
               <div class="form-field">
                 <label for="verseFontWeight">Verses Font Weight</label>
@@ -182,46 +176,52 @@
             <legend>Parallel Separator</legend>
             <div class="form-field" style="margin-bottom: 0">
               <label></label>
-              <label for="parallelSeparatorTopHeight" class="input-top-label">Top</label>
-              <label for="parallelSeparatorMiddleHeight" class="input-top-label">Middle</label>
-              <label for="parallelSeparatorBottomHeight" class="input-top-label">Bottom</label>
+              <label for="parallelSeparatorTopHeight" class="input-top-label" style="width: 92px">Top</label>
+              <label for="parallelSeparatorMiddleHeight" class="input-top-label" style="width: 92px">Middle</label>
+              <label for="parallelSeparatorBottomHeight" class="input-top-label" style="width: 92px">Bottom</label>
             </div>
             <div class="form-field" style="margin-top: 0">
               <label for="parallelSeparatorTopHeight">Heights</label>
-              <input
-                type="number"
-                required
-                min="0"
-                max="20"
-                value="1"
-                id="parallelSeparatorTopHeight"
-                name="parallelSeparatorTopHeight"
-              />
-              <input
-                type="number"
-                required
-                min="0"
-                max="20"
-                value="1"
-                id="parallelSeparatorMiddleHeight"
-                name="parallelSeparatorMiddleHeight"
-              />
-              <input
-                type="number"
-                required
-                min="0"
-                max="20"
-                value="1"
-                id="parallelSeparatorBottomHeight"
-                name="parallelSeparatorBottomHeight"
-              />
+              <div style="width: 98px; text-align: center">
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  max="20"
+                  value="1"
+                  id="parallelSeparatorTopHeight"
+                  name="parallelSeparatorTopHeight"
+                />
+              </div>
+              <div style="width: 98px; text-align: center">
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  max="20"
+                  value="1"
+                  id="parallelSeparatorMiddleHeight"
+                  name="parallelSeparatorMiddleHeight"
+                />
+              </div>
+              <div style="width: 98px; text-align: center">
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  max="20"
+                  value="1"
+                  id="parallelSeparatorBottomHeight"
+                  name="parallelSeparatorBottomHeight"
+                />
+              </div>
               <div>px</div>
             </div>
             <div class="form-field">
-              <label for="parallelSeparatorTopColor">Colors</label>
-              <input type="color" required id="parallelSeparatorTopColor" name="parallelSeparatorTopColor" />
-              <input type="color" required id="parallelSeparatorMiddleColor" name="parallelSeparatorMiddleColor" />
-              <input type="color" required id="parallelSeparatorBottomColor" name="parallelSeparatorBottomColor" />
+              <label for="parallelSeparatorTopColor-input">Colors</label>
+              <div id="parallelSeparatorTopColor-field"></div>
+              <div id="parallelSeparatorMiddleColor-field"></div>
+              <div id="parallelSeparatorBottomColor-field"></div>
             </div>
           </fieldset>
         </section>

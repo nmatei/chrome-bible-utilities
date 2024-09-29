@@ -1,13 +1,27 @@
-function createColorPickerWrapper(id) {
-  const wrapper = document.createElement("div");
-  wrapper.id = id;
-  return wrapper;
+function createLabel(id, label) {
+  const el = document.createElement("label");
+  el.htmlFor = `${id}-input`;
+  el.textContent = label || id;
+  return el;
 }
 
-export function createColorPicker({ renderTo, id, name, value, required }) {
-  const wrapper = renderTo ? $(renderTo) : createColorPickerWrapper(renderTo);
+function createField(id) {
+  const field = document.createElement("div");
+  field.id = id + "-field";
+  return field;
+}
+
+export function createColorPicker({ id, name, label, value, required }) {
+  const field = $(`#${id}-field`) || createField(id, label);
+  field.classList.add("form-field");
+  if (label) {
+    field.appendChild(createLabel(id, label));
+  }
+
+  const wrapper = document.createElement("div");
   wrapper.className = "color-picker";
   const color = document.createElement("input");
+  color.id = `${id}-input`;
   color.type = "text";
   color.value = value;
   color.required = required;
@@ -15,10 +29,8 @@ export function createColorPicker({ renderTo, id, name, value, required }) {
   color.maxlength = "7";
 
   const picker = document.createElement("input");
+  picker.id = id;
   picker.type = "color";
-  if (id) {
-    picker.id = id;
-  }
   name = name || id;
   picker.name = name;
   picker.value = value;
@@ -45,9 +57,10 @@ export function createColorPicker({ renderTo, id, name, value, required }) {
     //console.warn("picker input", picker.value);
     color.value = picker.value;
     color.setCustomValidity("");
-    wrapper.value = color.value;
+    // simulate input event and add input value to the field
+    field.value = color.value;
     const event = new Event("input", { bubbles: true });
-    wrapper.dispatchEvent(event);
+    field.dispatchEvent(event);
   }
 
   picker.addEventListener("input", pickerValueChanged);
@@ -71,7 +84,8 @@ export function createColorPicker({ renderTo, id, name, value, required }) {
 
   wrapper.appendChild(color);
   wrapper.appendChild(picker);
-  return wrapper;
+  field.appendChild(wrapper);
+  return field;
 }
 
 function validateColorInput(input) {

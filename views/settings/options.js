@@ -10,9 +10,53 @@ import {
   removeFile,
   retrieveFile
 } from "./common.js";
+import { createColorPicker } from "../common/color/picker.js";
 
 const options = await initUserOptions();
 const optionsForm = $("#optionsForm");
+
+function createColorFields() {
+  [
+    {
+      id: "pageBackgroundColor",
+      label: "Background Color"
+    },
+    {
+      id: "referenceColor",
+      label: "Reference/Title Color"
+    },
+    {
+      id: "verseNumberColor"
+    },
+    {
+      id: "parallelVerseNumberColor"
+    },
+    {
+      id: "verseColor"
+    },
+    {
+      id: "parallelVerseColor"
+    },
+    {
+      id: "parallelSeparatorTopColor"
+    },
+    {
+      id: "parallelSeparatorMiddleColor"
+    },
+    {
+      id: "parallelSeparatorBottomColor"
+    }
+  ].forEach(field => {
+    createColorPicker({
+      value: "#000000",
+      name: field.id,
+      required: true,
+      ...field
+    });
+  });
+}
+
+createColorFields();
 
 setFormValues(optionsForm, options);
 updateFormPreviewValues(options);

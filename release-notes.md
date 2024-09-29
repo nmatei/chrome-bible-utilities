@@ -6,8 +6,8 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.34.0 (🔜 coming soon)
 
-- [ ] Add config for body / verses font family.
-- [ ] Add config for body / verses text shadow.
+- [x] Improve color picker to allow copy/paste hex color.
+- [x] Add config for body / verses font family.
 - [x] decrease max font size based on win size (for smaller screens or windows)
 - [x] Night mode integration with (https://github.com/JosNun/night-mode-bible)
 

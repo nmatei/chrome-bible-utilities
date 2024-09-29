@@ -205,7 +205,8 @@ legend {
   padding: 3px 5px 5px 0;
   font-size: 1.2em;
 }
-fieldset .form-field {
+fieldset .form-field,
+.form-field > .form-field {
   margin: 6px 0;
 }
 fieldset .form-field label:first-child {
@@ -214,9 +215,6 @@ fieldset .form-field label:first-child {
 .form-field input[type="number"] {
   width: 45px;
   padding: 3px;
-}
-.form-field input[type="color"] {
-  width: 55px;
 }
 .form-field select {
   padding: 3px;
