@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "browser-sync start --server --files '**/*'",
+    "start": "browser-sync start --server --directory --no-ui --files '**/*'",
     "watch-test": "jest --watch",
     "doctoc": "doctoc README.md",
     "zip": "run-os",

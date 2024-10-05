@@ -43,6 +43,8 @@ h1 {
   display: flex;
   flex-direction: column;
   overflow-y: hidden; /* Prevent main from scrolling */
+  /* TODO changing background will make #displayScreenPreview not visible... */
+  /*background: #f5f5f5;*/
 }
 .content {
   flex: 1;
