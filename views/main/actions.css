@@ -458,6 +458,9 @@ h2 .key-code {
 #verses-text-box tbody .selected td:first-child {
   border-left-color: #ffffff !important;
 }
+.shift-pressed #verses-text-box tbody tr:hover td:first-child {
+  border-left-color: #00aaaa !important;
+}
 #verses-text-box a.remove-btn.spin {
   color: #cccccc22;
 }

@@ -4,9 +4,9 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## *.*.0 (🔜 coming soon)
+## 2.0.0 (🔜 coming soon)
 
-- [ ] 🤔
+- [ ] Allow Multiple layouts (to easy switch between them)
 
 ## 1.34.0
 - [x] Improve color picker to allow copy/paste hex color.

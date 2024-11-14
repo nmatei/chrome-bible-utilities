@@ -4,6 +4,10 @@
 
 import { applyRootStyles, BIBLE_TABS_URL, initUserOptions } from "../settings/common.js";
 
+// ================================
+//    C o n s t a n t s
+// ================================
+
 const animateKeys = {
   //"⌃⌘F": "F11", // TODO test on mac Os (isMac)
   F11: "F11",
@@ -15,29 +19,12 @@ const animateKeys = {
 
 const isMac = /(Mac)/i.test(navigator.platform);
 
-const options = await initUserOptions();
-let maxFontSize = getMaxFontSize();
+const slide = await initUserOptions(true);
+let maxFontSize = getMaxFontSize(slide);
 
-setRootStyles(options);
-
-initEvents();
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.action) {
-    case "updateText": {
-      updateText(request.payload.text, request.payload.markdown);
-      sendResponse({ status: 200 });
-      break;
-    }
-    case "previewRootStyles": {
-      setRootStyles(request.payload);
-      maxFontSize = getMaxFontSize();
-      adjustBodySize();
-      sendResponse({ status: 200 });
-      break;
-    }
-  }
-});
+// ================================
+//   Helper functions
+// ================================
 
 function updateText(text, markdown) {
   const root = document.getElementById("root");
@@ -51,7 +38,27 @@ function updateText(text, markdown) {
   adjustBodySize();
 }
 
+function initRuntimeEvents() {
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.action) {
+      case "updateText": {
+        updateText(request.payload.text, request.payload.markdown);
+        sendResponse({ status: 200 });
+        break;
+      }
+      case "previewRootStyles": {
+        setRootStyles(request.payload);
+        maxFontSize = getMaxFontSize(slide);
+        adjustBodySize();
+        sendResponse({ status: 200 });
+        break;
+      }
+    }
+  });
+}
+
 function initEvents() {
+  initRuntimeEvents();
   // TODO check if we want to have clock?
   initClock();
   const dockBar = createDockBar();
@@ -64,7 +71,7 @@ function initEvents() {
   window.addEventListener(
     "resize",
     debounce(() => {
-      maxFontSize = getMaxFontSize();
+      maxFontSize = getMaxFontSize(slide);
       adjustRefFontSize();
       adjustBodySize();
       animateFocusBtn("F11");
@@ -77,14 +84,14 @@ function initEvents() {
     selectByKeys(e.key);
     animateFocusBtn(e.key);
   });
-  if (options.actionsDisplay === "false") {
+  if (slide.actionsDisplay === "false") {
     document.body.classList.add("focus-lost");
   }
   window.addEventListener("blur", () => {
     document.body.classList.add("focus-lost");
   });
   window.addEventListener("focus", () => {
-    if (options.actionsDisplay === "true") {
+    if (slide.actionsDisplay === "true") {
       document.body.classList.remove("focus-lost");
     }
   });
@@ -169,8 +176,8 @@ async function onReferenceSubmit(dockBar) {
   }
 }
 
-function getMaxFontSize() {
-  const fontSize = parseInt(options.maxFontSize);
+function getMaxFontSize(slide) {
+  const fontSize = parseInt(slide.maxFontSize);
   // calculate browser width and minimum font size
   const zoom = Math.round(window.innerWidth / 12);
   // console.debug("max font size %o -> %o", { fontSize, zoom }, Math.min(fontSize, zoom));
@@ -239,7 +246,7 @@ function adjustBodySize() {
 }
 
 function setRootStyles(styles) {
-  Object.assign(options, styles);
+  Object.assign(slide, styles);
   applyRootStyles(styles);
 }
 
@@ -249,3 +256,14 @@ function initClock() {
   root.dataset.text = date.toTimeString().substring(0, 5);
   setTimeout(initClock, (60 - date.getSeconds()) * 1000);
 }
+
+function start() {
+  applyRootStyles(slide);
+  initEvents();
+}
+
+// ================================
+//   S t a r t
+// ================================
+
+start();

@@ -147,6 +147,9 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
+- [ ] Context menu on verses number (right click)
+  - [ ] Project verse
+  - [ ] Add verse to project list
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
@@ -157,7 +160,7 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] 🛠 **User Settings**
   - [ ] Allow to easy select font family from drop down (or add your own)
-  - [ ] Allow Multiple layouts (to easy switch between them)
+  - [ ] Allow reordering of slides master layouts
   - [ ] Add config for body / verses text shadow.
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
@@ -173,4 +176,4 @@ If you want to try the latest versions before they are released, or to change co
 
 ### 🐛 Known bugs
 
-- [ ] ...?
+- [x] https://www.bible.com/bible/191/EXO.15.VDC (v.2 - custom background color in dark mode - text not fully visible)

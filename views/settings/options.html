@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../common/color/picker.css" />
     <link rel="stylesheet" href="options.css" />
     <script src="../common/utilities.js"></script>
-    <!--    <script src="../../test/integration/storage.sync.js"></script>-->
+    <script src="../../test/integration/storage.sync.js"></script>
   </head>
   <body>
     <script defer src="options.js" type="module"></script>
@@ -23,7 +23,36 @@
       <h1>🛠 Projector Screen Settings</h1>
 
       <div class="form-body">
-        <section class="content">
+        <section id="slides-master" class="content">
+          <div class="actions">
+            <h2>Slide Master</h2>
+            <span data-key="fill" class="fill"></span>
+            <button data-key="add" class="action-btn" type="button">➕</button>
+            <button data-key="remove" class="action-btn" type="button">🗑</button>
+          </div>
+          <div id="slides-master-list" class="focus-lost"></div>
+        </section>
+
+        <section id="slide-config" class="content">
+          <div class="form-field">
+            <label for="slideName">Slide Name</label>
+            <input type="text" required id="slideName" name="slideName" value="Main" placeholder="Main" class="text" />
+          </div>
+          <div class="form-field">
+            <label for="slideDescription">Description</label>
+            <input
+              type="text"
+              required
+              id="slideDescription"
+              name="slideDescription"
+              class="text"
+              value="Default Slide"
+              placeholder="Default Slide"
+            />
+          </div>
+
+          <hr />
+
           <div class="form-field" style="margin-bottom: 0">
             <label></label>
             <label for="rootPaddingTop" class="input-top-label">Top</label>
@@ -42,11 +71,6 @@
           <div style="display: flex; flex-direction: row">
             <div style="flex: 1">
               <div id="pageBackgroundColor-field"></div>
-              <div class="form-field">
-                <label for="maxFontSize">Max Font Size</label>
-                <input type="number" required min="20" max="200" id="maxFontSize" value="200" name="maxFontSize" />
-                <div>px</div>
-              </div>
 
               <div class="form-field">
                 <label for="referenceFontSize">Reference Font Size</label>
@@ -69,7 +93,7 @@
                   id="referenceFontFamily"
                   name="referenceFontFamily"
                   placeholder="Calibri, Arial, sans-serif"
-                  style="width: 230px"
+                  class="text"
                 />
                 <a
                   href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family"
@@ -81,6 +105,14 @@
                 </a>
               </div>
               <div id="referenceColor-field"></div>
+
+              <hr />
+
+              <div class="form-field">
+                <label for="maxFontSize">Max Font Size</label>
+                <input type="number" required min="20" max="200" id="maxFontSize" value="200" name="maxFontSize" />
+                <div>px</div>
+              </div>
               <div class="form-field">
                 <label for="verseFontFamily">Verse Font Family</label>
                 <input
@@ -89,7 +121,7 @@
                   id="verseFontFamily"
                   name="verseFontFamily"
                   placeholder="Calibri, Arial, sans-serif"
-                  style="width: 230px"
+                  class="text"
                 />
                 <a
                   href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family"
@@ -101,18 +133,18 @@
                 </a>
               </div>
 
-              <div class="form-field" style="margin-bottom: 0">
+              <div class="form-field" style="margin-top: 0; margin-bottom: 0">
                 <label for="verseNumberColor"></label>
                 <label for="verseNumberColor-input" class="input-top-label" style="width: 92px">Primary</label>
                 <label for="parallelVerseNumberColor-input" class="input-top-label" style="width: 92px">Parallel</label>
               </div>
-              <div class="form-field" style="margin-top: 0">
-                <label for="verseNumberColor">Verse Number Color</label>
+              <div class="form-field" style="margin-top: 0; margin-bottom: 0">
+                <label for="verseNumberColor-input">Verse Number Color</label>
                 <div id="verseNumberColor-field"></div>
                 <div id="parallelVerseNumberColor-field"></div>
               </div>
               <div class="form-field" style="margin-top: 0">
-                <label for="verseColor">Verse Color</label>
+                <label for="verseColor-input">Verse Color</label>
                 <div id="verseColor-field"></div>
                 <div id="parallelVerseColor-field"></div>
               </div>
@@ -147,19 +179,9 @@
                 </select>
               </div>
             </div>
-            <div class="focus-lost" style="padding: 5px">
-              <div
-                id="displayScreenPreview"
-                class="clock-container background-preview page-background-image"
-                data-text="10:00"
-              >
-                <h2 class="reference">Mat 6:7</h2>
-                <p>🙏 How to Pray...</p>
-              </div>
-            </div>
           </div>
 
-          <fieldset style="max-width: 1920px">
+          <fieldset style="max-width: 100%">
             <legend>Background Images</legend>
             <div id="background-previews"></div>
             <div class="form-field">

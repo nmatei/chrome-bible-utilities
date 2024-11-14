@@ -307,6 +307,7 @@ function checkIfLastTabClosed() {
         const settings = await getWindowSettings(key);
         const existingId = settings ? settings.id : "";
         if (existingId) {
+          // TODO try to fix : Uncaught (in promise) Error: No window with id: 674002835. when i simple close any tab
           chrome.windows.remove(existingId);
         }
       }

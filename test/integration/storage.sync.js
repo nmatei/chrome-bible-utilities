@@ -7,6 +7,7 @@ if (!chrome.storage) {
     storage: {
       sync: {
         set: items => {
+          console.info("chrome.storage.sync.set", items);
           return new Promise(resolve => {
             for (const key in items) {
               localStorage.setItem(key, JSON.stringify(items[key]));
@@ -28,9 +29,15 @@ if (!chrome.storage) {
     },
     runtime: {
       sendMessage: function (payload) {
-        console.warn("Mocking chrome.runtime.sendMessage", payload);
+        console.info("Mocking chrome.runtime.sendMessage", payload);
         return new Promise(resolve => {
           resolve();
+          switch (payload.action) {
+            case "closeSettingsTab": {
+              //window.location.reload();
+              break;
+            }
+          }
         });
       }
     }

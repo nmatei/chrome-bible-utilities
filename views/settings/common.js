@@ -36,6 +36,8 @@ function getCssDefaultProperties() {
 
 export function getUserSettingsDefaults() {
   return {
+    slideName: "Main",
+    slideDescription: "Default Slide",
     maxFontSize: "200",
     actionsDisplay: "true",
     clockPosition: "top-right",
@@ -83,35 +85,63 @@ function mapStyles(styles) {
   }, {});
 }
 
-export function applyRootStyles(options) {
-  const styles = mapStyles(options);
-  const root = $(":root");
+export function applyRootStyles(slide, el) {
+  const styles = mapStyles(slide);
+  const root = el || $(":root");
   Object.entries(styles).forEach(([key, value]) => {
     root.style.setProperty("--" + key, value);
   });
-
-  $(".page-background-image").style.backgroundImage = options.pageBackgroundImage;
-  const clockClasses = $(".clock-container").classList;
+  (el || $(".page-background-image")).style.backgroundImage = slide.pageBackgroundImage;
+  const clockClasses = (el || $(".clock-container")).classList;
   clockClasses.remove("clock-none", "clock-top-right", "clock-bottom-right", "clock-bottom-left");
-  clockClasses.add(`clock-${options.clockPosition}`);
+  clockClasses.add(`clock-${slide.clockPosition}`);
 }
 
 /**
  * Initialize the form with the user's option settings
+ * @param {Boolean} currentSlide
  * @returns {Promise<Object>}
  */
-export async function initUserOptions() {
-  return applyLoadOptions(getDefaults());
+export async function initUserOptions(currentSlide) {
+  const options = await applyLoadOptions(getDefaults(), currentSlide);
+  return currentSlide ? options.slides[options.selected] : options;
 }
 
-export async function applyLoadOptions(options) {
+export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
   const storageData = await chrome.storage.sync.get("options");
-  //console.warn("loadOptions", options, storageData.options);
-  Object.assign(options, storageData.options);
+  let options = storageData.options;
+
+  // TODO after all clients have the new version of the extension, remove this block
+  // migrate the data to multiple slides
+  if (!options.slides) {
+    options = {
+      selected: 0,
+      slides: [
+        {
+          ...storageData.options
+        }
+      ]
+    };
+  }
+
+  options.slides = options.slides.map(slide => ({
+    ...defaultSlideOptions,
+    ...slide
+  }));
 
   indexedDBInstance = indexedDBInstance || (await initFilesDB());
-  const file = await retrieveFile(options.pageBackgroundImageKey);
-  options.pageBackgroundImage = file ? `url(${file.data})` : "none";
+
+  const files = await Promise.all(
+    options.slides.map((slide, i) => {
+      const key = currentSlide === true && i !== options.selected ? -1 : slide.pageBackgroundImageKey;
+      return retrieveFile(key);
+    })
+  );
+  options.slides.forEach((slide, index) => {
+    const file = files[index];
+    slide.pageBackgroundImage = file ? `url(${file.data})` : "none";
+  });
+
   return options;
 }
 
@@ -136,6 +166,9 @@ export function initFilesDB() {
  * Retrieve the file from IndexedDB and display it
  */
 export function retrieveFile(fileKey) {
+  if (fileKey === -1) {
+    return Promise.resolve(null);
+  }
   const transaction = indexedDBInstance.transaction("files", "readonly");
   const fileStore = transaction.objectStore("files");
   const getRequest = fileStore.get(fileKey);

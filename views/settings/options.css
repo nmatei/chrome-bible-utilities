@@ -23,6 +23,9 @@ html {
 body {
   width: 100%;
   margin: 0;
+
+  font-family: system-ui, sans-serif;
+  font-size: 12px;
 }
 h1 {
   color: #0b5394;
@@ -30,6 +33,11 @@ h1 {
   margin: 0;
   padding: 10px;
   border-bottom: 1px solid #adafaf;
+}
+h2 {
+  color: #0b5394;
+  margin: 0;
+  padding: 5px;
 }
 #optionsForm {
   height: 100vh;
@@ -41,10 +49,11 @@ h1 {
 .form-body {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   overflow-y: hidden; /* Prevent main from scrolling */
-  /* TODO changing background will make #displayScreenPreview not visible... */
-  /*background: #f5f5f5;*/
+}
+#slide-config {
+  background: #f5f5f5;
 }
 .content {
   flex: 1;
@@ -56,6 +65,23 @@ h1 {
   padding: 10px;
   border-top: 1px solid #adafaf;
 }
+#slides-master {
+  /*width: 275px;*/
+  flex: none;
+  border-right: 1px solid #adafaf;
+
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+}
+#slides-master-list {
+  padding: 15px;
+
+  flex: 1;
+  overflow-x: auto;
+}
 
 #background-previews {
   display: flex;
@@ -65,7 +91,7 @@ h1 {
   padding: 10px;
 }
 
-#background-previews .background-preview {
+.background-preview {
   cursor: pointer;
 }
 
@@ -85,7 +111,7 @@ h1 {
   background-repeat: no-repeat;
   background-position: center center;
 
-  color: var(--verseColor);
+  color: var(--verseColor) !important;
 }
 
 h2.reference {
@@ -94,7 +120,7 @@ h2.reference {
   color: var(--referenceColor);
   font-family: var(--referenceFontFamily), Calibri, Arial, sans-serif;
   letter-spacing: var(--referenceLetterSpacing);
-  font-size: 1.8em;
+  font-size: 1.6em;
   margin: 0;
   text-shadow:
     1px 1px 1px var(--pageBackgroundColor),
@@ -106,6 +132,7 @@ h2.reference {
   font-size: 1.3em;
   font-family: var(--verseFontFamily), Calibri, Arial, sans-serif;
   font-weight: var(--verseFontWeight);
+  margin: 0;
   text-shadow:
     1px 1px 1px var(--pageBackgroundColor),
     1px -1px 1px var(--pageBackgroundColor),
@@ -113,25 +140,25 @@ h2.reference {
     -1px 1px 1px var(--pageBackgroundColor);
 }
 .clock-container:after {
-  z-index: 1 !important;
+  z-index: 3 !important;
   font-size: 14px;
 }
 
-#background-previews .background-preview:hover {
+.background-preview:hover {
   outline: 3px solid #0b57d0;
 }
 .background-preview.selected {
   outline: 3px solid #238500;
 }
 
-#displayScreenPreview {
+#slides-master-list .background-preview {
   width: 240px;
   height: 135px;
-  border: 3px solid #0b57d0;
-  z-index: -2;
+  margin-bottom: 10px;
+  z-index: 0;
 }
 
-#displayScreenPreview:before {
+#slides-master-list .background-preview:before {
   content: "";
   position: absolute;
   top: 0;
@@ -139,11 +166,17 @@ h2.reference {
   bottom: 0;
   left: 0;
   background: rgba(0, 0, 0, var(--pageBackgroundImgOpacity));
-  z-index: -1;
+  z-index: 1;
 }
 
 #settings-actions.actions {
   align-items: end;
+}
+#slides-master .actions {
+  align-items: center;
+  border-bottom: 1px solid #adafaf;
+  background: #f5f5f5;
+  padding: 10px;
 }
 .background-preview .actions .action-btn {
   font-size: 20px;
@@ -162,7 +195,7 @@ h2.reference {
   border-color: #ffffff;
   color: #9b0000;
 }
-
+#slides-master .action-btn,
 #settings-actions.actions .action-btn {
   font-size: 20px;
   padding: 4px 10px;
@@ -172,11 +205,13 @@ h2.reference {
   line-height: 1em;
   text-align: center;
 }
+#slides-master .action-btn:hover,
 #settings-actions.actions .action-btn:hover {
   background: #ffffff;
   border-color: #0b5394;
   color: #0b5394;
 }
+#slides-master .action-btn:active,
 #settings-actions.actions .action-btn:active {
   border-color: #0b539490;
   color: #0b5394aa;
@@ -191,6 +226,11 @@ legend {
   font-weight: bold;
   padding: 0 5px 0 5px;
   font-size: 1.2em;
+}
+
+hr {
+  margin: 1em;
+  border-top: 1px solid #adafaf;
 }
 
 .form-field {
@@ -213,6 +253,12 @@ fieldset .form-field,
 }
 fieldset .form-field label:first-child {
   min-width: 12em;
+}
+.form-field input[type="text"] {
+  padding: 3px;
+}
+.form-field input.text {
+  width: 230px;
 }
 .form-field input[type="number"] {
   width: 45px;
