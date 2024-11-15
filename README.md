@@ -161,6 +161,7 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] 🛠 **User Settings**
   - [ ] Allow to easy select font family from drop down (or add your own)
   - [ ] Allow reordering of slides master layouts
+  - [ ] Export & Import settings
   - [ ] Add config for body / verses text shadow.
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
