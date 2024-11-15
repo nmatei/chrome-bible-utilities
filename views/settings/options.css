@@ -114,6 +114,12 @@ h2 {
   color: var(--verseColor) !important;
 }
 
+h2.reference,
+.background-preview p {
+  /* make sure shadow does not cover text */
+  z-index: 1;
+  position: relative;
+}
 h2.reference {
   font-weight: bold;
   font-variant-caps: small-caps;
@@ -148,7 +154,7 @@ h2.reference {
   outline: 3px solid #0b57d0;
 }
 .background-preview.selected {
-  outline: 3px solid #238500;
+  outline: 4px solid #238500;
 }
 
 #slides-master-list .background-preview {

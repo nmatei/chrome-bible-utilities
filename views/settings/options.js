@@ -172,8 +172,10 @@ function getCurrentSlide(options) {
 }
 
 function selectSlide(slideEl) {
-  $("#slides-master-list .selected").classList.remove("selected");
+  const prevSlideEl = $("#slides-master-list .selected");
+  prevSlideEl && prevSlideEl.classList.remove("selected");
   slideEl.classList.add("selected");
+  slideEl.scrollIntoView(true);
 }
 
 function updateCurrentSlide(options) {
@@ -327,13 +329,15 @@ function addSlideEl(name, description) {
 
 function displaySlides(options) {
   $("#slides-master-list").innerHTML = "";
+  let currentSlideEl;
   options.slides.forEach((slide, index) => {
     const slideEl = addSlideEl(slide.slideName, slide.slideDescription);
     if (index === options.selected) {
-      slideEl.classList.add("selected");
+      currentSlideEl = slideEl;
     }
     applyRootStyles(slide, slideEl);
   });
+  selectSlide(currentSlideEl);
 }
 
 function focusFirstInput() {
