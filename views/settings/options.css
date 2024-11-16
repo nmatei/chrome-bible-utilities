@@ -84,10 +84,9 @@ h2 {
 }
 
 #background-previews {
-  display: flex;
+  display: grid;
   gap: 10px;
-  max-width: calc(100vw - 100px);
-  overflow-x: auto;
+  grid-template-columns: repeat(auto-fit, 165px);
   padding: 10px;
 }
 
@@ -226,7 +225,6 @@ h2.reference {
 
 fieldset {
   margin: 6px;
-  max-width: 600px;
 }
 legend {
   font-weight: bold;
@@ -304,6 +302,12 @@ select:focus {
 
 input[type="range"] {
   width: 300px;
+}
+
+@media screen and (max-width: 800px) {
+  input[type="range"] {
+    width: 100%;
+  }
 }
 
 @media screen and (max-height: 300px) {
