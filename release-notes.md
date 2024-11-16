@@ -6,24 +6,25 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 2.0.0 (🔜 coming soon)
 
-- [ ] Allow Multiple layouts (to easy switch between them)
+- [x] Allow Multiple layouts (easy switch between them)
+- [x] Improved Shift key visibility (when press)
 
 ## 1.34.0
 - [x] Improve color picker to allow copy/paste hex color.
 - [x] Add config for body / verses font family.
-- [x] decrease max font size based on win size (for smaller screens or windows)
-- [x] improve text-shadow for better visibility of text (when background image is used)
+- [x] Decrease max font size based on win size (for smaller screens or windows)
+- [x] Improve text-shadow for better visibility of text (when background image is used)
 - [x] Night mode integration with (https://github.com/JosNun/night-mode-bible)
 
 ## 1.33.0
 
-- [x] display current app version in help title
-- [x] when screen 1 & 2 are not selected to project -> add a 'bullet' on settings button so we know
+- [x] Display current app version in help title
+- [x] When screen 1 & 2 are not selected to project -> add a 'bullet' on settings button so we know
 
 ## 1.32.0
 
-- [x] don't let share verse tooltip appear when click on verse number
-- [x] fix scroll into view when selected verse is already loaded (scrolls only if chapter not loaded)
+- [x] Don't let share verse tooltip appear when click on verse number
+- [x] Fix scroll into view when selected verse is already loaded (scrolls only if chapter not loaded)
 
 ## 1.31.0
 
@@ -35,7 +36,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 - [x] **Shift + Enter** to add and project full reference (Mat 6:7-13)
 - [x] Force Project (bring to front) within right click menu (ContextMenu)
-- [x] bug fix for MacOs - make sure projector window is not hidden when minimized
+- [x] Bug fix for MacOs - make sure projector window is not hidden when minimized
 
 ## 1.29.0
 
@@ -54,7 +55,7 @@ for [Chrome extension to for Bible.com](README.md).
 ## 1.26.0
 
 - [x] UX changes - Add Opacity for all boxes (eg. help, pin items)
-- [x] fix ContextMenu position when is out of window bounds
+- [x] Fix ContextMenu position when is out of window bounds
 
 ## 1.25.0
 
@@ -77,9 +78,9 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.21.0
 
-- [x] allow copy from page (disable auto focus when ctrlKey or metaKey are pressed)
-- [x] use text shadow and for list items in live text
-- [x] allow navigation using keys when focus is on input but empty
+- [x] Allow copy from page (disable auto focus when ctrlKey or metaKey are pressed)
+- [x] Use text shadow and for list items in live text
+- [x] Allow navigation using keys when focus is on input but empty
 
 ## 1.20.0
 
@@ -111,8 +112,8 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 1.15.0
 
-- [x] improvements when add reference
-- [x] background images
+- [x] Improvements when add reference
+- [x] Background images
 
 ## 1.14.0
 
@@ -127,7 +128,7 @@ for [Chrome extension to for Bible.com](README.md).
 ## 1.12.0
 
 - [x] ↕ **drag & drop** to reorder verses
-- [x] highlight current Pin
+- [x] Highlight current Pin
 
 ## 1.11.0
 

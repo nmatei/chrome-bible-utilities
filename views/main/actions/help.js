@@ -86,7 +86,7 @@ function addHelpBox() {
               Toggle [ OFF / ON ] Display for <strong>Primary / Parallel</strong> Chapter. <br />
               If both are off, no verses will be projected (toggles are saved)
             </li>
-            <li><span class="displays actions row-actions" style="display: inline"><button class="action-btn active">🛠</button></span> Projector Screen Settings (Advanced)</li>
+            <li><span class="displays actions row-actions" style="display: inline"><button class="action-btn active">🛠</button></span> Projector Screen Settings (Advanced / <strong>Slide master</strong>)</li>
           </ul>
         </li>
         <li>
