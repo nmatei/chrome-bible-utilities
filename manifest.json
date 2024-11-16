@@ -1,6 +1,6 @@
 {
   "name": "Project verses from bible.com",
-  "version": "1.35.0",
+  "version": "2.0.0",
   "description": "Project selected Bible verses (works for parallel as well) from YouVersion bible.com",
   "manifest_version": 3,
   "author": "Matei Nicolae",
