@@ -4,9 +4,13 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 2.0.0 (🔜 coming soon)
+## 2.1.0 (🔜 coming soon)
 
-- [x] Allow Multiple layouts (easy switch between them)
+- [ ] Duplicate Slide in Slide master
+
+## 2.0.0
+
+- [x] Slide master - allow Multiple layouts (easy switch between them)
 - [x] Improved Shift key visibility (when press)
 
 ## 1.34.0
