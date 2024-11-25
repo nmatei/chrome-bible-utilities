@@ -305,8 +305,28 @@ input[type="range"] {
 }
 
 @media screen and (max-width: 800px) {
+  #slides-master-list .background-preview {
+    width: 192px;
+    height: 108px;
+  }
+  h2.reference {
+    font-size: 1.3em;
+  }
+  .background-preview p {
+    font-size: 1.1em;
+  }
+  fieldset .form-field label:first-child {
+    min-width: 8em;
+  }
   input[type="range"] {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #slides-master-list .background-preview {
+    width: 140px;
+    height: 80px;
   }
 }
 
