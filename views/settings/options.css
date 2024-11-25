@@ -178,7 +178,7 @@ h2.reference {
   align-items: end;
 }
 #slides-master .actions {
-  align-items: center;
+  align-items: stretch;
   border-bottom: 1px solid #adafaf;
   background: #f5f5f5;
   padding: 10px;
@@ -209,6 +209,7 @@ h2.reference {
   color: #000000;
   line-height: 1em;
   text-align: center;
+  min-height: 38px;
 }
 #slides-master .action-btn:hover,
 #settings-actions.actions .action-btn:hover {
@@ -304,7 +305,23 @@ input[type="range"] {
   width: 300px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
+  #slides-master .actions {
+    padding: 5px;
+    gap: 5px;
+  }
+  .form-field label:first-child {
+  }
+
+  fieldset .form-field label:first-child {
+    min-width: 8em;
+  }
+  input[type="range"] {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 820px) {
   #slides-master-list .background-preview {
     width: 192px;
     height: 108px;
@@ -314,12 +331,6 @@ input[type="range"] {
   }
   .background-preview p {
     font-size: 1.1em;
-  }
-  fieldset .form-field label:first-child {
-    min-width: 8em;
-  }
-  input[type="range"] {
-    width: 100%;
   }
 }
 
