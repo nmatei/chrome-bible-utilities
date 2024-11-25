@@ -112,8 +112,8 @@ export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
   let options = storageData.options;
 
   // TODO after all clients have the new version of the extension, remove this block
-  // migrate the data to multiple slides
-  if (!options.slides) {
+  //    migrate the data to multiple slides
+  if (!options || !options.slides) {
     options = {
       selected: 0,
       slides: [

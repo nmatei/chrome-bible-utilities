@@ -7,6 +7,7 @@ for [Chrome extension to for Bible.com](README.md).
 ## 2.1.0 (🔜 coming soon)
 
 - [ ] Duplicate Slide in Slide master
+- [x] Fix missing options bug, that will not project any verses
 
 ## 2.0.0
 
