@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 2.1.0 (🔜 coming soon)
+## 2.2.0 (🔜 coming soon)
+
+- [ ] ...
+
+## 2.1.0
 
 - [x] Duplicate Slide in Slide Master
 - [x] Fix missing options bug, that will not project any verses
