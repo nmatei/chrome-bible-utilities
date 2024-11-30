@@ -15,7 +15,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 2.0.0
 
-- [x] Slide master - allow Multiple layouts (easy switch between them)
+- [x] **Slide master** - allow **Multiple layouts** (easy switch between them)
 - [x] Improved Shift key visibility (when press)
 
 ## 1.34.0
