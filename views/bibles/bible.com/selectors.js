@@ -11,7 +11,11 @@ const notesSelector = '[class^="ChapterContent_note"]';
 const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
 
 function chapterPickerArrow() {
-  const title = $(titlesSelector).innerHTML;
+  let titleEl = $(titlesSelector);
+  if (!titleEl) {
+    return null;
+  }
+  const title = titleEl.innerHTML;
   const buttons = $$('.z-docked [id^="headlessui-popover-button"]');
   return buttons.find(b => b.innerText === title);
 }

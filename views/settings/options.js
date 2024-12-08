@@ -9,6 +9,7 @@ import {
   retrieveFile
 } from "./common.js";
 import { createColorPicker } from "../common/color/picker.js";
+import { simpleAlert, simpleConfirm } from "../common/simplePrompt/simplePrompt.js";
 
 // ================================
 //    C o n s t a n t s
@@ -296,7 +297,15 @@ function initEvents() {
         switch (action) {
           case "remove": {
             e.preventDefault();
-            if (confirm("This action can't be reverted. Continue?")) {
+            const usedInSlide = options.slides.find(slide => slide.pageBackgroundImageKey === fileKey);
+            if (usedInSlide) {
+              await simpleAlert(
+                `This image is used in a slide (<code>${usedInSlide.slideName}</code>). You have to replace it first.`
+              );
+              return;
+            }
+            const answer = await simpleConfirm("This action can't be reverted. Continue?");
+            if (answer) {
               await removeFile(fileKey);
               await displayBackgroundImages(options);
               if (preview.classList.contains("selected")) {
