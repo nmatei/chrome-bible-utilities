@@ -219,24 +219,34 @@ function initEvents() {
   });
 
   $("#settings-actions").addEventListener("click", async e => {
-    if (e.target.matches(".action-btn")) {
-      const action = e.target.getAttribute("data-key");
-      switch (action) {
-        case "defaults": {
-          onApplyDefaults(slide);
-          break;
-        }
-        case "cancel": {
-          onCancel();
-          break;
-        }
+    const btn = e.target.closest("button.action-btn");
+    if (!btn) {
+      return;
+    }
+    const action = btn.getAttribute("data-key");
+    switch (action) {
+      case "import": {
+        await simpleAlert("Not implemented yet");
+        break;
+      }
+      case "export": {
+        await simpleAlert("Not implemented yet");
+        break;
+      }
+      case "defaults": {
+        onApplyDefaults(slide);
+        break;
+      }
+      case "cancel": {
+        onCancel();
+        break;
       }
     }
   });
 
   $("#slides-master .actions").addEventListener(
     "click",
-    debounce(e => {
+    debounce(async e => {
       const btn = e.target.closest("button.action-btn");
       if (!btn) {
         return;
@@ -268,10 +278,13 @@ function initEvents() {
         }
         case "remove": {
           if (options.slides.length > 1) {
-            options.slides.splice(options.selected, 1);
-            options.selected = 0;
-            displaySlides(options);
-            slide = updateCurrentSlide(options);
+            const answer = await simpleConfirm("Do you want to remove selected Slide?");
+            if (answer) {
+              options.slides.splice(options.selected, 1);
+              options.selected = 0;
+              displaySlides(options);
+              slide = updateCurrentSlide(options);
+            }
           }
           break;
         }
@@ -330,9 +343,11 @@ function initEvents() {
 }
 
 function onApplyDefaults(slide) {
-  Object.assign(slide, getDefaults());
+  const { slideName, slideDescription, ...defaults } = getDefaults();
+  Object.assign(slide, defaults);
   setFormValues(optionsForm, slide);
   previewStyles(slide);
+  // TODO reselect current background image
 }
 
 async function onCancel() {
@@ -370,7 +385,17 @@ function focusFirstInput() {
   firstInput && firstInput.focus();
 }
 
+function updateIcons() {
+  $$("[data-icon]").forEach(function (el) {
+    const icon = icons[el.dataset.icon];
+    if (icon) {
+      el.innerHTML = icon + " " + el.innerHTML;
+    }
+  });
+}
+
 async function start() {
+  updateIcons();
   //console.debug("initial options", options);
   createColorFields();
   const slide = getCurrentSlide(options);

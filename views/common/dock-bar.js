@@ -14,6 +14,7 @@ function addDockBar() {
           class="fill pin-add-verse"
           title="Type References then press [ Enter ]"
         />
+        <div class="input-trigger">${icons.lightSearch}</div>
       </div>
     </div>`;
 

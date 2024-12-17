@@ -64,7 +64,9 @@ function addSettingsBox() {
     </div>
     <div class="actions row-actions">
       <span data-key="fill" class="fill"></span>
-      <button class="action-btn" data-key="settings" title="Projector Screen Settings (Advanced)">🛠</button>
+      <button class="action-btn" data-key="settings" title="Projector Screen Settings (Advanced)">
+        ${icons.lightSettings}
+      </button>
     </div>      
   `;
   document.body.appendChild(box);

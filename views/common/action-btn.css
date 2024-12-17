@@ -6,7 +6,10 @@
   flex: 1;
 }
 .action-btn {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   cursor: pointer;
   user-select: none;
   text-decoration: none;

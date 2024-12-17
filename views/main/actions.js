@@ -38,8 +38,13 @@ function addLiveTextBox() {
         <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates"/>
       </label>
       <span data-key="fill" class="fill"></span>
-      <button type="submit" class="action-btn">💬 Project</button>
-      <button type="button" class="action-btn" data-key="hide" title="Hide text">🔳</button>
+      <button type="submit" class="action-btn">
+        ${icons.liveChat}
+        Project
+      </button>
+      <button type="button" class="action-btn" data-key="hide" title="Hide text">
+        ${icons.lightStop}
+      </button>
     </div>
     <div class="form-field form-field-wrapper">
       <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
@@ -58,10 +63,18 @@ function addActionsBox() {
   actions.className = "actions";
   // verses possible icons? 📑 📚 📖
   actions.innerHTML = `
-    <button data-key="live-text" class="action-btn" title="Live Text">💬</button>
-    <button data-key="settings" class="action-btn abp-badge-off" title="Settings">🛠</button>
-    <button data-key="help" class="action-btn" title="Help">❔</button>
-    <button data-key="verses" class="action-btn" title="List/Pin some verses">📌</button>
+    <button data-key="live-text" class="action-btn" title="Live Text">
+      ${icons.liveChat}
+    </button>
+    <button data-key="settings" class="action-btn abp-badge-off" title="Settings">
+      ${icons.lightSettings}
+    </button>
+    <button data-key="help" class="action-btn" title="Help">
+      ${icons.question}
+    </button>
+    <button data-key="verses" class="action-btn" title="List/Pin some verses">
+      ${icons.favorite}
+    </button>
   `;
   document.body.appendChild(actions);
   return actions;
@@ -119,22 +132,23 @@ function createLiveTextForm() {
 }
 
 function actionsClick(target) {
-  if (target.matches(".action-btn")) {
-    const action = target.dataset.key;
+  const btn = target.closest(".action-btn");
+  if (btn) {
+    const action = btn.dataset.key;
     switch (action) {
       case "settings": {
         settingsBox = settingsBox || createSettingsBox();
-        showBox(settingsBox, target);
+        showBox(settingsBox, btn);
         break;
       }
       case "live-text": {
         liveBoxForm = liveBoxForm || createLiveTextForm();
-        showBoxBy(liveBoxForm, target);
+        showBoxBy(liveBoxForm, btn);
         liveBoxForm.classList.toggle("hide-view");
         if (liveBoxForm.classList.contains("hide-view")) {
-          target.classList.remove("active");
+          btn.classList.remove("active");
         } else {
-          target.classList.add("active");
+          btn.classList.add("active");
           getProjectTab().then(() => {
             const liveText = $("#liveText");
             liveText.focus();
@@ -144,8 +158,8 @@ function actionsClick(target) {
       }
       case "help": {
         helpBox = helpBox || addHelpBox();
-        showBox(helpBox, target);
-        if (target.classList.contains("abp-badge")) {
+        showBox(helpBox, btn);
+        if (btn.classList.contains("abp-badge")) {
           $(".abp-badge", helpBox).scrollIntoView({ behavior: "smooth" });
           setTimeout(hideVersionBadge, 5000);
         }
@@ -153,7 +167,7 @@ function actionsClick(target) {
       }
       case "verses": {
         versesBox = versesBox || createPinVersesBox();
-        showBox(versesBox, target);
+        showBox(versesBox, btn);
         break;
       }
     }

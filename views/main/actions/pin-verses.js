@@ -2,8 +2,6 @@ let pinnedVerses = [];
 
 //let isShiftKeyPressed = false;
 
-const copyIcon = `<svg width="24px" height="24px" viewBox="100 100 800 800" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" /><path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" /><path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" /><path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" /><path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" /><path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" /><path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" /><path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" /><path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" /><path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" /><path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" /><path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" /></svg>`;
-
 async function getPinnedVerses() {
   const storageData = await chrome.storage.sync.get("pinnedVerses");
   return storageData.pinnedVerses || "Mat 5:1";
@@ -89,7 +87,7 @@ function createPinVersesBox() {
     if (isVerse) {
       actions.push({
         text: "Project entire reference",
-        icon: "🔠",
+        icon: icons.projectAll,
         handler: () => {
           onReferenceClick(e.target, {
             ctrlKey: true
@@ -98,7 +96,7 @@ function createPinVersesBox() {
       });
       actions.push({
         text: "Force Project (bring to front)",
-        icon: "🔠",
+        icon: icons.bringToFront,
         handler: () => {
           onReferenceClick(e.target, {
             ctrlKey: true,
@@ -109,7 +107,7 @@ function createPinVersesBox() {
       actions.push("-");
       actions.push({
         text: `Copy ${e.target.innerText}`,
-        icon: copyIcon,
+        icon: icons.copyIcon,
         itemId: "copy",
         handler: async () => {
           await onReferenceCopy([e.target]);
@@ -119,7 +117,7 @@ function createPinVersesBox() {
 
     actions.push({
       text: "Copy all to clipboard",
-      icon: copyIcon,
+      icon: icons.copyAll,
       itemId: "copyAll",
       handler: async () => {
         await onReferenceCopy();
@@ -130,7 +128,7 @@ function createPinVersesBox() {
     if (isVerse) {
       actions.push({
         text: `Clear all except ${e.target.innerText}`,
-        icon: "✖",
+        icon: icons.remove,
         itemId: "clear",
         cls: "alert-color",
         handler: () => {
@@ -143,7 +141,7 @@ function createPinVersesBox() {
 
     actions.push({
       text: "Clear all",
-      icon: "✖",
+      icon: icons.removeAll,
       itemId: "clearAll",
       cls: "alert-color",
       handler: () => {
@@ -367,8 +365,8 @@ function onReferenceEdit(e) {
   const editor = $("#pinned-verses-editor");
   editor.value = pinnedVerses.join("\n");
   editor.style.display = "block";
-  e.target.style.display = "none";
-  $('#verses-text-box button[data-key="save"]').style.display = "inline-block";
+  e.target.closest(".action-btn").classList.add("hidden-action");
+  $('#verses-text-box button[data-key="save"]').classList.remove("hidden-action");
 }
 
 function onReferenceSave(e) {
@@ -378,8 +376,8 @@ function onReferenceSave(e) {
   pinnedVerses = splitVerses(editor.value);
   updatePinnedRows(pinnedVerses);
   setPinnedVerses(pinnedVerses);
-  e.target.style.display = "none";
-  $('#verses-text-box button[data-key="edit"]').style.display = "inline-block";
+  e.target.closest(".action-btn").classList.add("hidden-action");
+  $('#verses-text-box button[data-key="edit"]').classList.remove("hidden-action");
 }
 
 async function onReferenceCopy(verses) {
@@ -501,12 +499,19 @@ function addVersesBox() {
       <input placeholder="Add Ref's" type="text" autocomplete="off" id="pin-add-verse" class="fill" 
         title="for Multiple References use [ , ] or [ ; ] then press [ Enter ]"
       />
+      <div class="input-trigger">${icons.search}</div>
     </div>
     <div class="actions row-actions">
-      <button type="button" class="action-btn" data-key="edit" title="Edit All">📝</button>
-      <button type="button" class="action-btn" data-key="save" title="Save" style="display: none">💾</button>
+      <button type="button" class="action-btn" data-key="edit" title="Edit All">
+        ${icons.edit}
+      </button>
+      <button type="button" class="action-btn hidden-action" data-key="save" title="Save">
+        ${icons.save}
+      </button>
       <span class="fill"></span>
-      <button type="submit" class="action-btn" data-key="add" title="Add new Verse [ Enter ] (second [ Enter ] to project)">➕</button>
+      <button type="submit" class="action-btn" data-key="add" title="Add new Verse [ Enter ] (second [ Enter ] to project)">
+        ${icons.add}
+      </button>
     </div>
     <div class="info-text-content-wrapper">
       <textarea id="pinned-verses-editor" cols="14" rows="6" style="display: none"></textarea>

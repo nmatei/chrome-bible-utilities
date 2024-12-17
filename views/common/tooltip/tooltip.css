@@ -36,8 +36,9 @@
   border-color: var(--elBorderColorFocus);
 }
 .context-menu .action-btn .menu-icon {
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-width: 32px;
   min-height: 24px;
   line-height: 1.4em;

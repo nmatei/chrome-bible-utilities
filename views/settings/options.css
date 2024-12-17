@@ -33,6 +33,9 @@ h1 {
   margin: 0;
   padding: 10px;
   border-bottom: 1px solid #adafaf;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 h2 {
   color: #0b5394;
@@ -210,6 +213,9 @@ h2.reference {
   line-height: 1em;
   text-align: center;
   min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 #slides-master .action-btn:hover,
 #settings-actions.actions .action-btn:hover {
@@ -288,17 +294,6 @@ input:focus,
 select:focus {
   outline: 1px solid #3d79c2;
   border-color: #3d79c2;
-}
-
-.info-icon {
-  text-decoration: none;
-  border: 1px solid #999999;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
 }
 
 input[type="range"] {

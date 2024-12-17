@@ -37,7 +37,10 @@
   align-items: center;
 }
 .actions .action-btn {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   cursor: pointer;
   min-width: 40px;
   user-select: none;
@@ -100,7 +103,7 @@
 }
 .info-fixed-box ul {
   padding: 0;
-  margin: 0 0 0 1.1rem;
+  margin: 0 0 0 1.2rem;
   line-height: 1.75em;
   list-style-type: circle;
 }
@@ -110,9 +113,9 @@
 }
 .key-code {
   background-color: #222222;
-  padding: 0.2rem 0.3rem;
+  padding: 0.3rem 0.3rem;
   border-radius: 0.3em;
-  border: 1px solid #ffffff;
+  border: 1px solid #ffffff40;
   font-family:
     ArialMT,
     Helvetica Neue,
@@ -261,14 +264,13 @@ h2 .key-code {
 #pin-search-bar.actions {
   align-items: center;
 }
-#pin-search-bar:after {
-  content: "🔍";
+.input-trigger {
+  display: flex;
+  align-items: center;
   position: absolute;
   right: 14px;
   width: 24px;
   height: 24px;
-  font-size: 16px;
-  text-align: center;
   cursor: pointer;
 }
 #pin-add-verse {
@@ -334,13 +336,32 @@ h2 .key-code {
   display: flex;
   flex-direction: column;
 }
+ul.main-list {
+  margin: 0 0 0 1.4rem;
+}
+#help-text-box li {
+  padding: 2px;
+}
+
+ul.main-list > li {
+  list-style-type: disc;
+}
+ul.main-list > li::marker {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2ca9bc;
+}
 #help-text-box .title {
   font-size: 1.2em;
   margin-top: 0.4em;
   margin-bottom: 0.2em;
 }
+#help-text-box .title .actions {
+  display: inline-block;
+  vertical-align: middle;
+}
 #help-text-box .info-text-content-wrapper {
-  padding: 5px;
+  padding: 5px 5px 5px 15px;
 }
 #verses-text-box .info-text-content-wrapper {
   padding: 3px;
@@ -357,6 +378,25 @@ h2 .key-code {
 #help-text-box .action-btn {
   margin-top: 2px;
   margin-bottom: 2px;
+}
+
+/* change svg stroke to light icons */
+#help-text-box #clipboard-checklist path#primary,
+#help-text-box #delete-alt path#primary {
+  stroke: #ffffff !important;
+}
+
+.example-search {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 0 0.3rem !important;
+}
+.example-btn {
+  display: inline-block;
+  margin-bottom: 2px;
+  padding: 0.1rem 0.3rem;
+  vertical-align: top;
 }
 
 .arrow-up:before {
@@ -595,6 +635,10 @@ a.abp-badge {
   color: #ef4444 !important;
 }
 
+.hidden-action {
+  display: none !important;
+}
+
 /* https://github.com/JosNun/night-mode-bible */
 .night-mode #project-actions {
   box-shadow: 1px 1px 2px rgb(120 120 120 / var(--infoBoxOpacity));
@@ -626,4 +670,8 @@ a.abp-badge {
 .night-mode [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
   color: var(--verseNumberBackgroundProjected) !important;
   background: var(--verseNumberColorProjected) !important;
+}
+
+.night-mode #search #primary {
+  stroke: #ffffff !important;
 }

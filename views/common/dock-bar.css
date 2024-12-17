@@ -43,15 +43,13 @@
   padding: 0 !important;
   position: relative;
 }
-#dock-actions .pin-search-bar::after {
-  content: "🔍";
+.input-trigger {
+  display: flex;
+  align-items: center;
   position: absolute;
-  /*right: 14px;*/ /* changed from 14 to 4 in this page... */
-  right: 4px;
+  right: 4px; /* changed from 14 to 4 in this page... */
   width: 24px;
   height: 24px;
-  font-size: 16px;
-  text-align: center;
   cursor: pointer;
 }
 #dock-bar input {
@@ -101,10 +99,13 @@
     font-size: 30px;
     line-height: 36px;
   }
-  #dock-actions .pin-search-bar::after {
+  #dock-actions .pin-search-bar .input-trigger {
     right: 8px;
+    height: 36px;
+    width: 36px;
+  }
+  #dock-actions .pin-search-bar .input-trigger svg {
     width: 36px;
     height: 36px;
-    font-size: 28px;
   }
 }

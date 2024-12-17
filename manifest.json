@@ -24,6 +24,7 @@
         "https://www.bible.com/*/bible*"
       ],
       "js": [
+        "views/icons/icons.js",
         "views/common/utilities.js",
         "views/common/tooltip/tooltip.js",
         "views/common/latinizeText.js",
