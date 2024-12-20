@@ -41,3 +41,9 @@
   text-align: center;
   min-height: 38px;
 }
+
+#custom-prompt-container code {
+  background-color: #eded3399;
+  padding: 2px 5px;
+  border-radius: 4px;
+}

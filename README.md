@@ -147,6 +147,8 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
+- [ ] Multi slides to project content (same as live text but with multiple slides)
+  - [ ] Add/Edit/Remove slides
 - [ ] Context menu on verses number (right click)
   - [ ] Project verse
   - [ ] Add verse to project list

@@ -103,8 +103,8 @@ function readUploadedFile(event) {
   });
 }
 
-async function saveStyles(options) {
-  options = {
+async function saveStyles(options, close = true) {
+  const saveOptions = {
     ...options,
     //selected: options.selected,
     slides: options.slides.map(slide => ({
@@ -113,9 +113,11 @@ async function saveStyles(options) {
       pageBackgroundImage: "none"
     }))
   };
-  await chrome.storage.sync.set({ options });
-  await sleep(1000); // wait until file is saved
-  await closeTab();
+  await chrome.storage.sync.set({ options: saveOptions });
+  if (close) {
+    await sleep(1000); // wait until file is saved
+    await closeTab();
+  }
 }
 
 function closeTab() {
@@ -188,6 +190,91 @@ function updateCurrentSlide(options) {
   return slide;
 }
 
+async function importFiles(files) {
+  // TODO merge with existing slides (check for duplicates)
+  const fileObjects = files.map(({ content }) => ({
+    data: content.data,
+    fileName: content.fileName
+  }));
+  const results = await Promise.allSettled(fileObjects.map(fileObject => storeFile(fileObject)));
+  return results.map((result, i) => ({
+    importKey: files[i].key,
+    key: result.value,
+    data: files[i].content.data
+  }));
+}
+
+function readJsonFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      async function (event) {
+        const optionsStr = event.target.result;
+        try {
+          const content = JSON.parse(optionsStr);
+          if (content.slides && content.files) {
+            resolve(content);
+          }
+        } catch (error) {
+          reject(error);
+        }
+      },
+      false
+    );
+    reader.readAsText(file);
+  });
+}
+
+async function inportSettings(e) {
+  const [file] = e.target.files;
+  if (!file || !file.type.startsWith("application/json")) {
+    return;
+  }
+  try {
+    const content = await readJsonFile(file);
+    const fileKeys = await importFiles(content.files);
+    content.slides.forEach(slide => {
+      // TODO validate slide only to have allowed keys
+      const file = fileKeys.find(file => file.importKey === slide.pageBackgroundImageKey);
+      const slideName = options.slides.some(s => s.slideName === slide.slideName)
+        ? `${slide.slideName} (copy)`
+        : slide.slideName;
+      options.slides.push({
+        ...getDefaults(),
+        ...slide,
+        slideName,
+        pageBackgroundImageKey: file ? file.key : -1,
+        pageBackgroundImage: file ? `url(${file.data})` : "none"
+      });
+    });
+
+    const slide = getCurrentSlide(options);
+    await displayBackgroundImages(slide);
+
+    displaySlides(options);
+    await saveStyles(options, false);
+  } catch (e) {
+    console.warn("Error parsing imported content", e);
+    await simpleAlert("Error parsing imported content!");
+  }
+}
+
+async function exportSettings() {
+  const files = await retrieveFiles();
+  const content = {
+    slides: options.slides.map(slide => ({
+      ...slide,
+      // don't store 'files' they will be stored separately
+      pageBackgroundImage: "none"
+    })),
+    files: files
+  };
+
+  const optionsStr = JSON.stringify(content, null, 2);
+  download(optionsStr, "bible-settings.json", "application/json");
+}
+
 function initEvents() {
   let slide = getCurrentSlide(options);
 
@@ -218,6 +305,10 @@ function initEvents() {
     await saveStyles(options);
   });
 
+  $("#uploadSettings").addEventListener("change", e => {
+    inportSettings(e);
+  });
+
   $("#settings-actions").addEventListener("click", async e => {
     const btn = e.target.closest("button.action-btn");
     if (!btn) {
@@ -226,11 +317,11 @@ function initEvents() {
     const action = btn.getAttribute("data-key");
     switch (action) {
       case "import": {
-        await simpleAlert("Not implemented yet");
+        $("#uploadSettings").click();
         break;
       }
       case "export": {
-        await simpleAlert("Not implemented yet");
+        exportSettings();
         break;
       }
       case "defaults": {

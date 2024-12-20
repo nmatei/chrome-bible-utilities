@@ -347,7 +347,7 @@ ul.main-list > li {
   list-style-type: disc;
 }
 ul.main-list > li::marker {
-  font-size: 2em;
+  font-size: 1.2em;
   font-weight: bold;
   color: #2ca9bc;
 }

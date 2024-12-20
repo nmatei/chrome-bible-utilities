@@ -127,6 +127,17 @@ function createPinVersesBox() {
     actions.push("-");
     if (isVerse) {
       actions.push({
+        text: `Remove ${e.target.innerText}`,
+        itemId: "remove",
+        icon: icons.remove,
+        cls: "alert-color",
+        handler: () => {
+          pinnedVerses = pinnedVerses.filter(v => v !== e.target.innerText);
+          updatePinnedRows(pinnedVerses);
+          setPinnedVerses(pinnedVerses);
+        }
+      });
+      actions.push({
         text: `Clear all except ${e.target.innerText}`,
         icon: icons.remove,
         itemId: "clear",

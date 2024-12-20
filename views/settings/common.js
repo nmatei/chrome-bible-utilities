@@ -107,6 +107,21 @@ export async function initUserOptions(currentSlide) {
   return currentSlide ? options.slides[options.selected] : options;
 }
 
+async function applyBackgroundImage(options, currentSlide) {
+  indexedDBInstance = indexedDBInstance || (await initFilesDB());
+
+  const files = await Promise.all(
+    options.slides.map((slide, i) => {
+      const key = currentSlide === true && i !== options.selected ? -1 : slide.pageBackgroundImageKey;
+      return retrieveFile(key);
+    })
+  );
+  options.slides.forEach((slide, index) => {
+    const file = files[index];
+    slide.pageBackgroundImage = file ? `url(${file.data})` : "none";
+  });
+}
+
 export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
   const storageData = await chrome.storage.sync.get("options");
   let options = storageData.options;
@@ -129,18 +144,7 @@ export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
     ...slide
   }));
 
-  indexedDBInstance = indexedDBInstance || (await initFilesDB());
-
-  const files = await Promise.all(
-    options.slides.map((slide, i) => {
-      const key = currentSlide === true && i !== options.selected ? -1 : slide.pageBackgroundImageKey;
-      return retrieveFile(key);
-    })
-  );
-  options.slides.forEach((slide, index) => {
-    const file = files[index];
-    slide.pageBackgroundImage = file ? `url(${file.data})` : "none";
-  });
+  await applyBackgroundImage(options, currentSlide);
 
   return options;
 }

@@ -89,6 +89,21 @@ function waitElement(selector, timeout = 30000, retryInterval = 100) {
   });
 }
 
+function download(text, name, type) {
+  const anchor = document.createElement("a");
+  anchor.className = "download-js-link";
+  anchor.id = "download-html";
+  anchor.innerHTML = "downloading...";
+  anchor.style.display = "none";
+  document.body.appendChild(anchor);
+
+  const file = new Blob([text], { type: type });
+  anchor.href = URL.createObjectURL(file);
+  anchor.download = name;
+  anchor.click();
+  document.body.removeChild(anchor);
+}
+
 function fillNumbers(from, to) {
   let numbers = [from, to];
   numbers.sort((a, b) => a - b);
