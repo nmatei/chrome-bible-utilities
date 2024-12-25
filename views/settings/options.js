@@ -1,5 +1,6 @@
 import {
   getDefaults,
+  cleanOptions,
   initUserOptions,
   storeFile,
   applyRootStyles,
@@ -191,12 +192,21 @@ function updateCurrentSlide(options) {
 }
 
 async function importFiles(files) {
-  // TODO merge with existing slides (check for duplicates)
+  const savedFiles = await retrieveFiles();
   const fileObjects = files.map(({ content }) => ({
     data: content.data,
     fileName: content.fileName
   }));
-  const results = await Promise.allSettled(fileObjects.map(fileObject => storeFile(fileObject)));
+  const results = await Promise.allSettled(
+    fileObjects.map(fileObject => {
+      const savedFile = savedFiles.find(file => file.content.data === fileObject.data);
+      if (savedFile) {
+        //console.warn("Duplicate content", savedFile);
+        return Promise.resolve(savedFile.key);
+      }
+      return storeFile(fileObject);
+    })
+  );
   return results.map((result, i) => ({
     importKey: files[i].key,
     key: result.value,
@@ -235,14 +245,14 @@ async function inportSettings(e) {
     const content = await readJsonFile(file);
     const fileKeys = await importFiles(content.files);
     content.slides.forEach(slide => {
-      // TODO validate slide only to have allowed keys
       const file = fileKeys.find(file => file.importKey === slide.pageBackgroundImageKey);
       const slideName = options.slides.some(s => s.slideName === slide.slideName)
         ? `${slide.slideName} (copy)`
         : slide.slideName;
+
       options.slides.push({
         ...getDefaults(),
-        ...slide,
+        ...cleanOptions(slide),
         slideName,
         pageBackgroundImageKey: file ? file.key : -1,
         pageBackgroundImage: file ? `url(${file.data})` : "none"

@@ -70,6 +70,16 @@ export function mapPreviewValue(key, value) {
   return mapPreview[key] ? mapPreview[key](value) : value;
 }
 
+export function cleanOptions(slide) {
+  const defaults = getDefaults();
+  return Object.entries(defaults).reduce((acc, [key]) => {
+    if (defaults.hasOwnProperty(key) && slide.hasOwnProperty(key)) {
+      acc[key] = slide[key];
+    }
+    return acc;
+  }, {});
+}
+
 /**
  * map only css properties from user options
  * @param styles

@@ -6,9 +6,9 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 2.2.0 (🔜 coming soon)
 
+- [x] Update all **icons with new design**
+- [x] **Export & Import settings** (for easy backup/restore/share)
 - [x] Don't allow to remove images from settings if they are used in slides
-- [x] Update all icons with new design
-- [ ] Export & Import settings (for easy backup/restore/share)
 
 ## 2.1.0
 
