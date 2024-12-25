@@ -163,7 +163,7 @@ function addHelpBox() {
             <li>👩‍💻 Source <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a></li>
             <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">Tickets</a></li>
             <li>📈 <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/release-notes.md" target="_blank" class="abp-badge">Release Notes</a> - see what are the latest fixes and features</li>
-            <li>💚 Love this extension? Share <a href="https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj" target="_blank">feedback</a> and help us make it even better!</li>
+            <li>💚 <span style="color: #ff3d4d">Love this extension?</span> Share <a href="https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj" target="_blank">feedback</a> and help us make it even better!</li>
             <li>☽ Try <a href="https://chromewebstore.google.com/detail/night-mode-bible/ebiieffikaglhelcnogmmijmlejdhngk" target="_blank">Night mode</a> extension
           </ul>  
         </li>
