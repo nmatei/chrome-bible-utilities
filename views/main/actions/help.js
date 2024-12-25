@@ -156,7 +156,7 @@ function addHelpBox() {
             <span class="displays actions row-actions">
               <button class="action-btn active">👋</button>
             </span>
-            GitHub Project
+            About this Project
           </div>
           <ul>
             <li>📃 External <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & Screenshots</li>
