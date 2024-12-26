@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 2.2.0 (🔜 coming soon)
+## 2.3.0 (🔜 coming soon)
+
+- [ ] ...
+
+## 2.2.0
 
 - [x] Update all **icons with new design**
 - [x] **Export & Import settings** (for easy backup/restore/share)
