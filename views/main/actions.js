@@ -73,7 +73,7 @@ function addActionsBox() {
       ${icons.question}
     </button>
     <button data-key="verses" class="action-btn" title="List/Pin some verses">
-      ${icons.favorite}
+      ${icons.lightFavorite}
     </button>
   `;
   document.body.appendChild(actions);

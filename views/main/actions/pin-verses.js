@@ -60,6 +60,92 @@ function initDragDrop(tbody, save) {
   });
 }
 
+function showPinContextMenu(e) {
+  const isVerse = e.target.matches("a[data-key=open]");
+  const actions = [];
+  if (isVerse) {
+    actions.push({
+      text: "Project entire reference",
+      icon: icons.projectAll,
+      handler: () => {
+        onReferenceClick(e.target, {
+          ctrlKey: true
+        });
+      }
+    });
+    actions.push({
+      text: "Force Project (bring to front)",
+      icon: icons.bringToFront,
+      handler: () => {
+        onReferenceClick(e.target, {
+          ctrlKey: true,
+          altKey: true
+        });
+      }
+    });
+    actions.push("-");
+    actions.push({
+      text: `Copy ${e.target.innerText}`,
+      icon: icons.copyIcon,
+      itemId: "copy",
+      handler: async () => {
+        await onReferenceCopy([e.target]);
+      }
+    });
+  }
+
+  actions.push({
+    text: "Copy all to clipboard",
+    icon: icons.copyAll,
+    itemId: "copyAll",
+    handler: async () => {
+      await onReferenceCopy();
+    }
+  });
+
+  actions.push("-");
+  if (isVerse) {
+    actions.push({
+      text: `Remove ${e.target.innerText}`,
+      itemId: "remove",
+      icon: icons.remove,
+      cls: "alert-color",
+      handler: () => {
+        pinnedVerses = pinnedVerses.filter(v => v !== e.target.innerText);
+        updatePinnedRows(pinnedVerses);
+        setPinnedVerses(pinnedVerses);
+      }
+    });
+    actions.push({
+      text: `Clear all except ${e.target.innerText}`,
+      icon: icons.remove,
+      itemId: "clear",
+      cls: "alert-color",
+      handler: () => {
+        pinnedVerses = [e.target.innerText];
+        updatePinnedRows(pinnedVerses);
+        setPinnedVerses(pinnedVerses);
+      }
+    });
+  }
+
+  actions.push({
+    text: "Clear all",
+    icon: icons.removeAll,
+    itemId: "clearAll",
+    cls: "alert-color",
+    handler: () => {
+      pinnedVerses = [];
+      updatePinnedRows(pinnedVerses);
+      setPinnedVerses(pinnedVerses);
+    }
+  });
+
+  const menu = getContextMenu(actions);
+
+  showByCursor(menu, e);
+}
+
 /**
  *
  * @returns {HTMLFormElement}
@@ -81,95 +167,13 @@ function createPinVersesBox() {
   });
   $(".info-text-content-wrapper", form).addEventListener("contextmenu", e => {
     e.preventDefault();
-
-    const isVerse = e.target.matches("a[data-key=open]");
-    const actions = [];
-    if (isVerse) {
-      actions.push({
-        text: "Project entire reference",
-        icon: icons.projectAll,
-        handler: () => {
-          onReferenceClick(e.target, {
-            ctrlKey: true
-          });
-        }
-      });
-      actions.push({
-        text: "Force Project (bring to front)",
-        icon: icons.bringToFront,
-        handler: () => {
-          onReferenceClick(e.target, {
-            ctrlKey: true,
-            altKey: true
-          });
-        }
-      });
-      actions.push("-");
-      actions.push({
-        text: `Copy ${e.target.innerText}`,
-        icon: icons.copyIcon,
-        itemId: "copy",
-        handler: async () => {
-          await onReferenceCopy([e.target]);
-        }
-      });
-    }
-
-    actions.push({
-      text: "Copy all to clipboard",
-      icon: icons.copyAll,
-      itemId: "copyAll",
-      handler: async () => {
-        await onReferenceCopy();
-      }
-    });
-
-    actions.push("-");
-    if (isVerse) {
-      actions.push({
-        text: `Remove ${e.target.innerText}`,
-        itemId: "remove",
-        icon: icons.remove,
-        cls: "alert-color",
-        handler: () => {
-          pinnedVerses = pinnedVerses.filter(v => v !== e.target.innerText);
-          updatePinnedRows(pinnedVerses);
-          setPinnedVerses(pinnedVerses);
-        }
-      });
-      actions.push({
-        text: `Clear all except ${e.target.innerText}`,
-        icon: icons.remove,
-        itemId: "clear",
-        cls: "alert-color",
-        handler: () => {
-          pinnedVerses = [e.target.innerText];
-          updatePinnedRows(pinnedVerses);
-          setPinnedVerses(pinnedVerses);
-        }
-      });
-    }
-
-    actions.push({
-      text: "Clear all",
-      icon: icons.removeAll,
-      itemId: "clearAll",
-      cls: "alert-color",
-      handler: () => {
-        pinnedVerses = [];
-        updatePinnedRows(pinnedVerses);
-        setPinnedVerses(pinnedVerses);
-      }
-    });
-
-    const menu = getContextMenu(actions);
-
-    showByCursor(menu, e);
+    showPinContextMenu(e);
   });
   initDragDrop($("tbody", form), async verses => {
     pinnedVerses = splitVerses(verses);
     await setPinnedVerses(pinnedVerses);
   });
+
   $("#pin-add-verse").addEventListener(
     "input",
     debounce(e => {
@@ -319,7 +323,7 @@ function getSearchShortcuts(value) {
 
 function onReferenceSubmit(preview) {
   if (preview) {
-    preview.innerText;
+    preview.innerText = "";
   }
   const input = $("#pin-add-verse");
   let value = cleanSpaces(input.value);

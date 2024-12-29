@@ -329,6 +329,33 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
   return selectedVerses;
 }
 
+function showVerseContextMenu(e) {
+  const target = e.target;
+  const verse = target.closest(verseSelectorMatch);
+  const verseNumber = getVerseNumber(verse);
+  // TODO check if it's parallel
+  //const isParallel = target.closest(parallelViewSelector);
+
+  const actions = [
+    {
+      text: "Add to list & project",
+      icon: icons.bringToFront,
+      handler: () => {
+        onReferenceRequest({ payload: verseNumber, shiftKey: true, altKey: true });
+      }
+    },
+    {
+      text: "Add to list",
+      icon: icons.favorite,
+      handler: () => {
+        onReferenceRequest({ payload: verseNumber, project: false });
+      }
+    }
+  ];
+  const menu = getContextMenu(actions);
+  showByCursor(menu, e);
+}
+
 async function selectVersesToProject(e) {
   const target = e.target;
   if (target.matches(verseLabelSelectorMatch)) {
@@ -430,6 +457,27 @@ async function selectByKeys(key) {
   }
 }
 
+function onReferenceRequest(request) {
+  // make sure pin box is visible
+  showVersesBox();
+
+  const input = $("#pin-add-verse");
+  input.value = request.payload;
+  onReferenceSubmit();
+  const focused = getFocusReference();
+  if (focused && request.project !== false) {
+    openPinReference(focused).then(async ({ match }) => {
+      focused.classList.remove("focus");
+      if (request.shiftKey && match && match.to) {
+        await doSelectVerses(match.to, false, false, false, true);
+        if (request.altKey) {
+          await bringTabToFront();
+        }
+      }
+    });
+  }
+}
+
 async function initEvents() {
   await Promise.any([
     waitElement(appReadySelector, 5000, 200),
@@ -464,6 +512,13 @@ async function initEvents() {
     },
     true
   );
+
+  document.addEventListener("contextmenu", e => {
+    if (e.target.matches(verseLabelSelectorMatch)) {
+      e.preventDefault();
+      showVerseContextMenu(e);
+    }
+  });
 
   document.addEventListener("keydown", async e => {
     const target = e.target;
@@ -510,21 +565,7 @@ async function initEvents() {
         break;
       }
       case "referencerequest": {
-        // make sure pin box is visible
-        showVersesBox();
-
-        const input = $("#pin-add-verse");
-        input.value = request.payload;
-        onReferenceSubmit();
-        const focused = getFocusReference();
-        if (focused) {
-          openPinReference(focused).then(({ match }) => {
-            focused.classList.remove("focus");
-            if (request.shiftKey && match && match.to) {
-              doSelectVerses(match.to, false, false, false, true);
-            }
-          });
-        }
+        onReferenceRequest(request);
         sendResponse({ status: 200 });
         break;
       }

@@ -50,7 +50,7 @@ function addHelpBox() {
         <li>
           <div class="title">
             <span class="displays actions row-actions">
-              <button class="action-btn active">${icons.favorite}</button>
+              <button class="action-btn active">${icons.lightFavorite}</button>
             </span>
             <strong>List/Pin some references</strong> (verses)
           </div>
