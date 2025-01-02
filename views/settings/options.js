@@ -246,16 +246,21 @@ async function inportSettings(e) {
     const fileKeys = await importFiles(content.files);
     content.slides.forEach(slide => {
       const file = fileKeys.find(file => file.importKey === slide.pageBackgroundImageKey);
-      const slideName = options.slides.some(s => s.slideName === slide.slideName)
-        ? `${slide.slideName} (copy)`
-        : slide.slideName;
-
-      options.slides.push({
+      const duplicate = options.slides.find(s => s.slideName === slide.slideName);
+      const newSlide = {
         ...getDefaults(),
         ...cleanOptions(slide),
-        slideName,
         pageBackgroundImageKey: file ? file.key : -1,
         pageBackgroundImage: file ? `url(${file.data})` : "none"
+      };
+
+      if (duplicate && JSON.stringify(duplicate) === JSON.stringify(newSlide)) {
+        return;
+      }
+
+      options.slides.push({
+        ...newSlide,
+        slideName: duplicate ? `${slide.slideName} (copy)` : slide.slideName
       });
     });
 
