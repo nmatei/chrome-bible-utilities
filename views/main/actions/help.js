@@ -123,9 +123,13 @@ function addHelpBox() {
               <div class="displays actions row-actions" style="display: inline-flex">
                 <button class="action-btn">1️⃣</button> 
                 <button class="action-btn active">2️⃣</button>
-              </div> 
-              Toggle [ OFF / ON ] Display for <strong>Primary / Parallel</strong> Chapter. <br />
-              If both are off, no verses will be projected (toggles are saved)
+              </div>
+              Toggle [ OFF / ON ] Display for <strong>Primary / Parallel</strong> Chapter. 
+              <ul>
+                <li>
+                  If both are off, no verses will be projected (toggles are saved)
+                </li>
+              </ul>
             </li>
             <li>
               <div class="title">
@@ -134,6 +138,11 @@ function addHelpBox() {
                 </span>
                 Projector Screen Settings (Advanced / <strong>Slide master</strong>)
               </div>
+              <ul>
+                <li>
+                  Try right click on settings slides to see more options (reorder, remove, etc)
+                </li>
+              </ul>
             </li>
           </ul>
         </li>
