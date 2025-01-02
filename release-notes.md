@@ -7,6 +7,7 @@ for [Chrome extension to for Bible.com](README.md).
 ## 2.3.0 (🔜 coming soon)
 
 - [x] Context menu on verses number (right click) - Add to list & project
+- [x] Reordering slides master layouts (right click) - Move up / down
 
 ## 2.2.0
 

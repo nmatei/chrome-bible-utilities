@@ -66,7 +66,7 @@ function getContextMenu(items) {
       if (item === "-") return `<hr class="separator">`;
       return `<button type="button" class="action-btn ${item.cls ? item.cls : ""}"
         ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
-        data-idx="${i}" data-id="${item.itemId}">
+        data-idx="${i}" data-id="${item.itemId || item.text}" ${item.disabled ? "disabled" : ""}>
           <span class='menu-icon'>${item.icon || ""}</span>
           <spam class="action-btn-text">${item.text}</spam>
         </button>`;

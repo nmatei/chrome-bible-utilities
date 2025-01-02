@@ -285,6 +285,63 @@ async function exportSettings() {
   download(optionsStr, "bible-settings.json", "application/json");
 }
 
+async function removeSlide(index) {
+  let slide = getCurrentSlide(options);
+  if (options.slides.length > 1) {
+    const answer = await simpleConfirm("Do you want to remove selected Slide?");
+    if (answer) {
+      options.slides.splice(index, 1);
+      const sel = options.selected;
+      options.selected = sel === index ? 0 : sel > index ? sel - 1 : sel;
+      displaySlides(options);
+      slide = updateCurrentSlide(options);
+    }
+  }
+  return slide;
+}
+
+function swapSlides(options, index1, index2) {
+  swapElements(options.slides, index1, index2);
+  const sel = options.selected;
+  options.selected = sel === index1 ? index2 : sel === index2 ? index1 : sel;
+  displaySlides(options);
+}
+
+function showSlidesContextMenu(e, slideEl) {
+  const children = Array.from(slideEl.closest("#slides-master-list").children);
+  const index = children.indexOf(slideEl);
+
+  const actions = [
+    {
+      text: "Move Up",
+      icon: icons.up,
+      disabled: index === 0,
+      handler: () => {
+        swapSlides(options, index, index - 1);
+      }
+    },
+    {
+      text: "Move Down",
+      icon: icons.down,
+      disabled: index === children.length - 1,
+      handler: () => {
+        swapSlides(options, index, index + 1);
+      }
+    },
+    "-",
+    {
+      text: "Remove",
+      icon: icons.removeSlide,
+      cls: "alert-color",
+      handler: async () => {
+        await removeSlide(index);
+      }
+    }
+  ];
+  const menu = getContextMenu(actions);
+  showByCursor(menu, e);
+}
+
 function initEvents() {
   let slide = getCurrentSlide(options);
 
@@ -378,15 +435,7 @@ function initEvents() {
           break;
         }
         case "remove": {
-          if (options.slides.length > 1) {
-            const answer = await simpleConfirm("Do you want to remove selected Slide?");
-            if (answer) {
-              options.slides.splice(options.selected, 1);
-              options.selected = 0;
-              displaySlides(options);
-              slide = updateCurrentSlide(options);
-            }
-          }
+          slide = await removeSlide(options.selected);
           break;
         }
       }
@@ -399,6 +448,14 @@ function initEvents() {
       selectSlide(slideEl);
       options.selected = Array.from(slideEl.closest("#slides-master-list").children).indexOf(slideEl);
       slide = updateCurrentSlide(options);
+    }
+  });
+
+  $("#slides-master-list").addEventListener("contextmenu", function (e) {
+    const slideEl = e.target.closest(".background-preview");
+    if (slideEl) {
+      e.preventDefault();
+      showSlidesContextMenu(e, slideEl);
     }
   });
 

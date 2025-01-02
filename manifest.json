@@ -43,6 +43,7 @@
         "views/common/CustomScrollChrome.css",
         "views/bibles/colors.css",
         "views/main/actions.css",
+        "views/common/common.css",
         "views/bibles/bible.com/common-overrides.css"
       ]
     },

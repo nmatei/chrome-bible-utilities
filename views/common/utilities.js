@@ -12,6 +12,10 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function swapElements(array, index1, index2) {
+  [array[index1], array[index2]] = [array[index2], array[index1]];
+}
+
 function setFormValues(form, values) {
   Object.entries(values).forEach(([key, value]) => {
     const input = form[key];

@@ -631,14 +631,6 @@ a.abp-badge {
   animation: disabledColorChange 10s infinite;
 }
 
-.alert-color {
-  color: #ef4444 !important;
-}
-
-.hidden-action {
-  display: none !important;
-}
-
 /* https://github.com/JosNun/night-mode-bible */
 .night-mode #project-actions {
   box-shadow: 1px 1px 2px rgb(120 120 120 / var(--infoBoxOpacity));
