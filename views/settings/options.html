@@ -270,8 +270,18 @@
 
       <div id="settings-actions" class="actions">
         <input id="uploadSettings" type="file" accept="application/json" style="display: none" />
-        <button data-key="import" data-icon="import" class="action-btn" type="button">Import</button>
-        <button data-key="export" data-icon="export" class="action-btn" type="button">Export</button>
+        <button data-key="import" data-icon="import" class="action-btn" type="button" title="Import slides">
+          Import
+        </button>
+        <button
+          data-key="export"
+          data-icon="export"
+          class="action-btn"
+          type="button"
+          title="Export all slides (including images)"
+        >
+          Export
+        </button>
         <span data-key="fill" class="fill"></span>
         <button data-key="save" data-icon="lightSave" class="action-btn" type="submit">Save</button>
         <button data-key="defaults" data-icon="refresh" class="action-btn" type="button">Defaults</button>

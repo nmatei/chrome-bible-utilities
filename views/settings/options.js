@@ -300,6 +300,16 @@ async function removeSlide(index) {
   return slide;
 }
 
+function duplicateSlide(slide) {
+  options.slides.push({
+    ...slide,
+    slideName: slide.slideName + " (copy)"
+  });
+  options.selected = options.slides.length - 1;
+  displaySlides(options);
+  return updateCurrentSlide(options);
+}
+
 function swapSlides(options, index1, index2) {
   swapElements(options.slides, index1, index2);
   const sel = options.selected;
@@ -330,9 +340,18 @@ function showSlidesContextMenu(e, slideEl) {
     },
     "-",
     {
+      text: "Copy / Duplicate",
+      icon: icons.copy,
+      handler: () => {
+        const slide = options.slides[index];
+        duplicateSlide(slide);
+      }
+    },
+    {
       text: "Remove",
       icon: icons.removeSlide,
       cls: "alert-color",
+      disabled: options.slides.length === 1,
       handler: async () => {
         await removeSlide(index);
       }
@@ -413,13 +432,7 @@ function initEvents() {
       switch (action) {
         case "copy": {
           slide = getCurrentSlide(options);
-          options.slides.push({
-            ...slide,
-            slideName: slide.slideName + " (copy)"
-          });
-          options.selected = options.slides.length - 1;
-          displaySlides(options);
-          slide = updateCurrentSlide(options);
+          slide = duplicateSlide(slide);
           break;
         }
         case "add": {

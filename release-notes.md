@@ -6,7 +6,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 2.4.0 (🔜 coming soon)
 
-- [ ] ...
+- [x] Duplicate Slide with Context Menu (right click)
 
 ## 2.3.0
 
