@@ -8,7 +8,8 @@ for [Chrome extension to for Bible.com](README.md).
 
 - [x] Duplicate Slide with Context Menu (right click)
 - [x] Check duplicate content when import settings
-
+- [x] Improve tables design in projector view (live text with markdown - add borders, padding)
+ 
 ## 2.3.0
 
 - [x] Context menu on verses number (right click) - Add to list & project

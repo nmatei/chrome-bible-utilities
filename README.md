@@ -61,7 +61,7 @@ or in **2 different languages**.
     - [x] Type any reference and use same shortcuts to project it (`Enter` or `Shift + Enter` for multiple verses)
 - [x] 2️⃣ open **Multiple chrome tabs** with different chapters
   - [x] all windows will project to the same projector page
-  - [x] projector page will close only when all tabs from my.bible.com are closed
+  - [x] projector page will close only when all tabs from bible.com are closed
 - [x] 🛠 **User Settings** (top-left actions)
   - [x] Toggle 1️⃣ primary OR 2️⃣ parallel verses to be projected
   - [x] Adjust css variables (spacing, colors)
@@ -95,7 +95,7 @@ Check [release-notes.md](release-notes.md) changelog
 ## ⚙ Install Plugin
 
 - [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
-- [x] visit https://my.bible.com/bible or https://my.bible.com/sign-in
+- [x] visit https://bible.com/bible
 - [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
 - [ ] 📌 **Pin** extension to see it after search bar for fast access
   - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon

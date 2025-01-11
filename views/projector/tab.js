@@ -234,13 +234,23 @@ function adjustBodySize() {
   const minFontSize = 10;
   let fontSize = maxFontSize;
   const body = document.body;
+  let shouldDecrease = false;
   do {
     body.style.fontSize = fontSize + "px";
     const zoom = Math.round(body.offsetHeight / window.innerHeight);
     const step = Math.max(1, Math.min(zoom, fontSize - minFontSize, 20));
     //console.debug({ step, zoom, fontSize });
     fontSize = fontSize - step;
-  } while (fontSize >= minFontSize && body.offsetHeight > window.innerHeight);
+    shouldDecrease = body.offsetHeight > window.innerHeight;
+    if (fontSize >= minFontSize && !shouldDecrease) {
+      // search for tables and check if they fit the screen width
+      const padding = 1 * slide.rootPaddingLeft + 1 * slide.rootPaddingRight;
+      const table = $$("table").find(table => table.offsetWidth > window.innerWidth - padding);
+      if (table) {
+        shouldDecrease = true;
+      }
+    }
+  } while (fontSize >= minFontSize && shouldDecrease);
 
   updateShadows(fontSize + 1);
 }
