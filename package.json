@@ -42,7 +42,7 @@
     ]
   },
   "dependencies": {
-    "marked": "4.2.5"
+    "marked": "^15.0.6"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

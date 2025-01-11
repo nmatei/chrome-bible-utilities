@@ -10,6 +10,7 @@ for [Chrome extension to for Bible.com](README.md).
 - [x] Check duplicate content when import settings
 - [x] Improve tables design in projector view (live text with markdown - add borders, padding)
 - [x] Allow more spaces to be displayed in live text markdown
+- [x] Update [markdown](https://marked.js.org/#usage) library to latest version
  
 ## 2.3.0
 
