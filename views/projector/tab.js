@@ -30,6 +30,7 @@ function updateText(text, markdown) {
   const root = document.getElementById("root");
   if (markdown) {
     text = window.marked.parse(text);
+    text = text.replaceAll("  ", " &nbsp;"); // replace double spaces with non-breaking space
   }
   text = text.replaceAll("-", "&#8209;");
   root.innerHTML = text;
