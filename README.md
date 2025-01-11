@@ -146,6 +146,7 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
+- [ ] Save live preview text in storage (so we can restore it after refresh) 
 - [ ] Multi slides to project content (same as live text but with multiple slides)
   - [ ] Add/Edit/Remove slides
 - [ ] Check if verses are not in sync
@@ -157,6 +158,7 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] 🛠 **User Settings**
+  - [ ] Allow upload multiple images for Backgrounds
   - [ ] Allow to easy select font family from drop down (or add your own)
   - [ ] Add config for body / verses text shadow.
   - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
