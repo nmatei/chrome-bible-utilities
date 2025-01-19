@@ -63,6 +63,50 @@
   color: #cccccc90;
 }
 
+.action-btn.screen-source.scale-large {
+  padding: 0;
+  gap: 0;
+  border: 0;
+  background: none;
+}
+.screen-source.scale-large svg {
+  width: 36px;
+  height: 36px;
+}
+.screen-source[data-state="0"] #primary {
+  opacity: 0.6;
+}
+.screen-source[data-state="0"]:hover #primary {
+  opacity: 0.8;
+}
+.screen-source[data-state="0"] #secondary {
+  opacity: 0.4;
+}
+.screen-source[data-state="0"]:hover #secondary {
+  opacity: 0.8;
+}
+.screen-source[data-state="0"] #leftLines,
+.screen-source[data-state="1"] #leftLines {
+  opacity: 0.3;
+}
+.screen-source[data-state="0"]:hover #leftLines,
+.screen-source[data-state="1"]:hover #leftLines {
+  opacity: 0.5;
+}
+.screen-source[data-state="0"] #rightLines,
+.screen-source[data-state="2"] #rightLines {
+  opacity: 0.3;
+}
+.screen-source[data-state="0"]:hover #rightLines,
+.screen-source[data-state="2"]:hover #rightLines {
+  opacity: 0.5;
+}
+
+/* invert primary color */
+.context-menu .screen-source #primary {
+  stroke: #000000 !important;
+}
+
 .actions .action-btn.active,
 .actions .action-btn:active {
   border-color: #ffffff;

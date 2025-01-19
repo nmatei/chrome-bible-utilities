@@ -158,10 +158,10 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] 🛠 **User Settings**
+  - [ ] Split Export to allow Selected Slide / All Slides
   - [ ] Allow upload multiple images for Backgrounds
   - [ ] Allow to easy select font family from drop down (or add your own)
   - [ ] Add config for body / verses text shadow.
-  - [ ] Allow to display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
   - [ ] Allow display inline/block for main screen
   - [ ] Empty Text display (ex. Church name, verse, motto, etc.)
     - [ ] Customize size & color
@@ -176,3 +176,4 @@ If you want to try the latest versions before they are released, or to change co
 ### 🐛 Known bugs
 
 - [x] https://www.bible.com/bible/191/EXO.15.VDC (v.2 - custom background color in dark mode - text not fully visible)
+- [x] Select verse from parallel view then press right/left arrows - will not project the correct format

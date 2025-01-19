@@ -1,12 +1,16 @@
-let projectTab;
+let projectTab1;
+let projectTab2;
 
 /**
  *
  * @returns {Promise}
  */
-function createChromeWindow() {
+function createChromeWindow(index) {
   return chrome.runtime.sendMessage({
-    action: "createTab"
+    action: "createTab",
+    payload: {
+      index
+    }
   });
 }
 
@@ -19,35 +23,53 @@ function createSettingsWindow() {
 /**
  * @param {String} text
  * @param {Boolean} markdown
+ * @param {Number} index
  */
-function projectText(text, markdown = false) {
+function projectText(text, markdown = false, index = 1) {
   return chrome.runtime.sendMessage({
     action: "updateText",
     payload: {
       text,
-      markdown
+      markdown,
+      index
     }
   });
 }
 
 async function bringTabToFront() {
-  const tab = await getProjectTab();
+  const [tab] = await getProjectTab();
   if (tab) {
     await chrome.runtime.sendMessage({
       action: "focusTab",
-      payload: { id: tab }
+      payload: {
+        id: tab
+      }
     });
   }
 }
 
 async function getProjectTab() {
-  let tab = projectTab;
-  if (!tab) {
-    tab = projectTab = await createProjectTab();
+  let tab1 = projectTab1;
+  let tab2 = projectTab2;
+  const [display1, display2] = displaySettings;
+  if (display1 && !tab1) {
+    tab1 = projectTab1 = await createProjectTab(1);
   }
-  return tab;
+  if (display2 && !tab2) {
+    tab2 = projectTab2 = await createProjectTab(2);
+  }
+  return [tab1, tab2];
 }
-async function createProjectTab() {
-  const response = await createChromeWindow();
+
+function closeProjectTab(index) {
+  if (index === 1) {
+    projectTab1 = null;
+  } else {
+    projectTab2 = null;
+  }
+}
+
+async function createProjectTab(index) {
+  const response = await createChromeWindow(index);
   return response ? response.id : null;
 }

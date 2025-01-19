@@ -13,7 +13,7 @@ const settingsPage = "views/settings/options.html";
 
 const projectorStorageKey = "projectorWindow";
 const settingsStorageKey = "settingsWindow";
-const allWindows = [projectorStorageKey, settingsStorageKey];
+const allWindows = [projectorStorageKey, projectorStorageKey + "2", settingsStorageKey];
 
 const postCreateWindowStates = ["maximized", "fullscreen"];
 const ignoreCreateWindowStates = [...postCreateWindowStates, "minimized"];
@@ -83,8 +83,21 @@ async function changeWindowsBounds(win) {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case "createTab": {
-      // TODO https://developer.chrome.com/articles/multi-screen-window-placement/
-      getWindow(projectorStorageKey, createProjectorTab).then((win, status) => {
+      const index = request.payload.index || 1;
+      const key = projectorStorageKey + (index === 1 ? "" : index);
+      getWindow(key, createProjectorTab).then(async (win, status) => {
+        const id = win.tabs ? win.tabs[0].id : "";
+        if (id) {
+          chrome.tabs.sendMessage(id, {
+            action: "windowCreated",
+            payload: {
+              index
+            }
+          });
+        } else {
+          console.warn("no tabs", win);
+        }
+
         sendResponse({
           status,
           id: win.id
@@ -107,7 +120,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true;
     }
     case "fullscreen": {
-      getWindowByKey(projectorStorageKey).then(({ win }) => {
+      const index = request.payload.index || 1;
+      const key = projectorStorageKey + (index === 1 ? "" : index);
+      getWindowByKey(key).then(({ win }) => {
         if (win) {
           chrome.windows
             .update(win.id, {
@@ -275,16 +290,25 @@ async function notifyAllWindows(message) {
   });
 }
 
-async function notifyOnWindowRemoved(windowId) {
-  const settings = await getWindowSettings(projectorStorageKey);
+async function notifyRemoved(windowId, index) {
+  const key = projectorStorageKey + (index === 1 ? "" : index);
+  const settings = await getWindowSettings(key);
   if (settings && settings.id === windowId) {
-    await setWindowSettings(projectorStorageKey, null, settings);
+    await setWindowSettings(key, null, settings);
 
     await notifyAllWindows({
       action: "windowRemoved",
-      payload: { id: windowId }
+      payload: {
+        id: windowId,
+        index
+      }
     });
   }
+}
+
+async function notifyOnWindowRemoved(windowId) {
+  await notifyRemoved(windowId, 1);
+  await notifyRemoved(windowId, 2);
 }
 
 async function closeSettingsWindow() {
@@ -303,7 +327,7 @@ function checkIfLastTabClosed() {
   setTimeout(async () => {
     const tabs = await getBibleTabs();
     if (!tabs.length) {
-      for (const key of [projectorStorageKey, settingsStorageKey]) {
+      for (const key of allWindows) {
         const settings = await getWindowSettings(key);
         const existingId = settings ? settings.id : "";
         if (existingId) {

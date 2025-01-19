@@ -2,6 +2,8 @@
  * @global marked
  */
 
+let displayIndex = 1;
+
 import { applyRootStyles, BIBLE_TABS_URL, initUserOptions } from "../settings/common.js";
 
 // ================================
@@ -42,9 +44,19 @@ function updateText(text, markdown) {
 function initRuntimeEvents() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
-      case "updateText": {
-        updateText(request.payload.text, request.payload.markdown);
+      case "windowCreated": {
+        const { index } = request.payload;
+        displayIndex = index;
         sendResponse({ status: 200 });
+        break;
+      }
+      case "updateText": {
+        if (displayIndex === request.payload.index) {
+          updateText(request.payload.text, request.payload.markdown);
+          sendResponse({ status: 200 });
+        } else {
+          sendResponse({ status: 201 });
+        }
         break;
       }
       case "previewRootStyles": {
@@ -108,7 +120,8 @@ function initEvents() {
     fullScreenBtn.innerText = "⌃⌘F";
   }
   fullScreenBtn.addEventListener("click", () => {
-    toggleFullScreen();
+    // TODO need to support multiple projectors
+    toggleFullScreen(1);
   });
 
   setTimeout(() => {
@@ -130,9 +143,12 @@ function animateFocusBtn(key) {
   }
 }
 
-function toggleFullScreen() {
+function toggleFullScreen(index) {
   chrome.runtime.sendMessage({
-    action: "fullscreen"
+    action: "fullscreen",
+    payload: {
+      index
+    }
   });
 }
 

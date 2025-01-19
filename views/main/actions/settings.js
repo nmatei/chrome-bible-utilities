@@ -1,41 +1,88 @@
 /**
  * 0 [00] - none
- * 1 [01] - primary
- * 2 [10] - parallel
- * 3 [11] - primary & parallel
- * @type {number}
+ * 1 [01] - parallel
+ * 2 [10] - primary
+ * 3 [11] - parallel & primary
+ * @type {number}[]
  */
-let displaySettings = 3;
+let displaySettings = [3, 0];
 
 async function getDisplaySettings() {
   const storageData = await chrome.storage.sync.get("displaySettings");
   const settings = storageData.displaySettings;
-  return typeof settings === "number" ? settings : 3;
+  if (typeof settings === "number") {
+    // migrate old settings from number to array
+    await saveDisplaySettings([settings, 0]);
+    return [settings, 0];
+  } else if (Array.isArray(settings)) {
+    return settings;
+  }
+  return [3, 0];
 }
 
-async function toggleDisplaySettings(toggleSettings) {
-  displaySettings += toggleSettings;
+async function saveDisplaySettings(settings) {
   await chrome.storage.sync.set({
-    displaySettings
+    displaySettings: settings
   });
-  return displaySettings;
   // TODO notify other tabs to update values
 }
 
 async function loadDisplaySettings() {
-  const settings = parseInt(await getDisplaySettings());
+  const settings = await getDisplaySettings();
   displaySettings = settings;
-  updateDisplaySettings(settings);
+  updateDisplaySettingsButtons(settings);
   return settings;
 }
 
-async function setDisplaySettings(e) {
-  const btn = e.target;
-  btn.classList.toggle("active");
-  const value = btn.dataset.display * 1;
-  const toggle = btn.classList.contains("active") ? value : -value;
-  const settings = await toggleDisplaySettings(toggle);
-  updateProjectorBadge(settings);
+function showScreenSourcesActions(e, btn) {
+  e.stopPropagation();
+  e.preventDefault();
+  const state = btn.dataset.state * 1;
+  async function handler(el, item) {
+    const newState = item.data.state;
+    btn.dataset.state = newState;
+    displaySettings[btn.dataset.display - 1] = newState;
+    await saveDisplaySettings(displaySettings);
+    updateProjectorBadge(displaySettings);
+  }
+
+  const actions = [
+    // TODO add title?
+    {
+      text: "Don't display verses on this screen",
+      cls: "screen-source",
+      icon: icons.screenSources,
+      data: { state: 0 },
+      active: state === 0,
+      handler
+    },
+    {
+      text: "Primary verses only",
+      cls: "screen-source",
+      icon: icons.screenSources,
+      data: { state: 2 },
+      active: state === 2,
+      handler
+    },
+    {
+      text: "Parallel verses only",
+      cls: "screen-source",
+      icon: icons.screenSources,
+      data: { state: 1 },
+      active: state === 1,
+      handler
+    },
+    {
+      text: "Primary & Parallel verses",
+      cls: "screen-source",
+      icon: icons.screenSources,
+      data: { state: 3 },
+      active: state === 3,
+      handler
+    }
+  ];
+  const menu = getContextMenu(actions);
+  showBy(menu, btn);
 }
 
 /**
@@ -44,12 +91,16 @@ async function setDisplaySettings(e) {
  */
 function createSettingsBox() {
   const box = addSettingsBox();
-  $('[data-key="primary-display"]', box).addEventListener("click", setDisplaySettings);
-  $('[data-key="parallel-display"]', box).addEventListener("click", setDisplaySettings);
+  box.addEventListener("click", e => {
+    const btn = e.target.closest(".screen-source");
+    if (btn) {
+      showScreenSourcesActions(e, btn);
+    }
+  });
   $('[data-key="settings"]', box).addEventListener("click", () => {
     createSettingsWindow();
   });
-  updateDisplaySettings(displaySettings);
+  updateDisplaySettingsButtons(displaySettings);
   return box;
 }
 
@@ -58,11 +109,13 @@ function addSettingsBox() {
   box.className = "info-fixed-box hide-view arrow-left";
   box.id = "display-settings-box";
   box.innerHTML = `
-    <div class="displays actions row-actions">
-      <button class="action-btn" data-display="1" data-key="primary-display" title="Toggle Display for Primary Chapter">1️⃣</button>
-      <button class="action-btn" data-display="2" data-key="parallel-display" title="Toggle Display for Secondary Chapter">2️⃣</button>
-    </div>
     <div class="actions row-actions">
+      <button class="action-btn screen-source scale-large" data-display="1" data-state="0" title="Display [1]">
+        ${icons.screenSources}
+      </button>
+      <button class="action-btn screen-source scale-large" data-display="2" data-state="0" title="Display [2]">
+        ${icons.screenSources}
+      </button>
       <span data-key="fill" class="fill"></span>
       <button class="action-btn" data-key="settings" title="Projector Screen Settings (Advanced)">
         ${icons.lightSettings}
@@ -73,28 +126,18 @@ function addSettingsBox() {
   return box;
 }
 
-function updateDisplaySettings(settings) {
-  $$("#display-settings-box .displays [data-display]").forEach(btn => {
-    const display = btn.dataset.display * 1;
-    //console.warn("display", btn, display);
-    // TODO try to improve using boolean checks
-    if (display === 1) {
-      if (settings === 1 || settings === 3) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    } else if (display === 2) {
-      if (settings === 2 || settings === 3) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    }
+function updateDisplaySettingsButtons(settings) {
+  settings.forEach((state, i) => {
+    const btn = $(`#display-settings-box [data-display="${i + 1}"]`);
+    if (!btn) return;
+    btn.dataset.state = state;
   });
   updateProjectorBadge(settings);
 }
 
 function updateProjectorBadge(settings) {
-  $("#project-actions [data-key='settings']").classList.toggle("abp-badge", settings === 0);
+  $("#project-actions [data-key='settings']").classList.toggle(
+    "abp-badge",
+    settings.every(s => s === 0)
+  );
 }

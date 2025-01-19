@@ -180,19 +180,17 @@ function addVersesFromCache(versesInfo) {
   return versesInfo;
 }
 
-function getDisplayText(verses) {
+function getDisplayText(verses, displays) {
   const parallelEnabled = hasParallelView();
   let versesInfo = getVersesInfo(verses, parallelEnabled);
   let chapters = getTitles();
-  const displays = displaySettings;
 
-  if (displays > 1 && parallelEnabled) {
+  if ((displays === 1 || displays === 3) && parallelEnabled) {
     versesInfo = addVersesFromCache(versesInfo);
   }
-  // TODO make it more general/nice
   if (displays !== 3) {
-    chapters = chapters.filter(({ parallel }) => displays && parallel === (displays === 2));
-    versesInfo = versesInfo.filter(({ parallel }) => displays && parallel === (displays === 2));
+    chapters = chapters.filter(({ parallel }) => displays && parallel === (displays === 1));
+    versesInfo = versesInfo.filter(({ parallel }) => displays && parallel === (displays === 1));
   }
 
   const references = getReferences(chapters, versesInfo);
@@ -206,13 +204,19 @@ function getDisplayText(verses) {
 }
 
 async function printSelectedVerses(verses) {
-  const text = verses.length ? getDisplayText(verses) : "";
-  let tab = projectTab;
-  if (text || tab) {
-    tab = await getProjectTab();
-    projectText(text);
+  const [display1, display2] = displaySettings;
+  const text = display1 && verses.length ? getDisplayText(verses, display1) : "";
+
+  let parallelText = display2 ? text : "";
+  if (display2 !== display1) {
+    parallelText = display2 && verses.length ? getDisplayText(verses, display2) : "";
   }
-  return tab;
+  if (text || parallelText) {
+    // create projector windows first
+    await getProjectTab();
+  }
+  projectText(text, false, 1);
+  projectText(parallelText, false, 2);
 }
 
 function deselectAll() {
@@ -560,7 +564,7 @@ async function initEvents() {
       }
       case "windowRemoved": {
         deselectAll();
-        projectTab = null;
+        closeProjectTab(request.payload.index);
         sendResponse({ status: 200 });
         break;
       }
