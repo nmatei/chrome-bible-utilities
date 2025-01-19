@@ -74,13 +74,24 @@ function getContextMenu(items) {
     .join("");
   menu.innerHTML = `<div class="context-menu-layout">${contentItems}</div>`;
 
+  menu.querySelectorAll(".action-btn").forEach((btn, i) => {
+    if (items[i].data) {
+      Object.keys(items[i].data).forEach(key => {
+        btn.dataset[key] = items[i].data[key];
+      });
+    }
+    if (items[i].active) {
+      btn.classList.add("active");
+    }
+  });
+
   menu.addEventListener("click", e => {
     e.stopPropagation();
     e.preventDefault();
     const btn = e.target.closest(".action-btn");
     if (btn) {
       const item = items[btn.dataset.idx];
-      item.handler && item.handler(btn);
+      item.handler && item.handler(btn, item);
     }
   });
   // setTimeout(() => {
