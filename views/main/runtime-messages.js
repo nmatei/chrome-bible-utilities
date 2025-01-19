@@ -25,7 +25,7 @@ function createSettingsWindow() {
  * @param {Boolean} markdown
  * @param {Number} index
  */
-function projectText(text, markdown = false, index = 1) {
+function projectText(text, markdown = false, index) {
   return chrome.runtime.sendMessage({
     action: "updateText",
     payload: {

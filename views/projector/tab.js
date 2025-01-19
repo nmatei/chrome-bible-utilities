@@ -51,7 +51,8 @@ function initRuntimeEvents() {
         break;
       }
       case "updateText": {
-        if (displayIndex === request.payload.index) {
+        const { index } = request.payload;
+        if (typeof index === "undefined" || index === displayIndex) {
           updateText(request.payload.text, request.payload.markdown);
           sendResponse({ status: 200 });
         } else {
