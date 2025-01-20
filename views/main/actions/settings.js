@@ -49,7 +49,7 @@ function showScreenSourcesActions(e, btn) {
   const actions = [
     // TODO add title?
     {
-      text: "Don't display verses on this screen",
+      text: "Don't display verses on this window",
       cls: "screen-source",
       icon: icons.screenSources,
       data: { state: 0 },
@@ -110,10 +110,10 @@ function addSettingsBox() {
   box.id = "display-settings-box";
   box.innerHTML = `
     <div class="actions row-actions">
-      <button class="action-btn screen-source scale-large" data-display="1" data-state="0" title="Display [1]">
+      <button class="action-btn screen-source scale-large" data-display="1" data-state="0" title="Window [1]">
         ${icons.screenSources}
       </button>
-      <button class="action-btn screen-source scale-large" data-display="2" data-state="0" title="Display [2]">
+      <button class="action-btn screen-source scale-large" data-display="2" data-state="0" title="Window [2]">
         ${icons.screenSources}
       </button>
       <span data-key="fill" class="fill"></span>

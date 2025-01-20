@@ -120,14 +120,17 @@ function addHelpBox() {
           </div>
           <ul>          
             <li>
-              <div class="displays actions row-actions" style="display: inline-flex">
-                <button class="action-btn">1️⃣</button> 
-                <button class="action-btn active">2️⃣</button>
+              <div class="actions row-actions" style="display: inline-flex">
+                <button class="action-btn screen-source scale-large" data-state="0" title="Don't display verses on this window">${icons.screenSources}</button> 
+                <button class="action-btn screen-source scale-large" data-state="2" title="Primary verses only">${icons.screenSources}</button> 
+                <button class="action-btn screen-source scale-large" data-state="1" title="Parallel verses only">${icons.screenSources}</button> 
+                <button class="action-btn screen-source scale-large" data-state="3" title="Primary & Parallel verses">${icons.screenSources}</button> 
               </div>
-              Toggle [ OFF / ON ] Display for <strong>Primary / Parallel</strong> Chapter. 
               <ul>
+                <li>Select which verses to be projected on this window (<strong>Primary / Parallel</strong>)</li>
                 <li>
-                  If both are off, no verses will be projected (toggles are saved)
+                  There are 2 windows available for projection,
+                  each of them could project different content or none based on your needs.
                 </li>
               </ul>
             </li>
