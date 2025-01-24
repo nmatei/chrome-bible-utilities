@@ -158,7 +158,6 @@ If you want to try the latest versions before they are released, or to change co
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)
     - [x] 🙏 need some external help here (if you find issues please create a [tiket](../../issues) with link you've seen)
 - [ ] 🛠 **User Settings**
-  - [ ] Split Export to allow Selected Slide / All Slides
   - [ ] Allow upload multiple images for Backgrounds
   - [ ] Allow to easy select font family from drop down (or add your own)
   - [ ] Add config for body / verses text shadow.

@@ -275,19 +275,24 @@ async function inportSettings(e) {
   }
 }
 
-async function exportSettings() {
+function getFileName(name) {
+  return (name || "filename").replace(/\\|\:|\/|\*|\?|\<|\>\|/gi, "_");
+}
+
+async function exportSettings(slides, all = true) {
   const files = await retrieveFiles();
   const content = {
-    slides: options.slides.map(slide => ({
+    slides: slides.map(slide => ({
       ...slide,
       // don't store 'files' they will be stored separately
       pageBackgroundImage: "none"
     })),
-    files: files
+    files: all ? files : files.filter(file => slides.some(slide => slide.pageBackgroundImageKey === file.key))
   };
 
   const optionsStr = JSON.stringify(content, null, 2);
-  download(optionsStr, "bible-settings.json", "application/json");
+  const name = all ? "bible-settings.json" : `bible-settings-${slides[0].slideName}.json`;
+  download(optionsStr, getFileName(name), "application/json");
 }
 
 async function removeSlide(index) {
@@ -353,6 +358,15 @@ function showSlidesContextMenu(e, slideEl) {
       }
     },
     {
+      text: "Export Slide",
+      icon: icons.export,
+      handler: () => {
+        const slide = options.slides[index];
+        exportSettings([slide], false);
+      }
+    },
+    "-",
+    {
       text: "Remove",
       icon: icons.removeSlide,
       cls: "alert-color",
@@ -412,7 +426,7 @@ function initEvents() {
         break;
       }
       case "export": {
-        exportSettings();
+        exportSettings(options.slides, true);
         break;
       }
       case "defaults": {

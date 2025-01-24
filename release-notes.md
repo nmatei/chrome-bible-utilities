@@ -7,6 +7,7 @@ for [Chrome extension to for Bible.com](README.md).
 ## 2.5.0 (🔜 coming soon)
 
 - [x] Possibility to Display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
+- [x] Export Selected Slide (right click on slide)
 
 ## 2.4.0
 
