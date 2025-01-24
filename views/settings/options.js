@@ -79,29 +79,32 @@ function previewStyles(slide) {
   });
 }
 
-function readUploadedFile(event) {
+function readImageFile(file) {
   return new Promise((resolve, reject) => {
-    const input = event.target;
-    const file = input.files[0];
-    const reader = new FileReader();
-    if (file && /\.(jpe?g|png|gif)$/i.test(file.name)) {
-      reader.addEventListener(
-        "load",
-        () => {
-          // convert image file to base64 string
-          const fileData = reader.result;
-          resolve({
-            data: fileData,
-            fileName: file.name
-          });
-        },
-        false
-      );
-      reader.readAsDataURL(file);
-    } else {
-      reject("wrong file selected");
+    if (!file.type.startsWith("image/")) {
+      reject("wrong file type selected");
+      return;
     }
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      () => {
+        resolve({
+          data: reader.result,
+          fileName: file.name
+        });
+      },
+      false
+    );
+    reader.readAsDataURL(file);
   });
+}
+
+async function readUploadedFiles(event) {
+  const files = Array.from(event.target.files);
+  const promises = files.map(file => readImageFile(file));
+  const results = await Promise.allSettled(promises);
+  return results.filter(r => r.status === "fulfilled").map(r => r.value);
 }
 
 async function saveStyles(options, close = true) {
@@ -389,12 +392,9 @@ function initEvents() {
       input.addEventListener("change", async event => {
         slide = getCurrentSlide(options);
         const input = event.target;
-        //console.debug("change", input.name, input.value);
         if (input.type === "file") {
-          const fileObject = await readUploadedFile(event);
-          const fileKey = await storeFile(fileObject);
-          slide.pageBackgroundImageKey = fileKey;
-          slide[input.name] = `url(${fileObject.data})`; // used for preview and display
+          const images = await readUploadedFiles(event);
+          await Promise.allSettled(images.map(file => storeFile(file)));
           previewStyles(slide);
           await displayBackgroundImages(slide);
         } else if (input.checkValidity()) {
