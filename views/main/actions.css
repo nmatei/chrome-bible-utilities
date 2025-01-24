@@ -70,8 +70,8 @@
   background: none;
 }
 .screen-source.scale-large svg {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
 }
 .screen-source[data-state="0"] #primary {
   opacity: 0.6;

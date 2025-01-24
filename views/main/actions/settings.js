@@ -57,7 +57,7 @@ function showScreenSourcesActions(e, btn) {
       handler
     },
     {
-      text: "Primary verses only",
+      text: "<strong>Primary</strong> verses only",
       cls: "screen-source",
       icon: icons.screenSources,
       data: { state: 2 },
@@ -65,7 +65,7 @@ function showScreenSourcesActions(e, btn) {
       handler
     },
     {
-      text: "Parallel verses only",
+      text: "<strong>Parallel</strong> verses only",
       cls: "screen-source",
       icon: icons.screenSources,
       data: { state: 1 },
@@ -73,7 +73,7 @@ function showScreenSourcesActions(e, btn) {
       handler
     },
     {
-      text: "Primary & Parallel verses",
+      text: "<strong>Primary</strong> & <strong>Parallel</strong> verses",
       cls: "screen-source",
       icon: icons.screenSources,
       data: { state: 3 },
