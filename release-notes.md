@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md).
 
 💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
 
-## 2.5.0 (🔜 coming soon)
+## 2.6.0 (🔜 coming soon)
+
+- [ ] ...
+
+## 2.5.0
 
 - [x] Possibility to Display on **2 different screens** (primary => Screen 1, parallel => Screen 2)
 - [x] Export Selected Slide (right click on slide)
