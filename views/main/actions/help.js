@@ -8,6 +8,7 @@ function addHelpBox() {
       <span class="key-code">${icons.question}</span>
       <span class="fill">Help / Usage</span>
       <span class="app-version">[ v.${version} ]</span>
+      <button type="button" class="action-btn" data-key="close" title="Close">${icons.close}</button>
     </h2>
     <div class="info-text-content-wrapper">
     <ul class="main-list">
@@ -184,5 +185,11 @@ function addHelpBox() {
     </div>
   `;
   document.body.appendChild(helpBox);
+
+  $("button[data-key='close']", helpBox).addEventListener("click", () => {
+    const btn = $(`#project-actions button[data-key="help"]`);
+    showBox(helpBox, btn);
+  });
+
   return helpBox;
 }

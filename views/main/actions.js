@@ -45,6 +45,7 @@ function addLiveTextBox() {
       <button type="button" class="action-btn" data-key="hide" title="Hide text">
         ${icons.lightStop}
       </button>
+      <button type="button" class="action-btn" data-key="close" title="Close">${icons.close}</button>
     </div>
     <div class="form-field form-field-wrapper">
       <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
@@ -91,6 +92,11 @@ function createLiveTextForm() {
   });
   $('button[data-key="hide"]', liveBoxForm).addEventListener("click", () => {
     projectText("");
+  });
+  $('button[data-key="close"]', liveBoxForm).addEventListener("click", () => {
+    const btn = $(`#project-actions button[data-key="live-text"]`);
+    liveBoxForm.classList.add("hide-view");
+    btn.classList.remove("active");
   });
   liveBoxForm.addEventListener("reset", () => {
     projectText("");
