@@ -6,7 +6,8 @@ for [Chrome extension to for Bible.com](README.md).
 
 ## 2.6.0 (🔜 coming soon)
 
-- [ ] ...
+- [x] Add close buttons for "Help" and "Live Text"
+- [x] Add [1] or [2] on windows for projection (so we know which one is primary)
 
 ## 2.5.0
 
