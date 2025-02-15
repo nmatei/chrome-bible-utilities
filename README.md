@@ -6,17 +6,25 @@ This extension will help you **project Bible verses in your Church**,
 You decide which version to display and also can project parallel versions
 or in **2 different languages**.
 
+## ⚙ Install Plugin
+
+- [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
+- [x] visit https://bible.com/bible
+- [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
+- [ ] 📌 **Pin** extension to see it after search bar for fast access
+  - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon
+
+
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
+- [⚙ Install Plugin](#-install-plugin)
 - [💠 Features & Usage](#-features--usage)
 - [📈 Release Notes](#-release-notes)
 - [🎞 Results](#-results)
-- [⚙ Install Plugin](#-install-plugin)
-  - [🎫 QR Code](#-qr-code)
+- [🎫 QR Code](#-qr-code)
 - [👋 Support my Work](#-support-my-work)
 - [💠 Advanced Features](#-advanced-features)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
@@ -92,16 +100,7 @@ Check [release-notes.md](release-notes.md) changelog
 
 ![Actions](screens/settings.jpg)
 
-## ⚙ Install Plugin
-
-- [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
-- [x] visit https://bible.com/bible
-- [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
-- [ ] 📌 **Pin** extension to see it after search bar for fast access
-  - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon
-
-
-### 🎫 QR Code
+## 🎫 QR Code
 
 [bit.ly/project-bible](https://bit.ly/project-bible)
 
