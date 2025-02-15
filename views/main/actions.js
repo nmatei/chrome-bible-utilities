@@ -26,6 +26,17 @@ async function setPreviousVersion(version) {
   });
 }
 
+async function getLiveText() {
+  const storageData = await chrome.storage.sync.get("liveText");
+  return storageData.liveText || { title: "", text: "", live: false };
+}
+
+async function saveLiveText(title, text, live) {
+  await chrome.storage.sync.set({
+    liveText: { title, text, live }
+  });
+}
+
 function addLiveTextBox() {
   const form = document.createElement("form");
   form.className = "info-fixed-box hide-view arrow-left";
@@ -85,10 +96,25 @@ function createLiveTextForm() {
   const liveBoxForm = addLiveTextBox();
   const liveTextTitle = $("#liveTextTitle");
   const liveText = $("#liveText");
+  const realTimeUpdates = $("#realTimeUpdates");
 
+  // Load saved text and checkbox state when form is created
+  getLiveText().then(({ title, text, live }) => {
+    liveTextTitle.value = title;
+    liveText.value = text;
+    realTimeUpdates.checked = live;
+  });
+
+  realTimeUpdates.addEventListener("change", () => {
+    saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
+    if (realTimeUpdates.checked) {
+      projectLiveText(liveTextTitle.value, liveText.value);
+    }
+  });
   liveBoxForm.addEventListener("submit", e => {
     e.preventDefault();
     projectLiveText(liveTextTitle.value, liveText.value);
+    saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
   });
   $('button[data-key="hide"]', liveBoxForm).addEventListener("click", () => {
     projectText("");
@@ -104,9 +130,10 @@ function createLiveTextForm() {
   liveTextTitle.addEventListener(
     "input",
     debounce(() => {
-      if (liveBoxForm.realTimeUpdates.checked) {
+      if (realTimeUpdates.checked) {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
+      saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
     }, 200)
   );
   liveTextTitle.addEventListener(
@@ -120,9 +147,10 @@ function createLiveTextForm() {
   liveText.addEventListener(
     "input",
     debounce(() => {
-      if (liveBoxForm.realTimeUpdates.checked) {
+      if (realTimeUpdates.checked) {
         projectLiveText(liveTextTitle.value, liveText.value);
       }
+      saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
     }, 200)
   );
   liveText.addEventListener(

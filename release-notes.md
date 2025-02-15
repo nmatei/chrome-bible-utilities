@@ -8,6 +8,7 @@ for [Chrome extension to for Bible.com](README.md).
 
 - [x] Add close buttons for "Help" and "Live Text"
 - [x] Add [1] or [2] on windows for projection (so we know which one is primary)
+- [x] Save live preview state in storage (text, title and live checkbox - restores content after page refresh)
 
 ## 2.5.0
 
@@ -22,7 +23,7 @@ for [Chrome extension to for Bible.com](README.md).
 - [x] Improve tables design in projector view (live text with markdown - add borders, padding)
 - [x] Allow more spaces to be displayed in live text markdown
 - [x] Update [markdown](https://marked.js.org/#usage) library to latest version
- 
+
 ## 2.3.0
 
 - [x] Context menu on verses number (right click) - Add to list & project
@@ -45,6 +46,7 @@ for [Chrome extension to for Bible.com](README.md).
 - [x] Improved Shift key visibility (when press)
 
 ## 1.34.0
+
 - [x] Improve color picker to allow copy/paste hex color.
 - [x] Add config for body / verses font family.
 - [x] Decrease max font size based on win size (for smaller screens or windows)

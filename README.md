@@ -14,7 +14,6 @@ or in **2 different languages**.
 - [ ] 📌 **Pin** extension to see it after search bar for fast access
   - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
-
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -106,14 +105,12 @@ Check [release-notes.md](release-notes.md) changelog
 
 ![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
 
-
 ## 👋 Support my Work
 
 A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**.
 (Or you can **Gift this course** to someone that will benefit from it).
 
 - [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://nmatei.github.io/web) - by [Nicolae Matei](https://nmatei.github.io/)
-
 
 ## 💠 Advanced Features
 
@@ -145,7 +142,6 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
-- [ ] Save live preview text in storage (so we can restore it after refresh) 
 - [ ] Multi slides to project content (same as live text but with multiple slides)
   - [ ] Add/Edit/Remove slides
 - [ ] Check if verses are not in sync
@@ -167,7 +163,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] create integration app that can be installed
 - [ ] i18n
 - [ ] cleanup chars when add ref from copy/paste
-  - [ ] ‭‭Filipeni‬ 
+  - [ ] ‭‭Filipeni‬
 - [ ] use TypeScript and a build system?
   - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
 
