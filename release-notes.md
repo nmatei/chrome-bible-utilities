@@ -1,10 +1,8 @@
 # 📈 Release Notes (Changelog)
 
-for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://nmatei.github.io).
+for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://nmatei.github.io) - Source [github.com/nmatei/project-verses-from-bible](https://github.com/nmatei/project-verses-from-bible)
 
-💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
-
-- Source code: [GitHub](https://github.com/nmatei/project-verses-from-bible)
+💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
 ## 2.6.0
 
