@@ -6,7 +6,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 - Source code: [GitHub](https://github.com/nmatei/project-verses-from-bible)
 
-## 2.6.0 (🔜 coming soon)
+## 2.6.0
 
 - [x] Add close buttons for "Help" and "Live Text"
 - [x] Add [1] or [2] on windows for projection (so we know which one is backstage or live)
