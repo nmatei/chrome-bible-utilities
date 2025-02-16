@@ -157,6 +157,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }, request.payload);
       return true;
     }
+    case "showReleaseNotes": {
+      chrome.tabs.create({
+        url: "https://nmatei.github.io/chrome-bible-utilities/release-notes"
+      });
+      sendResponse({ status: 200 });
+      break;
+    }
   }
 });
 

@@ -160,13 +160,7 @@
   padding: 0.3rem 0.3rem;
   border-radius: 0.3em;
   border: 1px solid #ffffff40;
-  font-family:
-    ArialMT,
-    Helvetica Neue,
-    Arial,
-    Liberation Sans,
-    FreeSans,
-    sans-serif;
+  font-family: ArialMT, Helvetica Neue, Arial, Liberation Sans, FreeSans, sans-serif;
 }
 .title .key-code {
   border: 2px solid #ffffff;
@@ -623,6 +617,13 @@ ul.main-list > li::marker {
 a.abp-badge {
   padding: 0 16px 0 0;
   display: inline-block;
+}
+
+strong.abp-badge {
+  padding: 4px 12px 0 0;
+}
+strong.abp-badge:after {
+  box-shadow: 0 0 0 2px #2b3031;
 }
 
 @keyframes attentionColorChange {

@@ -245,14 +245,29 @@ async function createSettingsActions() {
 
   //console.info("%o vs %o", previousVersion, version);
   if (previousVersion !== version) {
-    setTimeout(showNewVersionBadge, 2000);
+    setTimeout(() => showNewVersionBadge(version), 2000);
   }
 }
 
-function showNewVersionBadge() {
+async function showNewVersionBadge(version) {
   const helpBtn = $('button[data-key="help"]');
   helpBtn.classList.add("abp-badge");
   helpBtn.title = "Help. Plugin updated... check 📈 Release Notes";
+
+  const result = await simpleConfirm("Would you like to see the Release Notes?", {
+    title: `<strong class='abp-badge'>${icons.update}</strong> Plugin has been updated to v.${version}.`,
+    ok: "Yes",
+    cancel: "No",
+    focus: "yes"
+  });
+  if (result) {
+    chrome.runtime.sendMessage({
+      action: "showReleaseNotes"
+    });
+    setTimeout(() => {
+      helpBtn.classList.remove("abp-badge");
+    }, 5000);
+  }
 }
 
 async function hideVersionBadge() {

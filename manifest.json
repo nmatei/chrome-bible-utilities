@@ -30,6 +30,7 @@
         "views/common/latinizeText.js",
         "views/common/bible-mappings.js",
         "views/common/cache-verses.js",
+        "views/common/simplePrompt/simplePrompt.js",
         "views/bibles/mappings.js",
         "views/main/runtime-messages.js",
         "views/main/actions/settings.js",
@@ -44,6 +45,7 @@
         "views/bibles/colors.css",
         "views/main/actions.css",
         "views/common/common.css",
+        "views/common/simplePrompt/simplePrompt.css",
         "views/bibles/bible.com/common-overrides.css"
       ]
     },

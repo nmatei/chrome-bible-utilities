@@ -1,8 +1,9 @@
-function createPromptEl(message, actions) {
+function createPromptEl(message, actions, title = "") {
   const el = document.createElement("div");
   el.id = "custom-prompt-container";
   el.innerHTML = `
     <form id="custom-prompt">
+      ${title ? `<h3 class="prompt-title">${title}</h3>` : ""}
       <label for="custom-prompt-input">${message}</label>
       <div class="actions">
         ${actions.join("")} 
@@ -11,7 +12,7 @@ function createPromptEl(message, actions) {
   return el;
 }
 
-export async function simplePrompt(message, _default, placeholder = "") {
+function simplePrompt(message, _default, placeholder = "") {
   return new Promise(function (resolve) {
     const actions = [
       `<input type="text" id="custom-prompt-input" placeholder="${placeholder}" required>`,
@@ -31,17 +32,17 @@ export async function simplePrompt(message, _default, placeholder = "") {
   });
 }
 
-export function simpleConfirm(message) {
+function simpleConfirm(message, { cancel = "Cancel", ok = "OK", focus = "no", title = "" } = {}) {
   return new Promise(function (resolve) {
     const actions = [
       '<div class="fill"></div>',
-      `<button name="action" class="action-btn" type="submit" value="no">Cancel</button>`,
-      `<button name="action" class="action-btn" type="submit" value="yes">OK</button>`
+      `<button name="action" class="action-btn" type="submit" value="no">${cancel}</button>`,
+      `<button name="action" class="action-btn" type="submit" value="yes">${ok}</button>`
     ];
-    const el = createPromptEl(message, actions);
+    const el = createPromptEl(message, actions, title);
     document.body.appendChild(el);
-    const input = $("button", el);
-    input.focus();
+    const input = $(`button[value='${focus}']`, el);
+    input && input.focus();
     $("#custom-prompt").addEventListener("submit", function (e) {
       e.preventDefault();
       const answer = e.submitter.value;
@@ -51,7 +52,7 @@ export function simpleConfirm(message) {
   });
 }
 
-export function simpleAlert(message) {
+function simpleAlert(message) {
   return new Promise(function (resolve) {
     const actions = [
       '<div class="fill"></div>',

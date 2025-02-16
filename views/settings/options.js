@@ -10,8 +10,6 @@ import {
   retrieveFile
 } from "./common.js";
 import { createColorPicker } from "../common/color/picker.js";
-import { simpleAlert, simpleConfirm } from "../common/simplePrompt/simplePrompt.js";
-
 // ================================
 //    C o n s t a n t s
 // ================================

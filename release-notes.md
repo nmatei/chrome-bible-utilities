@@ -1,14 +1,17 @@
 # 📈 Release Notes (Changelog)
 
-for [Chrome extension to for Bible.com](README.md).
+for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://nmatei.github.io).
 
-💚 Love this extension? Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
+💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better!
+
+- Source code: [GitHub](https://github.com/nmatei/project-verses-from-bible)
 
 ## 2.6.0 (🔜 coming soon)
 
 - [x] Add close buttons for "Help" and "Live Text"
-- [x] Add [1] or [2] on windows for projection (so we know which one is primary)
+- [x] Add [1] or [2] on windows for projection (so we know which one is backstage or live)
 - [x] Save live preview state in storage (text, title and live checkbox - restores content after page refresh)
+- [x] Add a notification when new version updated (with release notes link)
 
 ## 2.5.0
 
