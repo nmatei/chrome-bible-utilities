@@ -265,7 +265,7 @@ async function showNewVersionBadge(version) {
       action: "showReleaseNotes"
     });
     setTimeout(() => {
-      helpBtn.classList.remove("abp-badge");
+      hideVersionBadge();
     }, 5000);
   }
 }
