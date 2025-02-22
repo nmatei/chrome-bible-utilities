@@ -88,7 +88,9 @@ function addHelpBox() {
               <strong class="key-code example-btn">${icons.lightMouse}</strong>
               <strong>Context menu</strong> (right click) for more actions inside pin list</li>
             <ul>
-              <li><strong class="key-code example-btn">${icons.copyIcon}</strong> <strong>Copy</strong> all pin verses to clipboard</li>
+              <li><strong class="key-code example-btn">${
+                icons.copyIcon
+              }</strong> <strong>Copy</strong> all pin verses to clipboard</li>
               <li>
                 <strong class="key-code example-btn">${icons.removeAll}</strong>
                 Clear all
@@ -122,10 +124,18 @@ function addHelpBox() {
           <ul>          
             <li>
               <div class="actions row-actions" style="display: inline-flex">
-                <button class="action-btn screen-source scale-large" data-state="0" title="Don't display verses on this window">${icons.screenSources}</button> 
-                <button class="action-btn screen-source scale-large" data-state="2" title="Primary verses only">${icons.screenSources}</button> 
-                <button class="action-btn screen-source scale-large" data-state="1" title="Parallel verses only">${icons.screenSources}</button> 
-                <button class="action-btn screen-source scale-large" data-state="3" title="Primary & Parallel verses">${icons.screenSources}</button> 
+                <button class="action-btn screen-source scale-large" data-state="0" title="Don't display verses on this window">${
+                  icons.screenSources
+                }</button> 
+                <button class="action-btn screen-source scale-large" data-state="2" title="Primary verses only">${
+                  icons.screenSources
+                }</button> 
+                <button class="action-btn screen-source scale-large" data-state="1" title="Parallel verses only">${
+                  icons.screenSources
+                }</button> 
+                <button class="action-btn screen-source scale-large" data-state="3" title="Primary & Parallel verses">${
+                  icons.screenSources
+                }</button> 
               </div>
               <ul>
                 <li>Select which verses to be projected on this window (<strong>Primary / Parallel</strong>)</li>
@@ -175,7 +185,7 @@ function addHelpBox() {
             <li>📃 External <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/README.md" target="_blank">README</a> & Screenshots</li>
             <li>👩‍💻 Source <a href="https://github.com/nmatei/chrome-bible-utilities" target="_blank">Code</a></li>
             <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">Tickets</a></li>
-            <li>📈 <a href="https://github.com/nmatei/chrome-bible-utilities/blob/master/release-notes.md" target="_blank" class="abp-badge">Release Notes</a> - see what are the latest fixes and features</li>
+            <li>📈 <a href="https://nmatei.github.io/chrome-bible-utilities/release-notes" target="_blank" class="abp-badge">Release Notes</a> - see what are the latest fixes and features</li>
             <li>💚 <span style="color: #ff3d4d">Love this extension?</span> Share <a href="https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj" target="_blank">feedback</a> and help us make it even better!</li>
             <li>☽ Try <a href="https://chromewebstore.google.com/detail/night-mode-bible/ebiieffikaglhelcnogmmijmlejdhngk" target="_blank">Night mode</a> extension
           </ul>  
