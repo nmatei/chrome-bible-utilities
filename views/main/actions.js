@@ -120,9 +120,7 @@ function createLiveTextForm() {
     projectText("");
   });
   $('button[data-key="close"]', liveBoxForm).addEventListener("click", () => {
-    const btn = $(`#project-actions button[data-key="live-text"]`);
-    liveBoxForm.classList.add("hide-view");
-    btn.classList.remove("active");
+    $(`#project-actions button[data-key="live-text"]`).click();
   });
   liveBoxForm.addEventListener("reset", () => {
     projectText("");

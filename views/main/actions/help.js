@@ -197,8 +197,7 @@ function addHelpBox() {
   document.body.appendChild(helpBox);
 
   $("button[data-key='close']", helpBox).addEventListener("click", () => {
-    const btn = $(`#project-actions button[data-key="help"]`);
-    showBox(helpBox, btn);
+    $(`#project-actions button[data-key="help"]`).click();
   });
 
   return helpBox;
