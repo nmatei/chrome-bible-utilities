@@ -265,15 +265,24 @@ async function showNewVersionBadge(version) {
     setTimeout(() => {
       hideVersionBadge();
     }, 5000);
+  } else {
+    await updateCurrentVersion();
+    await simpleAlert(
+      `You can always check the <a target='_blank' href='https://nmatei.github.io/chrome-bible-utilities/release-notes'>Release Notes</a> in the <strong>Help</strong> section.`
+    );
   }
+}
+
+async function updateCurrentVersion() {
+  const version = chrome.runtime.getManifest().version;
+  await setPreviousVersion(version);
 }
 
 async function hideVersionBadge() {
   const helpBtn = $('button[data-key="help"]');
   helpBtn.classList.remove("abp-badge");
   helpBtn.title = "Help";
-  const version = chrome.runtime.getManifest().version;
-  await setPreviousVersion(version);
+  await updateCurrentVersion();
 }
 // used to simulate updates
 // setPreviousVersion("1.0.0");
