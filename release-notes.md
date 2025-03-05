@@ -8,12 +8,12 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 - [ ] 🧐
 
-## 2.7.0
+## 2.7.0 (2025-03-05)
 
 - [x] Store state of help/live when is closed with X button
 - [x] Fix notification popup when new version updated and user press 'No' button
 
-## 2.6.0
+## 2.6.0 (2025-02-16)
 
 - [x] Add close buttons for "Help" and "Live Text"
 - [x] Add [1] or [2] on windows for projection (so we know which one is backstage or live)
