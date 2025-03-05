@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.7.0 (🔜 coming soon)
+## 2.8.0 (🔜 coming soon)
+
+- [ ] 🧐
+
+## 2.7.0
 
 - [x] Store state of help/live when is closed with X button
 - [x] Fix notification popup when new version updated and user press 'No' button
@@ -55,13 +59,6 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 - [x] Improve color picker to allow copy/paste hex color.
 - [x] Add config for body / verses font family.
-- [x] Decrease max font size based on win size (for smaller screens or windows)
-- [x] Improve text-shadow for better visibility of text (when background image is used)
-- [x] Night mode integration with (https://github.com/JosNun/night-mode-bible)
-
-## 1.33.0
-
-- [x] Display current app version in help title
 - [x] When screen 1 & 2 are not selected to project -> add a 'bullet' on settings button so we know
 
 ## 1.32.0

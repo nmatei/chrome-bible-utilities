@@ -202,10 +202,10 @@ function getWinMinSize() {
 
 function getWinDefaultSize() {
   return {
-    width: 800,
-    height: 600,
+    width: 850,
+    height: 800,
     top: 200,
-    left: 100
+    left: 150
   };
 }
 
