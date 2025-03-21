@@ -147,6 +147,8 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] Add/Edit/Remove slides
 - [ ] in projector page if there are checkboxes from live text "[x] / [ ]", allow to 'check/uncheck' (+ improve css for them)
 - [ ] shortcuts for bold / italic - inside live text
+- [ ] when add new ref using short ref (ex. 2:4) - add it to the list using existing book short name (ex. Exo 2:4), search for book name in list
+- [ ] Context menu on verses number (right click) - copy verse
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
