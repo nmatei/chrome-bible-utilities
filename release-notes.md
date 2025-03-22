@@ -6,7 +6,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.8.0 (🔜 coming soon)
 
-- [ ] 🧐
+- [x] in projector page if there are checkboxes from live text "[x] / [ ]", allow to 'check/uncheck' (+ improve UX for them)
 
 ## 2.7.0 (2025-03-05)
 

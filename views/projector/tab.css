@@ -114,7 +114,7 @@ ul {
   padding-inline-start: 1em;
 }
 
-li input[type="checkbox"]:disabled {
+li input[type="checkbox"] {
   height: 2.5em;
   width: 2.5em;
   cursor: pointer;
@@ -132,7 +132,7 @@ li input[type="checkbox"]:disabled {
   margin-right: 0.5em;
 }
 
-li input[type="checkbox"]:disabled:checked::before {
+li input[type="checkbox"]:checked::before {
   content: "✓";
   color: var(--verseColor);
   font-size: 1.5em;

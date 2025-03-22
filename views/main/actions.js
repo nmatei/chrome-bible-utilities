@@ -105,6 +105,31 @@ function createLiveTextForm() {
     realTimeUpdates.checked = live;
   });
 
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.action) {
+      case "checkboxUpdate": {
+        console.info("checkboxUpdate", request);
+        const currentText = liveText.value;
+        const updatedText = updateMarkdownCheckbox(currentText, request.text, request.checked);
+
+        if (updatedText !== currentText) {
+          liveText.value = updatedText;
+
+          // If real-time updates are enabled, update the projected text
+          if (realTimeUpdates && realTimeUpdates.checked) {
+            projectLiveText(liveTextTitle.value, updatedText);
+          }
+
+          // Save the updated text
+          saveLiveText(liveTextTitle.value, updatedText, realTimeUpdates.checked);
+        }
+
+        sendResponse({ status: "ok" });
+        break;
+      }
+    }
+  });
+
   realTimeUpdates.addEventListener("change", () => {
     saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
     if (realTimeUpdates.checked) {
@@ -161,6 +186,40 @@ function createLiveTextForm() {
   );
 
   return liveBoxForm;
+}
+
+/**
+ * Updates markdown text to reflect checkbox state changes
+ * @param {string} markdown - Current markdown text
+ * @param {string} itemText - Text content of the list item
+ * @param {boolean} isChecked - Whether checkbox is checked
+ * @returns {string} - Updated markdown
+ */
+function updateMarkdownCheckbox(markdown, itemText, isChecked) {
+  const lines = markdown.split("\n");
+  let updated = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    // Skip empty lines
+    if (!lines[i].trim()) continue;
+
+    // Check if this line contains our text (excluding checkbox syntax)
+    const lineWithoutCheckbox = lines[i].replace(/^\s*-\s*\[[x ]\]\s*/i, "");
+    if (lineWithoutCheckbox.includes(itemText)) {
+      // It's a match, update the checkbox state
+      if (lines[i].match(/^\s*-\s*\[[x ]\]/i)) {
+        // Already has checkbox syntax, update it
+        lines[i] = lines[i].replace(/^(\s*-\s*\[)[x ](\]\s*)/i, `$1${isChecked ? "x" : " "}$2`);
+      } else if (lines[i].match(/^\s*-\s*/)) {
+        // It's a list item without checkbox, add checkbox
+        lines[i] = lines[i].replace(/^(\s*-\s*)/, `$1[${isChecked ? "x" : " "}] `);
+      }
+      updated = true;
+      break;
+    }
+  }
+
+  return updated ? lines.join("\n") : markdown;
 }
 
 function actionsClick(target) {

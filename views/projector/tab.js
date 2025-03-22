@@ -37,6 +37,12 @@ function updateText(text, markdown) {
   text = text.replaceAll("-", "&#8209;");
   root.innerHTML = text;
 
+  if (markdown) {
+    $$('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.disabled = false;
+    });
+  }
+
   adjustRefFontSize();
   adjustBodySize();
 }
@@ -129,6 +135,28 @@ function initEvents() {
   setTimeout(() => {
     animateFocusBtn("F11");
   }, 1000);
+
+  // Add listener for checkbox clicks in the document
+  document.addEventListener("click", async function (e) {
+    const checkbox = e.target;
+    if (!(checkbox.tagName === "INPUT" && checkbox.type === "checkbox")) {
+      return;
+    }
+    const li = checkbox.closest("li");
+    if (!li) {
+      return;
+    }
+
+    const liText = li.textContent.trim();
+    const isChecked = checkbox.checked;
+
+    const tab = await getTab();
+    chrome.tabs.sendMessage(tab.id, {
+      action: "checkboxUpdate",
+      text: liText,
+      checked: isChecked
+    });
+  });
 }
 
 function animateFocusBtn(key) {
