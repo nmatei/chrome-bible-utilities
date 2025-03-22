@@ -85,12 +85,9 @@ h6 {
   font-weight: bold;
   font-variant-caps: small-caps;
   color: var(--referenceColor);
-  text-shadow:
-    var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor),
-    1px 1px 1px var(--pageBackgroundColor),
-    1px -1px 1px var(--pageBackgroundColor),
-    -1px -1px 1px var(--pageBackgroundColor),
-    -1px 1px 1px var(--pageBackgroundColor);
+  text-shadow: var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor),
+    1px 1px 1px var(--pageBackgroundColor), 1px -1px 1px var(--pageBackgroundColor),
+    -1px -1px 1px var(--pageBackgroundColor), -1px 1px 1px var(--pageBackgroundColor);
   font-size: 1.2em;
   margin: 0.2em 0 0.6em 0;
 }
@@ -116,10 +113,30 @@ h6 {
 ul {
   padding-inline-start: 1em;
 }
+
 li input[type="checkbox"]:disabled {
   height: 2.5em;
   width: 2.5em;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: transparent;
+  border: 2px solid var(--verseColor);
+  box-shadow: var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor);
+  border-radius: 0.25em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+
+li input[type="checkbox"]:disabled:checked::before {
+  content: "✓";
+  color: var(--verseColor);
+  font-size: 1.5em;
+  font-weight: bold;
 }
 a {
   color: var(--verseColor);
@@ -170,12 +187,9 @@ p.parallel.separator:not(p:first-of-type):before {
 }
 p,
 li {
-  text-shadow:
-    var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor),
-    1px 1px 1px var(--pageBackgroundColor),
-    1px -1px 1px var(--pageBackgroundColor),
-    -1px -1px 1px var(--pageBackgroundColor),
-    -1px 1px 1px var(--pageBackgroundColor);
+  text-shadow: var(--shadowOffsetX) var(--shadowOffsetY) var(--shadowBlur) var(--pageBackgroundColor),
+    1px 1px 1px var(--pageBackgroundColor), 1px -1px 1px var(--pageBackgroundColor),
+    -1px -1px 1px var(--pageBackgroundColor), -1px 1px 1px var(--pageBackgroundColor);
   line-height: 1.3em;
 }
 p.verse {
