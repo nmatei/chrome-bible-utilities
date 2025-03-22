@@ -108,7 +108,6 @@ function createLiveTextForm() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
       case "checkboxUpdate": {
-        console.info("checkboxUpdate", request);
         const currentText = liveText.value;
         const updatedText = updateMarkdownCheckbox(currentText, request.text, request.checked);
 
