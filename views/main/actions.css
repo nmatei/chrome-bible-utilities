@@ -365,8 +365,9 @@ h2 .key-code {
   border-radius: 5px;
   margin: 0;
   min-height: 65px;
-  min-width: 250px;
+  min-width: 270px;
   padding: 0.57rem;
+  resize: both;
 }
 
 #help-text-box {
