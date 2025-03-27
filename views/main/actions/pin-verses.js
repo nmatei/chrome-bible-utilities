@@ -409,6 +409,20 @@ function onReferenceSave(e) {
   $('#verses-text-box button[data-key="edit"]').classList.remove("hidden-action");
 }
 
+function getAllVersesContent(numbers) {
+  return numbers.reduce((verses, number) => {
+    const [verseInfo] = getVersesContent(number);
+    if (verseInfo) {
+      let vNumber = "";
+      if (numbers.length > 1) {
+        vNumber = verseInfo.verseNr + " ";
+      }
+      verses.push(vNumber + verseInfo.content);
+    }
+    return verses;
+  }, []);
+}
+
 async function onReferenceCopy(verses) {
   const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
@@ -420,7 +434,6 @@ async function onReferenceCopy(verses) {
 
     if (title && match) {
       let ref = title;
-      const verses = [];
       let numbers = [];
       if (match.verse) {
         ref += `:${match.verse}`;
@@ -434,17 +447,7 @@ async function onReferenceCopy(verses) {
         numbers = fillNumbers(1, to);
       }
 
-      numbers.forEach(number => {
-        const [verseInfo] = getVersesContent(number);
-        if (verseInfo) {
-          let vNumber = "";
-          if (numbers.length > 1) {
-            vNumber = verseInfo.verseNr + " ";
-          }
-          verses.push(vNumber + verseInfo.content);
-        }
-      });
-
+      const verses = getAllVersesContent(numbers);
       primaryText.push(`📌 ${ref}`);
       primaryText.push(verses.join("\n") + "\n");
     } else {

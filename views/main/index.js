@@ -354,6 +354,19 @@ function showVerseContextMenu(e) {
       handler: () => {
         onReferenceRequest({ payload: verseNumber, project: false });
       }
+    },
+    "-",
+    {
+      text: "Copy verse",
+      icon: icons.copy,
+      handler: async () => {
+        const verses = getAllVersesContent([verseNumber]);
+        const titles = getChapterTitles();
+        const ref = formatVerseRef(titles[0] + ":" + verseNumber);
+        const allVerses = [`📌 ${ref}`, verses.join("\n") + "\n"].join("\n");
+        copyToClipboard(allVerses);
+        //await onReferenceCopy([e.target]);
+      }
     }
   ];
   const menu = getContextMenu(actions);
