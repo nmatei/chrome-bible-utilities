@@ -154,6 +154,10 @@ function initEvents() {
       index: index,
       checked: checkbox.checked
     });
+    // focus checked checkbox (as it was replaced)
+    setTimeout(() => {
+      $$('li input[type="checkbox"]')[index]?.focus();
+    }, 100);
   });
 }
 
