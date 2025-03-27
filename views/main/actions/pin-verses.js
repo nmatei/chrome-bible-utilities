@@ -258,15 +258,9 @@ function selectPinned(row) {
   row.classList.add("selected");
 }
 
-function getBookName(title) {
-  const match = getVerseInfo(title);
-  return match ? match.book : "";
-}
-
 function onReferenceSearch(e, preview) {
   let value = cleanSpaces(e.target.value);
-  const search = getSearchShortcuts(value);
-  value = search.value;
+  value = getSearchShortcuts(value);
   const newVerses = splitVerses(value);
   if (!newVerses.length) {
     preview.innerText = "^ search ^";
@@ -280,45 +274,65 @@ function onReferenceSearch(e, preview) {
   } else {
     preview.classList.remove("matched");
   }
-  adjustMatch(match, search.chapterAndVerses, search.verses);
-  preview.innerText =
-    "➕ " + getReferencePreview(bookText || book, match ? match.chapter : "", match ? match.verse : "");
-}
-
-function adjustMatch(match, chapterAndVerses, verses) {
-  if (match) {
-    if (chapterAndVerses) {
-      //console.warn("match.chapter %s:%s => %o", match.chapter, match.verse, chapterAndVerses);
-      match.chapter = chapterAndVerses;
-      match.verse = "";
-    } else if (verses) {
-      //console.warn("match.verses %s:%s => %s:%s", match.chapter, match.verse, match.chapter, verses);
-      match.verse = verses;
-    }
-  }
+  const prevText = getVerseStr({
+    book: bookText || book,
+    chapter: match?.chapter || "",
+    verse: match?.verse || "",
+    to: match?.to || ""
+  });
+  preview.innerText = "➕ " + prevText;
 }
 
 function cleanSpaces(text) {
   return text.replaceAll(multiSpaceRegExp, " ").trim();
 }
 
+// finds shortcuts (used in saved pin list) for book names, and use this instead of full name
+function findBookNameShortcuts(title, value, versesOnly) {
+  const match = getVerseInfo(title);
+  if (!match) {
+    return title;
+  }
+  let shortMatch;
+
+  pinnedVerses.forEach(v => {
+    if (shortMatch) {
+      return;
+    }
+    const similarMatch = getVerseInfo(v);
+    if (!similarMatch) {
+      return;
+    }
+    const book = similarMatch.book;
+    const bookText = findBookText(book, booksCache);
+    if (similarMatch && bookText === match.book) {
+      const newTitle = similarMatch.book + (versesOnly ? ` ${match.chapter}:${value}` : " " + value);
+      shortMatch = getVerseInfo(newTitle);
+    }
+  });
+  if (!shortMatch) {
+    const newTitle = match.book + (versesOnly ? ` ${match.chapter}:${value}` : " " + value);
+    shortMatch = getVerseInfo(newTitle);
+  }
+  return shortMatch;
+}
+
 function getSearchShortcuts(value) {
-  let verses, chapterAndVerses;
+  // TODO if number ends with "-" while typing... ignore "-"
   if (searchVersesNrsRegExp.test(value)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      verses = value;
-      value = titles[0] + ":" + verses;
+      const titleMatch = findBookNameShortcuts(titles[0], value, true);
+      value = getVerseStr(titleMatch);
     }
   } else if (searchChapterNrRegExp.test(value)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      const book = getBookName(titles[0]);
-      chapterAndVerses = value;
-      value = book + " " + chapterAndVerses;
+      const titleMatch = findBookNameShortcuts(titles[0], value, false);
+      value = getVerseStr(titleMatch);
     }
   }
-  return { value, verses, chapterAndVerses };
+  return value;
 }
 
 function onReferenceSubmit(preview) {
@@ -327,7 +341,7 @@ function onReferenceSubmit(preview) {
   }
   const input = $("#pin-add-verse");
   let value = cleanSpaces(input.value);
-  value = getSearchShortcuts(value).value;
+  value = getSearchShortcuts(value);
   const newVerses = splitVerses(value).map(v => improveReference(v, booksCache));
   if (!newVerses.length) {
     return;

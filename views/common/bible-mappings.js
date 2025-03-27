@@ -26,8 +26,17 @@ function getVerseInfo(search) {
   return match ? match.groups : null;
 }
 
-function getReferencePreview(book, chapter = "", verse = "") {
-  return `${book} ${chapter}${verse ? ":" + verse : ""}`.trim();
+function getVerseStr(match) {
+  if (!match || typeof match !== "object") {
+    return match || "";
+  }
+  const { book, chapter, verse, to } = match;
+  return `${book} ${chapter}${verse ? ":" + verse : ""}${to ? "-" + to : ""}`;
+}
+
+function formatVerseRef(ref) {
+  const match = getVerseInfo(ref);
+  return getVerseStr(match);
 }
 
 function applyReversedMapping(mapping) {
@@ -375,7 +384,7 @@ function bibleReferenceMap(ref, from, to, asString = true) {
 
   //return JSON.stringify({ ref, add, target });
   if (asString) {
-    return getReferencePreview(target.book, target.chapter, target.verse);
+    return getVerseStr(target);
   }
   return target;
 }
@@ -385,7 +394,8 @@ if (typeof module === "object" && typeof module.exports === "object") {
     BASIC_RU_MAPPING,
     BASIC_UA_MAPPING,
     getVerseInfo,
-    getReferencePreview,
+    getVerseStr,
+    formatVerseRef,
     bibleReferenceMap
   };
 }

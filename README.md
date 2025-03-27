@@ -10,7 +10,7 @@ or in **2 different languages**.
 
 - [x] ✔ Install Chrome plugin from **Chrome web store** [Project verses from bible.com](https://chrome.google.com/webstore/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj)
 - [x] visit [https://bible.com/bible](https://bible.com/bible)
-- [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
+  - [x] new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
 - [ ] 📌 **Pin** extension to see it after search bar for fast access
   - [ ] ![icon](views/icons/icon-16.png) Click on **Extension** icon
 
@@ -146,7 +146,6 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Multi slides to project content (same as live text but with multiple slides)
   - [ ] Add/Edit/Remove slides
 - [ ] shortcuts for bold / italic - inside live text
-- [ ] when add new ref using short ref (ex. 2:4) - add it to the list using existing book short name (ex. Exo 2:4), search for book name in list
 - [ ] Context menu on verses number (right click) - copy verse
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version

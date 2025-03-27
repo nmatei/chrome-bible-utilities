@@ -7,6 +7,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 ## 2.8.0 (🔜 coming soon)
 
 - [x] in projector page if there are checkboxes from live text "[x] / [ ]", allow to 'check/uncheck' (+ improve UX for them)
+- [x] when add new ref using short ref (ex. "2:4") - add it to the list using existing book short name (ex. "Exo 2:4"), search for book name in list
 
 ## 2.7.0 (2025-03-05)
 

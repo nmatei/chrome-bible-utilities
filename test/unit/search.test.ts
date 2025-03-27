@@ -1,6 +1,6 @@
 import { latinizeText } from "../../views/common/latinizeText";
 import { searchVersesNrsRegExp, searchChapterNrRegExp, improveReference } from "../../views/common/utilities";
-import { getVerseInfo } from "../../views/common/bible-mappings";
+import { getVerseInfo, formatVerseRef } from "../../views/common/bible-mappings";
 
 describe("Number Format Regex", () => {
   const validVersesFormats = [
@@ -108,21 +108,23 @@ describe("Improve reference", () => {
 
   const improvements = [
     "Ps 8      -> Ps 8",
-    "Mat 8 2   -> Mat 8 2",
+    "Mat 8 2   -> Mat 8:2",
     // --
     "ps 8      -> Ps 8",
-    "rom 2 4   -> Rom 2 4",
-    "1 sam 2 3 -> 1 Sam 2 3",
+    "rom 2 4   -> Rom 2:4",
+    "1 sam 2 3 -> 1 Sam 2:3",
     // --
-    "sam 2 3   -> 1 Samuel 2 3",
-    "cor 2 4   -> 1 Corinteni 2 4",
-    "Cor 2 4   -> 1 Corinteni 2 4",
-    "cu 1 3    -> Leviticul 1 3",
-    "lev 1 3   -> Lev 1 3"
+    "sam 2 3   -> 1 Samuel 2:3",
+    "cor 2 4   -> 1 Corinteni 2:4",
+    "Cor 2 4   -> 1 Corinteni 2:4",
+    "cu 1 3    -> Leviticul 1:3",
+    "lev 1 3   -> Lev 1:3"
   ];
 
+  // map used functions as globals
   global["latinizeText"] = latinizeText;
   global["getVerseInfo"] = getVerseInfo;
+  global["formatVerseRef"] = formatVerseRef;
 
   test.each(improvements)("improve search: %o", search => {
     const [from, to] = search.split(targetSplitter);

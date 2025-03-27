@@ -489,7 +489,13 @@ async function initEvents() {
   ]);
 
   await cacheBooks();
-  //console.info("books", booksCache);
+  if (booksCache.length === 0) {
+    console.info("loading books again");
+    setTimeout(async () => {
+      await cacheBooks();
+      console.info("second try to read books", booksCache);
+    }, 2000);
+  }
 
   const versionEl = $(versionSelector());
   versionEl &&

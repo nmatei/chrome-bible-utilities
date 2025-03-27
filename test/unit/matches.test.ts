@@ -1,4 +1,4 @@
-import { getReferencePreview, getVerseInfo } from "../../views/common/bible-mappings";
+import { formatVerseRef, getVerseInfo, getVerseStr } from "../../views/common/bible-mappings";
 import { splitVerses } from "../../views/common/utilities";
 import { getUrlMatch } from "../../views/bibles/bible.com/common";
 
@@ -81,6 +81,12 @@ describe("Test regular expression matches for getVerseInfo", () => {
     const match = getVerseInfo("  Ioan 3 16  ");
     testMatch(match, "Ioan", 3, 16);
   });
+
+  // ===
+  it("no chapter -> null match", () => {
+    const match = getVerseInfo("Ioan");
+    expect(match).toBeNull();
+  });
 });
 
 describe("Test splitVerses", () => {
@@ -119,19 +125,29 @@ describe("Test splitVerses", () => {
 });
 
 describe("Get reference [preview] tests", () => {
-  it("[Full] info for getReferencePreview", () => {
-    const preview = getReferencePreview("Ioan", "3", "16");
+  it("[Full] info for formatVerseRef", () => {
+    const preview = formatVerseRef("Ioan 3 16");
     expect(preview).toEqual("Ioan 3:16");
   });
 
-  it("[No verse] for getReferencePreview", () => {
-    const preview = getReferencePreview("Ioan", "3");
+  it("[No verse] for formatVerseRef", () => {
+    const preview = formatVerseRef("Ioan 3");
     expect(preview).toEqual("Ioan 3");
   });
 
-  it("[No chapter] for getReferencePreview", () => {
-    const preview = getReferencePreview("Ioan");
-    expect(preview).toEqual("Ioan");
+  it("[No chapter] for formatVerseRef", () => {
+    const preview = formatVerseRef("Ioan");
+    expect(preview).toEqual("");
+  });
+
+  it("[more verses] info for formatVerseRef", () => {
+    const preview = formatVerseRef("Ioan 3 16-17");
+    expect(preview).toEqual("Ioan 3:16-17");
+  });
+
+  it("[missing to] info for formatVerseRef", () => {
+    const preview = formatVerseRef("Ioan 3 16-");
+    expect(preview).toEqual("Ioan 3:16");
   });
 });
 
@@ -158,5 +174,37 @@ describe("Test URL Url Matches", () => {
       parallel: "186",
       version: "VDC"
     });
+  });
+});
+
+describe("Get verse string tests", () => {
+  it("should format simple verse reference correctly", () => {
+    const result = getVerseStr({ book: "Ioan", chapter: 3, verse: 16 });
+    expect(result).toEqual("Ioan 3:16");
+  });
+
+  it("should format verse range correctly", () => {
+    const result = getVerseStr({ book: "Psalmi", chapter: 23, verse: 1, to: 6 });
+    expect(result).toEqual("Psalmi 23:1-6");
+  });
+
+  it("should format reference with multi-word book name", () => {
+    const result = getVerseStr({ book: "Faptele Apostolilor", chapter: 2, verse: 42 });
+    expect(result).toEqual("Faptele Apostolilor 2:42");
+  });
+
+  it("should format reference with numeric book name", () => {
+    const result = getVerseStr({ book: "1 Corinteni", chapter: 13, verse: 4, to: 7 });
+    expect(result).toEqual("1 Corinteni 13:4-7");
+  });
+
+  it("should handle reference with empty 'to' value", () => {
+    const result = getVerseStr({ book: "Romani", chapter: 8, verse: 28, to: "" });
+    expect(result).toEqual("Romani 8:28");
+  });
+
+  it("should return string input unchanged", () => {
+    const result = getVerseStr("Ioan 3:16");
+    expect(result).toEqual("Ioan 3:16");
   });
 });

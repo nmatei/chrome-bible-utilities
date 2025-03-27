@@ -123,7 +123,9 @@ function copyToClipboard(text) {
 const referenceSplitterRegExp = /\s*[;,\n]\s*/;
 
 const multiSpaceRegExp = /\s+/g;
+// used to identify if the reference is having only [verses] only from current book
 const searchVersesNrsRegExp = /^\s*\d+\s*(-\s*\d+)?\s*$/;
+// used to identify if the reference is [chapter + verses] only from current book
 const searchChapterNrRegExp = /^\s*\d+\s*[:\s]\s*\d+\s*(-\s*\d+)?\s*$/;
 
 function splitVerses(verses) {
@@ -155,7 +157,8 @@ function improveReference(from, booksCache) {
     const book = match.book;
     const bookText = findBookText(book, booksCache);
     const improved = improveBookName(book, bookText);
-    return improved + from.substring(book.length);
+    const ref = improved + from.substring(book.length);
+    return formatVerseRef(ref);
   }
   return from;
 }
