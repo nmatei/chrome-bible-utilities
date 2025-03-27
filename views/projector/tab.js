@@ -146,15 +146,13 @@ function initEvents() {
     if (!li) {
       return;
     }
-
-    const liText = li.textContent.trim();
-    const isChecked = checkbox.checked;
+    const index = $$('li input[type="checkbox"]').findIndex(input => input === checkbox);
 
     const tab = await getTab();
     chrome.tabs.sendMessage(tab.id, {
       action: "checkboxUpdate",
-      text: liText,
-      checked: isChecked
+      index: index,
+      checked: checkbox.checked
     });
   });
 }

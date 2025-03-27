@@ -109,7 +109,7 @@ function createLiveTextForm() {
     switch (request.action) {
       case "checkboxUpdate": {
         const currentText = liveText.value;
-        const updatedText = updateMarkdownCheckbox(currentText, request.text, request.checked);
+        const updatedText = updateMarkdownCheckbox(currentText, request.checked, request.index);
 
         if (updatedText !== currentText) {
           liveText.value = updatedText;
@@ -190,35 +190,34 @@ function createLiveTextForm() {
 /**
  * Updates markdown text to reflect checkbox state changes
  * @param {string} markdown - Current markdown text
- * @param {string} itemText - Text content of the list item
  * @param {boolean} isChecked - Whether checkbox is checked
+ * @param {number} index - checkbox index
  * @returns {string} - Updated markdown
  */
-function updateMarkdownCheckbox(markdown, itemText, isChecked) {
+function updateMarkdownCheckbox(markdown, isChecked, index) {
   const lines = markdown.split("\n");
-  let updated = false;
+  let currentCheckboxIndex = -1;
 
   for (let i = 0; i < lines.length; i++) {
     // Skip empty lines
     if (!lines[i].trim()) continue;
 
-    // Check if this line contains our text (excluding checkbox syntax)
-    const lineWithoutCheckbox = lines[i].replace(/^\s*-\s*\[[x ]\]\s*/i, "");
-    if (lineWithoutCheckbox.includes(itemText)) {
-      // It's a match, update the checkbox state
-      if (lines[i].match(/^\s*-\s*\[[x ]\]/i)) {
-        // Already has checkbox syntax, update it
+    // Check if this line contains a checkbox
+    if (lines[i].match(/^\s*-\s*\[[x ]\]/i)) {
+      // Count this checkbox
+      currentCheckboxIndex++;
+
+      // If this is the checkbox we're looking for
+      if (currentCheckboxIndex === index) {
+        // Update the checkbox state
         lines[i] = lines[i].replace(/^(\s*-\s*\[)[x ](\]\s*)/i, `$1${isChecked ? "x" : " "}$2`);
-      } else if (lines[i].match(/^\s*-\s*/)) {
-        // It's a list item without checkbox, add checkbox
-        lines[i] = lines[i].replace(/^(\s*-\s*)/, `$1[${isChecked ? "x" : " "}] `);
+        return lines.join("\n");
       }
-      updated = true;
-      break;
     }
   }
 
-  return updated ? lines.join("\n") : markdown;
+  // If we didn't find the checkbox, return the original markdown
+  return markdown;
 }
 
 function actionsClick(target) {
