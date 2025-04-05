@@ -37,15 +37,17 @@ function projectText(text, markdown = false, index) {
 }
 
 async function bringTabToFront() {
-  const [tab] = await getProjectTab();
-  if (tab) {
-    await chrome.runtime.sendMessage({
-      action: "focusTab",
-      payload: {
-        id: tab
-      }
-    });
-  }
+  const tabs = await getProjectTab();
+  await Promise.allSettled(
+    tabs.map(tab =>
+      chrome.runtime.sendMessage({
+        action: "focusTab",
+        payload: {
+          id: tab
+        }
+      })
+    )
+  );
 }
 
 async function getProjectTab() {

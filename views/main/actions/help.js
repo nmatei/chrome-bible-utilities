@@ -67,7 +67,7 @@ function addHelpBox() {
             </li>
             <li><strong class="key-code">Enter + Enter</strong> to project added reference to List/Pin</li>
             <li><strong class="key-code">Shift + Enter</strong> to add and project full reference (Mat 6:7-13)</li>
-            <li><strong class="key-code">CTRL + Click</strong> project all verses from pin (Mat 6:7-13)</li>
+            <li><strong class="key-code">${isMac ? "⌘" : "CTRL"} + Click</strong> project all verses from pin (Mat 6:7-13)</li>
             <li><strong class="key-code">ALT + Click</strong> on Reference - force project (on top)</li>
             <li>
               <strong class="key-code example-btn">${icons.edit}</strong>
