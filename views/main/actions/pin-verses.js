@@ -318,17 +318,21 @@ function findBookNameShortcuts(title, value, versesOnly) {
 }
 
 function getSearchShortcuts(value) {
-  // TODO if number ends with "-" while typing... ignore "-"
-  if (searchVersesNrsRegExp.test(value)) {
+  let simplified = value
+  if (value.endsWith("-")) {
+    // if value ends with "-" while typing... ignore "-"
+    simplified = value.substring(0, value.length - 1);
+  }
+  if (searchVersesNrsRegExp.test(simplified)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      const titleMatch = findBookNameShortcuts(titles[0], value, true);
+      const titleMatch = findBookNameShortcuts(titles[0], simplified, true);
       value = getVerseStr(titleMatch);
     }
-  } else if (searchChapterNrRegExp.test(value)) {
+  } else if (searchChapterNrRegExp.test(simplified)) {
     const titles = getChapterTitles();
     if (titles && titles[0]) {
-      const titleMatch = findBookNameShortcuts(titles[0], value, false);
+      const titleMatch = findBookNameShortcuts(titles[0], simplified, false);
       value = getVerseStr(titleMatch);
     }
   }

@@ -4,6 +4,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
+## 2.9.0 (coming soon)
+
+- [ ] while typing in the search field, ingore last char if is '-' (eg. "Mat 6:7-" => "Mat 6:7")
+
 ## 2.8.0 (2025-04-07)
 
 - [x] in projector page if there are checkboxes from live text "[x] / [ ]", allow to 'check/uncheck' (+ improve UX for them)
