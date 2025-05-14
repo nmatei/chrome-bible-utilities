@@ -337,8 +337,7 @@ function showVerseContextMenu(e) {
   const target = e.target;
   const verse = target.closest(verseSelectorMatch);
   const verseNumber = getVerseNumber(verse);
-  // TODO check if it's parallel
-  //const isParallel = target.closest(parallelViewSelector);
+  const isParallel = target.closest(parallelViewSelector);
 
   const actions = [
     {
@@ -360,9 +359,10 @@ function showVerseContextMenu(e) {
       text: "Copy verse",
       icon: icons.copy,
       handler: async () => {
-        const verses = getAllVersesContent([verseNumber]);
+        // TODO check Parallel refs for Russian
+        const verses = getAllVersesContent([verseNumber], isParallel ? parallelViewSelector : undefined);
         const titles = getChapterTitles();
-        const ref = formatVerseRef(titles[0] + ":" + verseNumber);
+        const ref = formatVerseRef((isParallel ? titles[1] : titles[0]) + ":" + verseNumber);
         const allVerses = [`📌 ${ref}`, verses.join("\n") + "\n"].join("\n");
         copyToClipboard(allVerses);
         //await onReferenceCopy([e.target]);

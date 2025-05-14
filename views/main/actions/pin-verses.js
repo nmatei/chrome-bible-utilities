@@ -92,6 +92,17 @@ function showPinContextMenu(e) {
         await onReferenceCopy([e.target]);
       }
     });
+    if (hasParallelView()) {
+      actions.push({
+        text: `Copy ${e.target.innerText} (Parallel)`,
+        icon: icons.copyIcon,
+        itemId: "copyParallel",
+        handler: async () => {
+          // TODO check Parallel refs for Russian
+          await onReferenceCopy([e.target], parallelViewSelector);
+        }
+      });
+    }
   }
 
   actions.push({
@@ -102,6 +113,17 @@ function showPinContextMenu(e) {
       await onReferenceCopy();
     }
   });
+  if (hasParallelView()) {
+    actions.push({
+      text: "Copy all to clipboard (Parallel)",
+      icon: icons.copyAll,
+      itemId: "copyAllParallel",
+      handler: async () => {
+        // TODO check Parallel refs for Russian
+        await onReferenceCopy(undefined, parallelViewSelector);
+      }
+    });
+  }
 
   actions.push("-");
   if (isVerse) {
@@ -318,7 +340,7 @@ function findBookNameShortcuts(title, value, versesOnly) {
 }
 
 function getSearchShortcuts(value) {
-  let simplified = value
+  let simplified = value;
   if (value.endsWith("-")) {
     // if value ends with "-" while typing... ignore "-"
     simplified = value.substring(0, value.length - 1);
@@ -413,9 +435,9 @@ function onReferenceSave(e) {
   $('#verses-text-box button[data-key="edit"]').classList.remove("hidden-action");
 }
 
-function getAllVersesContent(numbers) {
+function getAllVersesContent(numbers, view = primaryViewSelector) {
   return numbers.reduce((verses, number) => {
-    const [verseInfo] = getVersesContent(number);
+    const [verseInfo] = getVersesContent(number, view);
     if (verseInfo) {
       let vNumber = "";
       if (numbers.length > 1) {
@@ -427,7 +449,7 @@ function getAllVersesContent(numbers) {
   }, []);
 }
 
-async function onReferenceCopy(verses) {
+async function onReferenceCopy(verses, view = primaryViewSelector) {
   const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
   maskWrapper.classList.add("loading-mask", "text-mask");
@@ -438,6 +460,10 @@ async function onReferenceCopy(verses) {
 
     if (title && match) {
       let ref = title;
+      if (view === parallelViewSelector) {
+        const titles = getChapterTitles();
+        ref = titles[1];
+      }
       let numbers = [];
       if (match.verse) {
         ref += `:${match.verse}`;
@@ -451,7 +477,7 @@ async function onReferenceCopy(verses) {
         numbers = fillNumbers(1, to);
       }
 
-      const verses = getAllVersesContent(numbers);
+      const verses = getAllVersesContent(numbers, view);
       primaryText.push(`📌 ${ref}`);
       primaryText.push(verses.join("\n") + "\n");
     } else {

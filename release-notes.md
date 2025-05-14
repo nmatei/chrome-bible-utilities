@@ -6,7 +6,9 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.9.0 (coming soon)
 
-- [ ] while typing in the search field, ingore last char if is '-' (eg. "Mat 6:7-" => "Mat 6:7")
+- [x] while typing in the search field, ignore last char if is '-' (e.g. "Mat 6:7-" => "Mat 6:7")
+- [x] copy parallel verses to clipboard
+- [ ] when change to different slide master, update font-size (it could be different, depends on slide Screen Padding, etc.)
 
 ## 2.8.0 (2025-04-07)
 
