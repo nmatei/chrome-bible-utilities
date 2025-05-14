@@ -70,6 +70,7 @@ function initRuntimeEvents() {
       case "previewRootStyles": {
         setRootStyles(request.payload);
         maxFontSize = getMaxFontSize(slide);
+        adjustRefFontSize();
         adjustBodySize();
         sendResponse({ status: 200 });
         break;
