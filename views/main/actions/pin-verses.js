@@ -368,10 +368,11 @@ function onReferenceSubmit(preview) {
   const input = $("#pin-add-verse");
   let value = cleanSpaces(input.value);
   value = getSearchShortcuts(value);
-  const newVerses = splitVerses(value).map(v => improveReference(v, booksCache));
+  let newVerses = splitVerses(value).map(v => improveReference(v, booksCache));
   if (!newVerses.length) {
     return;
   }
+  newVerses = fixSplitedRefereces(newVerses);
   const editor = $("#pinned-verses-editor");
   if (editor.style.display !== "none") {
     pinnedVerses = splitVerses(editor.value);

@@ -1,5 +1,10 @@
 import { latinizeText } from "../../views/common/latinizeText";
-import { searchVersesNrsRegExp, searchChapterNrRegExp, improveReference } from "../../views/common/utilities";
+import {
+  searchVersesNrsRegExp,
+  searchChapterNrRegExp,
+  improveReference,
+  fixSplitedRefereces
+} from "../../views/common/utilities";
 import { getVerseInfo, formatVerseRef } from "../../views/common/bible-mappings";
 
 describe("Number Format Regex", () => {
@@ -130,5 +135,12 @@ describe("Improve reference", () => {
     const [from, to] = search.split(targetSplitter);
     const target = improveReference(from, booksCache);
     expect(target).toBe(to);
+  });
+});
+
+describe("Improve add multiple references", () => {
+  it("fixSplitedRefereces", () => {
+    const refs = fixSplitedRefereces(["1 John 3:2", "Acts 2:21", "4:12", "15:11"]);
+    expect(refs).toEqual(["1 John 3:2", "Acts 2:21", "Acts 4:12", "Acts 15:11"]);
   });
 });

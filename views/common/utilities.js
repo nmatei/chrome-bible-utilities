@@ -163,6 +163,25 @@ function improveReference(from, booksCache) {
   return from;
 }
 
+function fixSplitedRefereces(verses) {
+  if (verses.length < 2) {
+    return verses;
+  }
+  // fix if we have referece in simplified format
+  // make sure to add them to pinned list using Book name
+  // search book name from preview reference (first available)
+  //  example
+  //     ["1 John 3:2", "Acts 2:21", "4:12", "15:11"] ->
+  //     ["1 John 3:2", "Acts 2:21", "Acts 4:12", "Acts 15:11"]
+
+  console.warn("multiple references", verses);
+  // TODO implement this
+  return verses.map(v => {
+    // TODO check if we have a book name in the reference
+    return v;
+  });
+}
+
 function initShiftKeyEvents() {
   window.addEventListener("keydown", e => {
     if (e.key === "Shift") {
@@ -182,6 +201,7 @@ if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     splitVerses,
     improveReference,
+    fixSplitedRefereces,
     searchVersesNrsRegExp,
     searchChapterNrRegExp
   };
