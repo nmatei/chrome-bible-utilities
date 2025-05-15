@@ -170,14 +170,24 @@ function fixSplitedRefereces(verses) {
   // fix if we have referece in simplified format
   // make sure to add them to pinned list using Book name
   // search book name from preview reference (first available)
-  //  example
-  //     ["1 John 3:2", "Acts 2:21", "4:12", "15:11"] ->
-  //     ["1 John 3:2", "Acts 2:21", "Acts 4:12", "Acts 15:11"]
 
-  console.warn("multiple references", verses);
-  // TODO implement this
+  let lastBookReference = null;
+
   return verses.map(v => {
-    // TODO check if we have a book name in the reference
+    // Check if the verse has a book name reference
+    const match = getVerseInfo(v);
+
+    // If this is a full reference with a book name, remember it and return as is
+    if (match && match.book) {
+      lastBookReference = match;
+      return v;
+    }
+
+    // If it's just a chapter:verse format (no book name), use the last book reference
+    if (lastBookReference && searchChapterNrRegExp.test(v)) {
+      return `${lastBookReference.book} ${v}`;
+    }
+
     return v;
   });
 }

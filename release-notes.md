@@ -9,6 +9,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 - [x] while typing in the search field, ignore last char if is '-' (e.g. "Mat 6:7-" => "Mat 6:7")
 - [x] copy parallel verses to clipboard
 - [x] when change to different slide master will update header font-size
+- [x] adding multiple references improvements (1 John 3:2; 4:12; 15:11 -> "1 John 3:2", "1 John 4:12", "1 John 15:11")
 
 ## 2.8.0 (2025-04-07)
 

@@ -3,6 +3,7 @@ import {
   searchVersesNrsRegExp,
   searchChapterNrRegExp,
   improveReference,
+  splitVerses,
   fixSplitedRefereces
 } from "../../views/common/utilities";
 import { getVerseInfo, formatVerseRef } from "../../views/common/bible-mappings";
@@ -142,5 +143,15 @@ describe("Improve add multiple references", () => {
   it("fixSplitedRefereces", () => {
     const refs = fixSplitedRefereces(["1 John 3:2", "Acts 2:21", "4:12", "15:11"]);
     expect(refs).toEqual(["1 John 3:2", "Acts 2:21", "Acts 4:12", "Acts 15:11"]);
+  });
+
+  it("fixSplitedRefereces one book split by comma", () => {
+    const refs = fixSplitedRefereces(splitVerses("1 John 3:2, 4:12, 15:11"));
+    expect(refs).toEqual(["1 John 3:2", "1 John 4:12", "1 John 15:11"]);
+  });
+
+  it("fixSplitedRefereces one book split by semicolon", () => {
+    const refs = fixSplitedRefereces(splitVerses("1 John 3:2; 4:12; 15:11"));
+    expect(refs).toEqual(["1 John 3:2", "1 John 4:12", "1 John 15:11"]);
   });
 });
