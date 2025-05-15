@@ -451,6 +451,7 @@ function getAllVersesContent(numbers, view = primaryViewSelector) {
 }
 
 async function onReferenceCopy(verses, view = primaryViewSelector) {
+  const copiedVerses = [];
   const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
   maskWrapper.classList.add("loading-mask", "text-mask");
@@ -481,6 +482,10 @@ async function onReferenceCopy(verses, view = primaryViewSelector) {
       const verses = getAllVersesContent(numbers, view);
       primaryText.push(`📌 ${ref}`);
       primaryText.push(verses.join("\n") + "\n");
+      copiedVerses.push({
+        ref: ref,
+        text: verses.join("\n")
+      });
     } else {
       //console.log("no match");
       primaryText.push(`📋 ${target.innerText}\n`);
@@ -489,6 +494,7 @@ async function onReferenceCopy(verses, view = primaryViewSelector) {
 
   const allVerses = primaryText.join("\n");
   copyToClipboard(allVerses);
+  console.info("Copied to clipboard", copiedVerses);
   maskWrapper.dataset.text = "";
   maskWrapper.classList.remove("loading-mask", "text-mask");
 }
