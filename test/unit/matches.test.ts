@@ -102,6 +102,14 @@ describe("Test splitVerses", () => {
     const verses = splitVerses("Ioan 3 16 ;   Fapte 2 3");
     expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3"]);
   });
+  it("[;] as verses separator with ending separator", () => {
+    const verses = splitVerses("Ioan 3 16 ;   Fapte 2 3;");
+    expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3"]);
+  });
+  it("[;] as verses separator with more separators", () => {
+    const verses = splitVerses("Ioan 3 16 ;;   Fapte 2 3;");
+    expect(verses).toEqual(["Ioan 3 16", "Fapte 2 3"]);
+  });
 
   it("[,][;][Enter] as verses separator", () => {
     const verses = splitVerses("Ioan 3 16, Fapte 2 3; Rom 2 1\n John 3:16");

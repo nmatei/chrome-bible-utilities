@@ -133,7 +133,10 @@ function splitVerses(verses) {
   if (!verses) {
     return [];
   }
-  return verses.split(referenceSplitterRegExp);
+  return verses
+    .split(referenceSplitterRegExp)
+    .map(v => v.trim())
+    .filter(v => v);
 }
 
 function findBookText(book, booksCache) {

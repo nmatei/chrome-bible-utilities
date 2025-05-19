@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.9.0 (coming soon)
+## 2.10.0 (coming soon)
+
+- [ ] improvements when add multiple references (Ioan 3 16 ;; Fapte 2 3;)
+
+## 2.9.0 (2025-05-19)
 
 - [x] while typing in the search field, ignore last char if is '-' (e.g. "Mat 6:7-" => "Mat 6:7")
 - [x] copy parallel verses to clipboard
