@@ -12,6 +12,12 @@
   top: 0;
   border-radius: 4px;
 }
+.context-menu .context-menu-title {
+  font-weight: bold;
+  padding: 4px 10px;
+  margin: 0;
+  color: #333333;
+}
 .context-menu .action-btn {
   display: flex;
   align-items: center;

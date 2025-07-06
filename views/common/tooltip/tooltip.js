@@ -35,10 +35,14 @@ function showBy(el, target, offsets = [0, 0], align = "bottom") {
   setPosition(el, left + offsets[0], top + offsets[1]);
 }
 
-function createContextMenu(id = "context-menu") {
+function createContextMenu(id = "context-menu", destroyIfExist = false) {
   let menu = document.getElementById(id);
   if (menu) {
-    return menu;
+    if (destroyIfExist) {
+      document.body.removeChild(menu);
+    } else {
+      return menu;
+    }
   }
   menu = document.createElement("div");
   menu.id = "context-menu";
@@ -58,12 +62,16 @@ function createContextMenu(id = "context-menu") {
   return menu;
 }
 
-function getContextMenu(items) {
-  const menu = createContextMenu("context-menu");
+function getContextMenu(items, destroyIfExist = false) {
+  const menu = createContextMenu("context-menu", destroyIfExist);
 
   const contentItems = items
     .map((item, i) => {
-      if (item === "-") return `<hr class="separator">`;
+      if (item === "-") {
+        return `<hr class="separator">`;
+      } else if (typeof item === "string") {
+        return `<span class="context-menu-title">${item}</span>`;
+      }
       return `<button type="button" class="action-btn ${item.cls ? item.cls : ""}"
         ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
         data-idx="${i}" data-id="${item.itemId || item.text}" ${item.disabled ? "disabled" : ""}>
@@ -74,13 +82,18 @@ function getContextMenu(items) {
     .join("");
   menu.innerHTML = `<div class="context-menu-layout">${contentItems}</div>`;
 
-  menu.querySelectorAll(".action-btn").forEach((btn, i) => {
-    if (items[i].data) {
-      Object.keys(items[i].data).forEach(key => {
-        btn.dataset[key] = items[i].data[key];
+  menu.querySelectorAll(".action-btn").forEach(btn => {
+    const idx = btn.dataset.idx; // index of the item in the items array
+    if (!idx) {
+      return;
+    }
+    const data = items[idx].data;
+    if (data) {
+      Object.keys(data).forEach(key => {
+        btn.dataset[key] = data[key];
       });
     }
-    if (items[i].active) {
+    if (items[idx].active) {
       btn.classList.add("active");
     }
   });

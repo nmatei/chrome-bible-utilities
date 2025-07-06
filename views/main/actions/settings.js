@@ -47,7 +47,8 @@ function showScreenSourcesActions(e, btn) {
   }
 
   const actions = [
-    // TODO add title?
+    `Window [ ${btn.dataset.display} ] - Display Settings: ${btn.dataset.state === "0" ? "Off" : "On"}`,
+    "-",
     {
       text: "Don't display verses on this window",
       cls: "screen-source",
@@ -81,7 +82,7 @@ function showScreenSourcesActions(e, btn) {
       handler
     }
   ];
-  const menu = getContextMenu(actions);
+  const menu = getContextMenu(actions, true);
   showBy(menu, btn);
 }
 
