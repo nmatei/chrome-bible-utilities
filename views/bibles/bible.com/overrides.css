@@ -4,6 +4,12 @@ main > .w-full > .pbe-12 > .w-full {
 body [class^="ChapterContent_verse"] {
   line-height: 1.6em;
   display: block;
+  padding: 0 4px;
+}
+
+body [class^="ChapterContent_q"] {
+  padding-inline-start: 0;
+  text-indent: 0;
 }
 
 body [class^="ChapterContent_verse"] [class^="ChapterContent_label"] {
