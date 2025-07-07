@@ -140,7 +140,10 @@ function addHelpBox() {
               <ul>
                 <li>Select which verses to be projected on this window (<strong>Primary / Parallel</strong>)</li>
                 <li>
-                  There are 2 windows available for projection,
+                  There are 2 windows available for projection
+                  (<span class="screen-badge" data-display="1">Window</span> and 
+                    <span class="screen-badge" data-display="2">Window</span>
+                  ), <br />
                   each of them could project different content or none based on your needs.
                 </li>
               </ul>

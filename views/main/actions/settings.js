@@ -47,7 +47,7 @@ function showScreenSourcesActions(e, btn) {
   }
 
   const actions = [
-    `Window [ ${btn.dataset.display} ] - Display Settings: ${btn.dataset.state === "0" ? "Off" : "On"}`,
+    `<span class="screen-badge" data-display="${btn.dataset.display}">Window</span> - Display Settings: ${btn.dataset.state === "0" ? "Off" : "On"}`,
     "-",
     {
       text: "Don't display verses on this window",
@@ -111,10 +111,10 @@ function addSettingsBox() {
   box.id = "display-settings-box";
   box.innerHTML = `
     <div class="actions row-actions">
-      <button class="action-btn screen-source scale-large" data-display="1" data-state="0" title="Window [1]">
+      <button class="action-btn screen-source scale-large screen-badge" data-display="1" data-state="0" title="Window [1]">
         ${icons.screenSources}
       </button>
-      <button class="action-btn screen-source scale-large" data-display="2" data-state="0" title="Window [2]">
+      <button class="action-btn screen-source scale-large screen-badge" data-display="2" data-state="0" title="Window [2]">
         ${icons.screenSources}
       </button>
       <span data-key="fill" class="fill"></span>

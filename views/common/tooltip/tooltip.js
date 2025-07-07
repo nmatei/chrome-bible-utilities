@@ -70,7 +70,7 @@ function getContextMenu(items, destroyIfExist = false) {
       if (item === "-") {
         return `<hr class="separator">`;
       } else if (typeof item === "string") {
-        return `<span class="context-menu-title">${item}</span>`;
+        return `<div class="context-menu-title">${item}</div>`;
       }
       return `<button type="button" class="action-btn ${item.cls ? item.cls : ""}"
         ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
