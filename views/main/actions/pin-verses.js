@@ -303,6 +303,7 @@ function onReferenceSearch(e, preview) {
     to: match?.to || ""
   });
   preview.innerText = "➕ " + prevText;
+  preview.scrollIntoViewIfNeeded(true);
 }
 
 function cleanSpaces(text) {

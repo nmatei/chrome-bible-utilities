@@ -4,6 +4,7 @@
   "description": "Project selected Bible verses",
   "main": "index.js",
   "scripts": {
+    "clear": "rimraf node_modules package-lock.json",
     "test": "jest",
     "start": "browser-sync start --server --directory --no-ui --files '**/*'",
     "watch-test": "jest --watch",
@@ -45,6 +46,7 @@
     "marked": "^15.0.6"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.330",
     "@types/jest": "^29.5.12",
     "browser-sync": "^3.0.2",
     "run-script-os": "^1.1.6",
