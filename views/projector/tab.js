@@ -53,7 +53,7 @@ function initRuntimeEvents() {
       case "windowCreated": {
         const { index } = request.payload;
         displayIndex = index;
-        document.title = `📖 Bible [${index}]`;
+        document.title = `📖 Bible ${index === 2 ? "②" : "①"}`;
         sendResponse({ status: 200 });
         break;
       }

@@ -4,11 +4,15 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.10.0 (coming soon)
+## 2.11.0 (coming soon)
 
-- [ ] improvements when add multiple references (`Ioan 3 16 ;; Fapte 2 3;`)
-- [ ] screen-badge number (1, 2) - instead of [1] or [2] on windows for projection (so we know which one is backstage or live) + header when menu is open
-- [ ] fix verses with that go to new line and have user background color
+- [ ] 🤔
+
+## 2.10.0
+
+- [x] improvements when add multiple references (`Ioan 3 16 ;; Fapte 2 3;`)
+- [x] screen-badge number (1, 2) - instead of [1] or [2] on windows for projection (so we know which one is backstage or live) + header when menu is open
+- [x] fix verses with that go to new line and have user background color
 
 ## 2.9.0 (2025-05-19)
 
