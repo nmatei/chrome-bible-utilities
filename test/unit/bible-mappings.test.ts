@@ -12,7 +12,9 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] PSA 1:3   -> [НРП] PSA 1:3",
     "[VDC] PSA 1:5   -> [НРП] PSA 1:5",
     "[VDC] ISA 3:1   -> [НРП] ISA 3:1",
-    "[VDC] ISA 3:18  -> [НРП] ISA 3:18"
+    "[VDC] ISA 3:18  -> [НРП] ISA 3:18",
+    "[VDC] ECC 4:1  -> [НРП] ECC 4:1",
+    "[VDC] ECC 4:16  -> [НРП] ECC 4:16"
   ];
 
   const RO_References = {
@@ -68,6 +70,12 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] PSA 23:1  -> [НРП] PSA 22:1",
     "[VDC] PSA 22:1  -> [НРП] PSA 21:2",
     // TODO PSALMS more Tests
+    // ECCLESIASTES
+    // ECC
+    "[VDC] ECC 5:1   -> [НРП] ECC 4:17",
+    "[VDC] ECC 5:2   -> [НРП] ECC 5:1",
+    "[VDC] ECC 5:20   -> [НРП] ECC 5:19",
+
     //The SONG of SOLOMON
     "[VDC] SNG 1:2   -> [НРП] SNG 1:1",
     "[VDC] SNG 1:17  -> [НРП] SNG 1:16",

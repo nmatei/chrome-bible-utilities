@@ -4,6 +4,8 @@
  *
  *   https://www.ph4.org/biblia_ruennum.php
  *
+ *   https://www.biblegateway.com/passage/?search=%D0%95%D0%BA%D0%BA%D0%BB%D0%B5%D1%81%D0%B8%D0%B0%D1%81%D1%82%205%2CEcclesiastes%205&version=RUSV;NIV
+ *
  * TODO consider to create an npm package
  */
 
@@ -179,6 +181,14 @@ const basicRuMapping = {
       147: [
         { from: [1, 11], diff: [-1, 0] },
         { from: [12, 20], diff: [0, -11] }
+      ]
+    }
+  },
+  ECC: {
+    source: {
+      5: [
+        { from: [1, 1], diff: [-1, 16] },
+        { from: [2, 20], diff: [0, -1] }
       ]
     }
   },
