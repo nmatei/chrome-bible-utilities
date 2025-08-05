@@ -67,6 +67,8 @@ function showPinContextMenu(e) {
     actions.push({
       text: "Project entire reference",
       icon: icons.projectAll,
+      shortcut: "Shift + Click",
+      itemId: "projectAll",
       handler: () => {
         onReferenceClick(e.target, {
           ctrlKey: true
@@ -76,6 +78,7 @@ function showPinContextMenu(e) {
     actions.push({
       text: "Force Project (bring to front)",
       icon: icons.bringToFront,
+      itemId: "bringToFront",
       handler: () => {
         onReferenceClick(e.target, {
           ctrlKey: true,

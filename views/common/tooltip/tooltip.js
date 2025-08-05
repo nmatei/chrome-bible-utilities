@@ -76,7 +76,8 @@ function getContextMenu(items, destroyIfExist = false) {
         ${item.onmouseenter ? `onmouseenter="${item.onmouseenter}"` : ""} 
         data-idx="${i}" data-id="${item.itemId || item.text}" ${item.disabled ? "disabled" : ""}>
           <span class='menu-icon'>${item.icon || ""}</span>
-          <spam class="action-btn-text">${item.text}</spam>
+          <span class="action-btn-text">${item.text}</span>
+          ${item.shortcut ? `<span class="key-code">${item.shortcut}</span>` : ""}
         </button>`;
     })
     .join("");

@@ -740,6 +740,12 @@ span.screen-badge[data-display] {
   display: inline-block;
   padding-right: 20px;
 }
+.context-menu .key-code {
+  background-color: #22222230;
+  border: 1px solid #22222250;
+  font-size: 0.8em;
+  font-weight: normal;
+}
 .context-menu-title span.screen-badge[data-display]:after {
   box-shadow: 0 0 0 2px #333333aa;
 }
