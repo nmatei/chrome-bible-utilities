@@ -52,7 +52,9 @@ function createContextMenu(id = "context-menu", destroyIfExist = false) {
   function bodyClick() {
     document.body.removeEventListener("click", bodyClick);
     setTimeout(() => {
-      document.body.removeChild(menu);
+      try {
+        document.body.removeChild(menu);
+      } catch (error) {}
     }, 10);
   }
 
