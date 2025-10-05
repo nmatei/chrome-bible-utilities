@@ -110,29 +110,54 @@ export function applyRootStyles(slide, el) {
 /**
  * Initialize the form with the user's option settings
  * @param {Boolean} currentSlide
+ * @param {Number} windowIndex - for projector tabs (1 or 2), used to get correct slide
  * @returns {Promise<Object>}
  */
-export async function initUserOptions(currentSlide) {
-  const options = await applyLoadOptions(getDefaults(), currentSlide);
-  return currentSlide ? options.slides[options.selected] : options;
+export async function initUserOptions(currentSlide, windowIndex) {
+  const options = await applyLoadOptions(getDefaults(), currentSlide, windowIndex);
+  if (currentSlide && windowIndex) {
+    // For projector tabs, get the slide for the specific window
+    const selectedIndex = Array.isArray(options.selected)
+      ? options.selected[windowIndex - 1] || 0
+      : options.selected || 0;
+    return options.slides[selectedIndex] || options.slides[0];
+  }
+  return currentSlide ? options.slides[0] : options; // Fallback for settings
 }
 
-async function applyBackgroundImage(options, currentSlide) {
+async function applyBackgroundImage(options, currentSlide, windowIndex) {
   indexedDBInstance = indexedDBInstance || (await initFilesDB());
 
-  const files = await Promise.all(
-    options.slides.map((slide, i) => {
-      const key = currentSlide === true && i !== options.selected ? -1 : slide.pageBackgroundImageKey;
-      return retrieveFile(key);
-    })
-  );
-  options.slides.forEach((slide, index) => {
-    const file = files[index];
-    slide.pageBackgroundImage = file ? `url(${file.data})` : "none";
-  });
+  if (currentSlide && windowIndex) {
+    // For projector tabs, load background image for the specific slide
+    const selectedIndex = Array.isArray(options.selected)
+      ? options.selected[windowIndex - 1] || 0
+      : options.selected || 0;
+    const slide = options.slides[selectedIndex];
+
+    if (slide && slide.pageBackgroundImageKey !== undefined) {
+      const file = await retrieveFile(slide.pageBackgroundImageKey);
+      slide.pageBackgroundImage = file ? `url(${file.data})` : "none";
+    } else {
+      if (slide) {
+        slide.pageBackgroundImage = "none";
+      }
+    }
+  } else {
+    // For settings window, load all background images
+    const files = await Promise.all(
+      options.slides.map(slide => {
+        return retrieveFile(slide.pageBackgroundImageKey);
+      })
+    );
+    options.slides.forEach((slide, index) => {
+      const file = files[index];
+      slide.pageBackgroundImage = file ? `url(${file.data})` : "none";
+    });
+  }
 }
 
-export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
+export async function applyLoadOptions(defaultSlideOptions, currentSlide, windowIndex) {
   const storageData = await chrome.storage.sync.get("options");
   let options = storageData.options;
 
@@ -140,7 +165,7 @@ export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
   //    migrate the data to multiple slides
   if (!options || !options.slides) {
     options = {
-      selected: 0,
+      selected: [0, 0],
       slides: [
         {
           ...storageData.options
@@ -149,12 +174,22 @@ export async function applyLoadOptions(defaultSlideOptions, currentSlide) {
     };
   }
 
+  // Migrate old settings from number to array (similar to displaySettings migration)
+  if (typeof options.selected === "number") {
+    const oldSelected = options.selected;
+    options.selected = [oldSelected, oldSelected];
+    await chrome.storage.sync.set({ options });
+  } else if (!Array.isArray(options.selected)) {
+    options.selected = [0, 0];
+    await chrome.storage.sync.set({ options });
+  }
+
   options.slides = options.slides.map(slide => ({
     ...defaultSlideOptions,
     ...slide
   }));
 
-  await applyBackgroundImage(options, currentSlide);
+  await applyBackgroundImage(options, currentSlide, windowIndex);
 
   return options;
 }

@@ -164,6 +164,39 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ status: 200 });
       break;
     }
+    case "updateSlideSelection": {
+      const { windowIndex } = request.payload;
+      const key = projectorStorageKey + (windowIndex === 1 ? "" : windowIndex);
+
+      getWindowByKey(key)
+        .then(async ({ win }) => {
+          if (!win) {
+            sendResponse({ status: 404, error: "Window not found" });
+            return;
+          }
+
+          if (!win.tabs || !win.tabs[0]) {
+            sendResponse({ status: 404, error: "No tabs in window" });
+            return;
+          }
+
+          chrome.tabs
+            .sendMessage(win.tabs[0].id, {
+              action: "slideSelectionChanged",
+              payload: request.payload
+            })
+            .then(() => {
+              sendResponse({ status: 200 });
+            })
+            .catch(error => {
+              sendResponse({ status: 500, error: error.message });
+            });
+        })
+        .catch(error => {
+          sendResponse({ status: 500, error: error.message });
+        });
+      return true;
+    }
   }
 });
 
@@ -223,7 +256,8 @@ async function getWindowByKey(key) {
   let win;
   if (existingId) {
     try {
-      win = await chrome.windows.get(existingId);
+      // TODO review if we need { populate: true } and the impact of having it
+      win = await chrome.windows.get(existingId, { populate: true });
     } catch (e) {}
   }
   return {

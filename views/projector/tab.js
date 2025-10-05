@@ -21,8 +21,15 @@ const animateKeys = {
 
 const isMac = /(Mac)/i.test(navigator.platform);
 
-const slide = await initUserOptions(true);
-let maxFontSize = getMaxFontSize(slide);
+let slide;
+let maxFontSize;
+
+// Load slide after displayIndex is properly set
+async function loadSlideForWindow() {
+  slide = await initUserOptions(true, displayIndex);
+  maxFontSize = getMaxFontSize(slide);
+  applyRootStyles(slide);
+}
 
 // ================================
 //   Helper functions
@@ -54,8 +61,20 @@ function initRuntimeEvents() {
         const { index } = request.payload;
         displayIndex = index;
         document.title = `📖 Bible ${index === 2 ? "②" : "①"}`;
-        sendResponse({ status: 200 });
-        break;
+
+        // TODO improve loading of the slide (performance)
+        //  when second tab is opened,
+        //  the first slide is used then second slide is applied
+
+        // Load the correct slide for this window
+        loadSlideForWindow()
+          .then(() => {
+            sendResponse({ status: 200 });
+          })
+          .catch(error => {
+            sendResponse({ status: 500, error: error.message });
+          });
+        return true; // Will respond asynchronously
       }
       case "updateText": {
         const { index } = request.payload;
@@ -69,10 +88,32 @@ function initRuntimeEvents() {
       }
       case "previewRootStyles": {
         setRootStyles(request.payload);
-        maxFontSize = getMaxFontSize(slide);
-        adjustRefFontSize();
-        adjustBodySize();
+        if (slide) {
+          maxFontSize = getMaxFontSize(slide);
+          adjustRefFontSize();
+          adjustBodySize();
+        }
         sendResponse({ status: 200 });
+        break;
+      }
+      case "slideSelectionChanged": {
+        const { windowIndex } = request.payload;
+
+        if (windowIndex === displayIndex) {
+          // Reload the slide for this window
+          loadSlideForWindow()
+            .then(() => {
+              adjustRefFontSize();
+              adjustBodySize();
+              sendResponse({ status: 200 });
+            })
+            .catch(error => {
+              sendResponse({ status: 500, error: error.message });
+            });
+          return true; // Will respond asynchronously
+        } else {
+          sendResponse({ status: 200 });
+        }
         break;
       }
     }
@@ -93,9 +134,11 @@ function initEvents() {
   window.addEventListener(
     "resize",
     debounce(() => {
-      maxFontSize = getMaxFontSize(slide);
-      adjustRefFontSize();
-      adjustBodySize();
+      if (slide) {
+        maxFontSize = getMaxFontSize(slide);
+        adjustRefFontSize();
+        adjustBodySize();
+      }
       animateFocusBtn("F11");
     }, 300)
   );
@@ -106,14 +149,14 @@ function initEvents() {
     selectByKeys(e.key);
     animateFocusBtn(e.key);
   });
-  if (slide.actionsDisplay === "false") {
+  if (slide && slide.actionsDisplay === "false") {
     document.body.classList.add("focus-lost");
   }
   window.addEventListener("blur", () => {
     document.body.classList.add("focus-lost");
   });
   window.addEventListener("focus", () => {
-    if (slide.actionsDisplay === "true") {
+    if (slide && slide.actionsDisplay === "true") {
       document.body.classList.remove("focus-lost");
     }
   });
@@ -292,7 +335,7 @@ function adjustBodySize() {
     //console.debug({ step, zoom, fontSize });
     fontSize = fontSize - step;
     shouldDecrease = body.offsetHeight > window.innerHeight;
-    if (fontSize >= minFontSize && !shouldDecrease) {
+    if (fontSize >= minFontSize && !shouldDecrease && slide) {
       // search for tables and check if they fit the screen width
       const padding = 1 * slide.rootPaddingLeft + 1 * slide.rootPaddingRight;
       const table = $$("table").find(table => table.offsetWidth > window.innerWidth - padding);
@@ -306,7 +349,9 @@ function adjustBodySize() {
 }
 
 function setRootStyles(styles) {
-  Object.assign(slide, styles);
+  if (slide) {
+    Object.assign(slide, styles);
+  }
   applyRootStyles(styles);
 }
 
@@ -317,8 +362,15 @@ function initClock() {
   setTimeout(initClock, (60 - date.getSeconds()) * 1000);
 }
 
-function start() {
-  applyRootStyles(slide);
+async function start() {
+  // Ensure slide is loaded before applying styles
+  if (!slide) {
+    await loadSlideForWindow();
+  }
+
+  if (slide) {
+    applyRootStyles(slide);
+  }
   initEvents();
 }
 

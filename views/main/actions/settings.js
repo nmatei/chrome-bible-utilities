@@ -27,6 +27,79 @@ async function saveDisplaySettings(settings) {
   // TODO notify other tabs to update values
 }
 
+async function getUserOptions() {
+  const storageData = await chrome.storage.sync.get("options");
+  let options = storageData.options;
+
+  // Handle case where options don't exist yet or are in old format
+  if (!options || !options.slides) {
+    return {
+      selected: [0, 0],
+      slides: [
+        {
+          slideName: "Main",
+          slideDescription: "Default Slide"
+        }
+      ]
+    };
+  }
+
+  // Migrate old settings from number to array
+  if (typeof options.selected === "number") {
+    const oldSelected = options.selected;
+    options.selected = [oldSelected, oldSelected];
+    await chrome.storage.sync.set({ options });
+  } else if (!Array.isArray(options.selected)) {
+    options.selected = [0, 0];
+    await chrome.storage.sync.set({ options });
+  }
+
+  return options;
+}
+
+async function getSlideMenuText(windowIndex) {
+  const options = await getUserOptions();
+  const selectedIndex = options.selected[windowIndex - 1] || 0;
+  const currentSlide = options.slides[selectedIndex] || options.slides[0];
+  const slideName = currentSlide.slideName;
+  const slideDescription = currentSlide.slideDescription;
+  return `Slide: <strong title='${slideDescription}'>${slideName}</strong>`;
+}
+
+async function saveSelectedSlide(windowIndex, slideIndex) {
+  const options = await getUserOptions();
+  options.selected[windowIndex - 1] = slideIndex;
+  await chrome.storage.sync.set({ options });
+
+  // Notify the specific projector tabs
+  return chrome.runtime.sendMessage({
+    action: "updateSlideSelection",
+    payload: {
+      windowIndex,
+      slideIndex
+    }
+  });
+}
+
+async function showSlideSelectionMenu(windowIndex) {
+  const options = await getUserOptions();
+  const currentSelectedIndex = options.selected[windowIndex - 1] || 0;
+
+  async function slideHandler(el, item) {
+    await saveSelectedSlide(windowIndex, item.data.slideIndex);
+  }
+
+  return options.slides.map((slide, index) => ({
+    text: `<strong>${slide.slideName}</strong><br /><small>${slide.slideDescription}</small>`,
+    icon: index === currentSelectedIndex ? icons.checked : icons.unchecked,
+    data: {
+      slideIndex: index
+    },
+    active: index === currentSelectedIndex,
+    handler: slideHandler
+  }));
+}
+
 async function loadDisplaySettings() {
   const settings = await getDisplaySettings();
   displaySettings = settings;
@@ -34,7 +107,7 @@ async function loadDisplaySettings() {
   return settings;
 }
 
-function showScreenSourcesActions(e, btn) {
+async function showScreenSourcesActions(e, btn) {
   e.stopPropagation();
   e.preventDefault();
   const state = btn.dataset.state * 1;
@@ -46,8 +119,13 @@ function showScreenSourcesActions(e, btn) {
     updateProjectorBadge(displaySettings);
   }
 
+  const windowIndex = parseInt(btn.dataset.display);
+  const slideMenuText = await getSlideMenuText(windowIndex);
+
   const actions = [
-    `<span class="screen-badge" data-display="${btn.dataset.display}">Window</span> - Display Settings: ${btn.dataset.state === "0" ? "Off" : "On"}`,
+    `<span class="screen-badge" data-display="${btn.dataset.display}">Window</span> - Display Settings: ${
+      btn.dataset.state === "0" ? "Off" : "On"
+    }`,
     "-",
     {
       text: "Don't display verses on this window",
@@ -80,6 +158,23 @@ function showScreenSourcesActions(e, btn) {
       data: { state: 3 },
       active: state === 3,
       handler
+    },
+    "-",
+    {
+      text: slideMenuText,
+      icon: icons.settings,
+      handler: async () => {
+        const slideActions = await showSlideSelectionMenu(windowIndex);
+        const menu = getContextMenu(
+          [
+            `Select Slide for <span class="screen-badge" data-display="${windowIndex}">Window</span>`,
+            "-",
+            ...slideActions
+          ],
+          true
+        );
+        showBy(menu, btn);
+      }
     }
   ];
   const menu = getContextMenu(actions, true);
@@ -92,10 +187,10 @@ function showScreenSourcesActions(e, btn) {
  */
 function createSettingsBox() {
   const box = addSettingsBox();
-  box.addEventListener("click", e => {
+  box.addEventListener("click", async e => {
     const btn = e.target.closest(".screen-source");
     if (btn) {
-      showScreenSourcesActions(e, btn);
+      await showScreenSourcesActions(e, btn);
     }
   });
   $('[data-key="settings"]', box).addEventListener("click", () => {

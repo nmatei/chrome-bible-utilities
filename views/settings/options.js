@@ -171,9 +171,25 @@ function selectBackgroundImage(slide) {
   selected.scrollIntoView(true);
 }
 
+// Helper functions for managing selected slide index in array format
+function getSelectedIndex(options) {
+  return Array.isArray(options.selected)
+    ? options.selected[0] // Settings window uses the first window's selection
+    : options.selected;
+}
+
+function setSelectedIndex(options, newIndex) {
+  if (Array.isArray(options.selected)) {
+    options.selected[0] = newIndex; // Settings window updates the first window's selection
+  } else {
+    options.selected = newIndex;
+  }
+}
+
 // make sure we retrieve the current slide
 function getCurrentSlide(options) {
-  return options.slides[options.selected];
+  const selectedIndex = getSelectedIndex(options);
+  return options.slides[selectedIndex];
 }
 
 function selectSlide(slideEl) {
@@ -302,8 +318,8 @@ async function removeSlide(index) {
     const answer = await simpleConfirm("Do you want to remove selected Slide?");
     if (answer) {
       options.slides.splice(index, 1);
-      const sel = options.selected;
-      options.selected = sel === index ? 0 : sel > index ? sel - 1 : sel;
+      const sel = getSelectedIndex(options);
+      setSelectedIndex(options, sel === index ? 0 : sel > index ? sel - 1 : sel);
       displaySlides(options);
       slide = updateCurrentSlide(options);
     }
@@ -316,15 +332,15 @@ function duplicateSlide(slide) {
     ...slide,
     slideName: slide.slideName + " (copy)"
   });
-  options.selected = options.slides.length - 1;
+  setSelectedIndex(options, options.slides.length - 1);
   displaySlides(options);
   return updateCurrentSlide(options);
 }
 
 function swapSlides(options, index1, index2) {
   swapElements(options.slides, index1, index2);
-  const sel = options.selected;
-  options.selected = sel === index1 ? index2 : sel === index2 ? index1 : sel;
+  const sel = getSelectedIndex(options);
+  setSelectedIndex(options, sel === index1 ? index2 : sel === index2 ? index1 : sel);
   displaySlides(options);
 }
 
@@ -460,12 +476,12 @@ function initEvents() {
             slideName: "New Slide",
             slideDescription: "Description"
           });
-          options.selected = options.slides.length - 1;
+          setSelectedIndex(options, options.slides.length - 1);
           slide = updateCurrentSlide(options);
           break;
         }
         case "remove": {
-          slide = await removeSlide(options.selected);
+          slide = await removeSlide(getSelectedIndex(options));
           break;
         }
       }
@@ -476,7 +492,7 @@ function initEvents() {
     const slideEl = e.target.closest(".background-preview");
     if (slideEl) {
       selectSlide(slideEl);
-      options.selected = Array.from(slideEl.closest("#slides-master-list").children).indexOf(slideEl);
+      setSelectedIndex(options, Array.from(slideEl.closest("#slides-master-list").children).indexOf(slideEl));
       slide = updateCurrentSlide(options);
     }
   });
@@ -560,7 +576,7 @@ function displaySlides(options) {
   let currentSlideEl;
   options.slides.forEach((slide, index) => {
     const slideEl = addSlideEl(slide.slideName, slide.slideDescription);
-    if (index === options.selected) {
+    if (index === getSelectedIndex(options)) {
       currentSlideEl = slideEl;
     }
     applyRootStyles(slide, slideEl);
