@@ -7,6 +7,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 ## 2.11.0 (coming soon)
 
 - [ ] 🤔
+- [ ] Allow different design (slide master) on each window
 
 ## 2.10.0
 
