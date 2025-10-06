@@ -54,6 +54,19 @@ function updateText(text, markdown) {
   adjustBodySize();
 }
 
+// Reload the slide for this window
+function reloadSlide(sendResponse) {
+  loadSlideForWindow()
+    .then(() => {
+      adjustRefFontSize();
+      adjustBodySize();
+      sendResponse({ status: 200 });
+    })
+    .catch(error => {
+      sendResponse({ status: 500, error: error.message });
+    });
+}
+
 function initRuntimeEvents() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
@@ -100,21 +113,16 @@ function initRuntimeEvents() {
         const { windowIndex } = request.payload;
 
         if (windowIndex === displayIndex) {
-          // Reload the slide for this window
-          loadSlideForWindow()
-            .then(() => {
-              adjustRefFontSize();
-              adjustBodySize();
-              sendResponse({ status: 200 });
-            })
-            .catch(error => {
-              sendResponse({ status: 500, error: error.message });
-            });
+          reloadSlide(sendResponse);
           return true; // Will respond asynchronously
         } else {
           sendResponse({ status: 200 });
         }
         break;
+      }
+      case "resetRootStyles": {
+        reloadSlide(sendResponse);
+        return true; // Will respond asynchronously
       }
     }
   });

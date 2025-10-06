@@ -555,10 +555,11 @@ function onApplyDefaults(slide) {
 }
 
 async function onCancel() {
-  options = await initUserOptions();
-  const slide = getCurrentSlide(options);
-  await previewStyles(slide);
-  closeTab();
+  // Trigger reset event - each tab will load its own current slide based on displayIndex
+  await chrome.runtime.sendMessage({
+    action: "resetRootStyles"
+  });
+  await closeTab();
 }
 
 function addSlideEl(name, description) {
