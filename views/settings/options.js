@@ -68,9 +68,23 @@ function updateFormPreviewValues(values) {
   });
 }
 
+function closeTab() {
+  return chrome.runtime.sendMessage({
+    action: "closeSettingsTab"
+  });
+}
+
+// Trigger reset event - each tab will load its own current slide based on displayIndex
+async function resetRootStyles() {
+  return await chrome.runtime.sendMessage({
+    action: "resetRootStyles"
+  });
+}
+
 function previewStyles(slide) {
   applyRootStyles(slide, getSlideSelector());
   updateFormPreviewValues(slide);
+  // apply to all open projector tabs
   return chrome.runtime.sendMessage({
     action: "previewRootStyles",
     payload: slide
@@ -120,12 +134,6 @@ async function saveStyles(options, close = true) {
     await sleep(1000); // wait until file is saved
     await closeTab();
   }
-}
-
-function closeTab() {
-  return chrome.runtime.sendMessage({
-    action: "closeSettingsTab"
-  });
 }
 
 async function displayBackgroundImages(slide) {
@@ -179,11 +187,7 @@ function getSelectedIndex(options) {
 }
 
 function setSelectedIndex(options, newIndex) {
-  if (Array.isArray(options.selected)) {
-    options.selected[0] = newIndex; // Settings window updates the first window's selection
-  } else {
-    options.selected = newIndex;
-  }
+  options.selected = [newIndex, newIndex];
 }
 
 // make sure we retrieve the current slide
@@ -555,10 +559,7 @@ function onApplyDefaults(slide) {
 }
 
 async function onCancel() {
-  // Trigger reset event - each tab will load its own current slide based on displayIndex
-  await chrome.runtime.sendMessage({
-    action: "resetRootStyles"
-  });
+  await resetRootStyles();
   await closeTab();
 }
 

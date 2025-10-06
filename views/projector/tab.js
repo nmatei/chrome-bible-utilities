@@ -2,7 +2,9 @@
  * @global marked
  */
 
-let displayIndex = 1;
+// Get displayIndex from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const displayIndex = parseInt(urlParams.get("index")) || 1;
 
 import { applyRootStyles, BIBLE_TABS_URL, initUserOptions } from "../settings/common.js";
 
@@ -70,25 +72,6 @@ function reloadSlide(sendResponse) {
 function initRuntimeEvents() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
-      case "windowCreated": {
-        const { index } = request.payload;
-        displayIndex = index;
-        document.title = `📖 Bible ${index === 2 ? "②" : "①"}`;
-
-        // TODO improve loading of the slide (performance)
-        //  when second tab is opened,
-        //  the first slide is used then second slide is applied
-
-        // Load the correct slide for this window
-        loadSlideForWindow()
-          .then(() => {
-            sendResponse({ status: 200 });
-          })
-          .catch(error => {
-            sendResponse({ status: 500, error: error.message });
-          });
-        return true; // Will respond asynchronously
-      }
       case "updateText": {
         const { index } = request.payload;
         if (typeof index === "undefined" || index === displayIndex) {
@@ -101,11 +84,9 @@ function initRuntimeEvents() {
       }
       case "previewRootStyles": {
         setRootStyles(request.payload);
-        if (slide) {
-          maxFontSize = getMaxFontSize(slide);
-          adjustRefFontSize();
-          adjustBodySize();
-        }
+        maxFontSize = getMaxFontSize(slide);
+        adjustRefFontSize();
+        adjustBodySize();
         sendResponse({ status: 200 });
         break;
       }
@@ -142,11 +123,9 @@ function initEvents() {
   window.addEventListener(
     "resize",
     debounce(() => {
-      if (slide) {
-        maxFontSize = getMaxFontSize(slide);
-        adjustRefFontSize();
-        adjustBodySize();
-      }
+      maxFontSize = getMaxFontSize(slide);
+      adjustRefFontSize();
+      adjustBodySize();
       animateFocusBtn("F11");
     }, 300)
   );
@@ -157,14 +136,14 @@ function initEvents() {
     selectByKeys(e.key);
     animateFocusBtn(e.key);
   });
-  if (slide && slide.actionsDisplay === "false") {
+  if (slide.actionsDisplay === "false") {
     document.body.classList.add("focus-lost");
   }
   window.addEventListener("blur", () => {
     document.body.classList.add("focus-lost");
   });
   window.addEventListener("focus", () => {
-    if (slide && slide.actionsDisplay === "true") {
+    if (slide.actionsDisplay === "true") {
       document.body.classList.remove("focus-lost");
     }
   });
@@ -343,7 +322,7 @@ function adjustBodySize() {
     //console.debug({ step, zoom, fontSize });
     fontSize = fontSize - step;
     shouldDecrease = body.offsetHeight > window.innerHeight;
-    if (fontSize >= minFontSize && !shouldDecrease && slide) {
+    if (fontSize >= minFontSize && !shouldDecrease) {
       // search for tables and check if they fit the screen width
       const padding = 1 * slide.rootPaddingLeft + 1 * slide.rootPaddingRight;
       const table = $$("table").find(table => table.offsetWidth > window.innerWidth - padding);
@@ -357,9 +336,7 @@ function adjustBodySize() {
 }
 
 function setRootStyles(styles) {
-  if (slide) {
-    Object.assign(slide, styles);
-  }
+  Object.assign(slide, styles);
   applyRootStyles(styles);
 }
 
@@ -371,14 +348,12 @@ function initClock() {
 }
 
 async function start() {
-  // Ensure slide is loaded before applying styles
-  if (!slide) {
-    await loadSlideForWindow();
-  }
+  // Set title based on displayIndex
+  document.title = `📖 Bible ${displayIndex === 2 ? "②" : "①"}`;
 
-  if (slide) {
-    applyRootStyles(slide);
-  }
+  // Load slide for this window
+  await loadSlideForWindow();
+
   initEvents();
 }
 

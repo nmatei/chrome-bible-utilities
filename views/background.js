@@ -85,19 +85,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "createTab": {
       const index = request.payload.index || 1;
       const key = projectorStorageKey + (index === 1 ? "" : index);
-      getWindow(key, createProjectorTab).then(async (win, status) => {
-        const id = win.tabs ? win.tabs[0].id : "";
-        if (id) {
-          chrome.tabs.sendMessage(id, {
-            action: "windowCreated",
-            payload: {
-              index
-            }
-          });
-        } else {
-          console.warn("no tabs", win);
-        }
-
+      getWindow(key, settings => createProjectorTab(settings, index)).then(async (win, status) => {
         sendResponse({
           status,
           id: win.id
@@ -308,9 +296,10 @@ function mapWindowsSettings(settings = {}) {
   return createSettings;
 }
 
-function createProjectorTab(settings = {}) {
+function createProjectorTab(settings = {}, index = 1) {
+  const url = chrome.runtime.getURL(projectorPage) + `?index=${index}`;
   return createWindow({
-    url: chrome.runtime.getURL(projectorPage),
+    url,
     ...settings
   });
 }
