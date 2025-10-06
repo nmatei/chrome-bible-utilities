@@ -197,28 +197,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       return true;
     }
-    case "resetRootStyles": {
-      // Notify both projector windows to reset to their current slide styles
-      const windows = [1, 2];
-      const promises = windows.map(async windowIndex => {
-        const key = projectorStorageKey + (windowIndex === 1 ? "" : windowIndex);
-        try {
-          const { win } = await getWindowByKey(key);
-          if (win && win.tabs && win.tabs[0]) {
-            return chrome.tabs.sendMessage(win.tabs[0].id, {
-              action: "resetRootStyles"
-            });
-          }
-        } catch (error) {
-          console.warn(`Failed to reset window ${windowIndex}:`, error);
-        }
-      });
-
-      Promise.allSettled(promises).then(() => {
-        sendResponse({ status: 200 });
-      });
-      return true;
-    }
   }
 });
 
