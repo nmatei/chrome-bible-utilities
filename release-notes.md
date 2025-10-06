@@ -8,7 +8,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 - [x] Allow different design (slide master) on each window - from settings button select Window 1 or Window 2 then "Slide:" menu to select design for that particular window (eg. Window 1 = Projector, Window 2 = TV)
 
-## 2.10.0
+## 2.10.0 (2025-07-15)
 
 - [x] improvements when add multiple references (`Ioan 3 16 ;; Fapte 2 3;`)
 - [x] screen-badge number (1, 2) - instead of [1] or [2] on windows for projection (so we know which one is backstage or live) + header when menu is open
