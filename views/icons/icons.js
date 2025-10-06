@@ -76,5 +76,13 @@ const icons = {
       <path id="leftLines" d="M7,8H8M7,16H8M7,12H8" style="fill: none; stroke: #2ca9bc; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
       <path id="rightLines" d="M16,8H17M16,16H17M16,12H17" style="fill: none; stroke: #2ca9bc; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
     </g>
+  </svg>`,
+  // Right arrow icon - chevron style
+  rightArrow: `<svg width="24px" height="24px" fill="#000000" viewBox="0 0 24 24" id="chevron-right" data-name="Line Color" xmlns="http://www.w3.org/2000/svg" class="icon line-color">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+      <polyline id="primary" points="10 16 14 12 10 8" style="fill: none; stroke: #2ca9bc; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polyline>
+    </g>
   </svg>`
 };

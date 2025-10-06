@@ -81,14 +81,18 @@ async function resetRootStyles() {
   });
 }
 
-function previewStyles(slide) {
-  applyRootStyles(slide, getSlideSelector());
-  updateFormPreviewValues(slide);
-  // apply to all open projector tabs
+// apply to all open projector tabs
+function previewRootStyles(slide) {
   return chrome.runtime.sendMessage({
     action: "previewRootStyles",
     payload: slide
   });
+}
+
+function previewStyles(slide) {
+  applyRootStyles(slide, getSlideSelector());
+  updateFormPreviewValues(slide);
+  return previewRootStyles(slide);
 }
 
 function readImageFile(file) {
@@ -122,7 +126,6 @@ async function readUploadedFiles(event) {
 async function saveStyles(options, close = true) {
   const saveOptions = {
     ...options,
-    //selected: options.selected,
     slides: options.slides.map(slide => ({
       ...slide,
       // don't store 'files'

@@ -13,10 +13,21 @@
   border-radius: 4px;
 }
 .context-menu .context-menu-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-weight: bold;
-  padding: 4px 10px;
+  padding: 6px 8px 6px 8px;
   margin: 0;
   color: #333333;
+}
+.context-menu .context-menu-title .menu-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 32px;
+  min-height: 24px;
+  line-height: 1.4em;
 }
 .context-menu .action-btn {
   display: flex;
@@ -58,6 +69,16 @@
 .context-menu .action-btn .action-btn-text {
   flex: 1;
   line-height: 1.4em;
+}
+.context-menu .action-btn .menu-right-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 20px;
+  min-height: 24px;
+  line-height: 1.4em;
+  opacity: 0.6;
+  margin-left: 8px;
 }
 
 .context-menu .context-menu-layout {

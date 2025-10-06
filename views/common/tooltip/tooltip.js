@@ -80,6 +80,7 @@ function getContextMenu(items, destroyIfExist = false) {
           <span class='menu-icon'>${item.icon || ""}</span>
           <span class="action-btn-text">${item.text}</span>
           ${item.shortcut ? `<span class="key-code">${item.shortcut}</span>` : ""}
+          ${item.rightIcon ? `<span class="menu-right-icon">${item.rightIcon}</span>` : ""}
         </button>`;
     })
     .join("");

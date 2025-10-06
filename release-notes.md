@@ -6,8 +6,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.11.0 (coming soon)
 
-- [ ] 🤔
-- [x] Allow different design (slide master) on each window
+- [x] Allow different design (slide master) on each window - from settings button select Window 1 or Window 2 then "Slide:" menu to select design for that particular window (eg. Window 1 = Projector, Window 2 = TV)
 
 ## 2.10.0
 

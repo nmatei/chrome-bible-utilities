@@ -163,11 +163,12 @@ async function showScreenSourcesActions(e, btn) {
     {
       text: slideMenuText,
       icon: icons.settings,
+      rightIcon: icons.rightArrow,
       handler: async () => {
         const slideActions = await showSlideSelectionMenu(windowIndex);
         const menu = getContextMenu(
           [
-            `Select Slide for <span class="screen-badge" data-display="${windowIndex}">Window</span>`,
+            `${icons.rightArrow} Select Slide for <span class="screen-badge" data-display="${windowIndex}">Window</span>`,
             "-",
             ...slideActions
           ],
