@@ -18,6 +18,10 @@
   font-weight: normal;
 }
 
+.secondary-color {
+  color: #2ca9bc;
+}
+
 .actions {
   padding: 5px;
   display: flex;

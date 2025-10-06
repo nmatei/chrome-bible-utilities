@@ -123,9 +123,9 @@ async function showScreenSourcesActions(e, btn) {
   const slideMenuText = await getSlideMenuText(windowIndex);
 
   const actions = [
-    `<span class="screen-badge" data-display="${btn.dataset.display}">Window</span> - Display Settings: ${
-      btn.dataset.state === "0" ? "Off" : "On"
-    }`,
+    `<span class="screen-badge" data-display="${
+      btn.dataset.display
+    }">Window</span> - Display Settings: <span class="secondary-color">${btn.dataset.state === "0" ? "Off" : "On"}`,
     "-",
     {
       text: "Don't display verses on this window",
