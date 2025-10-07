@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.11.0 (coming soon)
+## 2.12.0 (coming soon)
+
+- [ ] 🤔
+
+## 2.11.0 (2025-10-7)
 
 - [x] Allow different design (slide master) on each window - from settings button select Window 1 or Window 2 then "Slide:" menu to select design for that particular window (eg. Window 1 = Projector, Window 2 = TV)
 
