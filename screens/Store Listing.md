@@ -12,53 +12,26 @@ Project selected Bible verses (works for parallel as well) from YouVersion bible
 
 ## Description
 
-This extension will help you project Bible verses in your Church, You decide which version to display and also can project parallel versions or in 2 different languages.
+✨ Transform your church presentations with seamless Bible verse projection!
 
-Requirements:
+Project Scripture from bible.com directly to your screen or projector with just a click. Choose any translation, display parallel versions side-by-side, or even show verses in multiple languages simultaneously.
 
-- Install this extension
-- visit https://www.bible.com/bible (or click on extension icon)
-- new actions (💬, 🛠, ❔, 📌) should be visible in top/left corner
-- for more features login
+✨ KEY FEATURES:
 
----
+• 🔤 One-Click Verse Projection - Click any verse number on bible.com to instantly display it
+• 💬 Live Text Projection - Project custom messages, announcements, or lyrics with Markdown support
+• 📌 Pin Your Favorites - Save and quickly access frequently used verses and references
+• 🌍 Parallel Bible Support - Display multiple translations or languages at once
+• 🎨 Fully Customizable - Control fonts, colors, backgrounds, and layouts to match your church style
+• ⌨️ Smart Keyboard Navigation - Navigate verses, multi-select, and control display with intuitive shortcuts
 
-💠 Features & Usage
+GETTING STARTED:
 
-- 🔤 Project selected verses (+/- parallel text)
-  - `Search` Book and Chapter
-  - `Click` on verse number to display it on projector
-  - `Up/Down/Left/Right` arrows to navigate to next/preview verses
-  - `CTRL + Click` to add verse to selection (multi select)
-  - `Shift + Click` to multi select between last selection
-  - `ALT + Click` on verse number or Pinned reference, to force project window to be on top (in case is not visible)
-  - `ESC` to show blank page (hide all selected verses)
-  - `F11` to enter/exit fullscreen projector window (first focus it)
-- 💬 Project `live text`
-  - input any text to be projected
-  - `CTRL + Enter` to project live text (inside textarea)
-- 📌 List/Pin some verses (references)
-  - 💾 Store verses (references) for future selection and project them faster
-  - `Enter` to add one/more references (`,` or `;` as separator) in 'Pin verses' input 🔍
-  - `Enter + Enter` to project added reference to List/Pin
-  - `Shift + Enter` to add and project full reference (Mat 6:7-13)
-  - `ALT + Click` on Reference - force project (on top)
-  - `CTRL + Click` project all verses from pin (Mat 6:7-13)
-  - 📝 `Edit All` to Copy/Paste/Edit multiple references
-  - ➕ will pin current Reference if search input is empty
-  - Search pin: 16, 2-4, 2:4, 2 4, `+Enter` - pin current chapter or verses
-  - ↕ drag & drop to reorder verses
-  - 🖱 Context menu (right click) for more actions inside pin list
-    - 📄 Copy all pin verses to clipboard
-    - ✖ Clear all
-  - Change Reference 🔍 from Projector tab - works same as Add Ref's 🔍
-    - `Tab` inside projector tab to see bottom dock-bar
-    - 🖱 move mouse at the bottom edge of projector tab
-    - Type any reference and use same shortcuts to project it (Enter or Shift + Enter for multiple verses)
-- 🛠 Projector Screen Settings (Advanced / Slide master)
+1. Install this extension
+2. Visit https://www.bible.com/bible (or click the extension icon)
+3. Look for action buttons (💬, 🛠, ❔, 📌) in the top-left corner
+4. Click the Help button (❔) to see all available features and shortcuts
 
-For more details or Advanced features check https://github.com/nmatei/chrome-bible-utilities
+💡 PRO TIP: Use the in-app Help menu (❔) for the latest shortcuts, features, and tips!
 
----
-
-PS: Pls don't email me with marketing mails like: "Elevate Your Chrome Extension: Guaranteed Installs & Enhanced Visibility...", or "...campaign in getting your extension great positive feedbacks". Simple Read Bible instead!
+For detailed documentation and advanced features, visit: https://github.com/nmatei/chrome-bible-utilities
