@@ -7,7 +7,7 @@ function addHelpBox() {
     <h2 class="actions win-title">
       <span class="key-code">${icons.question}</span>
       <span class="fill">Help / Usage</span>
-      <span class="app-version">[ v.${version} ]</span>
+      <a class="app-version abp-badge" title="Release Notes" href="https://nmatei.github.io/chrome-bible-utilities/release-notes" target="_blank">[ v.${version} ]</a>
       <button type="button" class="action-btn" data-key="close" title="Close">${icons.close}</button>
     </h2>
     <div class="info-text-content-wrapper">

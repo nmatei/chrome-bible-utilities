@@ -13,9 +13,12 @@
   background: #000000;
 }
 
-.app-version {
-  color: #ffffffa8;
+a.app-version {
+  color: #ffffffa8 !important;
   font-weight: normal;
+}
+a.app-version:hover {
+  color: #9dc9ff !important;
 }
 
 .secondary-color {
