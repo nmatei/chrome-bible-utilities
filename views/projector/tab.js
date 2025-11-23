@@ -121,8 +121,33 @@ function initRuntimeEvents() {
         updateTextEvent(request.payload, sendResponse);
         break;
       }
+      case "help": {
+        sendResponse({
+          status: 200,
+          availableActions: {
+            updateText: {
+              description: "Update the projection window content",
+              payload: {
+                index: "number (optional) - Window index (1 or 2). If omitted, updates current window",
+                text: "string (required) - Content to display",
+                markdown: "boolean (optional) - Parse text as Markdown. Supports tables, lists, checkboxes, etc."
+              },
+              notes: [
+                "Use .singlelines class on container for non-wrapping paragraphs that auto-fit screen width",
+                "Non-breaking hyphens are automatically applied",
+                "Double spaces are preserved in markdown mode"
+              ]
+            }
+          }
+        });
+        break;
+      }
       default: {
-        sendResponse({ status: 403, error: "Action not allowed from external extensions" });
+        sendResponse({
+          status: 403,
+          error: "Action not allowed from external extensions",
+          hint: 'Send action: "help" for available commands'
+        });
       }
     }
   });
@@ -333,6 +358,9 @@ function adjustBodySize() {
   const minFontSize = 10;
   let fontSize = maxFontSize;
   const body = document.body;
+  // elements that could exceed screen width
+  const wideElements = $$("table, .singlelines p");
+  const padding = 1 * slide.rootPaddingLeft + 1 * slide.rootPaddingRight;
   let shouldDecrease = false;
   do {
     body.style.fontSize = fontSize + "px";
@@ -342,10 +370,8 @@ function adjustBodySize() {
     fontSize = fontSize - step;
     shouldDecrease = body.offsetHeight > window.innerHeight;
     if (fontSize >= minFontSize && !shouldDecrease) {
-      // search for tables and check if they fit the screen width
-      const padding = 1 * slide.rootPaddingLeft + 1 * slide.rootPaddingRight;
-      const table = $$("table").find(table => table.offsetWidth > window.innerWidth - padding);
-      if (table) {
+      const hasWideElement = wideElements.some(el => el.scrollWidth > window.innerWidth - padding);
+      if (hasWideElement) {
         shouldDecrease = true;
       }
     }

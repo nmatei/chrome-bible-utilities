@@ -73,6 +73,8 @@ body:before {
 
 #root {
   padding: var(--rootPaddingTop) var(--rootPaddingRight) var(--rootPaddingBottom) var(--rootPaddingLeft);
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 h1,
 h2,
@@ -207,6 +209,18 @@ p.parallel.verse {
 }
 p.parallel.verse > sup {
   color: var(--parallelVerseNumberColor);
+}
+
+.singlelines {
+  white-space: normal;
+  display: block;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+.singlelines p {
+  white-space: nowrap;
+  display: block;
 }
 
 .auto-hide:not(.focus) {
