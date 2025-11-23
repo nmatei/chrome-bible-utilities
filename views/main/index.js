@@ -215,6 +215,9 @@ async function printSelectedVerses(verses) {
     // create projector windows first
     await getProjectTab();
   }
+
+  // TODO improve? performance by checking?
+  //   keep in mind that if index is 'undefined' will project to both windows (with one single event)
   projectText(display1Text, false, 1);
   projectText(display2Text, false, 2);
 }
