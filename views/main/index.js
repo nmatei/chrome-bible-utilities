@@ -205,18 +205,18 @@ function getDisplayText(verses, displays) {
 
 async function printSelectedVerses(verses) {
   const [display1, display2] = displaySettings;
-  const text = display1 && verses.length ? getDisplayText(verses, display1) : "";
+  const display1Text = display1 && verses.length ? getDisplayText(verses, display1) : "";
 
-  let parallelText = display2 ? text : "";
+  let display2Text = display2 ? display1Text : "";
   if (display2 !== display1) {
-    parallelText = display2 && verses.length ? getDisplayText(verses, display2) : "";
+    display2Text = display2 && verses.length ? getDisplayText(verses, display2) : "";
   }
-  if (text || parallelText) {
+  if (display1Text || display2Text) {
     // create projector windows first
     await getProjectTab();
   }
-  projectText(text, false, 1);
-  projectText(parallelText, false, 2);
+  projectText(display1Text, false, 1);
+  projectText(display2Text, false, 2);
 }
 
 function deselectAll() {

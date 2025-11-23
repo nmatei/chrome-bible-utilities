@@ -1,5 +1,6 @@
 /**
  * @global marked
+ * @global DOMPurify
  */
 
 // Get displayIndex from URL parameters
@@ -43,6 +44,7 @@ function updateText(text, markdown) {
     text = window.marked.parse(text);
     text = text.replaceAll("  ", " &nbsp;"); // replace double spaces with non-breaking space
   }
+  text = window.DOMPurify.sanitize(text);
   text = text.replaceAll("-", "&#8209;");
   root.innerHTML = text;
 
@@ -69,17 +71,21 @@ function reloadSlide(sendResponse) {
     });
 }
 
+function updateTextEvent({ index, text, markdown }, sendResponse) {
+  // TODO sanity check (DOMPurify.sanitize?)
+  if (typeof index === "undefined" || index === displayIndex) {
+    updateText(text, markdown);
+    sendResponse({ status: 200 });
+  } else {
+    sendResponse({ status: 201 });
+  }
+}
+
 function initRuntimeEvents() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
       case "updateText": {
-        const { index } = request.payload;
-        if (typeof index === "undefined" || index === displayIndex) {
-          updateText(request.payload.text, request.payload.markdown);
-          sendResponse({ status: 200 });
-        } else {
-          sendResponse({ status: 201 });
-        }
+        updateTextEvent(request.payload, sendResponse);
         break;
       }
       case "previewRootStyles": {
@@ -104,6 +110,19 @@ function initRuntimeEvents() {
       case "resetRootStyles": {
         reloadSlide(sendResponse);
         return true; // Will respond asynchronously
+      }
+    }
+  });
+
+  // Allow external extensions to send updateText messages
+  chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+    switch (request.action) {
+      case "updateText": {
+        updateTextEvent(request.payload, sendResponse);
+        break;
+      }
+      default: {
+        sendResponse({ status: 403, error: "Action not allowed from external extensions" });
       }
     }
   });

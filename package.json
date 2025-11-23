@@ -9,6 +9,10 @@
     "start": "browser-sync start --server --directory --no-ui --files '**/*'",
     "watch-test": "jest --watch",
     "doctoc": "doctoc README.md",
+    "copy-libs": "run-os",
+    "copy-libs:macos": "cp node_modules/marked/lib/marked.umd.js views/projector/external/marked.min.js && cp node_modules/dompurify/dist/purify.min.js views/projector/external/dompurify.min.js",
+    "copy-libs:windows": "copy node_modules\\marked\\lib\\marked.umd.js views\\projector\\external\\marked.min.js && copy node_modules\\dompurify\\dist\\purify.min.js views\\projector\\external\\dompurify.min.js",
+    "postinstall": "npm run copy-libs",
     "zip": "run-os",
     "zip:macos": "7z a ./build/my.bible.com-$npm_package_version.zip views manifest.json README.md",
     "zip:windows": "7z a ./build/my.bible.com-%npm_package_version%.zip views manifest.json README.md",
@@ -43,7 +47,8 @@
     ]
   },
   "dependencies": {
-    "marked": "^15.0.6"
+    "dompurify": "^3.3.0",
+    "marked": "^17.0.1"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.330",
