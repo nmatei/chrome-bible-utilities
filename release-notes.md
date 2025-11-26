@@ -4,11 +4,11 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.12.0 (comming soon)
+## 2.12.0 (2025-11-26)
 
-- [x] Updated marked library from v15.0.6 to v17.0.1 (latest Markdown parser)
-- [x] Added DOMPurify v3.3.0 for HTML sanitization (security enhancement)
-- [x] Allow external extensions to send updateText messages to projector tab (with text and markdown flag)
+- [x] 📦 Updated marked library from v15.0.6 to v17.0.1 (latest Markdown parser)
+- [x] 🔒 Added DOMPurify v3.3.0 for HTML sanitization (security enhancement)
+- [x] 🔌 Allow external extensions to send `updateText` messages to projector tab (with text and markdown flag)
 
 ## 2.11.0 (2025-10-07)
 
