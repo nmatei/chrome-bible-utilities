@@ -218,8 +218,8 @@ async function printSelectedVerses(verses) {
 
   // TODO improve? performance by checking?
   //   keep in mind that if index is 'undefined' will project to both windows (with one single event)
-  projectText(display1Text, false, 1);
-  projectText(display2Text, false, 2);
+  projectText(display1Text, false, 1, true);
+  projectText(display2Text, false, 2, true);
 }
 
 function deselectAll() {

@@ -24,14 +24,16 @@ function createSettingsWindow() {
  * @param {String} text
  * @param {Boolean} markdown
  * @param {Number} index
+ * @param {Boolean} nonBreakingHyphens
  */
-function projectText(text, markdown = false, index) {
+function projectText(text, markdown = false, index, nonBreakingHyphens = false) {
   return chrome.runtime.sendMessage({
     action: "updateText",
     payload: {
       text,
       markdown,
-      index
+      index,
+      nonBreakingHyphens
     }
   });
 }

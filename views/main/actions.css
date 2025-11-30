@@ -162,18 +162,13 @@ a.app-version:hover {
   color: #3d79c2;
   text-decoration: none;
 }
+
 .key-code {
   background-color: #222222;
   padding: 0.3rem 0.3rem;
   border-radius: 0.3em;
   border: 1px solid #ffffff40;
-  font-family:
-    ArialMT,
-    Helvetica Neue,
-    Arial,
-    Liberation Sans,
-    FreeSans,
-    sans-serif;
+  font-family: ArialMT, Helvetica Neue, Arial, Liberation Sans, FreeSans, sans-serif;
 }
 .title .key-code {
   border: 2px solid #ffffff;

@@ -118,6 +118,9 @@ A simple way to **support my work** & to **improve** your programming skills is 
   - [x] 🕒 **Clock** position (or hide)
   - [x] Upload multiple **background images** and allow to easy switch them
   - [x] Background Opacity (make image lighter or darker)
+- [x] Allow other extensions to send data to be projected
+  - [x] via `Chrome Runtime Messages` (chrome.runtime.sendMessage)
+  - [x] example how to project songs on this extension: [github.com/unu-unu-ro/norless-improvements-extension](https://github.com/unu-unu-ro/norless-improvements-extension)
 
 ## ⚙ Setup Plugin as Developer
 
@@ -168,6 +171,7 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] ‭‭Filipeni‬
 - [ ] use TypeScript and a build system?
   - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
+- [ ] improve adding verses that have Diacritics (ex. 1 imp 11:9 -> 1 împ 11:9 - is not recognized so shortcut will not work - use improved matching search)
 
 ### 🐛 Known bugs
 

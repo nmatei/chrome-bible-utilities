@@ -38,15 +38,40 @@ async function loadSlideForWindow() {
 //   Helper functions
 // ================================
 
-function updateText(text, markdown) {
+/**
+ * Replace hyphens with non-breaking hyphens in text nodes only
+ * This preserves hyphens in HTML attributes like style="margin-top" or class="favorite-link"
+ */
+function replaceHyphensInTextNodes(element) {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+  const textNodes = [];
+
+  // Collect all text nodes first to avoid modifying during traversal
+  while (walker.nextNode()) {
+    textNodes.push(walker.currentNode);
+  }
+
+  // Replace hyphens only in text content
+  textNodes.forEach(node => {
+    if (node.nodeValue && node.nodeValue.includes("-")) {
+      node.nodeValue = node.nodeValue.replaceAll("-", "\u2011"); // Unicode non-breaking hyphen
+    }
+  });
+}
+
+function updateText(text, markdown, nonBreakingHyphens = false) {
   const root = document.getElementById("root");
   if (markdown) {
     text = window.marked.parse(text);
     text = text.replaceAll("  ", " &nbsp;"); // replace double spaces with non-breaking space
   }
   text = window.DOMPurify.sanitize(text);
-  text = text.replaceAll("-", "&#8209;");
+
   root.innerHTML = text;
+
+  if (nonBreakingHyphens) {
+    replaceHyphensInTextNodes(root);
+  }
 
   if (markdown) {
     $$('input[type="checkbox"]').forEach(checkbox => {
@@ -71,10 +96,9 @@ function reloadSlide(sendResponse) {
     });
 }
 
-function updateTextEvent({ index, text, markdown }, sendResponse) {
-  // TODO sanity check (DOMPurify.sanitize?)
+function updateTextEvent({ index, text, markdown, nonBreakingHyphens }, sendResponse) {
   if (typeof index === "undefined" || index === displayIndex) {
-    updateText(text, markdown);
+    updateText(text, markdown, nonBreakingHyphens);
     sendResponse({ status: 200 });
   } else {
     sendResponse({ status: 201 });
@@ -130,7 +154,8 @@ function initRuntimeEvents() {
               payload: {
                 index: "number (optional) - Window index (1 or 2). If omitted, updates current window",
                 text: "string (required) - Content to display",
-                markdown: "boolean (optional) - Parse text as Markdown. Supports tables, lists, checkboxes, etc."
+                markdown: "boolean (optional) - Parse text as Markdown. Supports tables, lists, checkboxes, etc.",
+                nonBreakingHyphens: "boolean (optional) - Replace hyphens with non-breaking hyphens in text nodes"
               },
               notes: [
                 "Use .singlelines class on container for non-wrapping paragraphs that auto-fit screen width",
