@@ -4,6 +4,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
+## 2.13.0 (2025-12-03)
+
+- [x] 🔌 Improve external extensions `updateText` (allow '-' chars inside html tags, classes)
+
 ## 2.12.0 (2025-11-26)
 
 - [x] 📦 Updated marked library from v15.0.6 to v17.0.1 (latest Markdown parser)
