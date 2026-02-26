@@ -161,7 +161,7 @@ describe("Get reference [preview] tests", () => {
 
 describe("Test URL Url Matches", () => {
   it("getUrlMatch 1", () => {
-    const match = getUrlMatch("https://my.bible.com/bible/191/PSA.23.VDC?parallel=186");
+    const match = getUrlMatch("https://bible.com/bible/191/PSA.23.VDC?parallel=186");
     expect(match).toBeDefined();
     expect(match.groups).toEqual({
       primary: "191",
@@ -173,7 +173,7 @@ describe("Test URL Url Matches", () => {
   });
 
   it("getUrlMatch 2", () => {
-    const match = getUrlMatch("https://my.bible.com/bible/191/JOB.40.VDC?parallel=186");
+    const match = getUrlMatch("https://bible.com/bible/191/JOB.40.VDC?parallel=186");
     expect(match).toBeDefined();
     expect(match.groups).toEqual({
       primary: "191",

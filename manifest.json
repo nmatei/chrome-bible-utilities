@@ -9,20 +9,10 @@
   },
   "action": {},
   "permissions": ["activeTab", "tabs", "storage"],
-  "host_permissions": [
-    "https://my.bible.com/bible*",
-    "https://my.bible.com/*/bible*",
-    "https://www.bible.com/bible*",
-    "https://www.bible.com/*/bible*"
-  ],
+  "host_permissions": ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
   "content_scripts": [
     {
-      "matches": [
-        "https://my.bible.com/bible*",
-        "https://my.bible.com/*/bible*",
-        "https://www.bible.com/bible*",
-        "https://www.bible.com/*/bible*"
-      ],
+      "matches": ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
       "js": [
         "views/icons/icons.js",
         "views/common/utilities.js",
@@ -48,11 +38,6 @@
         "views/common/simplePrompt/simplePrompt.css",
         "views/bibles/bible.com/common-overrides.css"
       ]
-    },
-    {
-      "matches": ["https://my.bible.com/bible*", "https://my.bible.com/*/bible*"],
-      "css": ["views/bibles/my.bible.com/overrides.css"],
-      "js": ["views/bibles/bible.com/common.js", "views/bibles/my.bible.com/selectors.js"]
     },
     {
       "matches": ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],

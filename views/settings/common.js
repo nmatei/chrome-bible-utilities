@@ -1,9 +1,8 @@
 let indexedDBInstance;
 
 export const BIBLE_TABS_URL = [
-  "https://my.bible.com/bible*",
-  "https://my.bible.com/*/bible*",
   "https://www.bible.com/bible*",
+  // if we have language in the url...
   "https://www.bible.com/*/bible*"
 ];
 

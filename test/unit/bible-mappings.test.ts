@@ -107,7 +107,7 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] 2CO 13:14 -> [НРП] 2CO 13:13"
   ];
 
-  // https://my.bible.com/bible/191/JOB.40.VDC?parallel=186
+  // https://bible.com/bible/191/JOB.40.VDC?parallel=186
   // 🟦🟨🟥 vs 🟨🟦
   const RO_vs_UA = [
     // JOB
@@ -144,7 +144,7 @@ describe("Bible reference map for [RU][НРП]", () => {
     "[VDC] 2CO 13:14 -> [НРП] 2CO 13:13"
   ];
 
-  // https://my.bible.com/bible/143/JOB.41.НРП?parallel=186
+  // https://bible.com/bible/143/JOB.41.НРП?parallel=186
   // ⬜🟦🟥 vs 🟨🟦
   const RU_vs_UA = [
     "[НРП] 1SA 24:1  -> [UBIO] 1SA 24:1",

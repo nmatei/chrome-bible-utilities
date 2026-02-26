@@ -1,11 +1,6 @@
 importScripts("common/utilities.js");
 
-const BIBLE_TABS_URL = [
-  "https://my.bible.com/bible*",
-  "https://my.bible.com/*/bible*",
-  "https://www.bible.com/bible*",
-  "https://www.bible.com/*/bible*"
-];
+const BIBLE_TABS_URL = ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"];
 const DEFAULT_URL = "https://www.bible.com/bible";
 
 const projectorPage = "views/projector/tab.html";
