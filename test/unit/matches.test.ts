@@ -1,6 +1,6 @@
 import { formatVerseRef, getVerseInfo, getVerseStr } from "../../views/common/bible-mappings";
 import { splitVerses } from "../../views/common/utilities";
-import { getUrlMatch } from "../../views/bibles/bible.com/common";
+import { getUrlMatch } from "../../views/bibles/bible.com/url-utils";
 
 type VerseInfo = {
   book?: string;

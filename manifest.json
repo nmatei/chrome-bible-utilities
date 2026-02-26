@@ -42,7 +42,11 @@
     {
       "matches": ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
       "css": ["views/bibles/bible.com/overrides.css"],
-      "js": ["views/bibles/bible.com/common.js", "views/bibles/bible.com/selectors.js"]
+      "js": [
+        "views/bibles/bible.com/url-utils.js",
+        "views/bibles/bible.com/common.js",
+        "views/bibles/bible.com/selectors.js"
+      ]
     }
   ],
   "icons": {

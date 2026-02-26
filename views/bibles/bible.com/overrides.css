@@ -1,18 +1,18 @@
-main > .w-full > .pbe-12 > .w-full {
+main > .w-full > .mbe-12 {
   padding-left: 100px;
 }
-body [class^="ChapterContent_verse"] {
+body [class*="__verse"] {
   line-height: 1.6em;
   display: block;
   padding: 0 4px;
 }
 
-body [class^="ChapterContent_q"] {
+body [class*="__q"] {
   padding-inline-start: 0;
   text-indent: 0;
 }
 
-body [class^="ChapterContent_verse"] [class^="ChapterContent_label"] {
+body [class*="__verse"] > [class*="__label"] {
   display: inline;
   cursor: pointer;
   padding: 5px 5px 5px 8px !important;
@@ -21,31 +21,31 @@ body [class^="ChapterContent_verse"] [class^="ChapterContent_label"] {
   font-weight: bold;
   top: -0.2em;
 }
-[class^="ChapterContent_label"]:after {
+[class*="__label"]:after {
   content: " ";
 }
-[class^="ChapterContent_label"]:hover {
+[class*="__label"]:hover {
   background: var(--verseNumberBackgroundHover);
   border-color: var(--verseNumberBorderColorHover);
 }
-.key-focus [class^="ChapterContent_label"]:focus {
+.key-focus [class*="__label"]:focus {
   border-color: var(--elBorderColorFocus);
 }
-[class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+[class*="__verse"].projected [class*="__label"] {
   background: var(--verseNumberBackgroundProjected) !important;
   color: var(--verseNumberColorProjected) !important;
 }
-.focus-lost [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+.focus-lost [class*="__verse"].projected [class*="__label"] {
   background: var(--verseNumberBackgroundProjectedFocusLost) !important;
 }
 
-[class^="ChapterContent_note"] {
+[class*="__note"] {
   display: none !important;
 }
 
 /* TODO test */
-.focus-parallel .parallel-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"],
-.focus-primary .primary-chapter [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+.focus-parallel .parallel-chapter [class*="__verse"].projected [class*="__label"],
+.focus-primary .primary-chapter [class*="__verse"].projected [class*="__label"] {
   border-color: var(--verseNumberBorderColorProjected) !important;
 }
 

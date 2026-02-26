@@ -1,14 +1,17 @@
 const projected = "projected";
 
-const appReadySelector = '[class^="ChapterContent_bible-reader"]';
-const titlesSelector = '[class^="ChapterContent_reader"] h1';
-const verseSelectorMatch = '[class^="ChapterContent_verse"]';
-const verseLabelSelectorMatch = '[class^="ChapterContent_label"]';
-const verseContentSelector = '[class^="ChapterContent_content"]';
-const primaryViewSelector = '[class^="ChapterContent_chapter"]';
-const parallelViewSelector = '.md\\:block [class^="ChapterContent_yv-bible-text"]';
-const notesSelector = '[class^="ChapterContent_note"]';
+const appReadySelector = '[class*="__bible-reader"]';
+const titlesSelector = '[class*="__reader"] h1';
+const verseSelectorMatch = '[class*="__verse"]';
+const verseLabelSelectorMatch = '[class*="__label"]';
+const verseContentSelector = '[class*="__content"]';
+const primaryViewSelector = '[class*="__chapter"]';
+const parallelViewSelector = '.md\\:block [class*="__yv-bible-text"]';
+const notesSelector = '[class*="__note"]';
 const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
+
+// local app class
+const hideCls = "hide-popovers";
 
 function chapterPickerArrow() {
   let titleEl = $(titlesSelector);
@@ -38,10 +41,18 @@ function chaptersSelector() {
 }
 
 async function openChapter(book, chapter) {
+  // if book/chapter already opened, then do not click on it again
+  const [title] = getChapterTitles();
+  const bookText = findBookText(book, booksCache);
+  const ref = getVerseStr({ book: bookText, chapter: chapter });
+  if (title === ref) {
+    return title;
+  }
+
   let result = "";
   let bookEl = findBookEl(book);
   const dropDownArrow = chapterPickerArrow();
-  document.body.classList.add("hide-popovers");
+  document.body.classList.add(hideCls);
   if (!bookEl) {
     // fixing search one single book
     // then and click outside => will remove all 'books li' from DOM
@@ -63,7 +74,7 @@ async function openChapter(book, chapter) {
       console.warn("dropDownArrow not present");
     }
   }
-  document.body.classList.remove("hide-popovers");
+  document.body.classList.remove(hideCls);
   return result;
 }
 
@@ -119,7 +130,7 @@ function getVerseEls(view, number) {
 async function cacheBooks() {
   const arrow = chapterPickerArrow();
   if (arrow) {
-    document.body.classList.add("hide-popovers");
+    document.body.classList.add(hideCls);
     arrow.click();
     await sleep(200);
     booksCache = getBooks().map(e => e.innerText);
@@ -127,7 +138,7 @@ async function cacheBooks() {
     if (cancel) {
       cancel.click();
     }
-    document.body.classList.remove("hide-popovers");
+    document.body.classList.remove(hideCls);
   }
 }
 

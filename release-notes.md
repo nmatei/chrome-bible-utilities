@@ -4,6 +4,12 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
+## 2.14.0 (soon)
+
+- [x] 🔧 Major bug fix: remap html/css selectors for bible.com (after their recent update)
+- [x] ⚡ Improvement - Clicking on new reference with the same book & chapter will not reload chapter but will scroll to verse (if chapter already loaded)
+- [x] 🗑️ Removed my.bible.com support (consolidating to bible.com only, since is not maintained from youversion anymore)
+
 ## 2.13.0 (2025-12-03)
 
 - [x] 🔌 Improve external extensions `updateText` (allow '-' chars inside html tags, classes)
