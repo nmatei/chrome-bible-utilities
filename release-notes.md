@@ -6,9 +6,9 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.14.0 (soon)
 
-- [x] 🔧 Major bug fix: remap html/css selectors for bible.com (after their recent update)
+- [x] 🔧 Major bug fix: remap html/css selectors for [bible.com](https://www.bible.com) (after their recent update)
 - [x] ⚡ Improvement - Clicking on new reference with the same book & chapter will not reload chapter but will scroll to verse (if chapter already loaded)
-- [x] 🗑️ Removed my.bible.com support (consolidating to bible.com only, since is not maintained from youversion anymore)
+- [x] 🗑️ Removed my.bible.com support (consolidating to [bible.com](https://www.bible.com) only, since is not maintained from youversion anymore)
 
 ## 2.13.0 (2025-12-03)
 
