@@ -34,6 +34,11 @@ function getCacheVerses(ref) {
 
 const autoSelectVerseKey = "autoSelectVerse";
 
+/**
+ * store match - since openChapter could reload page
+ *  and we need to keep track of the verse to select after reload
+ * @param {*} match
+ */
 function setAutoSelectVerse(match) {
   localStorage.setItem(autoSelectVerseKey, JSON.stringify(match));
 }

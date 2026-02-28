@@ -5,6 +5,7 @@ let booksCache = [];
 
 window.addEventListener("load", () => {
   setTimeout(async () => {
+    console.info("\x1b[34m\x1b[42m [%s] \x1b[0m", "extension loaded", "Project verses from bible.com");
     await createSettingsActions();
     await loadDisplaySettings();
     await initEvents();
@@ -651,8 +652,23 @@ async function waitAndSelectVerse(match, title, project = true) {
 async function checkAutoProject() {
   const match = getAutoSelectVerse();
   if (match) {
+    console.info("selecting reference after page reload", match);
     const title = getChapterTitles()[0];
-    await waitAndSelectVerse(match, title);
+    const selected = await waitAndSelectVerse(match, title);
+    if (selected) {
+      // select verse in pin box and scroll to it
+      const links = $$('#pinned-verses-list a[data-key="open"]');
+      const link = links.find(a => {
+        const info = getVerseInfo(a.innerText);
+        return info && info.book === match.book && info.chapter == match.chapter && info.verse == match.verse;
+      });
+      if (link) {
+        showVersesBox();
+        selectPinned(link.closest("tr"));
+        link.scrollIntoViewIfNeeded(true);
+        link.focus();
+      }
+    }
   }
 }
 
