@@ -4,7 +4,11 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.14.0 (soon)
+## 2.15.0 (in progress)
+
+- [ ] ⚡ After page reload, triggered by verse navigation on bible.com, the pin list is shown with the active verse highlighted and scrolled into view
+
+## 2.14.0 (deployed, will be available soon)
 
 - [x] 🔧 Major bug fix: remap html/css selectors for [bible.com](https://www.bible.com) (after their recent update)
 - [x] ⚡ Improvement - Clicking on new reference with the same book & chapter will not reload chapter but will scroll to verse (if chapter already loaded)
