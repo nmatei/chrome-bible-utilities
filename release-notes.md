@@ -6,7 +6,9 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.15.0 (in progress)
 
-- [ ] ⚡ After page reload, triggered by verse navigation on bible.com, the pin list is shown with the active verse highlighted and scrolled into view
+- [ ] ⚡ After page reload, triggered by verse navigation on bible.com, the pin list is shown with the active verse highlighted and scrolled into view:
+      if page is refreshed after verse navigation - not sure yet why it happens, but
+      => Temporary fix: select `Parallel` view then `Exit Parallel Mode`, this seems to fix the reload issue.
 
 ## 2.14.0 (deployed, will be available soon)
 

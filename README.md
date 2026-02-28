@@ -177,3 +177,5 @@ If you want to try the latest versions before they are released, or to change co
 
 - [x] https://www.bible.com/bible/191/EXO.15.VDC (v.2 - custom background color in dark mode - text not fully visible)
 - [x] Select verse from parallel view then press right/left arrows - will not project the correct format
+- [x] Page refresh after openPinReference (after verse navigation) - not sure yet why it happens
+  - [x] Temporary fix: select `Parallel` view then `Exit Parallel Mode`
