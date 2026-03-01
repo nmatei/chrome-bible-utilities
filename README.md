@@ -126,15 +126,27 @@ A simple way to **support my work** & to **improve** your programming skills is 
 
 If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
 
-- [x] **Download/Clone** this repo
-  - [x] `< > Code ` (green button) then `Download ZIP`
+- [x] **Download/Clone** this repository
+  - [x] `< > Code` (green button) then `Download ZIP`
     - [x] unzip it and you will have `chrome-bible-utilities` folder
   - [x] or `git clone https://github.com/nmatei/chrome-bible-utilities.git`
-    - [ ] to update use `git pull`
+    - [x] to update use `git pull`
+- [x] _(optional)_ If you have **Slide Master** configured in the production extension, preserve your settings:
+  - [x] Open 🛠 **Settings** in the production extension
+  - [x] Go to **Slide Master** and click **Export** to save your slides configuration
 - [x] Open [chrome://extensions/](chrome://extensions/)
+  - [x] **Disable** the production extension
   - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
 - [x] Select `chrome-bible-utilities` folder (from unzipped or cloned repo)
+  - [x] _(optional)_ If you exported slides earlier: open 🛠 **Settings**, go to **Slide Master** and click **Import** to restore your slides configuration
+- [x] Visit [https://bible.com/bible](https://bible.com/bible) and enjoy the latest version!
+
+> **Note:** Once the fix you needed is officially released on the Chrome Web Store, don't forget to:
+>
+> - **Disable** the dev extension in [chrome://extensions/](chrome://extensions/)
+> - **Re-enable** the production extension to benefit from latest stable releases
+> - Turn off `Developer mode` in [chrome://extensions/](chrome://extensions/) — it is only needed when running unpacked extensions or actively developing
 
 ## ▶ Build procedure
 
