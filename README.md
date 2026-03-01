@@ -127,13 +127,14 @@ A simple way to **support my work** & to **improve** your programming skills is 
 If you want to try the latest versions before they are released, or to change code as you wish, try to install it as Developer
 
 - [x] **Download/Clone** this repo
-  - [ ] as zip & Unzip it
+  - [x] `< > Code ` (green button) then `Download ZIP`
+    - [x] unzip it and you will have `chrome-bible-utilities` folder
   - [x] or `git clone https://github.com/nmatei/chrome-bible-utilities.git`
-  - [x] to update use `git pull`
+    - [ ] to update use `git pull`
 - [x] Open [chrome://extensions/](chrome://extensions/)
   - [x] Activate `Developer mode`
 - [x] **Load unpacked** Extension
-- [x] Select `chrome-bible-utilities` folder
+- [x] Select `chrome-bible-utilities` folder (from unzipped or cloned repo)
 
 ## ▶ Build procedure
 
