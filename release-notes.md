@@ -10,7 +10,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
       if page is refreshed after verse navigation - not sure yet why it happens, but
       => Temporary fix: select `Parallel` view then `Exit Parallel Mode`, this seems to fix the reload issue.
 
-## 2.14.0 (deployed, will be available soon)
+## 2.14.0 (2026-03-01)
 
 - [x] 🔧 Major bug fix: remap html/css selectors for [bible.com](https://www.bible.com) (after their recent update)
 - [x] ⚡ Improvement - Clicking on new reference with the same book & chapter will not reload chapter but will scroll to verse (if chapter already loaded)
