@@ -4,6 +4,7 @@
   "description": "Project selected Bible verses",
   "main": "index.js",
   "scripts": {
+    "0": "npm run clear && npm install",
     "clear": "rimraf node_modules package-lock.json",
     "test": "jest",
     "start": "browser-sync start --server --directory --no-ui --files '**/*'",
@@ -47,8 +48,8 @@
     ]
   },
   "dependencies": {
-    "dompurify": "^3.3.1",
-    "marked": "^17.0.3"
+    "dompurify": "^3.3.2",
+    "marked": "^17.0.4"
   },
   "devDependencies": {
     "@types/chrome": "^0.1.32",
