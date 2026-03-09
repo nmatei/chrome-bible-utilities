@@ -113,7 +113,23 @@ function getVerseContents(verseEl) {
 }
 
 function getVerseSelector(number) {
-  return `${verseSelectorMatch}[data-usfm$=".${number}"]`;
+  // Match single verse (ends with .N) or grouped verse where N is the first in the group (contains .N+)
+  return `${verseSelectorMatch}[data-usfm$=".${number}"], ${verseSelectorMatch}[data-usfm*=".${number}+"]`;
+}
+
+/**
+ * Parses a grouped verse label like "43-47" into { from, to }.
+ * Returns null for regular single-verse labels.
+ * @param {string} labelText
+ * @returns {{ from: number, to: number } | null}
+ */
+function parseGroupedVerseLabel(labelText) {
+  const match = (labelText || "").trim().match(/^(\d+)-(\d+)$/);
+  return match ? { from: parseInt(match[1]), to: parseInt(match[2]) } : null;
+}
+
+if (typeof module === "object" && typeof module.exports === "object") {
+  module.exports = { getVerseSelector, parseGroupedVerseLabel };
 }
 
 function findLastVerseNumber() {

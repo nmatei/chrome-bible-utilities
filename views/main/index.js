@@ -245,7 +245,26 @@ function selectVerses(verses, deselect) {
 
 function getVerseNumber(verse) {
   const label = verse.querySelector(verseLabelSelectorMatch);
-  return label ? label.innerText.trim() * 1 : 1;
+  return label ? parseInt(label.innerText.trim()) || 1 : 1;
+}
+
+/**
+ * For grouped verses (e.g. label "43-47"), returns the edge verse number
+ * based on navigation direction: last number when going forward, first when going back.
+ * Falls back to verseNr for regular single verses.
+ */
+function getVerseEdgeNumber(verseNr, dir) {
+  const el = getVerseEls(primaryViewSelector, verseNr)[0] || getVerseEls(parallelViewSelector, verseNr)[0];
+  if (el) {
+    const label = el.querySelector(`:scope > ${verseLabelSelectorMatch}`);
+    if (label) {
+      const parsed = parseGroupedVerseLabel(label.innerText);
+      if (parsed) {
+        return dir > 0 ? parsed.to : parsed.from;
+      }
+    }
+  }
+  return verseNr;
 }
 
 function setFocusChapter(isParallel) {
@@ -267,7 +286,10 @@ function getBulkNumbers(verseNumber, isParallel, selectedVersesNr) {
       //console.debug("selectedVersesNr.length", selectedVersesNr.length);
     }
   }
-  return fillNumbers(verseNumber, primary);
+  // Expand to the far edge of a grouped verse (e.g. "29-30") based on direction
+  const dir = verseNumber >= primary ? 1 : -1;
+  const edgeNumber = getVerseEdgeNumber(verseNumber, dir);
+  return fillNumbers(edgeNumber, primary);
 }
 
 /**
@@ -320,6 +342,10 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
     }
   });
 
+  // Deduplicate: grouped verses (e.g. "29-30") match multiple numbers in the range
+  // and the same element would be pushed more than once, causing toggle to cancel.
+  const uniqueVerses = [...new Set(verses)];
+
   setFocusChapter(isParallel);
 
   if (!multiSelect || bulkSelect) {
@@ -327,7 +353,7 @@ async function doSelectVerses(verseNumber, isParallel, wasProjected, multiSelect
   }
 
   if (!wasProjected || multiSelect) {
-    selectedVersesNr = selectVerses(verses);
+    selectedVersesNr = selectVerses(uniqueVerses);
   }
 
   await cacheVersesInfo(loadUrl, ref);
@@ -433,7 +459,7 @@ async function selectByKeys(key) {
   if (dir) {
     const view = [primaryViewSelector, parallelViewSelector];
 
-    const next = selectedVersesNr.map(v => v + dir);
+    const next = selectedVersesNr.map(v => getVerseEdgeNumber(v, dir) + dir);
     let [primary] = next;
     let parallel;
 
