@@ -40,6 +40,7 @@ export function getUserSettingsDefaults() {
     maxFontSize: "200",
     actionsDisplay: "true",
     clockPosition: "top-right",
+    clockFormat: "24h",
     pageBackgroundImage: "none",
     pageBackgroundImageKey: -1
   };

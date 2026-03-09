@@ -6,7 +6,9 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.15.0 (in progress)
 
-- [ ] ⚡ After page reload, triggered by verse navigation on bible.com, the pin list is shown with the active verse highlighted and scrolled into view:
+- [x] Fix English "The Message" version selections when verses are grouped (eg. Mat 5:1-2) - https://github.com/nmatei/chrome-bible-utilities/issues/2
+- [x] ⏰ Clock time format option in Slide settings: `24h`, `12h` (without AM/PM), `12h AM/PM` — shown only when Clock Position is not `none`
+- [x] ⚡ After page reload, triggered by verse navigation on bible.com, the pin list is shown with the active verse highlighted and scrolled into view:
       if page is refreshed after verse navigation - not sure yet why it happens, but
       => Temporary fix: select `Parallel` view then `Exit Parallel Mode`, this seems to fix the reload issue.
 

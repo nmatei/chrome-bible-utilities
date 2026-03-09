@@ -410,10 +410,24 @@ function setRootStyles(styles) {
   applyRootStyles(styles);
 }
 
+function formatClockTime(date, format) {
+  if (format === "12h" || format === "12h-ampm") {
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const hours = date.getHours();
+    const h = hours % 12 || 12;
+    if (format === "12h-ampm") {
+      const ampm = hours >= 12 ? "PM" : "AM";
+      return `${h}:${minutes} ${ampm}`;
+    }
+    return `${h}:${minutes}`;
+  }
+  return date.toTimeString().substring(0, 5);
+}
+
 function initClock() {
   const root = document.getElementById("root");
   const date = new Date();
-  root.dataset.text = date.toTimeString().substring(0, 5);
+  root.dataset.text = formatClockTime(date, slide && slide.clockFormat);
   setTimeout(initClock, (60 - date.getSeconds()) * 1000);
 }
 

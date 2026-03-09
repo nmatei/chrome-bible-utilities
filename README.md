@@ -158,7 +158,6 @@ If you want to try the latest versions before they are released, or to change co
 
 ## 📋 Developers TODOs (items to improve)
 
-- [ ] improve change book/chapter when timeout occurs (try to reload page with new reference)
 - [ ] Multi slides to project content (same as live text but with multiple slides)
   - [ ] Add/Edit/Remove slides
 - [ ] shortcuts for bold / italic - inside live text
@@ -166,6 +165,7 @@ If you want to try the latest versions before they are released, or to change co
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
     - [x] Ukrainian (UBIO)
+      - [ ] Check `[RO] Ioel` mapping for Ukrainian (UBIO) - is it correct? (ex. Ioel 3:10 => Іоіл ?)
   - [ ] Review Translations and create other [mappings](views/common/bible-mappings.js)
     - [ ] Especially for 🟨🟦 Ukrainian & ⬜🟦🟥 Russian
     - [x] 🙏 [mappings tests](test/bible-mappings.test.ts)

@@ -95,6 +95,13 @@ function previewStyles(slide) {
   return previewRootStyles(slide);
 }
 
+function toggleClockFormat(position) {
+  const clockFormatEl = optionsForm["clockFormat"];
+  if (clockFormatEl) {
+    clockFormatEl.style.display = position !== "none" ? "" : "none";
+  }
+}
+
 function readImageFile(file) {
   return new Promise((resolve, reject) => {
     if (!file.type.startsWith("image/")) {
@@ -209,6 +216,7 @@ function selectSlide(slideEl) {
 function updateCurrentSlide(options) {
   const slide = getCurrentSlide(options);
   setFormValues(optionsForm, slide);
+  toggleClockFormat(slide.clockPosition);
   previewStyles(slide);
   selectBackgroundImage(slide);
   focusFirstInput(); // scroll to top
@@ -420,6 +428,9 @@ function initEvents() {
           await displayBackgroundImages(slide);
         } else if (input.checkValidity()) {
           slide[input.name] = input.value;
+          if (input.name === "clockPosition") {
+            toggleClockFormat(input.value);
+          }
           previewStyles(slide);
         }
       });
@@ -557,6 +568,7 @@ function onApplyDefaults(slide) {
   const { slideName, slideDescription, ...defaults } = getDefaults();
   Object.assign(slide, defaults);
   setFormValues(optionsForm, slide);
+  toggleClockFormat(slide.clockPosition);
   previewStyles(slide);
   // TODO reselect current background image
 }
@@ -610,6 +622,7 @@ async function start() {
   const slide = getCurrentSlide(options);
   displaySlides(options);
   setFormValues(optionsForm, slide);
+  toggleClockFormat(slide.clockPosition);
   updateFormPreviewValues(slide);
   await displayBackgroundImages(slide);
   focusFirstInput();
