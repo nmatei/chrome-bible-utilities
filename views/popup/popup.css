@@ -236,6 +236,7 @@ details#help[open] summary .chevron {
   left: auto;
   top: auto;
   right: auto;
+  max-height: none;
   background: transparent;
   border: none;
   box-shadow: none;
