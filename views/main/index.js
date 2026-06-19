@@ -15,6 +15,21 @@ window.addEventListener("load", () => {
   }, 100);
 });
 
+// Keep this tab in sync when display settings change elsewhere (the toolbar
+// popup or another bible.com tab) and re-project the current selection so the
+// projector reflects the change live.
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "sync" || !changes.displaySettings) return;
+  const newValue = changes.displaySettings.newValue;
+  if (!Array.isArray(newValue)) return;
+  displaySettings = newValue;
+  updateDisplaySettingsButtons(displaySettings);
+  const selected = $$(selectedSelector());
+  if (selected.length) {
+    displayVerses(selected);
+  }
+});
+
 function makeVerseFocusable() {
   // TODO extract selector
   const versesSelector = `${verseSelectorMatch} > ${verseLabelSelectorMatch}`;

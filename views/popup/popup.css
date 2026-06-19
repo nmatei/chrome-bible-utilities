@@ -1,0 +1,255 @@
+:root {
+  --bg: #1b1d22;
+  --panel: #2a2d36;
+  --panel-2: #33373f;
+  --panel-3: #3f4450;
+  --text: #e9eaee;
+  --muted: #9aa0ad;
+  --border: #3c414c;
+  --accent: #2ca9bc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 340px;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.popup {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+}
+
+.ic {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+
+.ic svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sep {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* Open bible.com */
+.open-bible {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.open-bible:hover {
+  background: var(--panel-2);
+}
+
+.open-bible .emoji {
+  font-size: 18px;
+}
+
+/* Windows section */
+section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.window-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.win-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.win-col-header {
+  font-weight: 600;
+  color: var(--muted);
+  padding-bottom: 2px;
+}
+
+.seg {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.seg button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--panel-2);
+  color: var(--text);
+  border: none;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+  text-align: left;
+}
+
+.seg button:first-child {
+  border-top: none;
+}
+
+.seg .screen-source {
+  flex: none;
+}
+
+.seg .screen-source svg {
+  width: 24px;
+  height: 24px;
+}
+
+.seg button:hover {
+  background: var(--panel-3);
+}
+
+.seg button.active {
+  background: #171b1c;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.slide-select {
+  width: 100%;
+  padding: 5px 6px;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.advanced-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.advanced-btn:hover {
+  background: var(--panel-3);
+}
+
+/* Help (collapsible) */
+details#help {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+details#help summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+details#help summary::-webkit-details-marker {
+  display: none;
+}
+
+details#help summary .fill {
+  flex: 1;
+}
+
+details#help summary .app-version {
+  font-size: 11px;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+details#help summary .chevron {
+  transition: transform 0.15s ease;
+}
+
+details#help[open] summary .chevron {
+  transform: rotate(90deg);
+}
+
+.help-body {
+  padding: 0 10px 10px;
+}
+
+/* Reuse the in-page help markup (#help-text-box) but render it inline,
+   not as a fixed floating box. */
+.help-body #help-text-box {
+  position: static;
+  left: auto;
+  top: auto;
+  right: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  z-index: auto;
+}
+
+/* Let the popup body provide the single scrollbar — no inner help scroll. */
+.help-body .info-text-content-wrapper {
+  max-height: none;
+  overflow: visible;
+}
+
+/* When Help is expanded, grow the popup like the original in-page help box. */
+body:has(details#help[open]) {
+  width: 600px;
+}

@@ -7,7 +7,9 @@
   "background": {
     "service_worker": "views/background.js"
   },
-  "action": {},
+  "action": {
+    "default_popup": "views/popup/popup.html"
+  },
   "permissions": ["activeTab", "tabs", "storage"],
   "host_permissions": ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"],
   "content_scripts": [
@@ -21,6 +23,7 @@
         "views/common/bible-mappings.js",
         "views/common/cache-verses.js",
         "views/common/simplePrompt/simplePrompt.js",
+        "views/common/help-content.js",
         "views/bibles/mappings.js",
         "views/main/runtime-messages.js",
         "views/main/actions/settings.js",

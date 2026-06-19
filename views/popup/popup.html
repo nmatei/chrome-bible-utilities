@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project verses from bible.com</title>
+    <link rel="stylesheet" href="../bibles/colors.css" />
+    <link rel="stylesheet" href="../main/actions.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <button id="openBible" type="button" class="open-bible" title="Open / focus bible.com">
+        <span class="emoji">📖</span>
+        <span class="label">Open bible.com</span>
+      </button>
+
+      <hr class="sep" />
+
+      <section id="windows">
+        <h2><span class="ic" id="windowsIcon"></span><span>Projection windows</span></h2>
+        <div id="windowCols" class="window-cols"></div>
+        <button id="advancedBtn" type="button" class="advanced-btn" title="Projector Screen Settings (Advanced)">
+          <span class="ic" id="advancedIcon"></span>
+          <span>Projector Screen Settings</span>
+        </button>
+      </section>
+
+      <hr class="sep" />
+
+      <details id="help">
+        <summary>
+          <span class="ic" id="helpSummaryIcon"></span>
+          <span class="fill">Help / Usage</span>
+          <a id="helpVersion" class="app-version" target="_blank" href="https://nmatei.github.io/chrome-bible-utilities/release-notes" title="Release Notes"></a>
+          <span class="chevron ic" id="helpChevron"></span>
+        </summary>
+        <div id="helpBody" class="help-body"></div>
+      </details>
+    </main>
+
+    <script src="../icons/icons.js"></script>
+    <script src="../common/help-content.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 importScripts("common/utilities.js");
 
 const BIBLE_TABS_URL = ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"];
-const DEFAULT_URL = "https://www.bible.com/bible";
 
 const projectorPage = "views/projector/tab.html";
 const settingsPage = "views/settings/options.html";
@@ -13,14 +12,26 @@ const allWindows = [projectorStorageKey, projectorStorageKey + "2", settingsStor
 const postCreateWindowStates = ["maximized", "fullscreen"];
 const ignoreCreateWindowStates = [...postCreateWindowStates, "minimized"];
 
-chrome.action.onClicked.addListener(tab => {
-  if (tab.url === "chrome://newtab/") {
-    chrome.tabs.remove(tab.id);
+// Remember the last bible.com page the user had open, so the toolbar popup
+// can reopen exactly that page (see views/popup/popup.js).
+function trackBibleUrl(url) {
+  if (url && BIBLE_TABS_URL.some(pattern => url.match(pattern))) {
+    chrome.storage.sync.set({ lastBibleUrl: url });
   }
+}
 
-  if (!BIBLE_TABS_URL.some(url => tab.url.match(url))) {
-    chrome.tabs.create({ url: DEFAULT_URL });
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  // changeInfo.url also fires on bible.com SPA navigations
+  if (changeInfo.url) {
+    trackBibleUrl(changeInfo.url);
   }
+});
+
+chrome.tabs.onActivated.addListener(async ({ tabId }) => {
+  try {
+    const tab = await chrome.tabs.get(tabId);
+    trackBibleUrl(tab.url);
+  } catch (e) {}
 });
 
 chrome.windows.onRemoved.addListener(windowId => {

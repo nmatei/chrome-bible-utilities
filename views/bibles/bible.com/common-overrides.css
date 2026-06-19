@@ -2,6 +2,10 @@
   padding-left: 55px;
 }
 
+.border.sticky.flex {
+  margin-left: 55px;
+}
+
 body .row,
 body.c_pages.a_privacy .privacy_content {
   max-width: 90rem;
