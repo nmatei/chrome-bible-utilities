@@ -6,7 +6,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.16.0 (2026-06-\_\_) (coming soon)
 
-- [x] Change icon for extension to have 'cast' borders (like in Google Cast)
+- [x] Change icon for extension to have `cast borders` (like in Google Cast)
 - [x] 🧰 New toolbar **popup** (click the extension icon) for quick access to common actions:
   - 📖 Open / focus bible.com — reopens the last page you had open, or focuses an existing bible.com tab instead of opening a new one
   - 🪟 Per-window display toggle (Off / Primary / Parallel / Both) and slide selection — kept in sync live with any open bible.com tabs (and vice versa)
