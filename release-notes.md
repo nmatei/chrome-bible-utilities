@@ -4,6 +4,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
+## 2.16.0 (2026-06-\_\_)
+
+- [ ] Change icon for extension to have 'cast' borders (like in Google Cast)
+
 ## 2.15.0 (2026-03-11)
 
 - [x] Fix English "The Message" version selections when verses are grouped (eg. Mat 5:1-2) - https://github.com/nmatei/chrome-bible-utilities/issues/2

@@ -16,7 +16,7 @@ function simplePrompt(message, _default, placeholder = "") {
   return new Promise(function (resolve) {
     const actions = [
       `<input type="text" id="custom-prompt-input" placeholder="${placeholder}" required>`,
-      `<button type="submit">OK</button>`
+      `<button name="action" class="action-btn" type="submit">OK</button>`
     ];
     const el = createPromptEl(message, actions);
     document.body.appendChild(el);
@@ -35,6 +35,7 @@ function simplePrompt(message, _default, placeholder = "") {
 function simpleConfirm(message, { cancel = "Cancel", ok = "OK", focus = "no", title = "" } = {}) {
   return new Promise(function (resolve) {
     const actions = [
+      // space
       '<div class="fill"></div>',
       `<button name="action" class="action-btn" type="submit" value="no">${cancel}</button>`,
       `<button name="action" class="action-btn" type="submit" value="yes">${ok}</button>`
@@ -55,6 +56,7 @@ function simpleConfirm(message, { cancel = "Cancel", ok = "OK", focus = "no", ti
 function simpleAlert(message) {
   return new Promise(function (resolve) {
     const actions = [
+      // space
       '<div class="fill"></div>',
       `<button name="action" class="action-btn" type="submit" value="yes">OK</button>`
     ];
