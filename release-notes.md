@@ -12,6 +12,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
   - 🪟 Per-window display toggle (Off / Primary / Parallel / Both) and slide selection — kept in sync live with any open bible.com tabs (and vice versa)
   - ⚙️ Open Projector Screen Settings (Advanced)
   - ❔ Collapsible Help / Usage (with version info)
+- [x] 🔤 Improved diacritics matching when adding verses: accent-free shortcuts now resolve books with diacritics (eg. `1 imp 2` → `1 Împ 2`, `tef 1` → `Țef 1`). Now handles the modern Romanian comma-below `ș`/`ț` forms used by bible.com, plus uppercase accents.
 
 ## 2.15.0 (2026-03-11)
 

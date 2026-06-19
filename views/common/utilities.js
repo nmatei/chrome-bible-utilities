@@ -148,7 +148,9 @@ function improveBookName(book, bookText) {
   if (!bookText || bookText.startsWith(book)) {
     return book;
   }
-  if (bookText.toLowerCase().startsWith(book.toLowerCase())) {
+  // diacritic-insensitive prefix check, so an accent-free shortcut ("1 imp") is completed
+  // with the proper book name's diacritics & casing ("1 Împ") instead of expanding to the full name
+  if (latinizeText(bookText.toLowerCase()).startsWith(latinizeText(book.toLowerCase()))) {
     return bookText.substring(0, book.length);
   }
   return bookText;
@@ -214,6 +216,8 @@ if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     splitVerses,
     improveReference,
+    improveBookName,
+    findBookText,
     fixSplitedRefereces,
     searchVersesNrsRegExp,
     searchChapterNrRegExp

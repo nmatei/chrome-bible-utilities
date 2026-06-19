@@ -331,7 +331,8 @@ function findBookNameShortcuts(title, value, versesOnly) {
     }
     const book = similarMatch.book;
     const bookText = findBookText(book, booksCache);
-    if (similarMatch && bookText === match.book) {
+    // compare diacritic/case-insensitively so a pinned shortcut still matches the current book
+    if (similarMatch && bookText && latinizeText(bookText.toLowerCase()) === latinizeText(match.book.toLowerCase())) {
       const newTitle = similarMatch.book + (versesOnly ? ` ${match.chapter}:${value}` : " " + value);
       shortMatch = getVerseInfo(newTitle);
     }

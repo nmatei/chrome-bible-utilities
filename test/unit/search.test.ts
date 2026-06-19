@@ -3,6 +3,8 @@ import {
   searchVersesNrsRegExp,
   searchChapterNrRegExp,
   improveReference,
+  improveBookName,
+  findBookText,
   splitVerses,
   fixSplitedRefereces
 } from "../../views/common/utilities";
@@ -124,7 +126,13 @@ describe("Improve reference", () => {
     "cor 2 4   -> 1 Corinteni 2:4",
     "Cor 2 4   -> 1 Corinteni 2:4",
     "cu 1 3    -> Leviticul 1:3",
-    "lev 1 3   -> Lev 1:3"
+    "lev 1 3   -> Lev 1:3",
+    // --
+    "imp 5 3   -> 1 Împăraţilor 5:3",
+    // -- book + chapter only (no verse):
+    // keep accent-free abbreviation, fix diacritics & casing
+    "1 imp 2   -> 1 Împ 2",
+    "mat 2 3   -> Mat 2:3"
   ];
 
   // map used functions as globals
@@ -136,6 +144,43 @@ describe("Improve reference", () => {
     const [from, to] = search.split(targetSplitter);
     const target = improveReference(from, booksCache);
     expect(target).toBe(to);
+  });
+});
+
+describe("Improve reference with comma-below diacritics", () => {
+  const targetSplitter = /\s*->\s*/;
+
+  // modern Romanian spellings as rendered by bible.com — comma-below ș (U+0219) / ț (U+021B)
+  // prettier-ignore
+  const booksCache = ['Geneza', 'Iosua', 'Judecători', '1 Samuel', '2 Samuel', '1 Împărați', '2 Împărați', 'Psalmul', 'Cântarea Cântărilor', 'Plângerile', 'Țefania', 'Matei', 'Galateni', 'Apocalipsa'];
+
+  const improvements = [
+    // accent-free abbreviation is kept, but completed with the correct diacritics & casing
+    "tef 1      -> Țef 1",
+    "1 imp 11 9 -> 1 Împ 11:9",
+    // not a prefix of the proper name -> expand to the full book name
+    "imparati 2 4 -> 1 Împărați 2:4"
+  ];
+
+  test.each(improvements)("improve search: %o", search => {
+    const [from, to] = search.split(targetSplitter);
+    const target = improveReference(from, booksCache);
+    expect(target).toBe(to);
+  });
+});
+
+describe("findBookText / improveBookName with diacritics", () => {
+  it("findBookText matches accent-free input against comma-below book name", () => {
+    expect(findBookText("tef", ["Țefania"])).toBe("Țefania");
+    expect(findBookText("1 imp", ["1 Împărați", "2 Împărați"])).toBe("1 Împărați");
+  });
+
+  it("improveBookName completes an accent-free prefix with proper diacritics", () => {
+    // user typed accent-free prefix -> keep abbreviation length, fix diacritics & casing
+    expect(improveBookName("1 imp", "1 Împărați")).toBe("1 Împ");
+    expect(improveBookName("tef", "Țefania")).toBe("Țef");
+    // existing behavior unchanged for accent-free books
+    expect(improveBookName("lev", "Leviticul")).toBe("Lev");
   });
 });
 

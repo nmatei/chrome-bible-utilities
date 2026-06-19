@@ -184,7 +184,9 @@ If you want to try the latest versions before they are released, or to change co
   - [ ] ‭‭Filipeni‬
 - [ ] use TypeScript and a build system?
   - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
-- [ ] improve adding verses that have Diacritics (ex. 1 imp 11:9 -> 1 împ 11:9 - is not recognized so shortcut will not work - use improved matching search)
+- [ ] when Books are not loaded even after second try, seems that clicking on 'next' chapter will load them - need to investigate more and find a better solution
+- [ ] different color for items in Pin list - bible reference vs custom text
+- [ ] allow download json of one Book/Chapter with each versions - request from BibleShow, could be used to cache verses for faster access or backup when bible.com is down/or for offline use (ex. in case of internet issues during service)
 
 ### 🐛 Known bugs
 
