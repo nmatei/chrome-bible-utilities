@@ -127,7 +127,7 @@ describe("Improve reference", () => {
     "Cor 2 4   -> 1 Corinteni 2:4",
     "cu 1 3    -> Leviticul 1:3",
     "lev 1 3   -> Lev 1:3",
-    // --
+    // -- missing (start nr)
     "imp 5 3   -> 1 Împăraţilor 5:3",
     // -- book + chapter only (no verse):
     // keep accent-free abbreviation, fix diacritics & casing
