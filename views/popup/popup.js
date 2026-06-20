@@ -64,6 +64,11 @@ async function saveSelectedSlide(windowIndex, slideIndex) {
 
 // ----- actions -----
 
+async function refreshBibleDot() {
+  const tabs = await chrome.tabs.query({ url: BIBLE_TABS_URL });
+  document.getElementById("bibleDot").classList.toggle("open", tabs.length > 0);
+}
+
 async function openBible() {
   const tabs = await chrome.tabs.query({ url: BIBLE_TABS_URL });
   if (tabs.length) {
@@ -172,6 +177,7 @@ async function init() {
   wireStaticControls();
   [displaySettings, userOptions] = await Promise.all([getDisplaySettings(), getUserOptions()]);
   renderWindows();
+  refreshBibleDot();
 }
 
 init();

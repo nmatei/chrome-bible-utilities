@@ -82,6 +82,18 @@ h2 {
   font-size: 18px;
 }
 
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex: none;
+}
+
+.dot.open {
+  background: #2ecc71;
+}
+
 /* Windows section */
 section {
   background: var(--panel);
