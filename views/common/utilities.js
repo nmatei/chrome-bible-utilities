@@ -144,6 +144,13 @@ function findBookText(book, booksCache) {
   return booksCache.find(e => latinizeText(e.toLowerCase()).includes(book));
 }
 
+// Resolve a localized/partial book name to its USFM url key (e.g. "ioan" -> "JHN").
+function findBookKey(book, booksCacheObj) {
+  book = latinizeText(book.toLowerCase());
+  const found = booksCacheObj.find(e => e.name && latinizeText(e.name.toLowerCase()).includes(book));
+  return found ? found.key : undefined;
+}
+
 function improveBookName(book, bookText) {
   if (!bookText || bookText.startsWith(book)) {
     return book;
@@ -218,6 +225,7 @@ if (typeof module === "object" && typeof module.exports === "object") {
     improveReference,
     improveBookName,
     findBookText,
+    findBookKey,
     fixSplitedRefereces,
     searchVersesNrsRegExp,
     searchChapterNrRegExp

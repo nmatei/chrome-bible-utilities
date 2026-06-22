@@ -1,0 +1,332 @@
+[
+  {
+    "key": "GEN",
+    "name": "Geneza",
+    "chapters": 50
+  },
+  {
+    "key": "EXO",
+    "name": "Exodul",
+    "chapters": 40
+  },
+  {
+    "key": "LEV",
+    "name": "Leviticul",
+    "chapters": 27
+  },
+  {
+    "key": "NUM",
+    "name": "Numeri",
+    "chapters": 36
+  },
+  {
+    "key": "DEU",
+    "name": "Deuteronomul",
+    "chapters": 34
+  },
+  {
+    "key": "JOS",
+    "name": "Iosua",
+    "chapters": 24
+  },
+  {
+    "key": "JDG",
+    "name": "Judecătorii",
+    "chapters": 21
+  },
+  {
+    "key": "RUT",
+    "name": "Rut",
+    "chapters": 4
+  },
+  {
+    "key": "1SA",
+    "name": "1 Samuel",
+    "chapters": 31
+  },
+  {
+    "key": "2SA",
+    "name": "2 Samuel",
+    "chapters": 24
+  },
+  {
+    "key": "1KI",
+    "name": "1 Împăraţilor",
+    "chapters": 22
+  },
+  {
+    "key": "2KI",
+    "name": "2 Împăraţilor",
+    "chapters": 25
+  },
+  {
+    "key": "1CH",
+    "name": "1 Cronici",
+    "chapters": 29
+  },
+  {
+    "key": "2CH",
+    "name": "2 Cronici",
+    "chapters": 36
+  },
+  {
+    "key": "EZR",
+    "name": "Ezra",
+    "chapters": 10
+  },
+  {
+    "key": "NEH",
+    "name": "Neemia",
+    "chapters": 13
+  },
+  {
+    "key": "EST",
+    "name": "Estera",
+    "chapters": 10
+  },
+  {
+    "key": "JOB",
+    "name": "Iov",
+    "chapters": 42
+  },
+  {
+    "key": "PSA",
+    "name": "Psalmul",
+    "chapters": 150
+  },
+  {
+    "key": "PRO",
+    "name": "Proverbele",
+    "chapters": 31
+  },
+  {
+    "key": "ECC",
+    "name": "Eclesiastul",
+    "chapters": 12
+  },
+  {
+    "key": "SNG",
+    "name": "Cântarea Cântărilor",
+    "chapters": 8
+  },
+  {
+    "key": "ISA",
+    "name": "Isaia",
+    "chapters": 66
+  },
+  {
+    "key": "JER",
+    "name": "Ieremia",
+    "chapters": 52
+  },
+  {
+    "key": "LAM",
+    "name": "Plângerile",
+    "chapters": 5
+  },
+  {
+    "key": "EZK",
+    "name": "Ezechiel",
+    "chapters": 48
+  },
+  {
+    "key": "DAN",
+    "name": "Daniel",
+    "chapters": 12
+  },
+  {
+    "key": "HOS",
+    "name": "Osea",
+    "chapters": 14
+  },
+  {
+    "key": "JOL",
+    "name": "Ioel",
+    "chapters": 3
+  },
+  {
+    "key": "AMO",
+    "name": "Amos",
+    "chapters": 9
+  },
+  {
+    "key": "OBA",
+    "name": "Obadia",
+    "chapters": 1
+  },
+  {
+    "key": "JON",
+    "name": "Iona",
+    "chapters": 4
+  },
+  {
+    "key": "MIC",
+    "name": "Mica",
+    "chapters": 7
+  },
+  {
+    "key": "NAM",
+    "name": "Naum",
+    "chapters": 3
+  },
+  {
+    "key": "HAB",
+    "name": "Habacuc",
+    "chapters": 3
+  },
+  {
+    "key": "ZEP",
+    "name": "Ţefania",
+    "chapters": 3
+  },
+  {
+    "key": "HAG",
+    "name": "Hagai",
+    "chapters": 2
+  },
+  {
+    "key": "ZEC",
+    "name": "Zaharia",
+    "chapters": 14
+  },
+  {
+    "key": "MAL",
+    "name": "Maleahi",
+    "chapters": 4
+  },
+  {
+    "key": "MAT",
+    "name": "Matei",
+    "chapters": 28
+  },
+  {
+    "key": "MRK",
+    "name": "Marcu",
+    "chapters": 16
+  },
+  {
+    "key": "LUK",
+    "name": "Luca",
+    "chapters": 24
+  },
+  {
+    "key": "JHN",
+    "name": "Ioan",
+    "chapters": 21
+  },
+  {
+    "key": "ACT",
+    "name": "Faptele Apostolilor",
+    "chapters": 28
+  },
+  {
+    "key": "ROM",
+    "name": "Romani",
+    "chapters": 16
+  },
+  {
+    "key": "1CO",
+    "name": "1 Corinteni",
+    "chapters": 16
+  },
+  {
+    "key": "2CO",
+    "name": "2 Corinteni",
+    "chapters": 13
+  },
+  {
+    "key": "GAL",
+    "name": "Galateni",
+    "chapters": 6
+  },
+  {
+    "key": "EPH",
+    "name": "Efeseni",
+    "chapters": 6
+  },
+  {
+    "key": "PHP",
+    "name": "Filipeni",
+    "chapters": 4
+  },
+  {
+    "key": "COL",
+    "name": "Coloseni",
+    "chapters": 4
+  },
+  {
+    "key": "1TH",
+    "name": "1 Tesaloniceni",
+    "chapters": 5
+  },
+  {
+    "key": "2TH",
+    "name": "2 Tesaloniceni",
+    "chapters": 3
+  },
+  {
+    "key": "1TI",
+    "name": "1 Timotei",
+    "chapters": 6
+  },
+  {
+    "key": "2TI",
+    "name": "2 Timotei",
+    "chapters": 4
+  },
+  {
+    "key": "TIT",
+    "name": "Tit",
+    "chapters": 3
+  },
+  {
+    "key": "PHM",
+    "name": "Filimon",
+    "chapters": 1
+  },
+  {
+    "key": "HEB",
+    "name": "Evrei",
+    "chapters": 13
+  },
+  {
+    "key": "JAS",
+    "name": "Iacov",
+    "chapters": 5
+  },
+  {
+    "key": "1PE",
+    "name": "1 Petru",
+    "chapters": 5
+  },
+  {
+    "key": "2PE",
+    "name": "2 Petru",
+    "chapters": 3
+  },
+  {
+    "key": "1JN",
+    "name": "1 Ioan",
+    "chapters": 5
+  },
+  {
+    "key": "2JN",
+    "name": "2 Ioan",
+    "chapters": 1
+  },
+  {
+    "key": "3JN",
+    "name": "3 Ioan",
+    "chapters": 1
+  },
+  {
+    "key": "JUD",
+    "name": "Iuda",
+    "chapters": 1
+  },
+  {
+    "key": "REV",
+    "name": "Apocalipsa",
+    "chapters": 22
+  }
+]

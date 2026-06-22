@@ -144,18 +144,50 @@ function getVerseEls(view, number) {
 }
 
 async function cacheBooks() {
-  const arrow = chapterPickerArrow();
-  if (arrow) {
-    document.body.classList.add(hideCls);
-    arrow.click();
-    await sleep(200);
-    booksCache = getBooks().map(e => e.innerText);
-    const cancel = await waitElement(bookListCancel(), 500);
-    if (cancel) {
-      cancel.click();
+  const primary = getUrlParams()?.primary;
+  if (primary) {
+    try {
+      booksCacheObj = await fetchVersionBooks(primary);
+    } catch (e) {
+      console.warn("books API failed, falling back to popover", e);
     }
-    document.body.classList.remove(hideCls);
   }
+  if (!booksCacheObj.length) {
+    console.info("books API did not return results, falling back to popover");
+    // fallback: scrape the book picker popover — names only, key left empty
+    const arrow = chapterPickerArrow();
+    if (arrow) {
+      document.body.classList.add(hideCls);
+      arrow.click();
+      await sleep(200);
+      booksCacheObj = getBooks().map(e => ({
+        name: e.innerText
+      }));
+      const cancel = await waitElement(bookListCancel(), 500);
+      if (cancel) {
+        cancel.click();
+      }
+      document.body.classList.remove(hideCls);
+    }
+  }
+  booksCache = booksCacheObj.map(b => b.name);
+  logCurrentBookInfo();
+}
+
+function logCurrentBookInfo() {
+  console.info("booksCacheObj", booksCacheObj);
+  const [title] = getChapterTitles();
+  const match = getVerseInfo(title);
+  const bookName = match?.book || "Geneza";
+  const book = booksCacheObj.find(b => b.name === bookName);
+  const text = new Array(book?.chapters || 0)
+    .fill(0)
+    .map((_, i) => bookName + " " + (i + 1))
+    .join(", ");
+
+  console.info("All %o Chapters:", bookName);
+  console.info(text);
+  console.info("- - - - - - - - -");
 }
 
 function createChapterUrl({ book, chapter, primary }) {

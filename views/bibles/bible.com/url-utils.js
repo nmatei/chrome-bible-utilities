@@ -1,4 +1,6 @@
-const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(?<version>.+)\?parallel\=(?<parallel>\d+)/gi;
+// ?parallel= is optional so this matches both parallel and single-version chapter urls,
+// e.g. /bible/191/JHN.15.VDC?parallel=143 and /bible/191/JHN.15.VDC
+const urlMatchRegExp = /(?<primary>\d+)\/(?<book>\w+)\.(?<chapter>\d+)\.(?<version>[^?]+)(?:\?parallel=(?<parallel>\d+))?/gi;
 
 function getUrlMatch(url) {
   return Array.from(url.matchAll(urlMatchRegExp))[0];
@@ -12,7 +14,7 @@ function parseUrlMatch(urlMatch) {
       book: book,
       version: version,
       primary: parseInt(primary),
-      parallel: parseInt(parallel),
+      parallel: parallel ? parseInt(parallel) : undefined,
       chapter: parseInt(chapter)
     };
   }

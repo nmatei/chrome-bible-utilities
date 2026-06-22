@@ -191,9 +191,15 @@ describe("Bible reference map for [RU][НРП]", () => {
       const ref = fromRef.split(/\s+/i);
       return (RO_References[ref[0]] || ref[0]) + " " + ref[1];
     }).join("\n");
-    console.debug("\nm==========\n\n");
-    console.info(references);
-    console.debug("\nm==========\n\n");
+
+    console.info(
+      [
+        "👉 Manual Test RO this references in browser to see parallel version",
+        "==========",
+        references,
+        "=========="
+      ].join("\n")
+    );
   });
 });
 

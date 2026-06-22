@@ -183,6 +183,18 @@ describe("Test URL Url Matches", () => {
       version: "VDC"
     });
   });
+
+  it("getUrlMatch without parallel param", () => {
+    const match = getUrlMatch("https://bible.com/bible/191/JHN.15.VDC");
+    expect(match).toBeDefined();
+    expect(match.groups).toEqual({
+      primary: "191",
+      book: "JHN",
+      chapter: "15",
+      parallel: undefined,
+      version: "VDC"
+    });
+  });
 });
 
 describe("Get verse string tests", () => {

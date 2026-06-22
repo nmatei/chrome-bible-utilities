@@ -38,6 +38,17 @@ function cleanUp(parent) {
   });
 }
 
+async function fetchVersionBooks(primary) {
+  const baseUrl = `https://nodejs.bible.com/api/bible/version/3.1?id=${primary}`;
+  const response = await fetch(baseUrl);
+  const json = await response.json();
+  return (json.books || []).map(b => ({
+    key: b.usfm,
+    name: b.human,
+    chapters: b.chapters.length
+  }));
+}
+
 async function getChapterFromAPI({ primary, book, chapter }) {
   const baseUrl = "https://nodejs.bible.com/api/bible/chapter/3.1";
   const response = await fetch(`${baseUrl}?id=${primary}&reference=${book}.${chapter}`);
@@ -53,6 +64,7 @@ async function getChapterFromAPI({ primary, book, chapter }) {
       n.innerHTML = "";
     });
 
+    // TODO check if we have to use global selector for '.verse'
     const verses = [...div.querySelectorAll(".verse")];
     //console.warn("verses", verses);
     const versesInfo = getVersesInfo(verses, false, ".label");
