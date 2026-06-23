@@ -185,8 +185,7 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] use TypeScript and a build system?
   - [ ] https://medium.com/@tharshita13/creating-a-chrome-extension-with-react-a-step-by-step-guide-47fe9bab24a1
 - [ ] when Books are not loaded even after second try, seems that clicking on 'next' chapter will load them - need to investigate more and find a better solution
-- [ ] different color for items in Pin list - bible reference vs custom text
-- [ ] allow download json of one Book/Chapter with each versions - request from BibleShow, could be used to cache verses for faster access or backup when bible.com is down/or for offline use (ex. in case of internet issues during service)
+- [ ] see if there is a new version of https://nodejs.bible.com/api/bible/chapter/3.1 and update the code to use it (if is better than current one)
 
 ### 🐛 Known bugs
 

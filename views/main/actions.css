@@ -292,9 +292,17 @@ h2 .key-code {
   color: #cccccc;
   transition: 0.2s;
 }
+/* custom (non-reference) pins use the teal icon color so they stand out from bible refs */
+#verses-text-box a.custom-text {
+  color: #4fc3d4;
+}
 .drag-row a,
 #verses-text-box a:hover {
   color: #ffffff !important;
+}
+/* custom pins hover within their own teal gamut, not white */
+#verses-text-box a.custom-text:hover {
+  color: #2ca9bc !important;
 }
 #verses-text-box a:active {
   color: #ffffff !important;

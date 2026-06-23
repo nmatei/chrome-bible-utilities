@@ -151,6 +151,69 @@ function findBookKey(book, booksCacheObj) {
   return found ? found.key : undefined;
 }
 
+// Build a pin item from raw text. Stamps the language-independent USFM `key`
+// when the text parses as a reference AND its book resolves in the current cache.
+// Custom text (or refs added before the cache loaded) come back as `{ text }`.
+function makePinItem(text, booksCacheObj) {
+  const item = { text };
+  const match = getVerseInfo(text);
+  if (match) {
+    const key = findBookKey(match.book, booksCacheObj);
+    if (key) {
+      item.key = key;
+    }
+  }
+  return item;
+}
+
+// Display text for a pin. References are rebuilt from their `key` using the
+// current language's book name (so they relocalize on a version switch);
+// numbers come from parsing the stored text (digits are language-independent).
+function displayPinText(pin, booksCacheObj) {
+  if (pin.key) {
+    const match = getVerseInfo(pin.text);
+    // Keep the user's stored shorthand (e.g. "Mat", "Ps") as long as it still
+    // resolves to the same book in the current language. Only rebuild from the
+    // key (full localized name) when the text no longer matches — i.e. the
+    // source language/version was switched after the pin was added.
+    if (match && findBookKey(match.book, booksCacheObj) === pin.key) {
+      return pin.text;
+    }
+    const book = booksCacheObj.find(b => b.key === pin.key);
+    if (book && book.name) {
+      if (match) {
+        return getVerseStr({
+          book: book.name,
+          chapter: match.chapter,
+          verse: match.verse,
+          to: match.to
+        });
+      }
+      return book.name;
+    }
+  }
+  return pin.text;
+}
+
+// True when a pin is a bible reference. Re-resolves against the cache so a ref
+// added before the cache loaded still colors correctly once it is available.
+function isPinReference(pin, booksCacheObj) {
+  if (pin.key) {
+    return true;
+  }
+  const match = getVerseInfo(pin.text);
+  return !!(match && findBookKey(match.book, booksCacheObj));
+}
+
+// Identity used to dedupe pins (book key + numbers for refs, raw text otherwise).
+function pinKey(pin) {
+  if (pin.key) {
+    const match = getVerseInfo(pin.text) || {};
+    return `${pin.key}|${match.chapter || ""}:${match.verse || ""}-${match.to || ""}`;
+  }
+  return `t|${pin.text}`;
+}
+
 function improveBookName(book, bookText) {
   if (!bookText || bookText.startsWith(book)) {
     return book;
@@ -226,6 +289,10 @@ if (typeof module === "object" && typeof module.exports === "object") {
     improveBookName,
     findBookText,
     findBookKey,
+    makePinItem,
+    displayPinText,
+    isPinReference,
+    pinKey,
     fixSplitedRefereces,
     searchVersesNrsRegExp,
     searchChapterNrRegExp

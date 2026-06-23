@@ -13,6 +13,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
   - ⚙️ Open Projector Screen Settings (Advanced)
   - ❔ Collapsible Help / Usage (with version info)
 - [x] 🔤 Improved diacritics matching when adding verses: accent-free shortcuts now resolve books with diacritics (eg. `1 imp 2` → `1 Împ 2`, `tef 1` → `Țef 1`). Now handles the modern Romanian comma-below `ș`/`ț` forms used by bible.com, plus uppercase accents.
+- [x] 🎨 Pin list now shows **custom text** in teal and **bible references** in gray, so a mixed list is easier to scan
+- [x] 🌍 Pinned references are now language-independent: each ref remembers its book (eg. `JHN`), so when you switch the bible.com source language the list re-localizes (eg. `Ioan 3:16` → `John 3:16`) and clicking still opens the right chapter. Your own shorthand (eg. `Mat`, `Ps`) is kept as typed
+- [x] ⚡ Faster **Copy all to clipboard** (primary & parallel): chapters are now fetched in parallel from the API with live progress, instead of opening each reference one by one (falls back to the previous flow on any error)
+- [x] 💾 New **Save all to json** action (pin list right-click menu): exports all references of the current version to a `.json` file. A whole-chapter ref (eg. `Ioan 3`) is split into one item per verse; a single verse or range (eg. `Exo 2:4-5`) stays one item. Aimed at **developers** who want to integrate bible references/verses into their own apps
 
 ## 2.15.0 (2026-03-11)
 

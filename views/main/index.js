@@ -139,7 +139,7 @@ function getVersesInfo(verses, showParallel, labelSelector) {
     }
     return {
       verseNr,
-      content: v.innerText.substring(verseNr.length) || "",
+      content: (v.innerText.substring(verseNr.length) || "").trim(),
       parallel,
       cls
     };
@@ -548,10 +548,12 @@ async function initEvents() {
   ]);
 
   await cacheBooks();
+  refreshPinnedVerses();
   if (booksCache.length === 0) {
     console.info("loading books again");
     setTimeout(async () => {
       await cacheBooks();
+      refreshPinnedVerses();
       console.info("second try to read books", booksCache);
     }, 2000);
   }
@@ -566,6 +568,7 @@ async function initEvents() {
           // UI not changed if we don't expand
           await bookArrowExpandAndCollapse();
           await cacheBooks();
+          refreshPinnedVerses();
         }
       }, 2000)
       // 2 sec to make sure books are reloaded
@@ -730,7 +733,7 @@ function waitNewTitles(timeout = 5000) {
         clearInterval(refreshIntervalId);
         setTimeout(() => {
           if (expired) {
-            console.warn("waitNewTitles.timeout", oldChapters, chapters);
+            console.info("waitNewTitles.timeout", oldChapters, chapters);
           }
           resolve(!expired);
         }, 200);

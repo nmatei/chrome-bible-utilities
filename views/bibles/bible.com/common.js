@@ -57,7 +57,8 @@ async function getChapterFromAPI({ primary, book, chapter }) {
   if (json) {
     const div = document.createElement("div");
     div.innerHTML = json.content;
-    delete json.content;
+    // console.warn("json.content", json.content);
+    delete json.content; // memory optimization, we don't need it anymore
     //console.warn('div.querySelectorAll(".note")', div.querySelectorAll(".note"));
     div.querySelectorAll(".note").forEach(n => {
       n.style.display = "none";
@@ -66,9 +67,9 @@ async function getChapterFromAPI({ primary, book, chapter }) {
 
     // TODO check if we have to use global selector for '.verse'
     const verses = [...div.querySelectorAll(".verse")];
-    //console.warn("verses", verses);
+    // console.warn("verses", verses);
     const versesInfo = getVersesInfo(verses, false, ".label");
-    //console.warn("versesInfo", versesInfo);
+    // console.warn("versesInfo", versesInfo);
     div.innerHTML = "";
     return versesInfo;
   } else {

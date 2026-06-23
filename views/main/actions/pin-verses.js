@@ -4,23 +4,30 @@ let pinnedVerses = [];
 
 async function getPinnedVerses() {
   const storageData = await chrome.storage.sync.get("pinnedVerses");
-  return storageData.pinnedVerses || "Mat 5:1";
+  const stored = storageData.pinnedVerses;
+  if (Array.isArray(stored)) {
+    // new format: array of pin objects ({ text, key? })
+    return stored;
+  }
+  // legacy format: newline/`,`/`;`-joined string -> migrate to pin objects
+  return splitVerses(stored || "Mat 5:1").map(t => makePinItem(t, booksCacheObj));
 }
 
 async function setPinnedVerses(pinnedVerses) {
   await chrome.storage.sync.set({
-    pinnedVerses: pinnedVerses.join("\n")
+    pinnedVerses
   });
   // TODO notify other tabs to update values
 }
 
-function getVerseRow(verse) {
-  return `<tr draggable="true">
+function getVerseRow(pin, index) {
+  const cls = isPinReference(pin, booksCacheObj) ? "verse-ref" : "custom-text";
+  return `<tr draggable="true" data-index="${index}">
     <td class="remove-cell">
       <a tabindex="0" data-key="remove" class="action-btn remove-btn" title="Remove">✖</a>
     </td>
     <td>
-      <a tabindex="0" data-key="open">${verse}</a>
+      <a tabindex="0" data-key="open" class="${cls}">${displayPinText(pin, booksCacheObj)}</a>
     </td>
   </tr>`;
 }
@@ -39,10 +46,12 @@ function initDragDrop(tbody, save) {
     //e.dataTransfer.setData("text", row.querySelector("a[data-key=open]").innerText);
   });
   tbody.addEventListener("drop", e => {
-    const text = $$("#pinned-verses-list a[data-key=open]")
-      .map(a => a.innerText)
-      .join("\n");
-    save(text);
+    // rebuild order from each row's original index (pins are objects now);
+    // scope to tbody rows so the tfoot preview row (no data-index) is excluded
+    const order = $$("tr", tbody)
+      .map(tr => parseInt(tr.dataset.index, 10))
+      .filter(i => !isNaN(i));
+    save(order);
   });
   tbody.addEventListener("dragend", e => {
     row.classList.remove("drag-row");
@@ -127,6 +136,14 @@ function showPinContextMenu(e) {
       }
     });
   }
+  actions.push({
+    text: "Save all to json",
+    icon: icons.export,
+    itemId: "saveJson",
+    handler: async () => {
+      await onReferenceSaveJson();
+    }
+  });
 
   actions.push("-");
   if (isVerse) {
@@ -136,7 +153,7 @@ function showPinContextMenu(e) {
       icon: icons.remove,
       cls: "alert-color",
       handler: () => {
-        pinnedVerses = pinnedVerses.filter(v => v !== e.target.innerText);
+        pinnedVerses.splice(getRowIndex(e.target), 1);
         updatePinnedRows(pinnedVerses);
         setPinnedVerses(pinnedVerses);
       }
@@ -147,7 +164,7 @@ function showPinContextMenu(e) {
       itemId: "clear",
       cls: "alert-color",
       handler: () => {
-        pinnedVerses = [e.target.innerText];
+        pinnedVerses = [pinnedVerses[getRowIndex(e.target)]];
         updatePinnedRows(pinnedVerses);
         setPinnedVerses(pinnedVerses);
       }
@@ -194,8 +211,9 @@ function createPinVersesBox() {
     e.preventDefault();
     showPinContextMenu(e);
   });
-  initDragDrop($("tbody", form), async verses => {
-    pinnedVerses = splitVerses(verses);
+  initDragDrop($("tbody", form), async order => {
+    pinnedVerses = order.map(i => pinnedVerses[i]);
+    updatePinnedRows(pinnedVerses);
     await setPinnedVerses(pinnedVerses);
   });
 
@@ -241,7 +259,7 @@ function createPinVersesBox() {
   // });
 
   getPinnedVerses().then(verses => {
-    pinnedVerses = splitVerses(verses);
+    pinnedVerses = verses;
     updatePinnedRows(pinnedVerses);
   });
   return form;
@@ -251,11 +269,7 @@ function onReferenceClick(target, e) {
   const action = target.dataset.key;
   switch (action) {
     case "remove": {
-      const tr = target.closest("tr");
-      const tbody = tr.closest("tbody");
-      const children = Array.from(tbody.children);
-      const idx = children.indexOf(tr);
-      pinnedVerses.splice(idx, 1);
+      pinnedVerses.splice(getRowIndex(target), 1);
       updatePinnedRows(pinnedVerses);
       setPinnedVerses(pinnedVerses);
       break;
@@ -274,6 +288,10 @@ function onReferenceClick(target, e) {
       break;
     }
   }
+}
+
+function getRowIndex(target) {
+  return parseInt(target.closest("tr").dataset.index, 10);
 }
 
 function selectPinned(row) {
@@ -321,11 +339,11 @@ function findBookNameShortcuts(title, value, versesOnly) {
   }
   let shortMatch;
 
-  pinnedVerses.forEach(v => {
+  pinnedVerses.forEach(pin => {
     if (shortMatch) {
       return;
     }
-    const similarMatch = getVerseInfo(v);
+    const similarMatch = getVerseInfo(displayPinText(pin, booksCacheObj));
     if (!similarMatch) {
       return;
     }
@@ -378,17 +396,26 @@ function onReferenceSubmit(preview) {
     return;
   }
   newVerses = fixSplitedRefereces(newVerses);
+  const newPins = newVerses.map(t => makePinItem(t, booksCacheObj));
   const editor = $("#pinned-verses-editor");
   if (editor.style.display !== "none") {
-    pinnedVerses = splitVerses(editor.value);
+    pinnedVerses = splitVerses(editor.value).map(t => makePinItem(t, booksCacheObj));
   }
-  pinnedVerses = [...new Set([...pinnedVerses, ...newVerses])];
-  editor.value = pinnedVerses.join("\n");
+  // dedupe by reference identity (book key + numbers) / raw text for custom pins
+  const byKey = new Map();
+  [...pinnedVerses, ...newPins].forEach(pin => {
+    if (!byKey.has(pinKey(pin))) {
+      byKey.set(pinKey(pin), pin);
+    }
+  });
+  pinnedVerses = [...byKey.values()];
+  editor.value = pinnedVerses.map(p => displayPinText(p, booksCacheObj)).join("\n");
   updatePinnedRows(pinnedVerses);
   setPinnedVerses(pinnedVerses);
   input.value = "";
   input.focus(); // focus in case we clicked on add '+'
-  const firstAddedRow = $$("#pinned-verses-list tbody td").find(e => e.innerText === newVerses[0]);
+  const firstAddedText = displayPinText(newPins[0], booksCacheObj);
+  const firstAddedRow = $$("#pinned-verses-list tbody td").find(e => e.innerText === firstAddedText);
   if (firstAddedRow) {
     const link = firstAddedRow.querySelector('[data-key="open"]');
     link.classList.add("focus");
@@ -424,7 +451,8 @@ async function onReferenceKeydown(e) {
 function onReferenceEdit(e) {
   $("#pinned-verses-list").style.display = "none";
   const editor = $("#pinned-verses-editor");
-  editor.value = pinnedVerses.join("\n");
+  // edit-all shows plain (localized) text; refs are converted back on save
+  editor.value = pinnedVerses.map(p => displayPinText(p, booksCacheObj)).join("\n");
   editor.style.display = "block";
   e.target.closest(".action-btn").classList.add("hidden-action");
   $('#verses-text-box button[data-key="save"]').classList.remove("hidden-action");
@@ -434,7 +462,7 @@ function onReferenceSave(e) {
   const editor = $("#pinned-verses-editor");
   editor.style.display = "none";
   $("#pinned-verses-list").style.display = "table";
-  pinnedVerses = splitVerses(editor.value);
+  pinnedVerses = splitVerses(editor.value).map(t => makePinItem(t, booksCacheObj));
   updatePinnedRows(pinnedVerses);
   setPinnedVerses(pinnedVerses);
   e.target.closest(".action-btn").classList.add("hidden-action");
@@ -456,12 +484,189 @@ function getAllVersesContent(numbers, view = primaryViewSelector) {
 }
 
 async function onReferenceCopy(verses, view = primaryViewSelector) {
-  const copiedVerses = [];
-  const primaryText = [];
   const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
   maskWrapper.classList.add("loading-mask", "text-mask");
-  verses = verses || $$("[data-key=open]");
-  await asyncForEach(verses, async (target, i, all) => {
+  const targets = verses || $$("[data-key=open]");
+  try {
+    // 1) convert each pin to a concrete ref (incl. parallel verse-mapping), then
+    // 2) fetch every chapter from the API in parallel by language-independent key.
+    const refs = targets.map(target => resolveCopyRef(target, view));
+    const allVerses = await copyRefs(refs, maskWrapper);
+    copyToClipboard(allVerses);
+  } catch (e) {
+    // any failure (network, missing key/version, mapping) -> DOM-navigation fallback
+    console.warn("API copy failed, falling back to opening references", e);
+    await copyByOpeningReferences(targets, view, maskWrapper);
+  }
+  maskWrapper.dataset.text = "";
+  maskWrapper.classList.remove("loading-mask", "text-mask");
+}
+
+// Convert a pinned row into a concrete ref to fetch:
+//   { versionId, book (USFM key), chapter, numbers|null, label }  or  { custom, label }
+// For the parallel view the chapter/verses are mapped from the primary version's
+// numbering to the parallel version's (e.g. VDC Psalm 23:1 -> НРП Psalm 22:1) so
+// we fetch the right chapter; the label stays the reference the user pinned.
+function resolveCopyRef(target, view) {
+  const pin = pinnedVerses[getRowIndex(target)];
+  const match = pin && pin.key ? getVerseInfo(pin.text) : null;
+  const label = target.innerText;
+  if (!match) {
+    // custom text (or a ref we couldn't resolve to a key) -> copy verbatim
+    return { custom: true, label };
+  }
+  const urlParams = getUrlParams();
+  if (!urlParams || !urlParams.primary) {
+    throw new Error("no primary version in url");
+  }
+  if (view !== parallelViewSelector) {
+    return {
+      versionId: urlParams.primary,
+      book: pin.key,
+      chapter: match.chapter,
+      numbers: copyVerseNumbers(match),
+      label
+    };
+  }
+  // parallel view: map the reference into the parallel version's numbering
+  if (!urlParams.parallel) {
+    throw new Error("no parallel version in url");
+  }
+  const from = getVersionById(urlParams.primary);
+  const to = getVersionById(urlParams.parallel);
+  const start = bibleReferenceMap({ book: pin.key, chapter: match.chapter, verse: match.verse || 1 }, from, to, false);
+  let numbers = null;
+  if (match.verse) {
+    const end = match.to
+      ? bibleReferenceMap({ book: pin.key, chapter: match.chapter, verse: match.to }, from, to, false)
+      : start;
+    numbers = match.to ? fillNumbers(start.verse, end.verse) : [start.verse];
+  }
+  return {
+    versionId: urlParams.parallel,
+    book: pin.key,
+    chapter: start.chapter,
+    numbers,
+    label
+  };
+}
+
+function copyVerseNumbers(match) {
+  if (!match.verse) {
+    return null; // whole chapter
+  }
+  return match.to ? fillNumbers(match.verse, match.to) : [match.verse];
+}
+
+// Fetch every ref's chapter from the API in parallel and build the clipboard text.
+// Progress (done / total) updates as each request settles. Throws on any failure
+// so the caller can fall back to the DOM-navigation flow.
+async function copyRefs(refs, maskWrapper) {
+  let done = 0;
+  const total = refs.length;
+  maskWrapper.dataset.text = `0 / ${total}`;
+  const blocks = await Promise.all(
+    refs.map(async ref => {
+      const block = await fetchRefBlock(ref);
+      maskWrapper.dataset.text = `${++done} / ${total}`;
+      return block;
+    })
+  );
+  return blocks.join("\n");
+}
+
+async function fetchRefBlock(ref) {
+  if (ref.custom) {
+    return `📋 ${ref.label}\n`;
+  }
+  const versesInfo = await getChapterFromAPI({ primary: ref.versionId, book: ref.book, chapter: ref.chapter });
+  if (!versesInfo) {
+    throw new Error(`empty chapter for ${ref.book}.${ref.chapter}`);
+  }
+  const content = ref.numbers
+    ? extractVersesFromInfo(versesInfo, ref.numbers)
+    : versesInfo.map(v => `${v.verseNr} ${v.content}`).join("\n"); // whole chapter
+  return `📌 ${ref.label}\n${content}\n`;
+}
+
+// Save all pinned references (custom text filtered out) of the current primary
+// version to a downloaded JSON file. A reference without a verse (whole chapter)
+// is expanded into one item per verse; a single verse or a range stays one item.
+async function onReferenceSaveJson() {
+  const maskWrapper = $("#verses-text-box .info-text-content-wrapper");
+  maskWrapper.classList.add("loading-mask", "text-mask");
+  try {
+    const refs = $$("[data-key=open]")
+      .map(target => resolveCopyRef(target, primaryViewSelector))
+      .filter(ref => !ref.custom);
+    let done = 0;
+    const total = refs.length;
+    maskWrapper.dataset.text = `0 / ${total}`;
+    const items = await Promise.all(
+      refs.map(async ref => {
+        const refItems = await fetchRefItems(ref);
+        maskWrapper.dataset.text = `${++done} / ${total}`;
+        return refItems;
+      })
+    );
+    download(JSON.stringify(items.flat(), null, 2), "bible-pinned-references.json", "application/json");
+  } catch (e) {
+    console.warn("Save to json failed", e);
+  }
+  maskWrapper.dataset.text = "";
+  maskWrapper.classList.remove("loading-mask", "text-mask");
+}
+
+// Build the JSON items for a single ref: { ref, text }.
+// Whole-chapter refs (no verse) become one item per verse; an explicit verse or
+// range stays a single item (verse-number prefixed when it spans more than one).
+async function fetchRefItems(ref) {
+  const versesInfo = await getChapterFromAPI({ primary: ref.versionId, book: ref.book, chapter: ref.chapter });
+  if (!versesInfo) {
+    throw new Error(`empty chapter for ${ref.book}.${ref.chapter}`);
+  }
+  if (!ref.numbers) {
+    // whole chapter -> every verse as its own item
+    return versesInfo.map(v => ({
+      ref: `${ref.label}:${v.verseNr}`,
+      text: v.content
+    }));
+  }
+  return [
+    {
+      ref: ref.label,
+      text: extractVersesFromInfo(versesInfo, ref.numbers)
+    }
+  ];
+}
+
+// Pull the requested verse numbers out of an API chapter result, handling
+// grouped verses (e.g. a "43-47" label covers each number in that range once).
+function extractVersesFromInfo(versesInfo, numbers) {
+  const used = new Set();
+  const lines = [];
+  numbers.forEach(number => {
+    const info = versesInfo.find(v => {
+      const nr = String(v.verseNr).trim();
+      if (nr === String(number)) {
+        return true;
+      }
+      const group = parseGroupedVerseLabel(nr);
+      return group && number >= group.from && number <= group.to;
+    });
+    if (info && !used.has(info)) {
+      used.add(info);
+      const prefix = numbers.length > 1 ? info.verseNr + " " : "";
+      lines.push(prefix + info.content);
+    }
+  });
+  return lines.join("\n");
+}
+
+// Fallback: open each reference in the page and scrape verse content from the DOM.
+async function copyByOpeningReferences(targets, view, maskWrapper) {
+  const primaryText = [];
+  await asyncForEach(targets, async (target, i, all) => {
     maskWrapper.dataset.text = `${i} / ${all.length}`;
     const { title, match } = await openPinReference(target, false);
 
@@ -487,21 +692,13 @@ async function onReferenceCopy(verses, view = primaryViewSelector) {
       const verses = getAllVersesContent(numbers, view);
       primaryText.push(`📌 ${ref}`);
       primaryText.push(verses.join("\n") + "\n");
-      copiedVerses.push({
-        ref: ref,
-        text: verses.join("\n")
-      });
     } else {
-      //console.log("no match");
       primaryText.push(`📋 ${target.innerText}\n`);
     }
   });
 
   const allVerses = primaryText.join("\n");
   copyToClipboard(allVerses);
-  console.info("Copied to clipboard", copiedVerses);
-  maskWrapper.dataset.text = "";
-  maskWrapper.classList.remove("loading-mask", "text-mask");
 }
 
 async function openPinReference(target, project = true) {
@@ -565,8 +762,32 @@ async function cacheVersesInfo(loadUrl, ref) {
 }
 
 function updatePinnedRows(pinnedVerses) {
-  const rows = pinnedVerses.map(getVerseRow).join("");
+  const rows = pinnedVerses.map((pin, index) => getVerseRow(pin, index)).join("");
   $("#pinned-verses-list tbody").innerHTML = rows;
+}
+
+// Re-render pins against the current book cache. Upgrades items that were added
+// before the cache loaded (or in a different language) so refs relocalize and
+// color correctly after a version switch. Persists when any key was resolved.
+function refreshPinnedVerses() {
+  if (!pinnedVerses.length || !$("#pinned-verses-list")) {
+    return;
+  }
+  let changed = false;
+  pinnedVerses = pinnedVerses.map(pin => {
+    if (pin.key) {
+      return pin;
+    }
+    const upgraded = makePinItem(pin.text, booksCacheObj);
+    if (upgraded.key) {
+      changed = true;
+    }
+    return upgraded;
+  });
+  updatePinnedRows(pinnedVerses);
+  if (changed) {
+    setPinnedVerses(pinnedVerses);
+  }
 }
 
 function addVersesBox() {
