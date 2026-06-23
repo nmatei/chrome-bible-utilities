@@ -58,9 +58,9 @@ function mergeParagraphs(versesInfo) {
         // https://www.bible.com/bible/191/PSA.23.VDC?parallel=143
         prev.content = v.content;
       } else {
-        verses.push(v);
+        verses.push({ ...v });
       }
-    } else {
+    } else if (v.content) {
       prev.content += " " + v.content;
     }
     return verses;
@@ -144,7 +144,6 @@ function getVersesInfo(verses, showParallel, labelSelector) {
       cls
     };
   });
-
   return mergeParagraphs(versesInfo);
 }
 
