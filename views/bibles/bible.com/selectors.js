@@ -171,9 +171,10 @@ async function cacheBooks() {
     }
   }
   booksCache = booksCacheObj.map(b => b.name);
-  logCurrentBookInfo();
+  // logCurrentBookInfo();
 }
 
+// Used for developer debugging: logs all chapters of the current book to the console, so you can copy/paste them into a test case.
 function logCurrentBookInfo() {
   console.info("booksCacheObj", booksCacheObj);
   const [title] = getChapterTitles();
