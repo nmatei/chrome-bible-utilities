@@ -4,7 +4,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
-## 2.16.0 (2026-06-\_\_) (coming soon)
+## 2.16.0 (2026-06-23)
 
 - [x] Change icon for extension to have `cast borders` (like in Google Cast)
 - [x] 🧰 New toolbar **popup** (click the extension icon) for quick access to common actions:
