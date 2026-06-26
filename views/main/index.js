@@ -139,7 +139,7 @@ function getVersesInfo(verses, showParallel, labelSelector) {
     }
     return {
       verseNr,
-      content: (v.innerText.substring(verseNr.length) || "").trim(),
+      content: (v.innerText.substring(verseNr.length) || "").replace(multiSpaceRegExp, " ").trim(),
       parallel,
       cls
     };

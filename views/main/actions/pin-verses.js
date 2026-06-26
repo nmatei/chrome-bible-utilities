@@ -491,7 +491,7 @@ async function onReferenceCopy(verses, view = primaryViewSelector) {
     // 1) convert each pin to a concrete ref (incl. parallel verse-mapping), then
     // 2) fetch every chapter from the API in parallel by language-independent key.
     const refs = targets.map(target => resolveCopyRef(target, view));
-    const allVerses = await copyRefs(refs, maskWrapper);
+    const allVerses = await copyRefs(refs, maskWrapper, view);
     copyToClipboard(allVerses);
   } catch (e) {
     // any failure (network, missing key/version, mapping) -> DOM-navigation fallback
@@ -561,13 +561,13 @@ function copyVerseNumbers(match) {
 // Fetch every ref's chapter from the API in parallel and build the clipboard text.
 // Progress (done / total) updates as each request settles. Throws on any failure
 // so the caller can fall back to the DOM-navigation flow.
-async function copyRefs(refs, maskWrapper) {
+async function copyRefs(refs, maskWrapper, view = primaryViewSelector) {
   let done = 0;
   const total = refs.length;
   maskWrapper.dataset.text = `0 / ${total}`;
   const blocks = await Promise.all(
     refs.map(async ref => {
-      const block = await fetchRefBlock(ref);
+      const block = await fetchRefBlock(ref, view);
       maskWrapper.dataset.text = `${++done} / ${total}`;
       return block;
     })
@@ -575,11 +575,39 @@ async function copyRefs(refs, maskWrapper) {
   return blocks.join("\n");
 }
 
-async function fetchRefBlock(ref) {
+// True when this ref points at the chapter already shown in `view` (same book,
+// chapter and the version backing that pane). Lets us read verses straight from
+// the page instead of re-fetching from bible.com. For parallel refs whose chapter
+// number was remapped (e.g. Psalms) the chapters won't match, so we fall back to
+// the API — which is the safe outcome.
+function isOpenChapter(ref, view) {
+  const urlParams = getUrlParams();
+  if (!urlParams || ref.book !== urlParams.book || ref.chapter !== urlParams.chapter) {
+    return false;
+  }
+  const versionForView = view === parallelViewSelector ? urlParams.parallel : urlParams.primary;
+  return ref.versionId === versionForView;
+}
+
+// Verse info for a ref's chapter, shaped like getChapterFromAPI's result. Reads
+// from the live page when the chapter is already open (no network); otherwise
+// fetches from the API. Returns null when the open page has no verse elements yet
+// (lazy-loaded) so the caller falls back to the API.
+async function getRefVersesInfo(ref, view) {
+  if (isOpenChapter(ref, view)) {
+    const verses = $$(verseSelectorMatch, $(view));
+    if (verses.length) {
+      return getVersesInfo(verses, false);
+    }
+  }
+  return getChapterFromAPI({ primary: ref.versionId, book: ref.book, chapter: ref.chapter });
+}
+
+async function fetchRefBlock(ref, view = primaryViewSelector) {
   if (ref.custom) {
     return `📋 ${ref.label}\n`;
   }
-  const versesInfo = await getChapterFromAPI({ primary: ref.versionId, book: ref.book, chapter: ref.chapter });
+  const versesInfo = await getRefVersesInfo(ref, view);
   if (!versesInfo) {
     throw new Error(`empty chapter for ${ref.book}.${ref.chapter}`);
   }
@@ -621,7 +649,7 @@ async function onReferenceSaveJson() {
 // Whole-chapter refs (no verse) become one item per verse; an explicit verse or
 // range stays a single item (verse-number prefixed when it spans more than one).
 async function fetchRefItems(ref) {
-  const versesInfo = await getChapterFromAPI({ primary: ref.versionId, book: ref.book, chapter: ref.chapter });
+  const versesInfo = await getRefVersesInfo(ref, primaryViewSelector);
   if (!versesInfo) {
     throw new Error(`empty chapter for ${ref.book}.${ref.chapter}`);
   }

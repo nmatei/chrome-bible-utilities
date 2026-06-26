@@ -4,6 +4,11 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
+## 2.17.0 (2026-06-27)
+
+- [x] 🧹 **Copy all to clipboard** and **Save all to json** no longer leave extra/multiple spaces inside verses (eg. `John 15:18-27`) — whitespace is now collapsed consistently
+- [x] ⚡ Copying a pinned reference whose chapter is **already open** now reads verses straight from the page instead of re-fetching from bible.com (fewer API requests; falls back to the API for any other chapter)
+
 ## 2.16.0 (2026-06-23)
 
 - [x] Change icon for extension to have `cast borders` (like in Google Cast)
