@@ -4,6 +4,14 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 💚 **Love this extension?** Share [feedback](https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj) and help us make it even better + helps others to find this resource.
 
+☕ **Support development:**
+
+<p>
+  <a href="https://www.buymeacoffee.com/nmatei" target="_blank"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me A Coffee" height="34"></a>
+  <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="34"></a>
+  <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="34"></a>
+</p>
+
 ## 2.17.0 (2026-06-26)
 
 - [x] 🧹 **Copy all to clipboard** and **Save all to json** no longer leave extra/multiple spaces inside verses (eg. `John 15:18-27`) — whitespace is now collapsed consistently

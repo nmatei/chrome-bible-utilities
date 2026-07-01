@@ -191,6 +191,10 @@ function getHelpContent() {
             <li>📩 Support <a href="https://github.com/nmatei/chrome-bible-utilities/issues" target="_blank">Tickets</a></li>
             <li>📈 <a href="https://nmatei.github.io/chrome-bible-utilities/release-notes" target="_blank" class="abp-badge">Release Notes</a> - see what are the latest fixes and features</li>
             <li>💚 <span style="color: #ff3d4d">Love this extension?</span> Share <a href="https://chromewebstore.google.com/detail/project-verses-from-bible/fklnkmnlobkpoiifnbnemdpamheoanpj" target="_blank">feedback</a> and help us make it even better!</li>
+            <li>☕ <strong>Support development</strong>:
+              <a href="https://www.buymeacoffee.com/nmatei" target="_blank">Buy me a coffee</a>,
+              <a href="https://paypal.me/mateinick" target="_blank">PayPal</a> or
+              <a href="https://github.com/sponsors/nmatei" target="_blank">GitHub Sponsors</a></li>
             <li>☽ Try <a href="https://chromewebstore.google.com/detail/night-mode-bible/ebiieffikaglhelcnogmmijmlejdhngk" target="_blank">Night mode</a> extension
           </ul>
         </li>

@@ -23,12 +23,12 @@ or in **2 different languages**.
 - [💠 Features & Usage](#-features--usage)
 - [📈 Release Notes](#-release-notes)
 - [🎞 Results](#-results)
-- [🎫 QR Code](#-qr-code)
 - [👋 Support my Work](#-support-my-work)
 - [💠 Advanced Features](#-advanced-features)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [▶ Build procedure](#-build-procedure)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
+- [🎫 QR Code](#-qr-code)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -99,18 +99,18 @@ Check [release-notes.md](release-notes.md) changelog
 
 ![Actions](screens/settings.jpg)
 
-## 🎫 QR Code
-
-[bit.ly/project-bible](https://bit.ly/project-bible)
-
-![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
-
 ## 👋 Support my Work
 
 A simple way to **support my work** & to **improve** your programming skills is to buy **My course on Udemy**.
 (Or you can **Gift this course** to someone that will benefit from it).
 
 - [x] ‍💻 [Become a WEB Developer from Scratch, step by step Guide](https://nmatei.github.io/web) - by [Nicolae Matei](https://nmatei.github.io/)
+
+Or **support development** of this extension directly:
+
+- [x] ☕ [Buy me a coffee](https://www.buymeacoffee.com/nmatei)
+- [x] 💳 [PayPal](https://paypal.me/mateinick)
+- [x] ❤️ [GitHub Sponsors](https://github.com/sponsors/nmatei)
 
 ## 💠 Advanced Features
 
@@ -161,6 +161,7 @@ If you want to try the latest versions before they are released, or to change co
 - [ ] Multi slides to project content (same as live text but with multiple slides)
   - [ ] Add/Edit/Remove slides
 - [ ] shortcuts for bold / italic - inside live text
+- [ ] 🔳 Generate a **QR code on the main projector screen** from live text (eg. project a link or verse reference as a scannable QR)
 - [ ] Check if verses are not in sync
   - [x] Available Language mappings and version
     - [x] Russian (НРП/СИНОД/SYNO/CARS/CARS-A)
@@ -193,3 +194,9 @@ If you want to try the latest versions before they are released, or to change co
 - [x] Select verse from parallel view then press right/left arrows - will not project the correct format
 - [x] Page refresh after openPinReference (after verse navigation) - not sure yet why it happens
   - [x] Temporary fix: select `Parallel` view then `Exit Parallel Mode`
+
+## 🎫 QR Code
+
+[bit.ly/project-bible](https://bit.ly/project-bible)
+
+![bit.ly_project-bible](screens/bit.ly_project-bible.jpg)
