@@ -11,7 +11,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.18.0 (soon)
 
-- [x] 🖥️ New **Open & focus projector** button in the toolbar popup (right next to 📖 Open bible.com): opens the projection window(s) for your enabled displays if they aren't open yet, brings them to the front, and also focuses the bible.com page. A status dot lights up green when an external projection screen is currently open
+- [x] 🖥️ New **Open & focus projector** button in the toolbar popup (right next to 📖 Open bible.com) — **one-click setup**: reopens your **last used** bible.com page *and* opens/focuses the projection window(s) for your enabled displays, so your whole projection setup is ready to go in a single click. A status dot lights up green when a projection screen is already open
 
 ## 2.17.0 (2026-06-26)
 

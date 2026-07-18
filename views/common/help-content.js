@@ -181,6 +181,23 @@ function getHelpContent() {
         <li>
           <div class="title">
             <span class="displays actions row-actions">
+              <button class="action-btn active">${icons.lightExport}</button>
+            </span>
+            <strong>Quick setup</strong> from the toolbar popup (one click)
+          </div>
+          <ul>
+            <li>Click the extension icon, then
+              <strong class="key-code example-btn">${icons.lightExport}</strong>
+              <strong>Open &amp; focus projector</strong> to reopen your
+              <strong>last used</strong> bible.com page <em>and</em> the projection
+              window(s) at once — your whole setup ready to go</li>
+            <li>the status dot turns <span style="color: #2ecc71">green</span> when a projection screen is already open</li>
+          </ul>
+        </li>
+
+        <li>
+          <div class="title">
+            <span class="displays actions row-actions">
               <button class="action-btn active">👋</button>
             </span>
             About this Project

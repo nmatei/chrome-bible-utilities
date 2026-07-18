@@ -1,6 +1,7 @@
 importScripts("common/utilities.js");
 
 const BIBLE_TABS_URL = ["https://www.bible.com/bible*", "https://www.bible.com/*/bible*"];
+const BIBLE_DEFAULT_URL = "https://www.bible.com/bible";
 
 const projectorPage = "views/projector/tab.html";
 const settingsPage = "views/settings/options.html";
@@ -110,6 +111,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else {
           sendResponse({ status: 200 });
         }
+      });
+      return true;
+    }
+    case "openBibleAndProjector": {
+      // Runs the whole sequence in the service worker so it isn't interrupted
+      // when the toolbar popup closes (focusing another window dismisses it).
+      openBibleAndProjector(request.payload && request.payload.targets).then(() => {
+        sendResponse({ status: 200 });
       });
       return true;
     }
@@ -310,6 +319,36 @@ function createProjectorTab(settings = {}, index = 1) {
   });
 }
 
+// Focus an existing bible.com tab, or open one (reusing the last page the user
+// had open). Mirrors the "Open bible.com" popup button.
+async function focusBibleTab() {
+  const tabs = await chrome.tabs.query({ url: BIBLE_TABS_URL });
+  if (tabs.length) {
+    const tab = tabs.find(t => t.active) || tabs[0];
+    await chrome.tabs.update(tab.id, { active: true });
+    await chrome.windows.update(tab.windowId, { focused: true });
+  } else {
+    const { lastBibleUrl } = await chrome.storage.sync.get("lastBibleUrl");
+    await chrome.tabs.create({
+      url: lastBibleUrl || BIBLE_DEFAULT_URL
+    });
+  }
+}
+
+// Open/focus the main bible.com page, bring the projection window(s) for the
+// given displays to the front, then focus bible.com again at the end so the
+// user lands back on the control page ready to type.
+async function openBibleAndProjector(targets) {
+  await focusBibleTab();
+  const indexes = targets && targets.length ? targets : [1];
+  for (const index of indexes) {
+    const key = projectorStorageKey + (index === 1 ? "" : index);
+    const win = await getWindow(key, settings => createProjectorTab(settings, index));
+    await chrome.windows.update(win.id, { focused: true });
+  }
+  await focusBibleTab();
+}
+
 function createSettingsTab(settings = {}) {
   return createWindow({
     url: chrome.runtime.getURL(settingsPage),
@@ -368,7 +407,12 @@ function checkIfLastTabClosed() {
         const existingId = settings ? settings.id : "";
         if (existingId) {
           // TODO try to fix : Uncaught (in promise) Error: No window with id: 674002835. when i simple close any tab
-          chrome.windows.remove(existingId);
+          try {
+            // TODO should we first 'get' the window to see if it still exists? (it may have been closed by user)
+            chrome.windows.remove(existingId);
+          } catch (e) {
+            console.warn("error when chrome.windows.remove", e);
+          }
         }
       }
     } else {

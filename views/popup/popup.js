@@ -93,24 +93,16 @@ async function openBible() {
   window.close();
 }
 
-async function openProjector() {
-  // Open/focus the main bible.com page first (like the "Open bible.com" button),
-  // then bring the projection window(s) to the front so they end up on top.
-  await focusBibleTab();
+function openProjector() {
+  // Delegate the whole sequence to the background service worker: focusing
+  // bible.com / the projector windows changes window focus, which dismisses this
+  // popup and would abort the rest. The background finishes after the popup closes.
   const enabled = [1, 2].filter(idx => displaySettings[idx - 1] !== 0);
   const targets = enabled.length ? enabled : [1];
-  for (const index of targets) {
-    const res = await chrome.runtime.sendMessage({
-      action: "createTab",
-      payload: { index }
-    });
-    if (res && res.id) {
-      await chrome.runtime.sendMessage({
-        action: "focusTab",
-        payload: { id: res.id }
-      });
-    }
-  }
+  chrome.runtime.sendMessage({
+    action: "openBibleAndProjector",
+    payload: { targets }
+  });
   window.close();
 }
 
