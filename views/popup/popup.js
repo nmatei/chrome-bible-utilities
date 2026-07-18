@@ -69,7 +69,14 @@ async function refreshBibleDot() {
   document.getElementById("bibleDot").classList.toggle("open", tabs.length > 0);
 }
 
-async function openBible() {
+async function refreshProjectorDot() {
+  const base = chrome.runtime.getURL("views/projector/tab.html");
+  const wins = await chrome.windows.getAll({ populate: true });
+  const open = wins.some(w => (w.tabs || []).some(t => t.url && t.url.startsWith(base)));
+  document.getElementById("projectorDot").classList.toggle("open", open);
+}
+
+async function focusBibleTab() {
   const tabs = await chrome.tabs.query({ url: BIBLE_TABS_URL });
   if (tabs.length) {
     const tab = tabs.find(t => t.active) || tabs[0];
@@ -78,6 +85,31 @@ async function openBible() {
   } else {
     const { lastBibleUrl } = await chrome.storage.sync.get("lastBibleUrl");
     await chrome.tabs.create({ url: lastBibleUrl || DEFAULT_URL });
+  }
+}
+
+async function openBible() {
+  await focusBibleTab();
+  window.close();
+}
+
+async function openProjector() {
+  // Open/focus the main bible.com page first (like the "Open bible.com" button),
+  // then bring the projection window(s) to the front so they end up on top.
+  await focusBibleTab();
+  const enabled = [1, 2].filter(idx => displaySettings[idx - 1] !== 0);
+  const targets = enabled.length ? enabled : [1];
+  for (const index of targets) {
+    const res = await chrome.runtime.sendMessage({
+      action: "createTab",
+      payload: { index }
+    });
+    if (res && res.id) {
+      await chrome.runtime.sendMessage({
+        action: "focusTab",
+        payload: { id: res.id }
+      });
+    }
   }
   window.close();
 }
@@ -146,8 +178,10 @@ function renderWindows() {
 
 function wireStaticControls() {
   document.getElementById("openBible").addEventListener("click", openBible);
+  document.getElementById("openProjector").addEventListener("click", openProjector);
   document.getElementById("advancedBtn").addEventListener("click", openAdvancedSettings);
 
+  document.getElementById("projectorIcon").innerHTML = icons.lightExport;
   document.getElementById("windowsIcon").innerHTML = icons.screenSources;
   document.getElementById("advancedIcon").innerHTML = icons.lightSettings;
   document.getElementById("helpSummaryIcon").innerHTML = icons.question;
@@ -158,9 +192,8 @@ function wireStaticControls() {
   // don't toggle the <details> when opening the release-notes link
   versionLink.addEventListener("click", e => e.stopPropagation());
 
-  document.getElementById(
-    "helpBody"
-  ).innerHTML = `<div id="help-text-box" class="info-fixed-box"><div class="info-text-content-wrapper">${getHelpContent()}</div></div>`;
+  document.getElementById("helpBody").innerHTML =
+    `<div id="help-text-box" class="info-fixed-box"><div class="info-text-content-wrapper">${getHelpContent()}</div></div>`;
 }
 
 // Keep the popup in sync when settings change elsewhere (an open bible.com
@@ -171,6 +204,9 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
     [displaySettings, userOptions] = await Promise.all([getDisplaySettings(), getUserOptions()]);
     renderWindows();
   }
+  if (changes.projectorWindow || changes.projectorWindow2) {
+    refreshProjectorDot();
+  }
 });
 
 async function init() {
@@ -178,6 +214,7 @@ async function init() {
   [displaySettings, userOptions] = await Promise.all([getDisplaySettings(), getUserOptions()]);
   renderWindows();
   refreshBibleDot();
+  refreshProjectorDot();
 }
 
 init();

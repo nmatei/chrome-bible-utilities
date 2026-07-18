@@ -57,12 +57,19 @@ h2 {
   margin: 0;
 }
 
-/* Open bible.com */
+/* Open bible.com + open projector */
+.open-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
 .open-bible {
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 10px;
   background: var(--panel);
   color: var(--text);
@@ -80,6 +87,30 @@ h2 {
 
 .open-bible .emoji {
   font-size: 18px;
+}
+
+.open-projector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 44px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.open-projector:hover {
+  background: var(--panel-2);
+}
+
+.open-projector .dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 .dot {

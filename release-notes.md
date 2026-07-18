@@ -9,6 +9,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
+## 2.18.0 (soon)
+
+- [x] 🖥️ New **Open & focus projector** button in the toolbar popup (right next to 📖 Open bible.com): opens the projection window(s) for your enabled displays if they aren't open yet, brings them to the front, and also focuses the bible.com page. A status dot lights up green when an external projection screen is currently open
+
 ## 2.17.0 (2026-06-26)
 
 - [x] 🧹 **Copy all to clipboard** and **Save all to json** no longer leave extra/multiple spaces inside verses (eg. `John 15:18-27`) — whitespace is now collapsed consistently
