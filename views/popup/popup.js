@@ -106,8 +106,15 @@ function openProjector() {
   window.close();
 }
 
-function openAdvancedSettings() {
-  chrome.runtime.sendMessage({ action: "createSettingsTab" });
+async function openAdvancedSettings() {
+  // Await the response so the message port stays open until the background
+  // worker has actually created/focused the settings window. Otherwise, on a
+  // cold MV3 service worker, window.close() can tear down the popup before the
+  // fire-and-forget message is processed — which is why it used to take a
+  // second click to open settings.
+  await chrome.runtime.sendMessage({
+    action: "createSettingsTab"
+  });
   window.close();
 }
 
