@@ -384,9 +384,13 @@ function boxByKey(key) {
 
 function repositionOpenBoxes() {
   const actions = $("#project-actions");
-  if (!actions) return;
+  if (!actions) {
+    return;
+  }
   $$(".action-btn", actions).forEach(btn => {
-    if (!btn.classList.contains("active")) return;
+    if (!btn.classList.contains("active")) {
+      return;
+    }
     const box = boxByKey(btn.dataset.key);
     if (box && !box.classList.contains("hide-view")) {
       showBoxBy(box, btn);
@@ -397,7 +401,9 @@ function repositionOpenBoxes() {
 // Hide (-1) / show (0) toolbar buttons live when the popup changes openStates.
 function applyButtonVisibility(key, value) {
   const btn = $(`#project-actions button[data-key="${key}"]`);
-  if (!btn) return;
+  if (!btn) {
+    return;
+  }
   if (value === -1) {
     if (btn.classList.contains("active")) {
       actionsClick(btn); // close its open box first
