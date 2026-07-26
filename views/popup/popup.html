@@ -24,25 +24,43 @@
 
       <hr class="sep" />
 
-      <section id="windows">
-        <h2><span class="ic" id="windowsIcon"></span><span>Projection windows</span></h2>
-        <div id="windowCols" class="window-cols"></div>
-        <button id="advancedBtn" type="button" class="advanced-btn" title="Projector Screen Settings (Advanced)">
-          <span class="ic" id="advancedIcon"></span>
-          <span>Projector Screen Settings</span>
-        </button>
-      </section>
+      <details id="windows" class="collapsible" open>
+        <summary>
+          <span class="ic" id="windowsIcon"></span>
+          <span class="fill">Projection windows</span>
+          <span class="chevron ic" id="windowsChevron"></span>
+        </summary>
+        <div class="collapsible-body">
+          <div id="windowCols" class="window-cols"></div>
+          <button id="advancedBtn" type="button" class="advanced-btn" title="Projector Screen Settings (Advanced)">
+            <span class="ic" id="advancedIcon"></span>
+            <span>Projector Screen Settings</span>
+          </button>
+        </div>
+      </details>
 
       <hr class="sep" />
 
-      <details id="help">
+      <div class="visibility-row">
+        <span class="vis-label">Show on bible.com:</span>
+        <button id="toggleSettings" type="button" class="vis-toggle" data-key="settings" title="Show/hide the Settings button on bible.com">
+          <span class="ic" id="visSettingsIcon"></span><span>Settings</span>
+        </button>
+        <button id="toggleHelp" type="button" class="vis-toggle" data-key="help" title="Show/hide the Help button on bible.com">
+          <span class="ic" id="visHelpIcon"></span><span>Help</span>
+        </button>
+      </div>
+
+      <hr class="sep" />
+
+      <details id="help" class="collapsible">
         <summary>
           <span class="ic" id="helpSummaryIcon"></span>
           <span class="fill">Help / Usage</span>
           <a id="helpVersion" class="app-version" target="_blank" href="https://nmatei.github.io/chrome-bible-utilities/release-notes" title="Release Notes"></a>
           <span class="chevron ic" id="helpChevron"></span>
         </summary>
-        <div id="helpBody" class="help-body"></div>
+        <div id="helpBody" class="collapsible-body help-body"></div>
       </details>
     </main>
 

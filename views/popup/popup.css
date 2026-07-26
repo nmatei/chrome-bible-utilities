@@ -29,17 +29,6 @@ body {
   gap: 10px;
 }
 
-h2 {
-  margin: 0 0 8px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text);
-}
-
 .ic {
   display: inline-flex;
   align-items: center;
@@ -125,14 +114,101 @@ h2 {
   background: #2ecc71;
 }
 
-/* Windows section */
-section {
+/* Show/hide Settings & Help on the bible.com toolbar */
+.visibility-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vis-label {
+  color: var(--muted);
+  font-size: 12px;
+  flex: none;
+}
+
+.vis-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vis-toggle:hover {
+  background: var(--panel-2);
+}
+
+/* pressed = shown on bible.com */
+.vis-toggle.active {
+  background: var(--panel-2);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* not pressed = hidden on bible.com */
+.vis-toggle:not(.active) {
+  opacity: 0.55;
+}
+
+.vis-toggle .ic {
+  display: inline-flex;
+}
+
+/* Collapsible sections (Projection windows, Help) */
+details.collapsible {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 10px;
 }
 
+details.collapsible > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+details.collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.collapsible > summary:hover {
+  color: #fff;
+}
+
+details.collapsible > summary .fill {
+  flex: 1;
+}
+
+details.collapsible > summary .chevron {
+  transition: transform 0.15s ease;
+}
+
+details.collapsible[open] > summary .chevron {
+  transform: rotate(90deg);
+}
+
+.collapsible-body {
+  padding: 0 10px 10px;
+}
+
+/* Windows section */
 .window-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -227,49 +303,11 @@ section {
   background: var(--panel-3);
 }
 
-/* Help (collapsible) */
-details#help {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-details#help summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  user-select: none;
-}
-
-details#help summary::-webkit-details-marker {
-  display: none;
-}
-
-details#help summary .fill {
-  flex: 1;
-}
-
+/* Help */
 details#help summary .app-version {
   font-size: 11px;
   font-weight: normal;
   text-decoration: none;
-}
-
-details#help summary .chevron {
-  transition: transform 0.15s ease;
-}
-
-details#help[open] summary .chevron {
-  transform: rotate(90deg);
-}
-
-.help-body {
-  padding: 0 10px 10px;
 }
 
 /* Reuse the in-page help markup (#help-text-box) but render it inline,

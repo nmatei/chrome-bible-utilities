@@ -17,6 +17,7 @@ const DISPLAY_MODES = [
 
 let displaySettings = [3, 0];
 let userOptions = { selected: [0, 0], slides: [{ slideName: "Main", slideDescription: "Default Slide" }] };
+let openStates = {};
 
 // ----- storage accessors (same shapes as settings.js) -----
 
@@ -59,6 +60,21 @@ async function saveSelectedSlide(windowIndex, slideIndex) {
   return chrome.runtime.sendMessage({
     action: "updateSlideSelection",
     payload: { windowIndex, slideIndex }
+  });
+}
+
+// openStates mirrors views/main/actions.js: an object map keyed by the in-page
+// toolbar button's data-key. Values: -1 hidden, 0 closed, 1 open. The popup
+// only ever toggles between -1 (hidden) and 0 (visible) — it never force-opens
+// a panel (1).
+async function getOpenStates() {
+  const data = await chrome.storage.sync.get("openStates");
+  return data.openStates || {};
+}
+
+async function saveOpenStates(openStates) {
+  await chrome.storage.sync.set({
+    openStates
   });
 }
 
@@ -116,6 +132,27 @@ async function openAdvancedSettings() {
     action: "createSettingsTab"
   });
   window.close();
+}
+
+// A button is "shown on bible.com" unless it's explicitly hidden (-1).
+function isHidden(key) {
+  return openStates[key] === -1;
+}
+
+function toggleVisibility(key) {
+  // Flip between hidden (-1) and visible/closed (0). Never write 1.
+  openStates[key] = isHidden(key) ? 0 : -1;
+  saveOpenStates(openStates);
+  renderVisibilityToggles();
+}
+
+function renderVisibilityToggles() {
+  ["settings", "help"].forEach(key => {
+    const btn = document.querySelector(`.vis-toggle[data-key="${key}"]`);
+    if (btn) {
+      btn.classList.toggle("active", !isHidden(key));
+    }
+  });
 }
 
 // ----- rendering -----
@@ -180,11 +217,17 @@ function wireStaticControls() {
   document.getElementById("openProjector").addEventListener("click", openProjector);
   document.getElementById("advancedBtn").addEventListener("click", openAdvancedSettings);
 
+  document.getElementById("toggleSettings").addEventListener("click", () => toggleVisibility("settings"));
+  document.getElementById("toggleHelp").addEventListener("click", () => toggleVisibility("help"));
+
   document.getElementById("projectorIcon").innerHTML = icons.lightExport;
   document.getElementById("windowsIcon").innerHTML = icons.screenSources;
+  document.getElementById("windowsChevron").innerHTML = icons.rightArrow;
   document.getElementById("advancedIcon").innerHTML = icons.lightSettings;
   document.getElementById("helpSummaryIcon").innerHTML = icons.question;
   document.getElementById("helpChevron").innerHTML = icons.rightArrow;
+  document.getElementById("visSettingsIcon").innerHTML = icons.lightSettings;
+  document.getElementById("visHelpIcon").innerHTML = icons.question;
 
   const versionLink = document.getElementById("helpVersion");
   versionLink.textContent = `[ v.${chrome.runtime.getManifest().version} ]`;
@@ -203,6 +246,10 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
     [displaySettings, userOptions] = await Promise.all([getDisplaySettings(), getUserOptions()]);
     renderWindows();
   }
+  if (changes.openStates) {
+    openStates = changes.openStates.newValue || {};
+    renderVisibilityToggles();
+  }
   if (changes.projectorWindow || changes.projectorWindow2) {
     refreshProjectorDot();
   }
@@ -210,8 +257,13 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
 
 async function init() {
   wireStaticControls();
-  [displaySettings, userOptions] = await Promise.all([getDisplaySettings(), getUserOptions()]);
+  [displaySettings, userOptions, openStates] = await Promise.all([
+    getDisplaySettings(),
+    getUserOptions(),
+    getOpenStates()
+  ]);
   renderWindows();
+  renderVisibilityToggles();
   refreshBibleDot();
   refreshProjectorDot();
 }

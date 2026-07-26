@@ -4,6 +4,10 @@ let liveBoxForm;
 let helpBox;
 let settingsBox;
 let versesBox;
+// Single source of truth for button open/hidden states, kept in sync with
+// chrome.storage (including changes made from the popup). Values: -1 hidden,
+// 0 closed, 1 open.
+let openStates = {};
 
 async function getOpenStates() {
   const storageData = await chrome.storage.sync.get("openStates");
@@ -274,7 +278,7 @@ function showVersesBox() {
  *
  */
 async function createSettingsActions() {
-  const openStates = await getOpenStates();
+  openStates = await getOpenStates();
   const actions = addActionsBox();
 
   actions.addEventListener("click", e => {
@@ -282,16 +286,34 @@ async function createSettingsActions() {
 
     $$(".action-btn", actions).forEach(btn => {
       const action = btn.dataset.key;
+      // Preserve a hidden button's -1 — it's controlled from the popup, not by
+      // in-page clicks, and its box is never open here anyway.
+      if (openStates[action] === -1) {
+        return;
+      }
       const active = btn.classList.contains("active");
       openStates[action] = active ? 1 : 0;
     });
     setOpenStates(openStates);
   });
 
+  // Hide first so the toolbar layout is final before any box is positioned
+  // against a button — otherwise a box opened for a later button would be
+  // placed against the pre-hide layout and end up misaligned.
+  Object.entries(openStates).forEach(([key, value]) => {
+    if (value === -1) {
+      const target = $(`button[data-key="${key}"]`, actions);
+      if (target) {
+        target.classList.add("hide-view");
+      }
+    }
+  });
   Object.entries(openStates).forEach(([key, value]) => {
     if (value === 1) {
       const target = $(`button[data-key="${key}"]`, actions);
-      actionsClick(target);
+      if (target) {
+        actionsClick(target);
+      }
     }
   });
 
@@ -337,12 +359,66 @@ async function updateCurrentVersion() {
 
 async function hideVersionBadge() {
   const helpBtn = $('button[data-key="help"]');
-  helpBtn.classList.remove("abp-badge");
-  helpBtn.title = "Help";
+  if (helpBtn) {
+    helpBtn.classList.remove("abp-badge");
+    helpBtn.title = "Help";
+  }
   await updateCurrentVersion();
 }
-// used to simulate updates
-// setPreviousVersion("1.0.0");
+
+// The open boxes (settings/live-text/help/verses) are absolutely positioned
+// against their button's offset (see showBoxBy). Hiding/showing a button
+// reflows the toolbar, so re-anchor every currently open box afterwards.
+function boxByKey(key) {
+  switch (key) {
+    case "settings":
+      return settingsBox;
+    case "live-text":
+      return liveBoxForm;
+    case "help":
+      return helpBox;
+    case "verses":
+      return versesBox;
+  }
+}
+
+function repositionOpenBoxes() {
+  const actions = $("#project-actions");
+  if (!actions) return;
+  $$(".action-btn", actions).forEach(btn => {
+    if (!btn.classList.contains("active")) return;
+    const box = boxByKey(btn.dataset.key);
+    if (box && !box.classList.contains("hide-view")) {
+      showBoxBy(box, btn);
+    }
+  });
+}
+
+// Hide (-1) / show (0) toolbar buttons live when the popup changes openStates.
+function applyButtonVisibility(key, value) {
+  const btn = $(`#project-actions button[data-key="${key}"]`);
+  if (!btn) return;
+  if (value === -1) {
+    if (btn.classList.contains("active")) {
+      actionsClick(btn); // close its open box first
+    }
+    btn.classList.add("hide-view");
+  } else {
+    btn.classList.remove("hide-view");
+  }
+}
+
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "sync" || !changes.openStates) {
+    return;
+  }
+  // Keep the local source of truth fresh — otherwise a later in-page click
+  // would re-persist a stale state (e.g. re-hiding a button the popup just
+  // showed).
+  openStates = changes.openStates.newValue || {};
+  Object.entries(openStates).forEach(([key, value]) => applyButtonVisibility(key, value));
+  repositionOpenBoxes();
+});
 
 function showBox(box, target) {
   showBoxBy(box, target);
