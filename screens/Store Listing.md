@@ -24,10 +24,11 @@ Project Scripture from bible.com directly to your screen or projector with just 
 • 🌍 Parallel Bible Support - Display multiple translations or languages at once
 • 🎨 Fully Customizable - Control fonts, colors, backgrounds, and layouts to match your church style
 • ⌨️ Smart Keyboard Navigation - Navigate verses, multi-select, and control display with intuitive shortcuts
+• 🧰 One-Click Setup - A toolbar popup that opens bible.com and your projection screens together, ready to go
 
 GETTING STARTED:
 
-1. Install this extension
+1. Install this extension, then pin it to your toolbar (🧩 icon → 📌) for a handy popup: open bible.com and all your projection screens in one click, switch displays and slide designs anytime
 2. Visit https://www.bible.com/bible (or click the extension icon)
 3. Look for action buttons (💬, 🛠, ❔, 📌) in the top-left corner
 4. Click the Help button (❔) to see all available features and shortcuts
