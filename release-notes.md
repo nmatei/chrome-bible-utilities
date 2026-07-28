@@ -9,7 +9,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
-## 2.18.0 (2026-07-2\*)
+## 2.18.0 (2026-07-27)
 
 - [x] 🖥️ New **Open & focus projector** button in the toolbar popup (right next to 📖 Open bible.com) — **one-click setup**: reopens your **last used** bible.com page _and_ opens/focuses the projection window(s) for your enabled displays, so your whole projection setup is ready to go in a single click. A status dot lights up green when a projection screen is already open
 - [x] 🙈 New **Show on bible.com** toggles in the toolbar popup to **hide/show the Settings (🛠) and Help (❔) buttons** on the bible.com toolbar. If you don't need them on the page, hide them for a **cleaner, roomier bible.com view** — you'll always find Settings and Help right here in the popup. Your choice is saved and applied **live** to any open bible.com tab (no reload needed)
