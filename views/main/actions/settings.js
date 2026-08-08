@@ -226,14 +226,20 @@ function addSettingsBox() {
 function updateDisplaySettingsButtons(settings) {
   settings.forEach((state, i) => {
     const btn = $(`#display-settings-box [data-display="${i + 1}"]`);
-    if (!btn) return;
+    if (!btn) {
+      return;
+    }
     btn.dataset.state = state;
   });
   updateProjectorBadge(settings);
 }
 
 function updateProjectorBadge(settings) {
-  $("#project-actions [data-key='settings']").classList.toggle(
+  const btn = $("#project-actions [data-key='settings']");
+  if (!btn) {
+    return;
+  }
+  btn.classList.toggle(
     "abp-badge",
     settings.every(s => s === 0)
   );
