@@ -9,7 +9,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
-## 2.19.0 (soon)
+## 2.19.0 (2026-08-15)
 
 - [x] 🐛 Fixes and improvements for **book & chapter selection** (after bible.com's latest site update):
   - **switching book & chapter** works again, without page refresh
