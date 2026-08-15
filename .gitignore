@@ -14,3 +14,6 @@ yarn-error.log
 .buildpath
 .project
 .settings
+
+# saved bible.com pages used by `npm run check-selectors` (see the update-selectors skill).
+test/integration/bible.com.content

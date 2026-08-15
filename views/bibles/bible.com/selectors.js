@@ -14,18 +14,12 @@ const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
 const hideCls = "hide-popovers";
 
 function chapterPickerArrow() {
-  let titleEl = $(titlesSelector);
-  if (!titleEl) {
-    return null;
-  }
-  const title = titleEl.innerHTML;
   const buttons = $$('.z-docked [id^="headlessui-popover-button"]');
-  return buttons.find(b => b.innerText === title);
-}
-
-function versionSelector() {
-  //TODO
-  return ".version-list";
+  const titleEl = $(titlesSelector);
+  const button = titleEl ? buttons.find(b => b.innerText === titleEl.innerHTML) : null;
+  // the version & reader settings buttons render their content in a <div>,
+  //   the book/chapter picker is the only one with the title as direct text
+  return button || buttons.find(b => !$(":scope > div", b)) || null;
 }
 
 function bookListCancel() {
@@ -33,14 +27,18 @@ function bookListCancel() {
 }
 
 function booksSelector() {
-  return ".w-full .z-popover li button";
+  return '.z-popover li button[data-testid="chapter"]';
 }
 
 function chaptersSelector() {
-  return ".z-popover li a";
+  // chapters used to be <a>, the current picker (BibleUsfmPickerChapter) renders <button>
+  return ".z-popover li a, .z-popover li button";
 }
 
 async function openChapter(book, chapter) {
+  // a reference past the end of the book (eg. 'Matei 44') has no chapter to click
+  chapter = limitChapter(book, chapter, booksCacheObj);
+
   // if book/chapter already opened, then do not click on it again
   const [title] = getChapterTitles();
   const bookText = findBookText(book, booksCache);
@@ -49,39 +47,77 @@ async function openChapter(book, chapter) {
     return title;
   }
 
-  let result = "";
-  let bookEl = findBookEl(book);
   const dropDownArrow = chapterPickerArrow();
-  document.body.classList.add(hideCls);
-  if (!bookEl) {
-    // fixing search one single book
-    // then and click outside => will remove all 'books li' from DOM
-    if (dropDownArrow) {
-      dropDownArrow.click();
-      await backgroundSleep(100);
-      bookEl = findBookEl(book);
-
-      if (bookEl) {
-        bookEl.click();
-        result = bookEl.innerText;
-        await backgroundSleep(200);
-        result += " " + selectChapter(chapter);
-      }
-
-      //console.warn("bookEl", bookEl, result);
-      //dropDownArrow.click();
-    } else {
-      console.warn("dropDownArrow not present");
-    }
+  if (!dropDownArrow) {
+    console.warn("dropDownArrow not present");
+    return "";
   }
-  document.body.classList.remove(hideCls);
-  return result;
+
+  // keep the popovers invisible for the whole simulation, including when it fails and we
+  //   still have to close the picker - removing the class earlier makes it flash on screen
+  document.body.classList.add(hideCls);
+  let selected = false;
+  try {
+    // the picker opens on the book list; when it is already open (eg. a previous attempt
+    //   left it that way) reuse it instead of toggling it closed
+    let bookEl = findBookEl(book);
+    if (!bookEl) {
+      dropDownArrow.click();
+      bookEl = await waitBook(book);
+    }
+    if (!bookEl) {
+      return "";
+    }
+
+    // read the name first, clicking it swaps the list and detaches the element
+    const bookName = bookEl.innerText;
+    bookEl.click();
+    if (!(await waitChapter(chapter))) {
+      return "";
+    }
+    const chapterText = selectChapter(chapter);
+    selected = !!chapterText;
+    return selected ? bookName + " " + chapterText : "";
+  } finally {
+    await closeChapterPicker(dropDownArrow, selected);
+    document.body.classList.remove(hideCls);
+  }
+}
+
+/**
+ * The book list is rendered by a lazy loaded chunk (a spinner shows until it arrives),
+ *   so a fixed delay misses it the first time the picker is opened.
+ * @returns {Promise<HTMLElement|undefined>} bookEl - undefined when the list never rendered
+ */
+async function waitBook(book, timeout = 500, retryInterval = 50) {
+  const endTime = Date.now() + timeout;
+  let bookEl = findBookEl(book);
+  while (!bookEl && Date.now() < endTime) {
+    await backgroundSleep(retryInterval);
+    bookEl = findBookEl(book);
+  }
+  return bookEl;
+}
+
+/**
+ * Selecting a chapter closes the picker on its own, but with a leave transition - toggling it
+ *   in that window would reopen it. Anything else (book not found, chapter list never rendered)
+ *   leaves it open, and it has to be closed before it becomes visible again.
+ */
+async function closeChapterPicker(dropDownArrow, selected) {
+  if (selected) {
+    await backgroundSleep(200);
+  }
+  if ($(".z-popover")) {
+    dropDownArrow.click();
+    await backgroundSleep(100);
+  }
 }
 
 function selectChapter(chapter) {
   const chapterEl = getMatchChapter(chapter);
   if (chapterEl) {
-    const activeEl = chapterEl.querySelector("li");
+    const activeEl = chapterEl.closest("li");
     activeEl && activeEl.classList.add("active");
     chapterEl.click();
     return chapterEl.innerText;
@@ -90,13 +126,25 @@ function selectChapter(chapter) {
   return "";
 }
 
-function getMatchChapter(chapter) {
-  const chapters = getChapters();
-  let chapterEl = chapters.find(e => e.innerText == chapter);
-  if (!chapterEl) {
-    chapterEl = chapters[0];
+/**
+ * The chapter list is rendered by a lazy loaded chunk, so it shows up a moment after the book
+ *   is clicked (a spinner until then) - a fixed sleep would miss it on the first open.
+ * @returns {Promise<HTMLElement|null>} chapterEl - null when the list never rendered
+ */
+async function waitChapter(chapter, timeout = 1000, retryInterval = 50) {
+  const endTime = Date.now() + timeout;
+  let chapterEl = getMatchChapter(chapter);
+  while (!chapterEl && Date.now() < endTime) {
+    await backgroundSleep(retryInterval);
+    chapterEl = getMatchChapter(chapter);
   }
   return chapterEl;
+}
+
+function getMatchChapter(chapter) {
+  // chapter items are numbers, so nothing matching means the picker is still on the book list
+  //   => don't click anything, let the caller fall back to loading the chapter url
+  return getChapters().find(e => e.innerText.trim() == chapter) || null;
 }
 
 function selectedSelector() {
@@ -159,7 +207,9 @@ async function cacheBooks() {
     if (arrow) {
       document.body.classList.add(hideCls);
       arrow.click();
-      await sleep(200);
+      // rendered locally (no backend call), so it shows up fast - poll instead of a fixed
+      //   sleep only to not miss it, not to wait for it
+      await waitElement(booksSelector(), 1000, 50);
       booksCacheObj = getBooks().map(e => ({
         name: e.innerText
       }));
@@ -198,6 +248,8 @@ function createChapterUrl({ book, chapter, primary }) {
 /**
  * Url of the chapter a parsed reference points to, reusing the versions from the address bar.
  * @param {*} match - reference info (book name in the current language, chapter)
+ * The chapter is capped to the last one of the book, so a reference past its end still opens
+ *   a real chapter instead of a 'not found' page.
  * @returns {string|null} url - null when the book can't be resolved,
  *   eg. books cache is empty or was scraped from the popover (names without usfm key)
  */
@@ -206,7 +258,7 @@ function createMatchUrl(match) {
   return book
     ? createChapterNavigationUrl(window.location.href, {
         book,
-        chapter: match.chapter
+        chapter: limitChapter(match.book, match.chapter, booksCacheObj)
       })
     : null;
 }

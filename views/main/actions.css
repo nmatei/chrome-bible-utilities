@@ -711,8 +711,8 @@ strong.abp-badge:after {
   background: #646464;
   color: #f9fafb;
 }
-.night-mode.focus-lost [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"],
-.night-mode [class^="ChapterContent_verse"].projected [class^="ChapterContent_label"] {
+.night-mode.focus-lost [class*="__verse"].projected [class*="__label"],
+.night-mode [class*="__verse"].projected [class*="__label"] {
   color: var(--verseNumberBackgroundProjected) !important;
   background: var(--verseNumberColorProjected) !important;
 }

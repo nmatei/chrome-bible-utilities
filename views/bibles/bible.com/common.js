@@ -1,7 +1,9 @@
 function getVersionsName() {
+  // the reader settings button matches too, but holds only an icon => drop the empty ones
   return $$(versionsNameSelector)
-    .slice(0, 2)
-    .map(e => e.innerText);
+    .map(e => e.innerText.trim())
+    .filter(Boolean)
+    .slice(0, 2);
 }
 
 function getBooks() {

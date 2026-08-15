@@ -53,8 +53,10 @@ body [class*="__verse"] > [class*="__label"] {
   display: inline-block;
 }
 
+/* the picker is opened by script to switch book/chapter - keep it off screen while we do.
+   !important beats the opacity-100 utility headlessui adds during its enter transition */
 .hide-popovers .z-popover {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
 .sticky.justify-between a {

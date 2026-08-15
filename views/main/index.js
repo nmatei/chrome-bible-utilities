@@ -545,10 +545,7 @@ function onReferenceRequest(request) {
 }
 
 async function initEvents() {
-  await Promise.any([
-    waitElement(appReadySelector, 5000, 200),
-    waitElement(".bible-reader-sticky-container", 5000, 200)
-  ]);
+  await waitElement(appReadySelector, 5000, 200);
 
   await cacheBooks();
   refreshPinnedVerses();
@@ -561,21 +558,7 @@ async function initEvents() {
     }, 2000);
   }
 
-  const versionEl = $(versionSelector());
-  versionEl &&
-    versionEl.addEventListener(
-      "click",
-      debounce(async e => {
-        if (e.target.closest("a")) {
-          // console.info("version changed");
-          // UI not changed if we don't expand
-          await bookArrowExpandAndCollapse();
-          await cacheBooks();
-          refreshPinnedVerses();
-        }
-      }, 2000)
-      // 2 sec to make sure books are reloaded
-    );
+  watchLocationChange();
 
   document.addEventListener(
     "click",
@@ -662,10 +645,40 @@ function findBookEl(book) {
 async function bookArrowExpandAndCollapse() {
   const dropDownArrow = chapterPickerArrow();
   if (dropDownArrow) {
+    document.body.classList.add(hideCls);
     dropDownArrow.click();
     await sleep(100);
     dropDownArrow.click();
+    document.body.classList.remove(hideCls);
   }
+}
+
+/**
+ * bible.com switches version/chapter with client side navigation (the url changes without a
+ *   page load), so watch the address bar instead of listening on a picker element that gets
+ *   re-rendered on every navigation.
+ */
+function watchLocationChange() {
+  let previousHref = window.location.href;
+  let previous = getUrlParams();
+  setInterval(async () => {
+    if (window.location.href === previousHref) {
+      return;
+    }
+    previousHref = window.location.href;
+    const current = getUrlParams();
+    // books are named in the language of the version, so the cache has to be rebuilt
+    const versionChanged =
+      !!current && (!previous || current.primary !== previous.primary || current.parallel !== previous.parallel);
+    previous = current;
+    if (versionChanged) {
+      // UI not changed if we don't expand
+      await bookArrowExpandAndCollapse();
+      await cacheBooks();
+      refreshPinnedVerses();
+    }
+    syncParallelLines();
+  }, 1000);
 }
 
 /**

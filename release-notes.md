@@ -11,10 +11,13 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.19.0 (soon)
 
-- [x] 🐛 Fixed the **page refresh** when opening a pinned reference (📌) after verse navigation: the chapter is now opened **directly by url** — keeping your language, version and parallel version (eg. `/ro/bible/191/PSA.23.VDC?parallel=143`) — instead of relying on a reload
-- [x] ⚡ Clicking a reference from the **chapter that is already open** now selects the verse right away (nothing is stored for the next page load, so a later reload no longer jumps to an old reference)
-- [x] 🎯 If the page still lands on a different chapter, the correct one is now opened **once**, automatically, and the verse is selected after it loads
+- [x] 🐛 Fixes and improvements for **book & chapter selection** (after bible.com's latest site update):
+  - **switching book & chapter** works again, without page refresh
+  - the **book/chapter picker no longer shows up** during the switch
+  - a reference **past the end of a book** (eg. `Matei 44`) opens the **last chapter** (`Matei 28`)
+- [x] 🌍 **Changing the Bible version** on bible.com reloads the book names again, so pinned references keep resolving in the new language
 - [x] 🐛 Fixed a console error (`updateProjectorBadge`) on bible.com when the Settings (🛠) button is hidden from the toolbar popup
+- [x] 🎨 Fixed the **projected verse number** colors in **night mode** — they stopped applying after a bible.com class rename
 
 ## 2.18.0 (2026-07-27)
 

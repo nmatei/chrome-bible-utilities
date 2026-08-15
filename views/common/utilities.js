@@ -144,11 +144,30 @@ function findBookText(book, booksCache) {
   return booksCache.find(e => latinizeText(e.toLowerCase()).includes(book));
 }
 
+// Resolve a localized/partial book name to its entry in the books cache.
+function findBook(book, booksCacheObj) {
+  book = latinizeText(book.toLowerCase());
+  return booksCacheObj.find(e => e.name && latinizeText(e.name.toLowerCase()).includes(book));
+}
+
 // Resolve a localized/partial book name to its USFM url key (e.g. "ioan" -> "JHN").
 function findBookKey(book, booksCacheObj) {
-  book = latinizeText(book.toLowerCase());
-  const found = booksCacheObj.find(e => e.name && latinizeText(e.name.toLowerCase()).includes(book));
+  const found = findBook(book, booksCacheObj);
   return found ? found.key : undefined;
+}
+
+/**
+ * Chapter of a reference, capped to the last chapter of its book, so 'Matei 44' opens
+ *   Matei 28 instead of a url that does not exist (eg. .../MAT.44.VDC).
+ * @param {String} book - book name in the current language
+ * @param {Number|String} chapter - chapter as written in the reference
+ * @param {Array} booksCacheObj - books of the loaded version
+ * @returns {Number|String} chapter - unchanged when the book or its chapter count is unknown,
+ *   eg. the cache was scraped from the book popover, which only has names
+ */
+function limitChapter(book, chapter, booksCacheObj) {
+  const chapters = findBook(book, booksCacheObj)?.chapters;
+  return chapters && parseInt(chapter) > chapters ? chapters : chapter;
 }
 
 // Build a pin item from raw text. Stamps the language-independent USFM `key`
@@ -288,7 +307,9 @@ if (typeof module === "object" && typeof module.exports === "object") {
     improveReference,
     improveBookName,
     findBookText,
+    findBook,
     findBookKey,
+    limitChapter,
     makePinItem,
     displayPinText,
     isPinReference,

@@ -31,6 +31,7 @@ Reusable agent skills are mirrored across tools. Claude Code and GitHub Copilot 
 Frontmatter requires `name` (lowercase-hyphen, must match the parent directory) and `description`. Edit either file, then `bash .claude/sync-skills.sh <path-to-edited-file>` copies it to the mirror (also run automatically by the `PostToolUse` hook). Current skills:
 
 - **`testing`** — add, run, and edit Jest + ts-jest unit tests.
+- **`update-selectors`** — re-validate and fix the bible.com DOM selectors after bible.com changes.
 
 ---
 
@@ -148,9 +149,10 @@ const debouncedHandler = debounce(async win => {
 
 ### Bible.com Integration
 
-- **DOM Selectors**: Use CSS class patterns (e.g., `[class^="ChapterContent_verse"]`)
+- **DOM Selectors**: Match the CSS-module suffix, never the prefix (e.g., `[class*="__verse"]`) — bible.com class names carry a build hash (`ChapterContent-module__cat7xG__verse`) that changes on every deploy
 - **Dynamic Content**: Handle async content loading with `waitElement()`
 - **Multiple Versions**: Support parallel translations and language mappings
+- **Validating selectors**: `npm run check-selectors` runs them against the pages saved in `test/integration/bible.com.content/` (gitignored, and kept out of `views/` so `npm run zip` can't ship them). See the `update-selectors` skill.
 
 ## User Interface Components
 
