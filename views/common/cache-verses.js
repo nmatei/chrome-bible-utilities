@@ -40,11 +40,13 @@ const autoSelectVerseKey = "autoSelectVerse";
  * @param {*} match
  */
 function setAutoSelectVerse(match) {
+  //console.warn("setAutoSelectVerse", match);
   localStorage.setItem(autoSelectVerseKey, JSON.stringify(match));
 }
 
 function getAutoSelectVerse() {
   const match = localStorage.getItem(autoSelectVerseKey);
   localStorage.removeItem(autoSelectVerseKey);
+  //console.warn("getAutoSelectVerse", match);
   return JSON.parse(match);
 }

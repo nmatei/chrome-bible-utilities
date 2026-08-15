@@ -733,19 +733,26 @@ async function openPinReference(target, project = true) {
   const value = target.innerText;
   const match = getVerseInfo(value);
   if (match) {
-    setAutoSelectVerse(match);
+    // store the match only when we have to open another chapter, since that can reload the page
+    //   (verses from the loaded chapter are selected right away, nothing to keep for the next load)
+    //   also nothing to store when we don't project it (eg. when copying references)
+    const otherChapter = project && !isChapterLoaded(match);
+    if (otherChapter) {
+      setAutoSelectVerse(match);
+    }
     const icon = target.closest("tr").querySelector('a[data-key="remove"]');
     icon.classList.add("spin");
     const title = await openChapter(match.book, match.chapter);
     await checkCacheVersesInfo();
     await waitAndSelectVerse(match, title, project);
-    // if code reaches this point it means that verse is already selected,
-    //   so we can clear auto select verse to avoid,
-    //   in case code does not reach this point (eg. page reloads durring selection)
-    //   checkAutoProject will be called after page reload.
-    // Then => clear auto select verse since we already used it in waitAndSelectVerse
     icon.classList.remove("spin");
-    getAutoSelectVerse();
+    // if code reaches this point it means that verse is already selected,
+    //   so we can clear auto select verse.
+    // But when a page load already started (eg. chapter url changed in waitAndSelectVerse)
+    //   we have to keep it, checkAutoProject will select the verse after page loads.
+    if (otherChapter && !chapterLoading) {
+      getAutoSelectVerse();
+    }
     return { title, match };
   }
   return {};

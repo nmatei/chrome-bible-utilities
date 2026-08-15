@@ -4,6 +4,10 @@ let focusChapter = null;
 let booksCacheObj = [];
 let booksCache = [];
 
+// true once a page load started (other chapter url / reload) - from that point the stored
+//   autoSelectVerse must be kept, it will be used to select the verse after the page loads
+let chapterLoading = false;
+
 window.addEventListener("load", () => {
   setTimeout(async () => {
     console.info("\x1b[34m\x1b[42m [%s] \x1b[0m", "extension loaded", "Project verses from bible.com");
@@ -664,40 +668,99 @@ async function bookArrowExpandAndCollapse() {
   }
 }
 
+/**
+ * Wait for the chapter of a reference to be opened, then select its verse.
+ * @returns {Promise<Boolean>} opened - true when the reference is on the loaded chapter
+ *   (and its verse is selected, when it has one)
+ */
 async function waitAndSelectVerse(match, title, project = true) {
   const verse = match.verse;
   const [chapter] = getChapterTitles();
   const changed = chapter === title || (await waitNewTitles());
   syncParallelLines();
-  if (verse) {
-    if (changed) {
-      if (project) {
-        const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
-        if (selectedVerses && selectedVerses.length) {
-          await backgroundSleep(100);
-          selectedVerses[0].scrollIntoViewIfNeeded(true);
-          return true;
-        }
-      } else {
-        return true;
-      }
-    } else {
-      if (project) {
-        console.warn(`${chapter} -> ${title} not changed (page refreshed to get new titles)`);
-        setAutoSelectVerse(match);
-        window.location.reload();
-      }
-      return false;
+
+  if (!changed) {
+    // chapter did not change (eg. books/chapters popover not loaded),
+    //   also for references without verse, otherwise we stay on the old chapter
+    if (project) {
+      //console.info(`${chapter} -> ${title} not changed (page refreshed to get new titles)`);
+      //console.info("  => match %o", match);
+      setAutoSelectVerse(match);
+      loadChapter(match, true);
     }
+    return false;
+  }
+
+  if (!verse || !project) {
+    // chapter reference (eg. 'Ps 99') => it is opened, there is no verse to select
+    return true;
+  }
+
+  const selectedVerses = await doSelectVerses(parseInt(verse), false, false, false);
+  if (selectedVerses && selectedVerses.length) {
+    await backgroundSleep(100);
+    selectedVerses[0].scrollIntoViewIfNeeded(true);
+    return true;
   }
   return false;
+}
+
+/**
+ * Load the chapter of a reference (keeping the versions), so we land on the right chapter
+ *   and can select the verse after load (see checkAutoProject).
+ * @param {*} match - reference to load
+ * @param {Boolean} reload - reload the current page when the chapter url can't be built
+ *   (eg. empty books cache) or when it is already the loaded one
+ * @returns {Boolean} loading - true when a page load started
+ */
+function loadChapter(match, reload = false) {
+  const url = createMatchUrl(match);
+  const otherChapter = url && url !== window.location.href;
+  if (!otherChapter && !reload) {
+    return false;
+  }
+  chapterLoading = true;
+  if (otherChapter) {
+    //console.info("loading chapter %o", url);
+    window.location.assign(url);
+  } else {
+    window.location.reload();
+  }
+  return true;
+}
+
+/**
+ * true when the loaded chapter is the one the reference points to
+ * @param {*} match - reference we want to select
+ */
+function isChapterLoaded(match) {
+  const url = createMatchUrl(match);
+  if (url) {
+    return url === window.location.href;
+  }
+  // without a book key (empty books cache) compare the reference with the chapter title,
+  //   the reference can be a short name (eg. 'Mat 5' -> 'Matei 5')
+  const [title] = getChapterTitles();
+  const loaded = getVerseInfo(title);
+  return !!loaded && loaded.chapter == match.chapter && findBookText(match.book, [loaded.book]) !== undefined;
 }
 
 async function checkAutoProject() {
   const match = getAutoSelectVerse();
   if (match) {
-    console.info("selecting reference after page reload", match);
-    const title = getChapterTitles()[0];
+    // the page could be loaded on the old chapter, in that case go to the right one (only once)
+    if (!isChapterLoaded(match)) {
+      if (!match.loaded) {
+        setAutoSelectVerse({ ...match, loaded: true });
+        if (loadChapter(match)) {
+          return;
+        }
+        getAutoSelectVerse(); // no other chapter url to load => clear it back
+      }
+      //console.warn("chapter %o is not loaded, selecting the verse on the current chapter", match);
+    }
+    //console.info("selecting reference after page reload", match);
+    const [title] = getChapterTitles();
     const selected = await waitAndSelectVerse(match, title);
     if (selected) {
       // select verse in pin box and scroll to it
@@ -721,7 +784,7 @@ async function checkAutoProject() {
  * @param timeout
  * @returns {Promise<Boolean>} - changed - true, expired - false
  */
-function waitNewTitles(timeout = 5000) {
+function waitNewTitles(timeout = 3000) {
   const oldChapters = getChapterTitles();
   const endTime = Date.now() + timeout;
   return new Promise(resolve => {

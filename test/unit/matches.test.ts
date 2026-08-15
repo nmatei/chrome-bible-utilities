@@ -1,6 +1,6 @@
 import { formatVerseRef, getVerseInfo, getVerseStr } from "../../views/common/bible-mappings";
 import { splitVerses } from "../../views/common/utilities";
-import { getUrlMatch } from "../../views/bibles/bible.com/url-utils";
+import { createChapterNavigationUrl, getUrlMatch, getUrlParams } from "../../views/bibles/bible.com/url-utils";
 
 type VerseInfo = {
   book?: string;
@@ -193,6 +193,62 @@ describe("Test URL Url Matches", () => {
       chapter: "15",
       parallel: undefined,
       version: "VDC"
+    });
+  });
+});
+
+describe("Test createChapterNavigationUrl", () => {
+  it("keeps versions and parallel version", () => {
+    const url = createChapterNavigationUrl("https://www.bible.com/bible/191/JHN.15.VDC?parallel=143", {
+      book: "PSA",
+      chapter: 23
+    });
+    expect(url).toEqual("https://www.bible.com/bible/191/PSA.23.VDC?parallel=143");
+  });
+
+  it("no parallel param when there is no parallel version", () => {
+    const url = createChapterNavigationUrl("https://www.bible.com/bible/191/JHN.15.VDC", {
+      book: "PSA",
+      chapter: 23
+    });
+    expect(url).toEqual("https://www.bible.com/bible/191/PSA.23.VDC");
+  });
+
+  it("keeps the language prefix", () => {
+    const url = createChapterNavigationUrl("https://www.bible.com/ro/bible/191/JHN.15.VDC?parallel=143", {
+      book: "PSA",
+      chapter: 23
+    });
+    expect(url).toEqual("https://www.bible.com/ro/bible/191/PSA.23.VDC?parallel=143");
+  });
+
+  it("same url when the same chapter is requested", () => {
+    const href = "https://www.bible.com/bible/191/JHN.15.VDC?parallel=143";
+    expect(
+      createChapterNavigationUrl(href, {
+        book: "JHN",
+        chapter: 15
+      })
+    ).toEqual(href);
+  });
+
+  it("null when the url or the reference is not complete", () => {
+    const href = "https://www.bible.com/bible/191/JHN.15.VDC";
+    expect(createChapterNavigationUrl(href, { chapter: 23 })).toBeNull();
+    expect(createChapterNavigationUrl(href, { book: "PSA" })).toBeNull();
+    expect(createChapterNavigationUrl(href)).toBeNull();
+    expect(createChapterNavigationUrl("https://www.bible.com/", { book: "PSA", chapter: 23 })).toBeNull();
+    expect(createChapterNavigationUrl(undefined, { book: "PSA", chapter: 23 })).toBeNull();
+  });
+
+  it("[round trip] only book & chapter are changed", () => {
+    [
+      "https://www.bible.com/bible/191/PSA.23.VDC?parallel=186",
+      "https://www.bible.com/ro/bible/191/PSA.23.VDC?parallel=186",
+      "https://www.bible.com/bible/111/GEN.1.NIV"
+    ].forEach(href => {
+      const url = createChapterNavigationUrl(href, { book: "JHN", chapter: 5 });
+      expect(getUrlParams(url)).toEqual({ ...getUrlParams(href), book: "JHN", chapter: 5 });
     });
   });
 });

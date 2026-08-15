@@ -9,6 +9,13 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
+## 2.19.0 (soon)
+
+- [x] 🐛 Fixed the **page refresh** when opening a pinned reference (📌) after verse navigation: the chapter is now opened **directly by url** — keeping your language, version and parallel version (eg. `/ro/bible/191/PSA.23.VDC?parallel=143`) — instead of relying on a reload
+- [x] ⚡ Clicking a reference from the **chapter that is already open** now selects the verse right away (nothing is stored for the next page load, so a later reload no longer jumps to an old reference)
+- [x] 🎯 If the page still lands on a different chapter, the correct one is now opened **once**, automatically, and the verse is selected after it loads
+- [x] 🐛 Fixed a console error (`updateProjectorBadge`) on bible.com when the Settings (🛠) button is hidden from the toolbar popup
+
 ## 2.18.0 (2026-07-27)
 
 - [x] 🖥️ New **Open & focus projector** button in the toolbar popup (right next to 📖 Open bible.com) — **one-click setup**: reopens your **last used** bible.com page _and_ opens/focuses the projection window(s) for your enabled displays, so your whole projection setup is ready to go in a single click. A status dot lights up green when a projection screen is already open

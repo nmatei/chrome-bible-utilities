@@ -195,6 +195,22 @@ function createChapterUrl({ book, chapter, primary }) {
   return `https://www.bible.com/bible/${primary}/${book}.${chapter}`;
 }
 
+/**
+ * Url of the chapter a parsed reference points to, reusing the versions from the address bar.
+ * @param {*} match - reference info (book name in the current language, chapter)
+ * @returns {string|null} url - null when the book can't be resolved,
+ *   eg. books cache is empty or was scraped from the popover (names without usfm key)
+ */
+function createMatchUrl(match) {
+  const book = match ? findBookKey(match.book, booksCacheObj) : undefined;
+  return book
+    ? createChapterNavigationUrl(window.location.href, {
+        book,
+        chapter: match.chapter
+      })
+    : null;
+}
+
 function syncParallelLines() {
   if (!hasParallelView()) {
     return;
