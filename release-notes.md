@@ -9,6 +9,12 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
+## 2.20.0 (soon)
+
+- [x] 🔌 Other extensions can now project a **full size external web page** (eg. slides, video, countdown) with the new `updateFrame` message — the page is sandboxed and can't read or control the projector window. See [External API](README.md#-external-api-for-other-extensions)
+- [x] 🌐 **Live text** can project an external web page too: type `iframe: https://...` (as the only text) and press `CTRL + Enter`
+- [x] 📦 Updated marked library to v17.0.6, and dompurify library to v3.4.16
+
 ## 2.19.0 (2026-08-15)
 
 - [x] 🐛 Fixes and improvements for **book & chapter selection** (after bible.com's latest site update):

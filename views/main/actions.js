@@ -157,7 +157,7 @@ function createLiveTextForm() {
     "input",
     debounce(() => {
       if (realTimeUpdates.checked) {
-        projectLiveText(liveTextTitle.value, liveText.value);
+        projectLiveText(liveTextTitle.value, liveText.value, true);
       }
       saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
     }, 200)
@@ -170,11 +170,14 @@ function createLiveTextForm() {
       }
     }, 100)
   );
+  liveText.addEventListener("input", () => {
+    liveText.setCustomValidity(""); // invalid iframe url message should not block next submit
+  });
   liveText.addEventListener(
     "input",
     debounce(() => {
       if (realTimeUpdates.checked) {
-        projectLiveText(liveTextTitle.value, liveText.value);
+        projectLiveText(liveTextTitle.value, liveText.value, true);
       }
       saveLiveText(liveTextTitle.value, liveText.value, realTimeUpdates.checked);
     }, 200)
@@ -448,7 +451,28 @@ function showBoxBy(el, target) {
   }
 }
 
-function projectLiveText(title, text) {
+/**
+ * @param {string} title
+ * @param {string} text
+ * @param {boolean} typing - true when called while typing (real-time updates):
+ *   iframe urls are projected only on submit / Ctrl+Enter to avoid loading partial urls
+ */
+function projectLiveText(title, text, typing = false) {
+  const liveText = $("#liveText");
+  liveText?.setCustomValidity("");
+  const frameUrl = getLiveTextFrameUrl(text);
+  if (frameUrl) {
+    if (typing) {
+      return;
+    }
+    if (!getSafeFrameUrl(frameUrl)) {
+      liveText?.setCustomValidity("Only https:// urls are allowed (eg. iframe: https://example.com)");
+      liveText?.reportValidity();
+      return;
+    }
+    projectFrame(frameUrl);
+    return;
+  }
   title = title ? `# ${title}\n` : "";
   const display = title || text;
   projectText(display ? title + text : "", true);

@@ -301,6 +301,43 @@ function initShiftKeyEvents() {
   });
 }
 
+/**
+ * Validate a URL that will be loaded inside the projector iframe.
+ * Only https (or http on localhost) pages are allowed, without embedded credentials,
+ * so the page can never be same-origin with the extension.
+ * @param {string} url
+ * @returns {string|null} normalized href or null when not allowed
+ */
+function getSafeFrameUrl(url) {
+  if (typeof url !== "string" || !url.trim() || url.length > 2048) {
+    return null;
+  }
+  let parsed;
+  try {
+    parsed = new URL(url.trim());
+  } catch (e) {
+    return null;
+  }
+  if (parsed.username || parsed.password) {
+    return null;
+  }
+  const isLocalhost = ["localhost", "127.0.0.1", "[::1]"].includes(parsed.hostname);
+  if (parsed.protocol === "https:" || (parsed.protocol === "http:" && isLocalhost)) {
+    return parsed.href;
+  }
+  return null;
+}
+
+/**
+ * Live text shortcut to project an external page: the whole text is "iframe: <url>"
+ * @param {string} text
+ * @returns {string|null} the url after the prefix (not validated) or null when text is not an iframe command
+ */
+function getLiveTextFrameUrl(text) {
+  const match = typeof text === "string" && text.trim().match(/^iframe:\s*(\S+)$/i);
+  return match ? match[1] : null;
+}
+
 if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = {
     splitVerses,
@@ -316,6 +353,8 @@ if (typeof module === "object" && typeof module.exports === "object") {
     pinKey,
     fixSplitedRefereces,
     searchVersesNrsRegExp,
-    searchChapterNrRegExp
+    searchChapterNrRegExp,
+    getSafeFrameUrl,
+    getLiveTextFrameUrl
   };
 }

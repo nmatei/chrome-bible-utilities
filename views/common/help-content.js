@@ -46,6 +46,7 @@ function getHelpContent() {
             <li><strong class="key-code">${
               isMac ? "⌘" : "CTRL"
             } + Enter</strong> to project live text (inside title or textarea)</li>
+            <li><strong class="key-code">iframe: https://...</strong> (as the only text) to project an external web page (full size). Use the <em>embed</em> url when available (eg. youtube.com/embed/...)</li>
           </ul>
         </li>
 

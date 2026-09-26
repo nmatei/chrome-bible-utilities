@@ -38,6 +38,16 @@ function projectText(text, markdown = false, index, nonBreakingHyphens = false) 
   });
 }
 
+function projectFrame(url, index) {
+  return chrome.runtime.sendMessage({
+    action: "updateFrame",
+    payload: {
+      url,
+      index
+    }
+  });
+}
+
 async function bringTabToFront() {
   const tabs = await getProjectTab();
   await Promise.allSettled(

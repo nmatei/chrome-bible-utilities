@@ -59,7 +59,37 @@ function replaceHyphensInTextNodes(element) {
   });
 }
 
+// Features the external page may use; everything else (camera, mic, geolocation, clipboard...) is denied
+const FRAME_ALLOW = "autoplay; fullscreen; encrypted-media; picture-in-picture";
+// no allow-top-navigation / allow-modals / allow-downloads: the page can't take over the projector window.
+// allow-same-origin is safe because getSafeFrameUrl never allows an extension (same-origin) URL
+const FRAME_SANDBOX = "allow-scripts allow-same-origin allow-forms allow-popups allow-presentation";
+
+function showFrame(url) {
+  let frame = document.getElementById("external-frame");
+  if (!frame) {
+    frame = document.createElement("iframe");
+    frame.id = "external-frame";
+    frame.setAttribute("sandbox", FRAME_SANDBOX);
+    frame.allow = FRAME_ALLOW;
+    frame.referrerPolicy = "no-referrer";
+    document.body.appendChild(frame);
+  }
+  frame.src = url;
+  document.body.classList.add("frame-mode");
+}
+
+function removeFrame() {
+  const frame = document.getElementById("external-frame");
+  if (frame) {
+    frame.src = "about:blank"; // stop audio/video before removing
+    frame.remove();
+  }
+  document.body.classList.remove("frame-mode");
+}
+
 function updateText(text, markdown, nonBreakingHyphens = false) {
+  removeFrame();
   const root = document.getElementById("root");
   if (markdown) {
     text = window.marked.parse(text);
@@ -105,11 +135,37 @@ function updateTextEvent({ index, text, markdown, nonBreakingHyphens }, sendResp
   }
 }
 
+function updateFrameEvent({ index, url } = {}, sendResponse) {
+  if (typeof index !== "undefined" && index !== displayIndex) {
+    sendResponse({ status: 201 });
+    return;
+  }
+  if (!url) {
+    removeFrame();
+    sendResponse({ status: 200 });
+    return;
+  }
+  const safeUrl = getSafeFrameUrl(url);
+  if (!safeUrl) {
+    sendResponse({
+      status: 400,
+      error: "Invalid url. Only https:// (or http://localhost) urls without credentials are allowed"
+    });
+    return;
+  }
+  showFrame(safeUrl);
+  sendResponse({ status: 200 });
+}
+
 function initRuntimeEvents() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
       case "updateText": {
         updateTextEvent(request.payload, sendResponse);
+        break;
+      }
+      case "updateFrame": {
+        updateFrameEvent(request.payload, sendResponse);
         break;
       }
       case "previewRootStyles": {
@@ -145,6 +201,10 @@ function initRuntimeEvents() {
         updateTextEvent(request.payload, sendResponse);
         break;
       }
+      case "updateFrame": {
+        updateFrameEvent(request.payload, sendResponse);
+        break;
+      }
       case "help": {
         sendResponse({
           status: 200,
@@ -160,9 +220,28 @@ function initRuntimeEvents() {
               notes: [
                 "Use .singlelines class on container for non-wrapping paragraphs that auto-fit screen width",
                 "Non-breaking hyphens are automatically applied",
-                "Double spaces are preserved in markdown mode"
+                "Double spaces are preserved in markdown mode",
+                "Removes the external page shown with updateFrame"
+              ]
+            },
+            updateFrame: {
+              description: "Show an external web page (full size iframe) in the projection window",
+              payload: {
+                index: "number (optional) - Window index (1 or 2). If omitted, updates current window",
+                url: "string (required) - https:// url (or http://localhost). Empty string removes the page"
+              },
+              notes: [
+                "The page is sandboxed: it can't read the projector window or navigate it",
+                "Sites that block framing (X-Frame-Options / frame-ancestors) can't be displayed",
+                "Any updateText (verse selection, ESC) replaces the external page"
               ]
             }
+          },
+          statusCodes: {
+            200: "Done",
+            201: "Ignored - message is for the other window (index)",
+            400: "Invalid payload (eg. url not allowed)",
+            403: "Action not allowed"
           }
         });
         break;

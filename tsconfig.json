@@ -2,6 +2,8 @@
   "compilerOptions": {
     "module": "ES6",
     "esModuleInterop": true,
-    "allowJs": true
+    "allowJs": true,
+    "strict": false,
+    "types": ["jest", "node"]
   }
 }

@@ -25,6 +25,7 @@ or in **2 different languages**.
 - [🎞 Results](#-results)
 - [👋 Support my Work](#-support-my-work)
 - [💠 Advanced Features](#-advanced-features)
+- [🔌 External API (for other extensions)](#-external-api-for-other-extensions)
 - [⚙ Setup Plugin as Developer](#-setup-plugin-as-developer)
 - [▶ Build procedure](#-build-procedure)
 - [📋 Developers TODOs (items to improve)](#-developers-todos-items-to-improve)
@@ -46,6 +47,8 @@ or in **2 different languages**.
 - [x] 💬 **Project "live text"** (fast and simple slide)
   - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
   - [x] `CTRL + Enter` to project live text (inside title or textarea)
+  - [x] `iframe: https://...` (as the only text) to project an **external web page** (full size) - see [updateFrame](#updateframe--project-an-external-web-page) for security notes
+    - [x] with **Live** updates on, the page is loaded only on `CTRL + Enter` / submit (not while typing the url)
   - [ ] Select any text from page and allow it to be projected
 - [x] 📌 **List/Pin some references** (verses)
   - [x] Store references for future selection and project them faster
@@ -121,6 +124,92 @@ Or **support development** of this extension directly:
 - [x] Allow other extensions to send data to be projected
   - [x] via `Chrome Runtime Messages` (chrome.runtime.sendMessage)
   - [x] example how to project songs on this extension: [github.com/unu-unu-ro/norless-improvements-extension](https://github.com/unu-unu-ro/norless-improvements-extension)
+  - [x] project text/Markdown (`updateText`) or a full size **external web page** (`updateFrame`)
+  - [x] see [🔌 External API](#-external-api-for-other-extensions)
+
+## 🔌 External API (for other extensions)
+
+Other Chrome extensions can send content to the **projection windows** with
+[`chrome.runtime.sendMessage`](https://developer.chrome.com/docs/extensions/develop/concepts/messaging#external).
+Messages are received by the projector page, so a projection window has to be **open**
+(click a verse on bible.com, or use _Open & focus projector_ from the toolbar popup).
+
+- **Extension ID**: `fklnkmnlobkpoiifnbnemdpamheoanpj` (Chrome Web Store)
+  - for an unpacked (developer) install, copy the ID from [chrome://extensions/](chrome://extensions/)
+- If both windows (1 & 2) are open, each one responds; send `index` to target only one of them.
+
+```js
+const PROJECTOR_ID = "fklnkmnlobkpoiifnbnemdpamheoanpj";
+
+async function project(action, payload) {
+  return chrome.runtime.sendMessage(PROJECTOR_ID, { action, payload });
+}
+```
+
+### `help` – list available actions
+
+```js
+const help = await chrome.runtime.sendMessage(PROJECTOR_ID, { action: "help" });
+// { status: 200, availableActions: { updateText: {...}, updateFrame: {...} }, statusCodes: {...} }
+```
+
+### `updateText` – project text or Markdown
+
+```js
+await project("updateText", {
+  index: 1,
+  text: "# Amazing Grace\n\nAmazing grace! How sweet the sound\n\nThat saved a wretch like me!",
+  markdown: true
+});
+```
+
+| Payload              | Type              | Description                                                                                |
+| -------------------- | ----------------- | ------------------------------------------------------------------------------------------ |
+| `text`               | string (required) | Content to display (HTML is sanitized with DOMPurify). `""` = blank screen                 |
+| `markdown`           | boolean           | Parse `text` as [Markdown](https://github.com/markedjs/marked) (tables, lists, checkboxes) |
+| `index`              | `1` \| `2`        | Projection window. If omitted, all open windows are updated                                |
+| `nonBreakingHyphens` | boolean           | Replace `-` with non-breaking hyphens (in text nodes only)                                 |
+
+- tip: wrap paragraphs in a `.singlelines` container to keep each line on one row (font auto-fits screen width)
+- an `updateText` message (or a verse selected on bible.com, or `ESC`) replaces an external page shown with `updateFrame`
+
+### `updateFrame` – project an external web page
+
+Shows any web page as a **full size** iframe over the projection window (eg. an online slide deck, a video, a countdown, a live stream).
+
+```js
+// show a page
+await project("updateFrame", { index: 1, url: "https://www.youtube.com/embed/VIDEO_ID?autoplay=1" });
+
+// remove it (back to verses / clock)
+await project("updateFrame", { index: 1, url: "" });
+```
+
+| Payload | Type              | Description                                                                  |
+| ------- | ----------------- | ---------------------------------------------------------------------------- |
+| `url`   | string (required) | `https://` url (or `http://localhost` for local apps). `""` removes the page |
+| `index` | `1` \| `2`        | Projection window. If omitted, all open windows are updated                  |
+
+**Security** – the external page is isolated from the projector:
+
+- only `https://` urls (or `http://localhost` / `127.0.0.1`) without credentials are accepted — `javascript:`, `data:`, `file:`, `chrome-extension:` ... are rejected (`status: 400`)
+- the page is always cross-origin, so it **can't read anything** from the projector window (DOM, settings, storage, `chrome.*` APIs)
+- it is `sandbox`-ed: it **can't navigate/redirect** the projector window, open dialogs (`alert`) or start downloads
+- no referrer is sent, and only `autoplay`, `fullscreen`, `encrypted-media`, `picture-in-picture` are allowed (no camera, microphone, geolocation, clipboard ...)
+
+**Notes**
+
+- sites that forbid embedding (`X-Frame-Options` / CSP `frame-ancestors`) will show an empty/error page — use their _embed_ url when available (eg. `youtube.com/embed/...`)
+- while the iframe has focus, keyboard shortcuts (arrows, `ESC`, `F11`) go to the external page — click outside it or use bible.com to control the projector
+
+### Response status codes
+
+| `status` | Meaning                                                 |
+| -------- | ------------------------------------------------------- |
+| `200`    | Done                                                    |
+| `201`    | Ignored – message targets the other window (`index`)    |
+| `400`    | Invalid payload (eg. url not allowed) – see `error`     |
+| `403`    | Unknown action – send `{ action: "help" }` for the list |
 
 ## ⚙ Setup Plugin as Developer
 
