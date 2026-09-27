@@ -73,6 +73,11 @@ function showFrame(url) {
     frame.setAttribute("sandbox", FRAME_SANDBOX);
     frame.allow = FRAME_ALLOW;
     frame.referrerPolicy = "no-referrer";
+    try {
+      document.body.appendChild(frame);
+    } catch (e) {
+      console.info("Error appending iframe:", e);
+    }
     document.body.appendChild(frame);
   }
   frame.src = url;
@@ -190,68 +195,6 @@ function initRuntimeEvents() {
       case "resetRootStyles": {
         reloadSlide(sendResponse);
         return true; // Will respond asynchronously
-      }
-    }
-  });
-
-  // Allow external extensions to send updateText messages
-  chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
-    switch (request.action) {
-      case "updateText": {
-        updateTextEvent(request.payload, sendResponse);
-        break;
-      }
-      case "updateFrame": {
-        updateFrameEvent(request.payload, sendResponse);
-        break;
-      }
-      case "help": {
-        sendResponse({
-          status: 200,
-          availableActions: {
-            updateText: {
-              description: "Update the projection window content",
-              payload: {
-                index: "number (optional) - Window index (1 or 2). If omitted, updates current window",
-                text: "string (required) - Content to display",
-                markdown: "boolean (optional) - Parse text as Markdown. Supports tables, lists, checkboxes, etc.",
-                nonBreakingHyphens: "boolean (optional) - Replace hyphens with non-breaking hyphens in text nodes"
-              },
-              notes: [
-                "Use .singlelines class on container for non-wrapping paragraphs that auto-fit screen width",
-                "Non-breaking hyphens are automatically applied",
-                "Double spaces are preserved in markdown mode",
-                "Removes the external page shown with updateFrame"
-              ]
-            },
-            updateFrame: {
-              description: "Show an external web page (full size iframe) in the projection window",
-              payload: {
-                index: "number (optional) - Window index (1 or 2). If omitted, updates current window",
-                url: "string (required) - https:// url (or http://localhost). Empty string removes the page"
-              },
-              notes: [
-                "The page is sandboxed: it can't read the projector window or navigate it",
-                "Sites that block framing (X-Frame-Options / frame-ancestors) can't be displayed",
-                "Any updateText (verse selection, ESC) replaces the external page"
-              ]
-            }
-          },
-          statusCodes: {
-            200: "Done",
-            201: "Ignored - message is for the other window (index)",
-            400: "Invalid payload (eg. url not allowed)",
-            403: "Action not allowed"
-          }
-        });
-        break;
-      }
-      default: {
-        sendResponse({
-          status: 403,
-          error: "Action not allowed from external extensions",
-          hint: 'Send action: "help" for available commands'
-        });
       }
     }
   });

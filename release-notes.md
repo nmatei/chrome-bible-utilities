@@ -12,6 +12,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 ## 2.20.0 (soon)
 
 - [x] 🔌 Other extensions can now project a **full size external web page** (eg. slides, video, countdown) with the new `updateFrame` message — the page is sandboxed and can't read or control the projector window. See [External API](README.md#-external-api-for-other-extensions)
+- [x] 🔌 When another extension projects (`updateText` / `updateFrame`) and the projection window is closed, it is **opened automatically** (only the windows enabled in settings), together with bible.com (in background) if it's not open
 - [x] 🌐 **Live text** can project an external web page too: type `iframe: https://...` (as the only text) and press `CTRL + Enter`
 - [x] 📦 Updated marked library to v17.0.6, and dompurify library to v3.4.16
 

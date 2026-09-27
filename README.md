@@ -131,12 +131,14 @@ Or **support development** of this extension directly:
 
 Other Chrome extensions can send content to the **projection windows** with
 [`chrome.runtime.sendMessage`](https://developer.chrome.com/docs/extensions/develop/concepts/messaging#external).
-Messages are received by the projector page, so a projection window has to be **open**
-(click a verse on bible.com, or use _Open & focus projector_ from the toolbar popup).
+If the target projection window is not open, it is **opened automatically** — but only windows
+enabled in the projector settings (toolbar popup: window ① / ②). bible.com is also opened (in background, without focus)
+when no bible.com tab is open. Removing an external page (`updateFrame` with `url: ""`)
+never opens a window.
 
 - **Extension ID**: `fklnkmnlobkpoiifnbnemdpamheoanpj` (Chrome Web Store)
   - for an unpacked (developer) install, copy the ID from [chrome://extensions/](chrome://extensions/)
-- If both windows (1 & 2) are open, each one responds; send `index` to target only one of them.
+- Without `index` the message goes to all enabled windows (window ① by default); send `index` to target only one of them.
 
 ```js
 const PROJECTOR_ID = "fklnkmnlobkpoiifnbnemdpamheoanpj";
@@ -167,7 +169,7 @@ await project("updateText", {
 | -------------------- | ----------------- | ------------------------------------------------------------------------------------------ |
 | `text`               | string (required) | Content to display (HTML is sanitized with DOMPurify). `""` = blank screen                 |
 | `markdown`           | boolean           | Parse `text` as [Markdown](https://github.com/markedjs/marked) (tables, lists, checkboxes) |
-| `index`              | `1` \| `2`        | Projection window. If omitted, all open windows are updated                                |
+| `index`              | `1` \| `2`        | Projection window. If omitted, all enabled windows are updated                             |
 | `nonBreakingHyphens` | boolean           | Replace `-` with non-breaking hyphens (in text nodes only)                                 |
 
 - tip: wrap paragraphs in a `.singlelines` container to keep each line on one row (font auto-fits screen width)
@@ -188,7 +190,7 @@ await project("updateFrame", { index: 1, url: "" });
 | Payload | Type              | Description                                                                  |
 | ------- | ----------------- | ---------------------------------------------------------------------------- |
 | `url`   | string (required) | `https://` url (or `http://localhost` for local apps). `""` removes the page |
-| `index` | `1` \| `2`        | Projection window. If omitted, all open windows are updated                  |
+| `index` | `1` \| `2`        | Projection window. If omitted, all enabled windows are updated               |
 
 **Security** – the external page is isolated from the projector:
 
@@ -204,12 +206,13 @@ await project("updateFrame", { index: 1, url: "" });
 
 ### Response status codes
 
-| `status` | Meaning                                                 |
-| -------- | ------------------------------------------------------- |
-| `200`    | Done                                                    |
-| `201`    | Ignored – message targets the other window (`index`)    |
-| `400`    | Invalid payload (eg. url not allowed) – see `error`     |
-| `403`    | Unknown action – send `{ action: "help" }` for the list |
+| `status` | Meaning                                                   |
+| -------- | --------------------------------------------------------- |
+| `200`    | Done                                                      |
+| `400`    | Invalid payload (eg. url/index not allowed) – see `error` |
+| `403`    | Unknown action – send `{ action: "help" }` for the list   |
+| `404`    | Window (`index`) is disabled in projector settings        |
+| `500`    | Projection window did not respond – see `error`           |
 
 ## ⚙ Setup Plugin as Developer
 

@@ -203,6 +203,142 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Allow external extensions to project (updateText / updateFrame).
+// Handled here (not in the projector page) so a missing projection window can be opened first.
+chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+  switch (request.action) {
+    case "updateText":
+    case "updateFrame": {
+      projectExternal(request.action, request.payload || {}).then(sendResponse, error => {
+        sendResponse({ status: 500, error: error.message });
+      });
+      return true;
+    }
+    case "help": {
+      sendResponse(getExternalHelp());
+      break;
+    }
+    default: {
+      sendResponse({
+        status: 403,
+        error: "Action not allowed from external extensions",
+        hint: 'Send action: "help" for available commands'
+      });
+    }
+  }
+});
+
+// same shape as views/popup/popup.js -> [window1, window2], 0 = window disabled
+async function getDisplaySettings() {
+  const { displaySettings } = await chrome.storage.sync.get("displaySettings");
+  if (typeof displaySettings === "number") {
+    return [displaySettings, 0];
+  } else if (Array.isArray(displaySettings)) {
+    return displaySettings;
+  }
+  return [3, 0];
+}
+
+async function projectExternal(action, payload) {
+  const { index } = payload;
+  if (typeof index !== "undefined" && index !== 1 && index !== 2) {
+    return { status: 400, error: "Invalid index. Use 1 or 2 (or omit it for all enabled windows)" };
+  }
+  if (action === "updateFrame" && payload.url && !getSafeFrameUrl(payload.url)) {
+    return {
+      status: 400,
+      error: "Invalid url. Only https:// (or http://localhost) urls without credentials are allowed"
+    };
+  }
+
+  const displaySettings = await getDisplaySettings();
+  const enabled = [1, 2].filter(idx => displaySettings[idx - 1] !== 0);
+  const targets = index ? [index] : enabled.length ? enabled : [1];
+  // nothing to show (eg. remove external page) -> don't open new windows for it
+  const canOpen = action === "updateText" || !!payload.url;
+
+  const responses = [];
+  for (const idx of targets) {
+    const key = projectorStorageKey + (idx === 1 ? "" : idx);
+    let { win } = await getWindowByKey(key);
+    if (!win) {
+      if (!canOpen) {
+        continue;
+      }
+      if (!enabled.includes(idx) && !(idx === 1 && !enabled.length)) {
+        responses.push({ status: 404, error: `Window ${idx} is disabled in projector settings` });
+        continue;
+      }
+      await openBibleTabInBackground();
+      win = await getWindow(key, settings => createProjectorTab(settings, idx));
+    }
+    const tab = win.tabs && win.tabs[0];
+    if (!tab) {
+      responses.push({ status: 404, error: `No tab in window ${idx}` });
+      continue;
+    }
+    responses.push(await sendToProjector(tab.id, { action, payload: { ...payload, index: idx } }));
+  }
+
+  return responses.find(r => !r || r.status !== 200) || responses[0] || { status: 200 };
+}
+
+// a just created projector window may not listen yet -> retry for a few seconds
+async function sendToProjector(tabId, message, retries = 20) {
+  try {
+    return await chrome.tabs.sendMessage(tabId, message);
+  } catch (e) {
+    if (retries <= 0) {
+      return { status: 500, error: e.message };
+    }
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return sendToProjector(tabId, message, retries - 1);
+  }
+}
+
+function getExternalHelp() {
+  return {
+    status: 200,
+    availableActions: {
+      updateText: {
+        description: "Update the projection window content",
+        payload: {
+          index: "number (optional) - Window index (1 or 2). If omitted, updates all enabled windows",
+          text: "string (required) - Content to display",
+          markdown: "boolean (optional) - Parse text as Markdown. Supports tables, lists, checkboxes, etc.",
+          nonBreakingHyphens: "boolean (optional) - Replace hyphens with non-breaking hyphens in text nodes"
+        },
+        notes: [
+          "The projection window is opened if it is not already (only windows enabled in projector settings)",
+          "Use .singlelines class on container for non-wrapping paragraphs that auto-fit screen width",
+          "Double spaces are preserved in markdown mode",
+          "Removes the external page shown with updateFrame"
+        ]
+      },
+      updateFrame: {
+        description: "Show an external web page (full size iframe) in the projection window",
+        payload: {
+          index: "number (optional) - Window index (1 or 2). If omitted, updates all enabled windows",
+          url: "string (required) - https:// url (or http://localhost). Empty string removes the page"
+        },
+        notes: [
+          "The projection window is opened if it is not already (only windows enabled in projector settings)",
+          "The page is sandboxed: it can't read the projector window or navigate it",
+          "Sites that block framing (X-Frame-Options / frame-ancestors) can't be displayed",
+          "Any updateText (verse selection, ESC) replaces the external page"
+        ]
+      }
+    },
+    statusCodes: {
+      200: "Done",
+      400: "Invalid payload (eg. url or index not allowed)",
+      403: "Action not allowed",
+      404: "Window is disabled in projector settings",
+      500: "Projection window did not respond"
+    }
+  };
+}
+
 async function getWindowSettings(key) {
   const result = await chrome.storage.sync.get(key);
   return result[key];
@@ -332,6 +468,24 @@ async function focusBibleTab() {
     await chrome.tabs.create({
       url: lastBibleUrl || BIBLE_DEFAULT_URL
     });
+  }
+}
+
+// Like focusBibleTab, but without focus: only opens bible.com (last page) when no tab is open.
+// Needed next to a projector window opened from outside, also because
+// checkIfLastTabClosed closes the projector windows when there is no bible.com tab.
+async function openBibleTabInBackground() {
+  const tabs = await getBibleTabs();
+  if (tabs.length) {
+    return;
+  }
+  const { lastBibleUrl } = await chrome.storage.sync.get("lastBibleUrl");
+  const url = lastBibleUrl || BIBLE_DEFAULT_URL;
+  const normalWindows = await chrome.windows.getAll({ windowTypes: ["normal"] });
+  if (normalWindows.length) {
+    await chrome.tabs.create({ url, active: false, windowId: normalWindows[0].id });
+  } else {
+    await chrome.windows.create({ url, focused: false, type: "normal" });
   }
 }
 
