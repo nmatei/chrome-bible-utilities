@@ -2,19 +2,6 @@
   padding-left: 55px;
 }
 
-/* 
-  Move Book and Chapter picker 55px to the right 
-  so extension buttons don't overlap 
-*/
-/* single view */
-.w-full > .sticky.flex:first-child {
-  margin-left: 55px;
-}
-/* parallel view enabled */
-.w-full > div > .border.sticky.flex:first-child {
-  padding-left: 55px;
-}
-
 body .row,
 body.c_pages.a_privacy .privacy_content {
   max-width: 90rem;
