@@ -60,17 +60,17 @@ function replaceHyphensInTextNodes(element) {
 }
 
 // Features the external page may use; everything else (camera, mic, geolocation, clipboard...) is denied
+// No "sandbox" attribute: most embeds (YouTube, Slides) need allow-scripts + allow-same-origin,
+// and that combination makes Chrome report a warning in extension Errors.
+// Reading the projector window is still blocked by Same-Origin Policy,
+// because getSafeFrameUrl only allows https/localhost urls (never chrome-extension://)
 const FRAME_ALLOW = "autoplay; fullscreen; encrypted-media; picture-in-picture";
-// no allow-top-navigation / allow-modals / allow-downloads: the page can't take over the projector window.
-// allow-same-origin is safe because getSafeFrameUrl never allows an extension (same-origin) URL
-const FRAME_SANDBOX = "allow-scripts allow-same-origin allow-forms allow-popups allow-presentation";
 
 function showFrame(url) {
   let frame = document.getElementById("external-frame");
   if (!frame) {
     frame = document.createElement("iframe");
     frame.id = "external-frame";
-    frame.setAttribute("sandbox", FRAME_SANDBOX);
     frame.allow = FRAME_ALLOW;
     frame.referrerPolicy = "no-referrer";
     try {

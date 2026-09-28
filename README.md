@@ -196,7 +196,7 @@ await project("updateFrame", { index: 1, url: "" });
 
 - only `https://` urls (or `http://localhost` / `127.0.0.1`) without credentials are accepted — `javascript:`, `data:`, `file:`, `chrome-extension:` ... are rejected (`status: 400`)
 - the page is always cross-origin, so it **can't read anything** from the projector window (DOM, settings, storage, `chrome.*` APIs)
-- it is `sandbox`-ed: it **can't navigate/redirect** the projector window, open dialogs (`alert`) or start downloads
+- Chrome blocks it from redirecting the projector window unless someone clicks inside the page first (the url is chosen by you anyway)
 - no referrer is sent, and only `autoplay`, `fullscreen`, `encrypted-media`, `picture-in-picture` are allowed (no camera, microphone, geolocation, clipboard ...)
 
 **Notes**

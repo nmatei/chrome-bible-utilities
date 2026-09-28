@@ -323,7 +323,7 @@ function getExternalHelp() {
         },
         notes: [
           "The projection window is opened if it is not already (only windows enabled in projector settings)",
-          "The page is sandboxed: it can't read the projector window or navigate it",
+          "The page is cross-origin: it can't read anything from the projector window",
           "Sites that block framing (X-Frame-Options / frame-ancestors) can't be displayed",
           "Any updateText (verse selection, ESC) replaces the external page"
         ]
