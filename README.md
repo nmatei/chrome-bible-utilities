@@ -48,6 +48,7 @@ or in **2 different languages**.
   - [x] input any text to be projected ([Markdown](https://github.com/markedjs/marked) format)
   - [x] `CTRL + Enter` to project live text (inside title or textarea)
   - [x] `iframe: https://...` (as the only text) to project an **external web page** (full size) - see [updateFrame](#updateframe--project-an-external-web-page) for security notes
+    - [x] or paste the whole `<iframe ...>` **embed code** - only its `src` url is used
     - [x] with **Live** updates on, the page is loaded only on `CTRL + Enter` / submit (not while typing the url)
   - [ ] Select any text from page and allow it to be projected
 - [x] 📌 **List/Pin some references** (verses)
@@ -181,7 +182,7 @@ Shows any web page as a **full size** iframe over the projection window (eg. an 
 
 ```js
 // show a page
-await project("updateFrame", { index: 1, url: "https://www.youtube.com/embed/VIDEO_ID?autoplay=1" });
+await project("updateFrame", { index: 1, url: "https://docs.google.com/presentation/d/PRESENTATION_ID/embed" });
 
 // remove it (back to verses / clock)
 await project("updateFrame", { index: 1, url: "" });
@@ -197,11 +198,11 @@ await project("updateFrame", { index: 1, url: "" });
 - only `https://` urls (or `http://localhost` / `127.0.0.1`) without credentials are accepted — `javascript:`, `data:`, `file:`, `chrome-extension:` ... are rejected (`status: 400`)
 - the page is always cross-origin, so it **can't read anything** from the projector window (DOM, settings, storage, `chrome.*` APIs)
 - Chrome blocks it from redirecting the projector window unless someone clicks inside the page first (the url is chosen by you anyway)
-- no referrer is sent, and only `autoplay`, `fullscreen`, `encrypted-media`, `picture-in-picture` are allowed (no camera, microphone, geolocation, clipboard ...)
+- only the origin is sent as referrer (never the full url), and only `autoplay`, `fullscreen`, `encrypted-media`, `picture-in-picture` are allowed (no camera, microphone, geolocation, clipboard ...)
 
 **Notes**
 
-- sites that forbid embedding (`X-Frame-Options` / CSP `frame-ancestors`) will show an empty/error page — use their _embed_ url when available (eg. `youtube.com/embed/...`)
+- sites that forbid embedding (`X-Frame-Options` / CSP `frame-ancestors`) will show an empty/error page — use their _embed_ url when available
 - while the iframe has focus, keyboard shortcuts (arrows, `ESC`, `F11`) go to the external page — click outside it or use bible.com to control the projector
 
 ### Response status codes

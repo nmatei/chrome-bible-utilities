@@ -52,6 +52,24 @@ describe("getLiveTextFrameUrl", () => {
     expect(getLiveTextFrameUrl("iframe: javascript:alert(1)")).toBe("javascript:alert(1)");
   });
 
+  it("extracts the src from a copied embed snippet", () => {
+    const youtube =
+      '<iframe width="1048" height="590" src="https://www.youtube.com/embed/ORcJ_bMNORo?list=RDORcJ_bMNORo" title="Exista Dumnezeu - Teo Family #RevolutiaContinua Decembrie ‘89" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    expect(getLiveTextFrameUrl(youtube)).toBe("https://www.youtube.com/embed/ORcJ_bMNORo?list=RDORcJ_bMNORo");
+    expect(getLiveTextFrameUrl("  <IFRAME src='https://example.com/a?b=1&amp;c=2'>\n")).toBe("https://example.com/a?b=1&c=2");
+    expect(getLiveTextFrameUrl('<iframe data-src="https://a.com" src="https://example.com"></iframe>')).toBe(
+      "https://example.com"
+    );
+  });
+
+  it("ignores snippets without src or with more text", () => {
+    expect(getLiveTextFrameUrl('<iframe data-src="https://example.com"></iframe>')).toBeNull();
+    expect(getLiveTextFrameUrl('<iframe src=""></iframe>')).toBeNull();
+    expect(getLiveTextFrameUrl('text <iframe src="https://example.com"></iframe>')).toBeNull();
+    expect(getLiveTextFrameUrl('<iframe src="https://example.com"></iframe> more text')).toBeNull();
+    expect(getLiveTextFrameUrl('<iframe src="https://a.com"></iframe><iframe src="https://b.com"></iframe>')).toBeNull();
+  });
+
   it("ignores normal live text", () => {
     expect(getLiveTextFrameUrl("https://example.com")).toBeNull();
     expect(getLiveTextFrameUrl("Details on https://example.com")).toBeNull();

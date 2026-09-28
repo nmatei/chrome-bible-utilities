@@ -330,12 +330,21 @@ function getSafeFrameUrl(url) {
 
 /**
  * Live text shortcut to project an external page: the whole text is "iframe: <url>"
+ * or an embed snippet copied as is (eg. YouTube Share / Embed): <iframe ... src="<url>" ...></iframe>
  * @param {string} text
- * @returns {string|null} the url after the prefix (not validated) or null when text is not an iframe command
+ * @returns {string|null} the url (not validated) or null when text is not an iframe command
  */
 function getLiveTextFrameUrl(text) {
-  const match = typeof text === "string" && text.trim().match(/^iframe:\s*(\S+)$/i);
-  return match ? match[1] : null;
+  if (typeof text !== "string") {
+    return null;
+  }
+  text = text.trim();
+  const match = text.match(/^iframe:\s*(\S+)$/i);
+  if (match) {
+    return match[1];
+  }
+  const snippet = text.match(/^<iframe\b[^>]*?\ssrc\s*=\s*(["'])([^"'<>\s]+)\1[^>]*>\s*(<\/iframe>)?$/i);
+  return snippet ? snippet[2].replaceAll("&amp;", "&") : null;
 }
 
 if (typeof module === "object" && typeof module.exports === "object") {

@@ -72,7 +72,8 @@ function showFrame(url) {
     frame = document.createElement("iframe");
     frame.id = "external-frame";
     frame.allow = FRAME_ALLOW;
-    frame.referrerPolicy = "no-referrer";
+    frame.allowFullscreen = true; // legacy attribute, some embeds still check it (eg. YouTube fullscreen button)
+    frame.referrerPolicy = "strict-origin-when-cross-origin"; // YouTube embeds require a referrer (Error 153 without it)
     try {
       document.body.appendChild(frame);
     } catch (e) {
