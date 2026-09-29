@@ -8,6 +8,7 @@
     "clear": "rimraf node_modules package-lock.json",
     "test": "jest",
     "check-selectors": "node scripts/check-selectors.mjs",
+    "capture-pages": "node scripts/capture-bible-pages.mjs",
     "start": "browser-sync start --server --directory --no-ui --files '**/*'",
     "watch-test": "jest --watch",
     "doctoc": "doctoc README.md",

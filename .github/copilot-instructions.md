@@ -152,7 +152,7 @@ const debouncedHandler = debounce(async win => {
 - **DOM Selectors**: Match the CSS-module suffix, never the prefix (e.g., `[class*="__verse"]`) — bible.com class names carry a build hash (`ChapterContent-module__cat7xG__verse`) that changes on every deploy
 - **Dynamic Content**: Handle async content loading with `waitElement()`
 - **Multiple Versions**: Support parallel translations and language mappings
-- **Validating selectors**: `npm run check-selectors` runs them against the pages saved in `test/integration/bible.com.content/` (gitignored, and kept out of `views/` so `npm run zip` can't ship them). See the `update-selectors` skill.
+- **Validating selectors**: `npm run capture-pages` saves bible.com pages (headless Chrome, book picker included) into `test/integration/bible.com.content/` (gitignored, and kept out of `views/` so `npm run zip` can't ship them); `npm run check-selectors` runs the selectors against them. See the `update-selectors` skill.
 
 ## User Interface Components
 

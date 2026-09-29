@@ -64,7 +64,7 @@ Conventions used throughout the file:
 
 - Always a `- [x] ` checkbox — released items are checked.
 - **Start with an emoji** matching the kind of change, reusing the ones already in the file:
-  🐛 bug fix · ⚡ speed/behaviour improvement · 🖥️ 🪟 windows/projection · 🎨 UI ·
+  🐛 bug fix · 🔄 kept up to date with a bible.com change (selectors) · ⚡ speed/behaviour improvement · 🖥️ 🪟 windows/projection · 🎨 UI ·
   🔤 🌍 language & references · 💾 📦 data/dependencies · 🔒 security · 🔌 external API ·
   ⏰ 🧰 🧹 🙈 🎯 features & polish.
 - **Bold** the feature name or the key phrase; use `code` for references, urls, versions.

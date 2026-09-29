@@ -45,8 +45,9 @@ const S = loadSelectors();
 // What each selector must find, and in which page state it can be validated at all.
 //   always          — any saved chapter page
 //   parallel        — a page opened with ?parallel=<id> (two versions side by side)
-//   books-popover   — saved with the book picker open (the list of Bible books)
-//   chapters-popover— saved with the chapter grid open (click the picker, then a book)
+//   books-popover   — saved with the book picker dialog open (the list of Bible books)
+//   chapters-popover— saved with the chapter grid open (on wide screens it is shown next to
+//                     the books, so a capture with the picker open covers both)
 const CHECKS = [
   { name: "appReadySelector", selector: S.appReadySelector, min: 1, state: "always" },
   { name: "titlesSelector", selector: S.titlesSelector, min: 1, state: "always" },
@@ -57,28 +58,28 @@ const CHECKS = [
   { name: "notesSelector", selector: S.notesSelector, min: 0, state: "always" },
   { name: "versionsNameSelector", selector: S.versionsNameSelector, min: 1, state: "always" },
   { name: "getVerseSelector(1)", selector: S.getVerseSelector(1), min: 1, state: "always" },
-  { name: "chapterPickerArrow (candidates)", selector: '.z-docked [id^="headlessui-popover-button"]', min: 1, state: "always" },
+  { name: "chapterPickerSelector", selector: S.chapterPickerSelector, min: 1, state: "always" },
   { name: "parallelViewSelector", selector: S.parallelViewSelector, min: 1, state: "parallel" },
   { name: "booksSelector()", selector: S.booksSelector(), min: 30, state: "books-popover" },
-  { name: "bookListCancel()", selector: S.bookListCancel(), min: 1, state: "books-popover" },
   { name: "chaptersSelector()", selector: S.chaptersSelector(), min: 1, state: "chapters-popover" }
 ];
 
 const STATE_HINT = {
   parallel: "save a page opened with ?parallel=<versionId>",
-  "books-popover": "save a page with the book picker open",
-  "chapters-popover": "save a page with the chapter grid open (picker → click a book)"
+  "books-popover": "save a page with the book picker (Books) dialog open",
+  "chapters-popover": "save a page with the book picker (Books) dialog open, wide window"
 };
 
 /** Which page states this capture can validate. */
 function detectStates(doc) {
-  const items = [...doc.querySelectorAll(".z-popover li a, .z-popover li button")];
+  const dialog = doc.querySelector(S.chapterPickerDialogSelector);
   const text = el => (el.textContent || "").trim();
+  const items = dialog ? [...dialog.querySelectorAll("button, a")] : [];
   return {
     always: true,
     parallel: doc.querySelectorAll('[data-testid="chapter-content"]').length > 1,
-    "books-popover": items.some(el => text(el) && !/^\d+$/.test(text(el))),
-    "chapters-popover": items.some(el => /^\d+$/.test(text(el)))
+    "books-popover": items.some(el => el.tagName === "BUTTON" && el.closest("li")),
+    "chapters-popover": items.some(el => el.tagName === "A" && /^\d+$/.test(text(el)))
   };
 }
 
@@ -117,6 +118,8 @@ function scanStaleCssPatterns() {
 const pad = (s, n) => String(s).padEnd(n);
 let failures = 0;
 let skipped = 0;
+// a selector is covered once any capture has the state it needs - the others may skip it
+const validated = new Set();
 
 console.log("bible.com selector check\n");
 
@@ -145,7 +148,7 @@ for (const capture of captures) {
     .map(([name]) => name)
     .join(", ");
 
-  console.log(`── ${capture}`);
+  console.log(`\x1b[1m\x1b[97m\x1b[44m ── ${capture} \x1b[0m`);
   console.log(`   css-module hash: ${cssModuleHashes(html).join(", ") || "none"}`);
   console.log(`   states captured: ${available}\n`);
 
@@ -155,6 +158,7 @@ for (const capture of captures) {
       console.log(`   \x1b[30m\x1b[43m SKIP \x1b[0m  ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`);
       continue;
     }
+    validated.add(check.name);
     let count;
     try {
       count = doc.querySelectorAll(check.selector).length;
@@ -165,8 +169,10 @@ for (const capture of captures) {
     }
     const ok = count >= check.min;
     if (!ok) failures++;
+    const okText = "\x1b[34m\x1b[42m OK \x1b[0m  ";
+    const failText = "\x1b[30m\x1b[41m FAIL \x1b[0m  ";
     console.log(
-      `   ${ok ? "\x1b[34m\x1b[42m OK \x1b[0m  " : "\x1b[30m\x1b[41m FAIL \x1b[0m  "}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${check.min})  ${check.selector}`
+      `   ${ok ? okText : failText}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${pad(check.min, 2)})  %o`, check.selector
     );
   }
   console.log();
@@ -183,8 +189,15 @@ if (stale.length) {
   console.log();
 }
 
-console.log(`${failures} failed, ${skipped} skipped`);
-if (skipped) {
-  console.log("Skipped checks are NOT validated — save the missing page states to cover them.");
+const notValidated = CHECKS.filter(check => !validated.has(check.name));
+console.log(
+  `${failures} failed, ${CHECKS.length - notValidated.length}/${CHECKS.length} selectors validated` +
+    (skipped ? ` (${skipped} per-capture skips)` : "")
+);
+if (notValidated.length) {
+  console.log("\x1b[30m\x1b[43m NOT validated in any capture \x1b[0m — save the missing page states (npm run capture-pages):");
+  for (const check of notValidated) {
+    console.log(`   ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`);
+  }
 }
 process.exit(failures ? 1 : 0);
