@@ -193,7 +193,7 @@ function showPinContextMenu(e) {
  * @returns {HTMLFormElement}
  */
 function createPinVersesBox() {
-  const form = addVersesBox();
+  const form = addVersesBox("arrow-left");
   const preview = $("#ref-preview");
   $("tbody", form).addEventListener("keypress", e => {
     const target = e.target;
@@ -825,9 +825,9 @@ function refreshPinnedVerses() {
   }
 }
 
-function addVersesBox() {
+function addVersesBox(arrowCLs = "arrow-up") {
   const form = document.createElement("form");
-  form.className = "info-fixed-box hide-view arrow-up";
+  form.className = `info-fixed-box hide-view ${arrowCLs}`;
   form.id = "verses-text-box";
   form.method = "GET";
   form.action = "#";

@@ -1,3 +1,19 @@
+/*
+  Keep bible.com buttons out from under the fixed #project-actions toolbar,
+  its size (--project-actions-*) is set by watchActionsSize()
+*/
+/* wide screens: the left rail ('Main navigation', expanded or collapsed) starts below the toolbar */
+aside.h-screen,
+aside:has(nav[aria-label="Main navigation"]) {
+  padding-top: var(--project-actions-height, 0px);
+}
+/* narrow screens (below tailwind 'lg'): no rail, the topbar logo & Book/Chapter bar move right */
+@media (max-width: 1023.98px) {
+  body {
+    padding-left: var(--project-actions-width, 0px);
+  }
+}
+
 body [class*="__verse"] {
   line-height: 1.6em;
   display: block;

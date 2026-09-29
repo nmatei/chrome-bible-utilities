@@ -93,7 +93,24 @@ function addActionsBox() {
     </button>
   `;
   document.body.appendChild(actions);
+  watchActionsSize(actions);
   return actions;
+}
+
+/**
+ * Publish the toolbar size as css variables (--project-actions-width / --project-actions-height),
+ *   so the site overrides can move their own buttons out from under it.
+ *   It changes when the popup hides/shows Settings or Help.
+ */
+function watchActionsSize(actions) {
+  const rootStyle = document.documentElement.style;
+  new ResizeObserver(() => {
+    // right/bottom edges (not the size), so an offset toolbar (eg. left: 6px) is covered too
+    //   (all 0 when the toolbar is hidden)
+    const { right, bottom } = actions.getBoundingClientRect();
+    rootStyle.setProperty("--project-actions-width", Math.ceil(right) + "px");
+    rootStyle.setProperty("--project-actions-height", Math.ceil(bottom) + "px");
+  }).observe(actions);
 }
 
 function createLiveTextForm() {
@@ -441,13 +458,16 @@ function showBox(box, target) {
 
 // TODO reuse showBy?
 function showBoxBy(el, target) {
+  // the boxes are position: fixed => viewport coordinates
+  //   (offsetLeft/Top are relative to the fixed #project-actions, wrong when it is not at 0,0)
+  const rect = target.getBoundingClientRect();
   if (el.classList.contains("arrow-up")) {
-    el.style.top = target.offsetTop + target.offsetHeight + 10 + "px";
-    el.style.left = target.offsetLeft + "px";
+    el.style.top = rect.bottom + 10 + "px";
+    el.style.left = rect.left + "px";
   } else {
     // 17 anchor size
-    el.style.top = target.offsetTop + target.offsetHeight / 2 - 17 + "px";
-    el.style.left = target.offsetLeft + target.offsetWidth + 10 + "px";
+    el.style.top = rect.top + rect.height / 2 - 17 + "px";
+    el.style.left = rect.right + 10 + "px";
   }
 }
 

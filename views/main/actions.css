@@ -2,9 +2,10 @@
   position: fixed;
   background: #000000cc;
   z-index: 2000;
-  left: 0;
+  left: 6px; /* aligning in center of left toolbar when collapsed */
   top: 0;
   right: unset;
+  border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   align-items: stretch;
   gap: 5px;
@@ -168,7 +169,13 @@ a.app-version:hover {
   padding: 0.3rem 0.3rem;
   border-radius: 0.3em;
   border: 1px solid #ffffff40;
-  font-family: ArialMT, Helvetica Neue, Arial, Liberation Sans, FreeSans, sans-serif;
+  font-family:
+    ArialMT,
+    Helvetica Neue,
+    Arial,
+    Liberation Sans,
+    FreeSans,
+    sans-serif;
 }
 .title .key-code {
   border: 2px solid #ffffff;

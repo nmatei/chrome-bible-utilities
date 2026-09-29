@@ -27,7 +27,8 @@ function getHelpContent() {
             isMac ? "⌘" : "CTRL"
           } + Click</strong> to add verse to selection (multi select)</li>
           <li><strong class="key-code">Shift + Click</strong> to multi select between last selection</li>
-          <li><strong class="key-code">ALT + Click</strong> on verse number or Pinned reference, <br/>to force project window to be on top (in case is not visible)</li>
+          <li><strong class="key-code">ALT + Click</strong> on verse number or Pinned reference, <br/>
+              to force project window to be on top (in case is not visible)</li>
           <li><strong class="key-code">ESC</strong> to show blank page (hide all selected verses)</li>
           <li><strong class="key-code">${
             isMac ? "⌃⌘F" : "F11"
@@ -46,7 +47,8 @@ function getHelpContent() {
             <li><strong class="key-code">${
               isMac ? "⌘" : "CTRL"
             } + Enter</strong> to project live text (inside title or textarea)</li>
-            <li><strong class="key-code">iframe: https://...</strong> (as the only text) to project an external web page (full size). Use the <em>embed</em> url when available or paste the whole <em>&lt;iframe&gt;</em> embed code</li>
+            <li><strong class="key-code">iframe: https://...</strong> (as the only text) to project an external web page (full size). <br/>
+                Use the <em>embed</em> url when available or paste the whole <em>&lt;iframe&gt;</em> embed code</li>
           </ul>
         </li>
 
@@ -190,7 +192,8 @@ function getHelpContent() {
             <li>Click the extension icon, then
               <strong class="key-code example-btn">${icons.lightExport}</strong>
               <strong>Open &amp; focus projector</strong> to reopen your
-              <strong>last used</strong> bible.com page <em>and</em> the projection
+              <strong>last used</strong> bible.com page <br/>
+              <em>and</em> the projection
               window(s) at once — your whole setup ready to go</li>
             <li>the status dot turns <span style="color: #2ecc71">green</span> when a projection screen is already open</li>
           </ul>
