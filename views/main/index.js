@@ -648,7 +648,7 @@ async function bookArrowExpandAndCollapse() {
     document.body.classList.add(hideCls);
     dropDownArrow.click();
     await sleep(100);
-    dropDownArrow.click();
+    await closeChapterPicker(false);
     document.body.classList.remove(hideCls);
   }
 }

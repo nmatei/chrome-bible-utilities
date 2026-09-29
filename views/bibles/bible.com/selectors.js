@@ -13,26 +13,57 @@ const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
 // local app class
 const hideCls = "hide-popovers";
 
-function chapterPickerArrow() {
-  const buttons = $$('.z-docked [id^="headlessui-popover-button"]');
-  const titleEl = $(titlesSelector);
-  const button = titleEl ? buttons.find(b => b.innerText === titleEl.innerHTML) : null;
-  // the version & reader settings buttons render their content in a <div>,
-  //   the book/chapter picker is the only one with the title as direct text
-  return button || buttons.find(b => !$(":scope > div", b)) || null;
-}
+// the book/chapter picker (BibleUsfmPicker) is a headlessui Dialog, not a popover any more
+const chapterPickerSelector = 'button[aria-haspopup="dialog"]';
+const chapterPickerDialogSelector = '[role="dialog"]';
 
-function bookListCancel() {
-  return ".z-popover .justify-center button";
+function chapterPickerArrow() {
+  // rendered twice: with the chapter title as text, and as an icon only button ("Books"),
+  //   both open the same picker (and both work while hidden by css)
+  // only the icon one has an aria-label - match its presence, the value is translated
+  const iconButton = $(`${chapterPickerSelector}[aria-label]`);
+  if (iconButton) {
+    return iconButton;
+  }
+  const buttons = $$(chapterPickerSelector);
+  const titleEl = $(titlesSelector);
+  const button = titleEl ? buttons.find(b => b.innerText.trim() === titleEl.innerHTML.trim()) : null;
+  return button || buttons[0] || null;
 }
 
 function booksSelector() {
-  return '.z-popover li button[data-testid="chapter"]';
+  return `${chapterPickerDialogSelector} li > button`;
 }
 
 function chaptersSelector() {
-  // chapters used to be <a>, the current picker (BibleUsfmPickerChapter) renders <button>
-  return ".z-popover li a, .z-popover li button";
+  // the chapter grid holds the only links of the picker (next/link => client side navigation)
+  return `${chapterPickerDialogSelector} a[href*="/bible/"]`;
+}
+
+/**
+ * On wide screens the books and the chapter grid are shown side by side, and the grid starts
+ *   with the chapters of the current book - so after clicking a book, wait for the grid title.
+ * @returns {string} bookName - name of the book the chapter grid is showing
+ */
+function getChapterGridBook() {
+  const chapterEl = $(chaptersSelector());
+  const header = chapterEl ? chapterEl.parentElement.previousElementSibling : null;
+  const title = header ? $("p", header) : null;
+  return title ? title.innerText.trim() : "";
+}
+
+function isChapterPickerOpen() {
+  return !!$(chapterPickerDialogSelector);
+}
+
+/**
+ * headlessui closes the dialog on Escape (listener on window), there is no toggle button
+ */
+function closeChapterPickerDialog() {
+  const dialog = $(chapterPickerDialogSelector);
+  if (dialog) {
+    dialog.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+  }
 }
 
 async function openChapter(book, chapter) {
@@ -69,17 +100,16 @@ async function openChapter(book, chapter) {
       return "";
     }
 
-    // read the name first, clicking it swaps the list and detaches the element
-    const bookName = bookEl.innerText;
+    const bookName = bookEl.innerText.trim();
     bookEl.click();
-    if (!(await waitChapter(chapter))) {
+    if (!(await waitChapter(chapter, bookName))) {
       return "";
     }
-    const chapterText = selectChapter(chapter);
+    const chapterText = selectChapter(chapter, bookName);
     selected = !!chapterText;
     return selected ? bookName + " " + chapterText : "";
   } finally {
-    await closeChapterPicker(dropDownArrow, selected);
+    await closeChapterPicker(selected);
     document.body.classList.remove(hideCls);
   }
 }
@@ -100,50 +130,50 @@ async function waitBook(book, timeout = 500, retryInterval = 50) {
 }
 
 /**
- * Selecting a chapter closes the picker on its own, but with a leave transition - toggling it
- *   in that window would reopen it. Anything else (book not found, chapter list never rendered)
- *   leaves it open, and it has to be closed before it becomes visible again.
+ * Selecting a chapter closes the picker on its own (with a leave transition, the dialog stays in
+ *   the DOM meanwhile). Anything else (book not found, chapter list never rendered) leaves it
+ *   open, and it has to be closed before it becomes visible again.
  */
-async function closeChapterPicker(dropDownArrow, selected) {
+async function closeChapterPicker(selected) {
   if (selected) {
     await backgroundSleep(200);
   }
-  if ($(".z-popover")) {
-    dropDownArrow.click();
-    await backgroundSleep(100);
+  if (isChapterPickerOpen()) {
+    closeChapterPickerDialog();
+    await backgroundSleep(250);
   }
 }
 
-function selectChapter(chapter) {
-  const chapterEl = getMatchChapter(chapter);
+function selectChapter(chapter, bookName) {
+  const chapterEl = getMatchChapter(chapter, bookName);
   if (chapterEl) {
-    const activeEl = chapterEl.closest("li");
-    activeEl && activeEl.classList.add("active");
     chapterEl.click();
-    return chapterEl.innerText;
+    return chapterEl.innerText.trim();
   }
   console.info("chapter %o not found", chapter);
   return "";
 }
 
 /**
- * The chapter list is rendered by a lazy loaded chunk, so it shows up a moment after the book
- *   is clicked (a spinner until then) - a fixed sleep would miss it on the first open.
- * @returns {Promise<HTMLElement|null>} chapterEl - null when the list never rendered
+ * The chapter grid re-renders a moment after the book is clicked - a fixed sleep would miss it.
+ * @returns {Promise<HTMLElement|null>} chapterEl - null when the grid never showed the book
  */
-async function waitChapter(chapter, timeout = 1000, retryInterval = 50) {
+async function waitChapter(chapter, bookName, timeout = 1000, retryInterval = 50) {
   const endTime = Date.now() + timeout;
-  let chapterEl = getMatchChapter(chapter);
+  let chapterEl = getMatchChapter(chapter, bookName);
   while (!chapterEl && Date.now() < endTime) {
     await backgroundSleep(retryInterval);
-    chapterEl = getMatchChapter(chapter);
+    chapterEl = getMatchChapter(chapter, bookName);
   }
   return chapterEl;
 }
 
-function getMatchChapter(chapter) {
-  // chapter items are numbers, so nothing matching means the picker is still on the book list
+function getMatchChapter(chapter, bookName) {
+  // the grid still showing another book (eg. the current one) would open the wrong chapter
   //   => don't click anything, let the caller fall back to loading the chapter url
+  if (bookName && getChapterGridBook() !== bookName) {
+    return null;
+  }
   return getChapters().find(e => e.innerText.trim() == chapter) || null;
 }
 
@@ -201,7 +231,7 @@ async function cacheBooks() {
     }
   }
   if (!booksCacheObj.length) {
-    console.info("books API did not return results, falling back to popover");
+    console.info("books API did not return results, falling back to UI");
     // fallback: scrape the book picker popover — names only, key left empty
     const arrow = chapterPickerArrow();
     if (arrow) {
@@ -211,12 +241,10 @@ async function cacheBooks() {
       //   sleep only to not miss it, not to wait for it
       await waitElement(booksSelector(), 1000, 50);
       booksCacheObj = getBooks().map(e => ({
-        name: e.innerText
+        name: e.innerText.trim()
       }));
-      const cancel = await waitElement(bookListCancel(), 500);
-      if (cancel) {
-        cancel.click();
-      }
+      console.info('books', booksCacheObj);
+      await closeChapterPicker(false);
       document.body.classList.remove(hideCls);
     }
   }

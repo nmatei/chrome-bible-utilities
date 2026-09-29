@@ -51,8 +51,10 @@ body [class*="__verse"] > [class*="__label"] {
 }
 
 /* the picker is opened by script to switch book/chapter - keep it off screen while we do.
-   !important beats the opacity-100 utility headlessui adds during its enter transition */
-.hide-popovers .z-popover {
+   !important beats the opacity-100 utility headlessui adds during its enter transition.
+   The book/chapter picker is a dialog (.z-modal) since bible.com replaced its popover */
+.hide-popovers .z-popover,
+.hide-popovers .z-modal {
   opacity: 0 !important;
 }
 
