@@ -129,7 +129,7 @@ if (!fs.existsSync(CONTENT_DIR)) {
 const captures = fs.readdirSync(CONTENT_DIR).filter(f => f.endsWith(".html"));
 
 if (!captures.length) {
-  console.error(`No *.html captures in ${path.relative(ROOT, CONTENT_DIR)}`);
+  console.error("\x1b[30m\x1b[41m No *.html captures \x1b[0m in %o", path.relative(ROOT, CONTENT_DIR));
   console.error("Save a bible.com chapter page there with Ctrl+S (Webpage, Complete).");
   process.exit(1);
 }
@@ -152,7 +152,7 @@ for (const capture of captures) {
   for (const check of CHECKS) {
     if (!states[check.state]) {
       skipped++;
-      console.log(`   SKIP  ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`);
+      console.log(`   \x1b[30m\x1b[43m SKIP \x1b[0m  ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`);
       continue;
     }
     let count;
@@ -160,13 +160,13 @@ for (const capture of captures) {
       count = doc.querySelectorAll(check.selector).length;
     } catch (e) {
       failures++;
-      console.log(`   FAIL  ${pad(check.name, 32)} invalid selector: ${e.message}`);
+      console.log(`  \x1b[30m\x1b[41m FAIL \x1b[0m ${pad(check.name, 32)} invalid selector: ${e.message}`);
       continue;
     }
     const ok = count >= check.min;
     if (!ok) failures++;
     console.log(
-      `   ${ok ? "ok  " : "FAIL"}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${check.min})  ${check.selector}`
+      `   ${ok ? "\x1b[34m\x1b[42m OK \x1b[0m  " : "\x1b[30m\x1b[41m FAIL \x1b[0m  "}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${check.min})  ${check.selector}`
     );
   }
   console.log();
