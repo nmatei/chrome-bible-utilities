@@ -11,6 +11,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 ## 2.20.0 (soon)
 
+- [ ] 🔄 **Up to date with bible.com's new Books dialog** — switching book & chapter when opening a pinned reference (📌) works **without page refresh** again, also on narrow windows and in parallel view
 - [x] 🔌 Other extensions can now project a **full size external web page** (eg. slides, video, countdown) with the new `updateFrame` message — the page can't read anything from the projector window. See [External API](README.md#-external-api-for-other-extensions)
 - [x] 🔌 When another extension projects (`updateText` / `updateFrame`) and the projection window is closed, it is **opened automatically** (only the windows enabled in settings), together with bible.com (in background) if it's not open
 - [x] 🌐 **Live text** can project an external web page too: type `iframe: https://...` (as the only text) or paste an `<iframe>` embed code, then press `CTRL + Enter`
