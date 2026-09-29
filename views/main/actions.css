@@ -186,9 +186,47 @@ a.app-version:hover {
 h2 .key-code {
   border: 2px solid #ffffff;
 }
+/* borderless title icon & close button */
+.win-title .key-code {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+.win-title .action-btn,
+.win-title .action-btn:hover,
+.win-title .action-btn:active {
+  border-color: transparent;
+  background: none;
+}
 
 #live-text-box .actions {
   padding: 0 0 10px 0;
+}
+.drag-handle {
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+}
+.drag-handle .action-btn,
+.drag-handle a {
+  cursor: pointer;
+}
+.draggable-box.dragging {
+  opacity: 0.85;
+  transition: none;
+}
+/* dropping now would re-dock the box next to its toolbar button */
+.draggable-box.dock-preview {
+  outline: 2px dashed #2ca9bc;
+  outline-offset: 2px;
+}
+#project-actions.drop-zone {
+  outline: 2px dashed #2ca9bc;
+  outline-offset: -2px;
+}
+#project-actions .action-btn.drop-target {
+  box-shadow: 0 0 0 2px #2ca9bc;
+  border-radius: 5px;
 }
 .hide-view {
   display: none !important;

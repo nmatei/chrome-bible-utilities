@@ -26,6 +26,7 @@
         "views/common/help-content.js",
         "views/bibles/mappings.js",
         "views/main/runtime-messages.js",
+        "views/main/actions/draggable-box.js",
         "views/main/actions/settings.js",
         "views/main/actions/help.js",
         "views/main/actions/pin-verses.js",

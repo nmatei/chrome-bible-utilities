@@ -4,7 +4,7 @@ function addHelpBox() {
   helpBox.className = "info-fixed-box hide-view arrow-left";
   helpBox.id = "help-text-box";
   helpBox.innerHTML = `
-    <h2 class="actions win-title">
+    <h2 class="actions win-title drag-handle">
       <span class="key-code">${icons.question}</span>
       <span class="fill">Help / Usage</span>
       <a class="app-version abp-badge" title="Release Notes" href="https://nmatei.github.io/chrome-bible-utilities/release-notes" target="_blank">[ v.${version} ]</a>
@@ -15,6 +15,7 @@ function addHelpBox() {
     </div>
   `;
   document.body.appendChild(helpBox);
+  initDraggableBox(helpBox, "help");
 
   $("button[data-key='close']", helpBox).addEventListener("click", () => {
     $(`#project-actions button[data-key="help"]`).click();

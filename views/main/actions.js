@@ -48,6 +48,11 @@ function addLiveTextBox() {
   form.method = "GET";
   form.action = "#";
   form.innerHTML = `
+    <h2 class="actions win-title drag-handle">
+      <span class="key-code">${icons.liveChat}</span>
+      <span class="fill">Live Text</span>
+      <button type="button" class="action-btn" data-key="close" title="Close">${icons.close}</button>
+    </h2>
     <div class="actions row-actions">
       <label for="realTimeUpdates" title="Live updates">Live
         <input type="checkbox" name="realTimeUpdates" id="realTimeUpdates"/>
@@ -60,7 +65,6 @@ function addLiveTextBox() {
       <button type="button" class="action-btn" data-key="hide" title="Hide text">
         ${icons.lightStop}
       </button>
-      <button type="button" class="action-btn" data-key="close" title="Close">${icons.close}</button>
     </div>
     <div class="form-field form-field-wrapper">
       <input type="text" name="liveTextTitle" id="liveTextTitle" placeholder="Title"/>
@@ -167,6 +171,7 @@ function createLiveTextForm() {
   $('button[data-key="close"]', liveBoxForm).addEventListener("click", () => {
     $(`#project-actions button[data-key="live-text"]`).click();
   });
+  initDraggableBox(liveBoxForm, "live-text");
   liveBoxForm.addEventListener("reset", () => {
     projectText("");
   });
@@ -256,7 +261,7 @@ function actionsClick(target) {
       }
       case "live-text": {
         liveBoxForm = liveBoxForm || createLiveTextForm();
-        showBoxBy(liveBoxForm, btn);
+        positionBox(liveBoxForm, btn);
         liveBoxForm.classList.toggle("hide-view");
         if (liveBoxForm.classList.contains("hide-view")) {
           btn.classList.remove("active");
@@ -413,7 +418,7 @@ function repositionOpenBoxes() {
     }
     const box = boxByKey(btn.dataset.key);
     if (box && !box.classList.contains("hide-view")) {
-      showBoxBy(box, btn);
+      positionBox(box, btn);
     }
   });
 }
@@ -447,7 +452,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 function showBox(box, target) {
-  showBoxBy(box, target);
+  positionBox(box, target);
   box.classList.toggle("hide-view");
   if (box.classList.contains("hide-view")) {
     target.classList.remove("active");
