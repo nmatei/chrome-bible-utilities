@@ -1,7 +1,7 @@
 // Info boxes (Live Text, Help) can be dragged by their title (.drag-handle) away from the toolbar.
 //   The custom position is per browser (localStorage, not chrome.storage);
 //   dropping it back next to its toolbar button re-docks it (arrow-left + no stored position).
-const dockDistance = 80;
+const dockDistance = 50;
 
 function getBoxPositionKey(box) {
   return `${box.id}-position`;
