@@ -9,7 +9,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
-## 2.20.0 (soon)
+## 2.20.0 (2026-09-30)
 
 - [x] 🔄 **Up to date with bible.com's new Books dialog** — switching book & chapter when opening a pinned reference (📌) works **without page refresh** again, also on narrow windows and in parallel view
 - [x] 🎨 **Live Text** (💬) and **Help** (❔) boxes can be **moved with drag & drop** by their title — the new position is remembered (in this browser); drag it back next to its toolbar button to **re-attach** it
