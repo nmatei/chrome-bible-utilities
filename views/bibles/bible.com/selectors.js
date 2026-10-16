@@ -5,10 +5,10 @@ const projected = "projected";
 const appReadySelector = '[class*="_bible-reader"]';
 const titlesSelector = '[class*="_reader"] h1';
 // let: replaced at runtime by selector-fallback.js when a bible.com deploy changes the verse markup
-let verseSelectorMatch = '[class*="x_verse"]';
-let verseLabelSelectorMatch = '[class*="x_label"]';
-let verseContentSelector = '[class*="x_content"]';
-let primaryViewSelector = '[class*="x_chapter"]';
+let verseSelectorMatch = '[class*="_verse"]';
+let verseLabelSelectorMatch = '[class*="_label"]';
+let verseContentSelector = '[class*="_content"]';
+let primaryViewSelector = '[class*="_chapter"]';
 let parallelViewSelector = '.md\\:block [class*="_yv-bible-text"]';
 let notesSelector = '[class*="_note"]';
 const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
