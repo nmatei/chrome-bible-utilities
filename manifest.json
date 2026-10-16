@@ -49,7 +49,8 @@
       "js": [
         "views/bibles/bible.com/url-utils.js",
         "views/bibles/bible.com/common.js",
-        "views/bibles/bible.com/selectors.js"
+        "views/bibles/bible.com/selectors.js",
+        "views/bibles/bible.com/selector-fallback.js"
       ]
     }
   ],

@@ -138,7 +138,7 @@ const SHIMS = `
 async function injectSelectors(evaluate) {
   // the module.exports guard is the only statement that is not a declaration
   const source = fs.readFileSync(SELECTORS_JS, "utf8").replace(/if \(typeof module[\s\S]*?\n}\n/, "");
-  const names = [...source.matchAll(/^(?:const|function)\s+(\w+)/gm)].map(m => m[1]);
+  const names = [...source.matchAll(/^(?:const|let|function)\s+(\w+)/gm)].map(m => m[1]);
   await evaluate(`${SHIMS}\n${source}\n;window.__S = { ${names.join(", ")} }; true`);
 }
 

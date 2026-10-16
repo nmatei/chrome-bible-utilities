@@ -4,13 +4,25 @@ const projected = "projected";
 // "cat7xG_verse" - a single "_" before the name matches both, the hash changes on every build
 const appReadySelector = '[class*="_bible-reader"]';
 const titlesSelector = '[class*="_reader"] h1';
-const verseSelectorMatch = '[class*="_verse"]';
-const verseLabelSelectorMatch = '[class*="_label"]';
-const verseContentSelector = '[class*="_content"]';
-const primaryViewSelector = '[class*="_chapter"]';
-const parallelViewSelector = '.md\\:block [class*="_yv-bible-text"]';
-const notesSelector = '[class*="_note"]';
+// let: replaced at runtime by selector-fallback.js when a bible.com deploy changes the verse markup
+let verseSelectorMatch = '[class*="x_verse"]';
+let verseLabelSelectorMatch = '[class*="x_label"]';
+let verseContentSelector = '[class*="x_content"]';
+let primaryViewSelector = '[class*="x_chapter"]';
+let parallelViewSelector = '.md\\:block [class*="_yv-bible-text"]';
+let notesSelector = '[class*="_note"]';
 const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
+
+const defaultVerseSelectors = {
+  verse: verseSelectorMatch,
+  label: verseLabelSelectorMatch,
+  content: verseContentSelector,
+  primaryView: primaryViewSelector,
+  parallelView: parallelViewSelector,
+  notes: notesSelector
+};
+// set by selector-fallback.js when the verses have no data-usfm and get their number stamped instead
+let verseNumberAttr = "";
 
 // local app class
 const hideCls = "hide-popovers";
@@ -194,7 +206,8 @@ function getVerseContents(verseEl) {
 
 function getVerseSelector(number) {
   // Match single verse (ends with .N) or grouped verse where N is the first in the group (contains .N+)
-  return `${verseSelectorMatch}[data-usfm$=".${number}"], ${verseSelectorMatch}[data-usfm*=".${number}+"]`;
+  const selector = `${verseSelectorMatch}[data-usfm$=".${number}"], ${verseSelectorMatch}[data-usfm*=".${number}+"]`;
+  return verseNumberAttr ? `${selector}, ${verseSelectorMatch}[${verseNumberAttr}="${number}"]` : selector;
 }
 
 /**
@@ -220,6 +233,10 @@ function findLastVerseNumber() {
 }
 
 function getVerseEls(view, number) {
+  if (verseSelectorsFallback) {
+    // a new chapter may be rendered since the last stamp (selector-fallback.js)
+    stampVerses();
+  }
   return $$(getVerseSelector(number), $(view));
 }
 
@@ -245,7 +262,7 @@ async function cacheBooks() {
       booksCacheObj = getBooks().map(e => ({
         name: e.innerText.trim()
       }));
-      console.info('books', booksCacheObj);
+      console.info("books", booksCacheObj);
       await closeChapterPicker(false);
       document.body.classList.remove(hideCls);
     }

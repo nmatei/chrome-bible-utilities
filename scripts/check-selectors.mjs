@@ -23,6 +23,7 @@ import { JSDOM } from "jsdom";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "test/integration/bible.com.content");
 const SELECTORS_JS = path.join(ROOT, "views/bibles/bible.com/selectors.js");
+const FALLBACK_JS = path.join(ROOT, "views/bibles/bible.com/selector-fallback.js");
 
 /**
  * Reads the selector values out of selectors.js without duplicating them.
@@ -30,13 +31,14 @@ const SELECTORS_JS = path.join(ROOT, "views/bibles/bible.com/selectors.js");
  * declares everything without executing any function body.
  */
 function loadSelectors() {
-  const source = fs.readFileSync(SELECTORS_JS, "utf8");
+  // selector-fallback.js shares the scope of selectors.js, as in the content scripts
+  const source = [SELECTORS_JS, FALLBACK_JS].map(file => fs.readFileSync(file, "utf8")).join("\n");
   const context = vm.createContext({ console });
   vm.runInContext(source, context, { filename: SELECTORS_JS });
 
   // Top-level const/function stay in the context's lexical scope instead of on the global
   // object, so collect the declared names and read them back with one expression.
-  const names = [...source.matchAll(/^(?:const|function)\s+(\w+)/gm)].map(m => m[1]);
+  const names = [...source.matchAll(/^(?:const|let|function)\s+(\w+)/gm)].map(m => m[1]);
   return vm.runInContext(`({ ${names.join(", ")} })`, context);
 }
 
@@ -69,6 +71,64 @@ const STATE_HINT = {
   "books-popover": "save a page with the book picker (Books) dialog open",
   "chapters-popover": "save a page with the book picker (Books) dialog open, wide window"
 };
+
+/**
+ * selector-fallback.js on a simulated deploy with a whole new class format: every CSS-module class
+ *   of the capture is renamed, so none of the selectors above match - the fallback must still find
+ *   the same verse numbers (all of them by data-usfm, at least 90% when data-usfm is gone too).
+ * @returns {{ok: boolean, text: string} | null} null when the capture has no verses to compare
+ */
+function checkFallback(html, keepUsfm) {
+  const { window } = new JSDOM(html);
+  const doc = window.document;
+  const expected = new Set(doc.querySelectorAll(`${S.verseSelectorMatch} > ${S.verseLabelSelectorMatch}`));
+  if (!expected.size) {
+    window.close();
+    return null;
+  }
+  const parallelView = doc.querySelector(S.parallelViewSelector);
+  const expectedNotes = new Set(doc.querySelectorAll(`${S.verseSelectorMatch} > ${S.notesSelector}`));
+  const renamed = {};
+  doc.querySelectorAll("[class]").forEach(el => {
+    const classes = [...el.classList].map(c =>
+      c.includes("_") ? (renamed[c] ??= `x${Object.keys(renamed).length}z`) : c
+    );
+    el.setAttribute("class", classes.join(" ")); // svg: className is read-only
+  });
+  if (!keepUsfm) {
+    doc.querySelectorAll("[data-usfm]").forEach(el => el.removeAttribute("data-usfm"));
+  }
+
+  const detected = S.detectVerseSelectors(doc);
+  let result;
+  if (!detected) {
+    result = { ok: false, text: "no verses detected" };
+  } else {
+    const labels = [...doc.querySelectorAll(`${detected.verse} > ${detected.label}`)];
+    const wrong = labels.filter(l => !expected.has(l)).length;
+    // every verse number in the container of its version (primary / parallel), as the default selectors see it
+    const [primary, parallel] = S.getVersionViews(detected, doc);
+    const wrongView = [...expected].filter(l =>
+      parallelView && parallelView.contains(l)
+        ? !(parallel && parallel.contains(l)) || primary.contains(l)
+        : !(primary && primary.contains(l)) || (parallel && parallel.contains(l))
+    ).length;
+    // the notes to hide - exactly these, the other children of a verse are text to project (eg. words of Jesus)
+    const notes = detected.notes ? [...doc.querySelectorAll(`${detected.verse} > ${detected.notes}`)] : [];
+    const notesOk = notes.length === expectedNotes.size && notes.every(n => expectedNotes.has(n));
+    const ok = !wrong && !wrongView && notesOk && labels.length >= expected.size * (keepUsfm ? 1 : 0.9);
+    const views = parallel ? "primary + parallel" : "primary";
+    result = {
+      ok,
+      text:
+        `${labels.length}/${expected.size} labels${wrong ? `, ${wrong} wrong` : ""} by ${detected.source}, ` +
+        `${views} view${wrongView ? ` (${wrongView} labels in the wrong view)` : ""}, ` +
+        `${notes.length}/${expectedNotes.size} notes  '${detected.verse} > ${detected.label}'`
+    };
+  }
+  window.close();
+  return result;
+}
 
 /** Which page states this capture can validate. */
 function detectStates(doc) {
@@ -182,6 +242,18 @@ for (const capture of captures) {
       `   ${ok ? okText : failText}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${pad(check.min, 2)})  %o`,
       check.selector
     );
+  }
+
+  for (const keepUsfm of [true, false]) {
+    const name = keepUsfm ? "fallback (renamed classes)" : "fallback (+ no data-usfm)";
+    const result = checkFallback(html, keepUsfm);
+    if (!result) {
+      console.log(`   \x1b[30m\x1b[43m SKIP \x1b[0m  ${pad(name, 32)} no verse labels in this capture`);
+      continue;
+    }
+    if (!result.ok) failures++;
+    const label = result.ok ? "\x1b[34m\x1b[42m OK \x1b[0m  " : "\x1b[30m\x1b[41m FAIL \x1b[0m  ";
+    console.log(`   ${label}  ${pad(name, 32)} ${result.text}`);
   }
   console.log();
   window.close();

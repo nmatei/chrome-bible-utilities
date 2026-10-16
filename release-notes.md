@@ -12,6 +12,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 ## 2.21.0 (soon)
 
 - [x] 🔄 **Up to date with bible.com's new parallel view** — in **parallel view** (two versions side by side) verse numbers can be **clicked and projected** again, with the usual verse highlighting and hidden footnotes
+- [x] 🔄 **More resilient to bible.com updates** — if a future bible.com update changes how verses are displayed, the extension finds the verses by itself, so you can still **click and project** them until the next extension update
 
 ## 2.20.0 (2026-09-30)
 

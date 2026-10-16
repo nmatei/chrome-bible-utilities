@@ -97,6 +97,7 @@ DevTools on bible.com — it uses the page's own live DOM, with the Books dialog
 | File | What |
 |---|---|
 | `views/bibles/bible.com/selectors.js` | every selector constant and picker/navigation function |
+| `views/bibles/bible.com/selector-fallback.js` | runtime backup when the verse selectors stop matching (see below) |
 | `views/bibles/bible.com/common.js` | consumers: `getVersionsName`, `getBooks`, `getChapters`, `getTitles`, `cleanUp` |
 | `views/bibles/bible.com/overrides.css` | styling injected over bible.com (`_verse`, `_label`, `_note`, `.hide-popovers`) |
 | `views/bibles/bible.com/common-overrides.css`, `views/main/actions.css` | more rules keyed on bible.com classes |
@@ -130,6 +131,29 @@ once the dialog opens, so it is absent unless the capture was taken in that stat
 next to the component names the chunk (`e.A(818840)` → search `818840,` for
 `static/chunks/<hash>.js`), and it can be fetched straight from
 `https://www.bible.com/_next/static/chunks/<hash>.js` to read the JSX.
+
+## Runtime fallback for the verse selectors
+
+`selector-fallback.js` keeps verses clickable when a bible.com deploy breaks the verse selectors,
+until a fixed version is published. `checkVerseSelectors()` runs on init and after every chapter
+change (`index.js`): if `verse > label` from the defaults finds nothing, it detects the markup —
+
+1. **`data-usfm`** (`PSA.1.1`) on the verse elements → their common class; the label is the child
+   whose text is the verse number; cross references (`.ref[data-usfm]`) inside notes are skipped;
+2. else **the numbers** — the group of same-class leaf elements with the texts `1, 2, 3…` in order
+   (restarting per version in parallel view); their parent is the verse.
+
+— and swaps in `[class~="<exact class>"]` selectors (the verse / label / content / notes / view
+selectors in `selectors.js` are `let` for this), injects the main `overrides.css` rules for them,
+and stamps `data-pv-view="primary|parallel"` on the version containers and, without `data-usfm`,
+`data-pv-verse="N"` on the verses (re-stamped on every click / key, and in `getVerseEls`). Notes are
+only the verse children starting with a non-numeric label (`#`) — never hide other children, the
+words of Jesus (`_wj`) are verse children too. The defaults are tried first again on every chapter.
+
+A `console.warn` "bible.com verse markup changed…" on bible.com means the fallback is active — the
+selectors still need fixing. `npm run check-selectors` validates it on every capture: all its
+CSS-module classes are renamed (and once more without `data-usfm`), and the fallback must find the
+same labels, views and notes as the real selectors (`fallback (renamed classes)` lines).
 
 ## The two navigation paths — why a broken chapter selector is silent
 

@@ -14,6 +14,7 @@ window.addEventListener("load", () => {
     await createSettingsActions();
     await loadDisplaySettings();
     await initEvents();
+    await checkVerseSelectors();
     makeVerseFocusable();
     syncParallelLines();
     await checkAutoProject();
@@ -676,6 +677,9 @@ function watchLocationChange() {
       await bookArrowExpandAndCollapse();
       await cacheBooks();
       refreshPinnedVerses();
+    }
+    if (await checkVerseSelectors()) {
+      makeVerseFocusable();
     }
     syncParallelLines();
   }, 1000);
