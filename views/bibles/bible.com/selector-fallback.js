@@ -280,7 +280,7 @@ function applyVerseSelectorsFallback(detected) {
  *   no verses, and back to the default ones once they work again.
  * @returns {Promise<boolean>} true when verse numbers can be clicked (with the default or the detected selectors)
  */
-async function (timeout = 3000) {
+async function checkVerseSelectors(timeout = 3000) {
   const defaults = `${defaultVerseSelectors.verse} > ${defaultVerseSelectors.label}`;
   // the current fallback still matches the new chapter (same deploy) - no need to wait for the defaults
   if (verseSelectorsFallback && !$(defaults) && hasVerseLabels(verseSelectorsFallback)) {
