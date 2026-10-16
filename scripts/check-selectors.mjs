@@ -84,7 +84,11 @@ function detectStates(doc) {
 }
 
 function cssModuleHashes(html) {
-  return [...new Set([...html.matchAll(/ChapterContent-module__(\w+)__/g)].map(m => m[1]))];
+  const hashes = [
+    // match both the old "ChapterContent-module__cat7xG__verse" and the new "cat7xG_verse" formats
+    ...html.matchAll(/ChapterContent-module__(\w+?)__|\b([A-Za-z0-9]{6})_verse\b/g)
+  ];
+  return [...new Set(hashes.map(m => m[1] || m[2]))];
 }
 
 /** CSS files that hardcode bible.com class names — a `^=` there is broken by design. */
@@ -107,7 +111,8 @@ function scanStaleCssPatterns() {
       .split("\n")
       .forEach((line, i) => {
         // the CSS-module hash changes on every bible.com build, so ^= can never match
-        if (/\[class\^=/.test(line)) {
+        // and "__name" misses the newer single-underscore format ("cat7xG_verse")
+        if (/\[class\^=|\[class\*="__/.test(line)) {
           stale.push({ file: path.relative(ROOT, file), line: i + 1, text: line.trim() });
         }
       });
@@ -155,7 +160,9 @@ for (const capture of captures) {
   for (const check of CHECKS) {
     if (!states[check.state]) {
       skipped++;
-      console.log(`   \x1b[30m\x1b[43m SKIP \x1b[0m  ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`);
+      console.log(
+        `   \x1b[30m\x1b[43m SKIP \x1b[0m  ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`
+      );
       continue;
     }
     validated.add(check.name);
@@ -172,7 +179,8 @@ for (const capture of captures) {
     const okText = "\x1b[34m\x1b[42m OK \x1b[0m  ";
     const failText = "\x1b[30m\x1b[41m FAIL \x1b[0m  ";
     console.log(
-      `   ${ok ? okText : failText}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${pad(check.min, 2)})  %o`, check.selector
+      `   ${ok ? okText : failText}  ${pad(check.name, 32)} ${pad(count, 5)} (min ${pad(check.min, 2)})  %o`,
+      check.selector
     );
   }
   console.log();
@@ -182,7 +190,9 @@ for (const capture of captures) {
 const stale = scanStaleCssPatterns();
 if (stale.length) {
   failures += stale.length;
-  console.log("── stale [class^=…] rules (the CSS-module hash changes every build, use [class*=…])");
+  console.log(
+    '── stale [class^=…] / [class*="__…"] rules (the CSS-module hash and format change, use [class*="_name"])'
+  );
   for (const s of stale) {
     console.log(`   FAIL  ${s.file}:${s.line}  ${s.text}`);
   }
@@ -195,7 +205,9 @@ console.log(
     (skipped ? ` (${skipped} per-capture skips)` : "")
 );
 if (notValidated.length) {
-  console.log("\x1b[30m\x1b[43m NOT validated in any capture \x1b[0m — save the missing page states (npm run capture-pages):");
+  console.log(
+    "\x1b[30m\x1b[43m NOT validated in any capture \x1b[0m — save the missing page states (npm run capture-pages):"
+  );
   for (const check of notValidated) {
     console.log(`   ${pad(check.name, 32)} needs ${check.state} — ${STATE_HINT[check.state]}`);
   }

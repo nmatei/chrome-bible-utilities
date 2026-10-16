@@ -174,7 +174,7 @@ async function capture(browser, url, name, withPicker) {
   console.log(`── ${url}`);
   await send("Page.navigate", { url });
   await sleep(1000);
-  if (!(await waitFor(evaluate, `document.querySelector('[class*="__verse"]')`))) {
+  if (!(await waitFor(evaluate, `document.querySelector('[class*="_verse"]')`))) {
     throw new Error(`no verses rendered on ${url}`);
   }
   // let the client side rendering (version names, parallel view) settle

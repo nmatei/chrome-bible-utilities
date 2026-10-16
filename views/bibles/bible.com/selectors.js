@@ -1,13 +1,15 @@
 const projected = "projected";
 
-const appReadySelector = '[class*="__bible-reader"]';
-const titlesSelector = '[class*="__reader"] h1';
-const verseSelectorMatch = '[class*="__verse"]';
-const verseLabelSelectorMatch = '[class*="__label"]';
-const verseContentSelector = '[class*="__content"]';
-const primaryViewSelector = '[class*="__chapter"]';
-const parallelViewSelector = '.md\\:block [class*="__yv-bible-text"]';
-const notesSelector = '[class*="__note"]';
+// CSS-module classes come in two formats: "ChapterContent-module__cat7xG__verse" and (parallel view, since 2026-10)
+// "cat7xG_verse" - a single "_" before the name matches both, the hash changes on every build
+const appReadySelector = '[class*="_bible-reader"]';
+const titlesSelector = '[class*="_reader"] h1';
+const verseSelectorMatch = '[class*="_verse"]';
+const verseLabelSelectorMatch = '[class*="_label"]';
+const verseContentSelector = '[class*="_content"]';
+const primaryViewSelector = '[class*="_chapter"]';
+const parallelViewSelector = '.md\\:block [class*="_yv-bible-text"]';
+const notesSelector = '[class*="_note"]';
 const versionsNameSelector = '.z-docked [id^="headlessui-popover-button"] div';
 
 // local app class

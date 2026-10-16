@@ -14,18 +14,18 @@ aside:has(nav[aria-label="Main navigation"]) {
   }
 }
 
-body [class*="__verse"] {
+body [class*="_verse"] {
   line-height: 1.6em;
   display: block;
   padding: 0 4px;
 }
 
-body [class*="__q"] {
+body [class*="_q"] {
   padding-inline-start: 0;
   text-indent: 0;
 }
 
-body [class*="__verse"] > [class*="__label"] {
+body [class*="_verse"] > [class*="_label"] {
   display: inline;
   cursor: pointer;
   padding: 5px 5px 5px 8px !important;
@@ -34,31 +34,31 @@ body [class*="__verse"] > [class*="__label"] {
   font-weight: bold;
   top: -0.2em;
 }
-[class*="__label"]:after {
+[class*="_label"]:after {
   content: " ";
 }
-[class*="__label"]:hover {
+[class*="_label"]:hover {
   background: var(--verseNumberBackgroundHover);
   border-color: var(--verseNumberBorderColorHover);
 }
-.key-focus [class*="__label"]:focus {
+.key-focus [class*="_label"]:focus {
   border-color: var(--elBorderColorFocus);
 }
-[class*="__verse"].projected [class*="__label"] {
+[class*="_verse"].projected [class*="_label"] {
   background: var(--verseNumberBackgroundProjected) !important;
   color: var(--verseNumberColorProjected) !important;
 }
-.focus-lost [class*="__verse"].projected [class*="__label"] {
+.focus-lost [class*="_verse"].projected [class*="_label"] {
   background: var(--verseNumberBackgroundProjectedFocusLost) !important;
 }
 
-[class*="__note"] {
+[class*="_note"] {
   display: none !important;
 }
 
 /* TODO test */
-.focus-parallel .parallel-chapter [class*="__verse"].projected [class*="__label"],
-.focus-primary .primary-chapter [class*="__verse"].projected [class*="__label"] {
+.focus-parallel .parallel-chapter [class*="_verse"].projected [class*="_label"],
+.focus-primary .primary-chapter [class*="_verse"].projected [class*="_label"] {
   border-color: var(--verseNumberBorderColorProjected) !important;
 }
 

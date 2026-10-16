@@ -7,8 +7,9 @@ description: Use when bible.com changed its DOM and the extension stopped workin
 
 Every selector the extension uses against bible.com lives in
 `views/bibles/bible.com/selectors.js`. bible.com is a Next.js app whose CSS-module class names
-carry a **build hash** (`ChapterContent-module__cat7xG__verse`), so the repo matches on the
-stable suffix — `[class*="__verse"]` — never on a prefix. The rest of the page is Tailwind
+carry a **build hash** (`ChapterContent-module__cat7xG__verse`, or — on parallel-view pages since
+2026-10 — the shorter `cat7xG_verse`), so the repo matches on the stable suffix with a **single**
+underscore — `[class*="_verse"]` matches both formats — never on a prefix. The rest of the page is Tailwind
 utility classes, which change freely between deploys.
 
 Captures of the live page are kept in `test/integration/bible.com.content/` — **gitignored**
@@ -72,7 +73,7 @@ Read the report carefully:
   validated in **at least one** capture; anything below `N/N` is listed under
   **NOT validated in any capture** — nothing is proven about those until the state is saved.
 
-It also reports the current CSS-module hash and fails on any `[class^=…]` left in
+It also reports the current CSS-module hash and fails on any `[class^=…]` or `[class*="__…"]` left in
 `views/**/*.css`, which can never match once bible.com rebuilds.
 
 ## Live check
@@ -81,9 +82,9 @@ For anything that can't be captured (or to confirm a fix without re-saving), pas
 DevTools on bible.com — it uses the page's own live DOM, with the Books dialog open:
 
 ```js
-["[class*=\"__bible-reader\"]", "[class*=\"__reader\"] h1", "[class*=\"__verse\"]",
- "[class*=\"__label\"]", "[class*=\"__content\"]", "[class*=\"__chapter\"]",
- ".md\\:block [class*=\"__yv-bible-text\"]",
+["[class*=\"_bible-reader\"]", "[class*=\"_reader\"] h1", "[class*=\"_verse\"]",
+ "[class*=\"_label\"]", "[class*=\"_content\"]", "[class*=\"_chapter\"]",
+ ".md\\:block [class*=\"_yv-bible-text\"]",
  ".z-docked [id^=\"headlessui-popover-button\"] div",
  "button[aria-haspopup=\"dialog\"]",
  "[role=\"dialog\"] li > button",
@@ -97,13 +98,14 @@ DevTools on bible.com — it uses the page's own live DOM, with the Books dialog
 |---|---|
 | `views/bibles/bible.com/selectors.js` | every selector constant and picker/navigation function |
 | `views/bibles/bible.com/common.js` | consumers: `getVersionsName`, `getBooks`, `getChapters`, `getTitles`, `cleanUp` |
-| `views/bibles/bible.com/overrides.css` | styling injected over bible.com (`__verse`, `__label`, `__note`, `.hide-popovers`) |
+| `views/bibles/bible.com/overrides.css` | styling injected over bible.com (`_verse`, `_label`, `_note`, `.hide-popovers`) |
 | `views/bibles/bible.com/common-overrides.css`, `views/main/actions.css` | more rules keyed on bible.com classes |
 | `views/main/index.js` | `hasParallelView`, `findBookEl`, `bookArrowExpandAndCollapse`, `watchLocationChange`, chapter loading |
 
 ## Selector rules for this repo
 
-- **`[class*="__part"]`, never `[class^=…]`** — the CSS-module hash changes every bible.com build.
+- **`[class*="_part"]`, never `[class^=…]` or `[class*="__part"]`** — the CSS-module hash changes every
+  bible.com build, and the newer `hash_part` format has only one underscore before the name.
 - **Prefer ARIA attributes, `data-testid` and structure over Tailwind chains.** `.w-full .z-popover li button`
   depended on a layout class that could vanish; `aria-haspopup="dialog"`, `role="dialog"` and
   `<a href>` come from the component (headlessui / next/link) and are stable.
