@@ -247,6 +247,7 @@ h2 .key-code {
 #live-text-box input[type="text"],
 #live-text-box textarea {
   font-size: 0.92rem;
+  background: #ffffff;
   color: rgba(0, 0, 0, 0.75);
 }
 
@@ -330,6 +331,7 @@ h2 .key-code {
   max-height: 390px;
   padding: 5px;
   resize: both;
+  background: #ffffff;
   color: #000000;
   border-radius: 2px;
 }
