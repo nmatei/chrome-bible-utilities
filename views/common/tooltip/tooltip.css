@@ -219,3 +219,54 @@
     display: none !important;
   }
 }
+
+/* bible.com dark mode: <html class="dark"> */
+.dark .context-menu {
+  border-color: #555555;
+  background: #232121;
+  box-shadow: #000000 0 0 3px;
+  color: #e8e6e6;
+}
+.dark .context-menu .context-menu-title,
+.dark .context-menu .action-btn,
+.dark .context-menu .action-btn:hover {
+  color: #e8e6e6;
+}
+.dark .context-menu .separator {
+  border-top-color: #444444;
+}
+.dark .context-menu .action-btn:hover,
+.dark .context-menu .action-btn.active,
+.dark .context-menu .list-item:hover {
+  background-color: #1f3a3a;
+  border-color: #444444;
+}
+.dark .context-menu .list-item {
+  border-color: #444444;
+}
+.dark .arrow-down:before,
+.dark .context-menu.arrow-up:before {
+  border-top-color: #555555;
+  border-bottom-color: #555555;
+}
+.dark .arrow-down:after {
+  border-top-color: #232121;
+}
+.dark .context-menu.arrow-up:after {
+  border-bottom-color: #232121;
+}
+.dark .context-menu.arrow-left:before {
+  border-right-color: #555555;
+}
+.dark .context-menu.arrow-left:after {
+  border-right-color: #232121;
+}
+/* dark icons (views/icons/icons.js): the '#primary' parts are black by inline style,
+   the teal (#2ca9bc) parts stay as they are */
+.dark .context-menu svg [style*="stroke: #000000"],
+.dark .context-menu .screen-source #primary {
+  stroke: #e8e6e6 !important;
+}
+.dark .context-menu svg [style*="fill: #000000"] {
+  fill: #e8e6e6 !important;
+}

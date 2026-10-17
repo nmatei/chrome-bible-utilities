@@ -77,7 +77,7 @@ or in **2 different languages**.
   - [x] Toggle 1️⃣ primary OR 2️⃣ parallel verses to be projected
   - [x] Adjust css variables (spacing, colors)
   - [x] remember last windows position (projector & settings)
-  - [x] ☽ Try [Night mode](https://github.com/JosNun/night-mode-bible) extension
+  - [x] ☽ **Dark mode** — follows bible.com's own Appearance setting (Light / Dark / System)
 
 ## 📈 Release Notes
 

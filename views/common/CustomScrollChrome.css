@@ -42,3 +42,14 @@ body::-webkit-scrollbar {
 .info-fixed-box ::-webkit-scrollbar-thumb:window-inactive {
   background-color: rgba(122, 122, 122, 0.4);
 }
+
+/* bible.com dark mode: <html class="dark"> */
+.dark body::-webkit-scrollbar {
+  background-color: #121212;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(200, 200, 200, 0.35);
+}
+.dark ::-webkit-scrollbar-thumb:window-inactive {
+  background-color: rgba(200, 200, 200, 0.2);
+}

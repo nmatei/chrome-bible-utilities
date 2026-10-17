@@ -10,3 +10,13 @@
   --infoBoxOpacity: 85%;
   --referenceColor: #d3d3d3;
 }
+
+/* bible.com dark mode: <html class="dark"> (next-themes) */
+:root.dark {
+  --verseNumberBorderColor: #555555;
+  --verseNumberBackgroundHover: #1f3550;
+  --elBorderColorFocus: #6ea8ef;
+  --verseNumberColorProjected: #000;
+  --verseNumberBackgroundProjected: #fff;
+  --verseNumberBackgroundProjectedFocusLost: #fff;
+}

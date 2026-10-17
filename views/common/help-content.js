@@ -216,7 +216,6 @@ function getHelpContent() {
               <a href="https://www.buymeacoffee.com/nmatei" target="_blank">Buy me a coffee</a>,
               <a href="https://paypal.me/mateinick" target="_blank">PayPal</a> or
               <a href="https://github.com/sponsors/nmatei" target="_blank">GitHub Sponsors</a></li>
-            <li>☽ Try <a href="https://chromewebstore.google.com/detail/night-mode-bible/ebiieffikaglhelcnogmmijmlejdhngk" target="_blank">Night mode</a> extension
           </ul>
         </li>
       </li>

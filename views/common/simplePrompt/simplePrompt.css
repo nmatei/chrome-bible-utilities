@@ -68,3 +68,33 @@
   padding: 2px 5px;
   border-radius: 4px;
 }
+
+/* bible.com dark mode: <html class="dark"> */
+.dark #custom-prompt-container,
+.dark #custom-prompt .prompt-title,
+.dark #custom-prompt .actions .action-btn {
+  color: #e8e6e6;
+}
+.dark #custom-prompt {
+  background-color: #232121;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+.dark #custom-prompt-input {
+  background-color: #121212;
+  border-color: #555555;
+  color: #e8e6e6;
+}
+.dark #custom-prompt .actions .action-btn {
+  border-color: #555555;
+}
+.dark #custom-prompt-container code {
+  background-color: #6b6b1a99;
+}
+/* dark icons (views/icons/icons.js, eg. 'Plugin has been updated'):
+   the '#primary' parts are black by inline style, the teal (#2ca9bc) parts stay */
+.dark #custom-prompt svg [style*="stroke: #000000"] {
+  stroke: #e8e6e6 !important;
+}
+.dark #custom-prompt svg [style*="fill: #000000"] {
+  fill: #e8e6e6 !important;
+}

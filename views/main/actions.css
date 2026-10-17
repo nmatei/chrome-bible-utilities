@@ -729,40 +729,42 @@ strong.abp-badge:after {
   animation: disabledColorChange 10s infinite;
 }
 
-/* https://github.com/JosNun/night-mode-bible */
-.night-mode #project-actions {
+/*
+  bible.com dark mode (Appearance in the bible.com menu: light / dark / system).
+  next-themes toggles <html class="dark" style="color-scheme: dark">,
+  same hook as bible.com's own tailwind 'dark:' variant
+*/
+.dark #project-actions {
   box-shadow: 1px 1px 2px rgb(120 120 120 / var(--infoBoxOpacity));
 }
-.night-mode .info-fixed-box {
+.dark .info-fixed-box {
   border: 1px solid rgb(204 204 204 / var(--infoBoxOpacity));
   box-shadow: 1px 1px 2px rgb(120 120 120 / var(--infoBoxOpacity));
 }
-.night-mode .arrow-up:before {
+.dark .info-fixed-box.arrow-up:before {
   border-bottom: 6px solid rgb(204 204 204 / var(--infoBoxOpacity));
 }
-.night-mode .arrow-up:after {
+.dark .info-fixed-box.arrow-up:after {
   border-bottom: 5px solid #010103;
 }
-.night-mode .arrow-left:before {
+.dark .info-fixed-box.arrow-left:before {
   border-right: 6px solid rgb(204 204 204 / var(--infoBoxOpacity));
 }
-.night-mode .arrow-left:after {
+.dark .info-fixed-box.arrow-left:after {
   border-right: 5px solid #010103;
 }
-.night-mode .form-field-wrapper {
+.dark .form-field-wrapper {
   background: rgba(255, 255, 255, 0.2) !important;
 }
-.night-mode .info-fixed-box input[type="text"] {
+.dark .info-fixed-box input[type="text"],
+.dark #live-text-box input[type="text"],
+.dark #live-text-box textarea,
+.dark #verses-text-box textarea {
   background: #646464;
   color: #f9fafb;
 }
-.night-mode.focus-lost [class*="_verse"].projected [class*="_label"],
-.night-mode [class*="_verse"].projected [class*="_label"] {
-  color: var(--verseNumberBackgroundProjected) !important;
-  background: var(--verseNumberColorProjected) !important;
-}
 
-.night-mode #search #primary {
+.dark #search #primary {
   stroke: #ffffff !important;
 }
 
@@ -800,6 +802,10 @@ span.screen-badge[data-display] {
   border: 1px solid #22222250;
   font-size: 0.8em;
   font-weight: normal;
+}
+.dark .context-menu .key-code {
+  background-color: #ffffff20;
+  border-color: #ffffff40;
 }
 .context-menu-title span.screen-badge[data-display]:after {
   box-shadow: 0 0 0 2px #333333aa;

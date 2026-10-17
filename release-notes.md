@@ -9,6 +9,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
+## 2.22.0 (soon)
+
+- [x] 🌙 **Dark mode, built in** — the extension now follows **bible.com's own dark mode** (bible.com menu: Light / Dark): verse numbers, projected verse highlight, menus, prompts and scrollbars all switch to dark colors.
+
 ## 2.21.0 (2026-10-17)
 
 - [x] 🔄 **Up to date with bible.com's new parallel view** — in **parallel view** (two versions side by side) verse numbers can be **clicked and projected** again, with the usual verse highlighting and hidden footnotes
