@@ -25,8 +25,13 @@ npm run capture-pages      # node scripts/capture-bible-pages.mjs
 node scripts/capture-bible-pages.mjs --version 191 --parallel 1 --ref MAT.5 --abbr VDC --width 1400
 ```
 
-It drives the installed Chrome headless over the DevTools protocol (`CHROME_PATH` to override),
-and writes `auto - <ref> - chapter`, `auto - <ref> - parallel` and
+It drives the installed Chrome over the DevTools protocol (`CHROME_PATH` to override) in a
+**visible** window: since 2026-11 bible.com is behind a Fastly bot check ("Client Challenge",
+`403` for curl / headless Chrome). When it shows up the script waits (3 min) for you to solve it
+in the window; the dedicated profile `~/.cache/bible-capture-chrome` keeps the cookie, so later
+runs usually pass straight through. Never try to get past the check automatically (spoofed
+user-agent, headless tricks) — a human solves it. The `_files/` bundles are fetched from inside
+the page so they carry that cookie. It writes `auto - <ref> - chapter`, `auto - <ref> - parallel` and
 `auto - <ref> - parallel - books dialog open` (`.html` + `_files/` with every js/css bundle the
 page loaded, lazy picker chunks included). The dialog is opened with the extension's own
 `chapterPickerArrow()` / `booksSelector()` injected from `selectors.js`, so the script **fails**
@@ -86,7 +91,7 @@ DevTools on bible.com — it uses the page's own live DOM, with the Books dialog
  "[class*=\"_label\"]", "[class*=\"_content\"]", "[class*=\"_chapter\"]",
  ".md\\:block [class*=\"_yv-bible-text\"]",
  ".z-docked [id^=\"headlessui-popover-button\"] div",
- "button[aria-haspopup=\"dialog\"]",
+ "[aria-haspopup=\"dialog\"]", "[aria-haspopup=\"dialog\"][aria-keyshortcuts=\"B\"]",
  "[role=\"dialog\"] li > button",
  "[role=\"dialog\"] a[href*=\"/bible/\"]"
 ].forEach(s => console.log(document.querySelectorAll(s).length, s));

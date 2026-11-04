@@ -12,6 +12,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 ## 2.22.0 (soon)
 
 - [x] 🌙 **Dark mode, built in** — the extension now follows **bible.com's own dark mode** (bible.com menu: Light / Dark): verse numbers, projected verse highlight, menus, prompts and scrollbars all switch to dark colors.
+- [x] 🔄 **Up to date with bible.com's new layout** — opening a **pinned verse** from another book or chapter switches the chapter **without a page refresh** again
 
 ## 2.21.0 (2026-10-17)
 

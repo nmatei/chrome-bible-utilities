@@ -3,8 +3,12 @@
  * Saves bible.com pages into test/integration/bible.com.content/ for `npm run check-selectors`,
  * replacing the manual Ctrl+S → "Webpage, Complete". See the `update-selectors` skill.
  *
- * Drives the locally installed Chrome (headless) over the DevTools protocol - no extra
- * dependency. The book picker is opened with the extension's own chapterPickerArrow()
+ * Drives the locally installed Chrome over the DevTools protocol - no extra dependency. The
+ * window is visible: bible.com's bot check blocks headless Chrome, so when it shows up it is
+ * solved by hand, and the dedicated profile (~/.cache/bible-capture-chrome) keeps its cookie
+ * for the next runs (`--headless 1` for the old behavior).
+ *
+ * The book picker is opened with the extension's own chapterPickerArrow()
  * (views/bibles/bible.com/selectors.js is injected in the page), so a capture proves the
  * extension finds the button too.
  *
@@ -25,10 +29,11 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTENT_DIR = path.join(ROOT, "test/integration/bible.com.content");
 const SELECTORS_JS = path.join(ROOT, "views/bibles/bible.com/selectors.js");
+const PROFILE_DIR = path.join(os.homedir(), ".cache/bible-capture-chrome");
 const PORT = 9335;
 
 function readArgs() {
-  const args = { version: "191", parallel: "1", ref: "PSA.1", abbr: "VDC", width: 1400 };
+  const args = { version: "191", parallel: "1", ref: "PSA.1", abbr: "VDC", width: 1400, headless: "" };
   const argv = process.argv.slice(2);
   for (let i = 0; i < argv.length; i += 2) {
     const key = argv[i].replace(/^--/, "");
@@ -60,11 +65,22 @@ function findChrome() {
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-async function connect(chromePath, width) {
-  const profile = fs.mkdtempSync(path.join(os.tmpdir(), "bible-capture-"));
+async function connect(chromePath, width, headless) {
+  // bible.com is behind a bot check (Fastly "Client Challenge") that headless Chrome can't pass:
+  // the window is visible and the profile is kept, so the check is solved by hand once and its
+  // cookie reused. Chrome refuses remote debugging on the default profile, hence a dedicated one.
+  const profile = headless ? fs.mkdtempSync(path.join(os.tmpdir(), "bible-capture-")) : PROFILE_DIR;
   const chrome = spawn(
     chromePath,
-    ["--headless=new", `--remote-debugging-port=${PORT}`, `--user-data-dir=${profile}`, `--window-size=${width},900`, "about:blank"],
+    [
+      ...(headless ? ["--headless=new"] : []),
+      `--remote-debugging-port=${PORT}`,
+      `--user-data-dir=${profile}`,
+      `--window-size=${width},900`,
+      "--no-first-run",
+      "--no-default-browser-check",
+      "about:blank"
+    ],
     { stdio: "ignore" }
   );
   let targets;
@@ -110,10 +126,12 @@ async function connect(chromePath, width) {
   const close = () => {
     ws.close();
     chrome.kill();
-    // Chrome still holds the profile for a moment after kill
-    setTimeout(() => fs.rmSync(profile, { recursive: true, force: true }), 500);
+    if (headless) {
+      // Chrome still holds the profile for a moment after kill
+      setTimeout(() => fs.rmSync(profile, { recursive: true, force: true }), 500);
+    }
   };
-  return { send, evaluate, close };
+  return { send, evaluate, close, headless };
 }
 
 /** Polls an expression in the page until it is truthy. */
@@ -147,25 +165,26 @@ async function save(evaluate, name) {
   const filesDir = path.join(CONTENT_DIR, `${name}_files`);
   fs.writeFileSync(file, "<!DOCTYPE html>\n" + (await evaluate("document.documentElement.outerHTML")));
 
-  // every js/css the page loaded so far, lazy chunks included
-  const urls = await evaluate(`[...new Set(performance.getEntriesByType("resource").map(e => e.name))]
-    .filter(u => /^https:\\/\\/[^/]*bible\\.com\\/.*\\.(js|css)(\\?|$)/.test(u))`);
+  // every js/css the page loaded so far, lazy chunks included - fetched by the page itself,
+  // so the requests carry the bot check cookie (a plain node fetch gets a 403)
+  const bundles = await evaluate(`Promise.all(
+    [...new Set(performance.getEntriesByType("resource").map(e => e.name))]
+      .filter(u => /^https:\\/\\/[^/]*bible\\.com\\/.*\\.(js|css)(\\?|$)/.test(u))
+      .map(url => fetch(url)
+        .then(res => res.ok ? res.text() : Promise.reject(new Error(res.status)))
+        .then(text => ({ url, text }), e => ({ url, error: e.message })))
+  )`);
   fs.rmSync(filesDir, { recursive: true, force: true });
   fs.mkdirSync(filesDir);
   let saved = 0;
-  await Promise.all(
-    urls.map(async url => {
-      try {
-        const res = await fetch(url);
-        if (res.ok) {
-          fs.writeFileSync(path.join(filesDir, path.basename(new URL(url).pathname)), await res.text());
-          saved++;
-        }
-      } catch (e) {
-        console.warn("   could not download %s: %s", url, e.message);
-      }
-    })
-  );
+  bundles.forEach(({ url, text, error }) => {
+    if (error) {
+      console.warn("   could not download %s: %s", url, error);
+      return;
+    }
+    fs.writeFileSync(path.join(filesDir, path.basename(new URL(url).pathname)), text);
+    saved++;
+  });
   console.log(`   saved ${path.relative(ROOT, file)} (+${saved} bundles)`);
 }
 
@@ -174,6 +193,13 @@ async function capture(browser, url, name, withPicker) {
   console.log(`── ${url}`);
   await send("Page.navigate", { url });
   await sleep(1000);
+  if (await evaluate(`document.title === "Client Challenge"`)) {
+    if (browser.headless) {
+      throw new Error("bible.com bot check (Client Challenge) - run without --headless and solve it in the window");
+    }
+    console.log("   bible.com bot check - solve it in the Chrome window (waiting up to 3 min)...");
+    await waitFor(evaluate, `document.title !== "Client Challenge"`, 180000);
+  }
   if (!(await waitFor(evaluate, `document.querySelector('[class*="_verse"]')`))) {
     throw new Error(`no verses rendered on ${url}`);
   }
@@ -198,7 +224,7 @@ async function capture(browser, url, name, withPicker) {
 
 const args = readArgs();
 fs.mkdirSync(CONTENT_DIR, { recursive: true });
-const browser = await connect(findChrome(), args.width);
+const browser = await connect(findChrome(), args.width, !!args.headless);
 try {
   const base = `https://www.bible.com/bible/${args.version}/${args.ref}.${args.abbr}`;
   await capture(browser, base, `auto - ${args.ref} - chapter`, false);

@@ -61,6 +61,8 @@ const CHECKS = [
   { name: "versionsNameSelector", selector: S.versionsNameSelector, min: 1, state: "always" },
   { name: "getVerseSelector(1)", selector: S.getVerseSelector(1), min: 1, state: "always" },
   { name: "chapterPickerSelector", selector: S.chapterPickerSelector, min: 1, state: "always" },
+  // preferred by chapterPickerArrow(), chapterPickerSelector is its fallback (none before 2026-11)
+  { name: "chapterPickerShortcutSelector", selector: S.chapterPickerShortcutSelector, min: 0, state: "always" },
   { name: "parallelViewSelector", selector: S.parallelViewSelector, min: 1, state: "parallel" },
   { name: "booksSelector()", selector: S.booksSelector(), min: 30, state: "books-popover" },
   { name: "chaptersSelector()", selector: S.chaptersSelector(), min: 1, state: "chapters-popover" }

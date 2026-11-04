@@ -8,6 +8,10 @@ let booksCache = [];
 //   autoSelectVerse must be kept, it will be used to select the verse after the page loads
 let chapterLoading = false;
 
+// true when the book/chapter picker button was not found after page load (bible.com changed it)
+//   - selecting a chapter by simulated clicks can't work, don't wait for the titles to change
+let chapterPickerMissing = false;
+
 window.addEventListener("load", () => {
   setTimeout(async () => {
     console.info("\x1b[34m\x1b[42m [%s] \x1b[0m", "extension loaded", "Project verses from bible.com");
@@ -548,6 +552,11 @@ function onReferenceRequest(request) {
 async function initEvents() {
   await waitElement(appReadySelector, 5000, 200);
 
+  chapterPickerMissing = !chapterPickerArrow();
+  if (chapterPickerMissing) {
+    console.warn("bible.com chapter picker not found - chapters will be opened by url (page refresh)");
+  }
+
   await cacheBooks();
   refreshPinnedVerses();
   if (booksCache.length === 0) {
@@ -693,7 +702,8 @@ function watchLocationChange() {
 async function waitAndSelectVerse(match, title, project = true) {
   const verse = match.verse;
   const [chapter] = getChapterTitles();
-  const changed = chapter === title || (await waitNewTitles());
+  // picker missing => polls once (300ms) and gives up (+200ms), ~500ms instead of the full timeout
+  const changed = chapter === title || (await waitNewTitles(chapterPickerMissing ? 200 : undefined));
   syncParallelLines();
 
   if (!changed) {

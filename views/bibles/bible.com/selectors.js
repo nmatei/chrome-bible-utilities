@@ -28,18 +28,22 @@ let verseNumberAttr = "";
 const hideCls = "hide-popovers";
 
 // the book/chapter picker (BibleUsfmPicker) is a headlessui Dialog, not a popover any more
-const chapterPickerSelector = 'button[aria-haspopup="dialog"]';
+// no tag: the trigger was a <button>, since 2026-11 it is an <a> (href is only a no-js fallback)
+const chapterPickerSelector = '[aria-haspopup="dialog"]';
+// the "B" keyboard shortcut of the picker - the most specific hook, other dialogs won't have it
+const chapterPickerShortcutSelector = `${chapterPickerSelector}[aria-keyshortcuts="B"]`;
 const chapterPickerDialogSelector = '[role="dialog"]';
 
 function chapterPickerArrow() {
+  const selector = $(chapterPickerShortcutSelector) ? chapterPickerShortcutSelector : chapterPickerSelector;
   // rendered twice: with the chapter title as text, and as an icon only button ("Books"),
   //   both open the same picker (and both work while hidden by css)
   // only the icon one has an aria-label - match its presence, the value is translated
-  const iconButton = $(`${chapterPickerSelector}[aria-label]`);
+  const iconButton = $(`${selector}[aria-label]`);
   if (iconButton) {
     return iconButton;
   }
-  const buttons = $$(chapterPickerSelector);
+  const buttons = $$(selector);
   const titleEl = $(titlesSelector);
   const button = titleEl ? buttons.find(b => b.innerText.trim() === titleEl.innerHTML.trim()) : null;
   return button || buttons[0] || null;
