@@ -174,12 +174,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       getWindowByKey(key)
         .then(async ({ win }) => {
           if (!win) {
-            sendResponse({ status: 404, error: "Window not found" });
+            sendResponse({
+              status: 404,
+              error: "Window not found"
+            });
             return;
           }
 
           if (!win.tabs || !win.tabs[0]) {
-            sendResponse({ status: 404, error: "No tabs in window" });
+            sendResponse({
+              status: 404,
+              error: "No tabs in window"
+            });
             return;
           }
 
@@ -210,7 +216,20 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
     case "updateText":
     case "updateFrame": {
       projectExternal(request.action, request.payload || {}).then(sendResponse, error => {
-        sendResponse({ status: 500, error: error.message });
+        sendResponse({
+          status: 500,
+          error: error.message
+        });
+      });
+      return true;
+    }
+    case "getVerses":
+    case "projectVerses": {
+      versesExternal(request.action, request.payload || {}).then(sendResponse, error => {
+        sendResponse({
+          status: 500,
+          error: error.message
+        });
       });
       return true;
     }
@@ -277,22 +296,84 @@ async function projectExternal(action, payload) {
       responses.push({ status: 404, error: `No tab in window ${idx}` });
       continue;
     }
-    responses.push(await sendToProjector(tab.id, { action, payload: { ...payload, index: idx } }));
+    responses.push(await sendToTab(tab.id, { action, payload: { ...payload, index: idx } }));
   }
 
   return responses.find(r => !r || r.status !== 200) || responses[0] || { status: 200 };
 }
 
-// a just created projector window may not listen yet -> retry for a few seconds
-async function sendToProjector(tabId, message, retries = 20) {
+// getVerses / projectVerses are resolved by the bible.com tab (books of its version, verses from the bible.com API,
+//   and for projectVerses: open the chapter, select & project the verses like a pinned reference)
+async function versesExternal(action, payload) {
+  const { reference, index, version } = payload;
+  if (typeof reference !== "string" || !reference.trim()) {
+    return {
+      status: 400,
+      error: 'Missing reference, eg. { reference: "John 3:16-18" }'
+    };
+  }
+  const project = action === "projectVerses";
+  if (project) {
+    if (typeof index !== "undefined" && index !== 1 && index !== 2) {
+      return {
+        status: 400,
+        error: "Invalid index. Use 1 or 2 (or omit it for all enabled windows)"
+      };
+    }
+    const displaySettings = await getDisplaySettings();
+    if (index && displaySettings[index - 1] === 0) {
+      return {
+        status: 404,
+        error: `Window ${index} is disabled in projector settings`
+      };
+    }
+  } else if (typeof version !== "undefined" && !(parseInt(version) > 0)) {
+    return {
+      status: 400,
+      error: "Invalid version. Use a bible.com version id (eg. 111 for NIV)"
+    };
+  }
+
+  await openBibleTabInBackground();
+  const tabs = await getBibleTabs();
+  const tab = tabs.find(t => t.active) || tabs[0];
+  if (!tab) {
+    return {
+      status: 500,
+      error: "bible.com tab could not be opened"
+    };
+  }
+  // a just opened bible.com tab needs a few seconds to load (and cache the books)
+  return sendToTab(
+    tab.id,
+    {
+      action: "externalVerses",
+      payload: {
+        reference: reference.trim(),
+        project,
+        index,
+        version
+      }
+    },
+    75
+  );
+}
+
+// a just created projector window (or bible.com tab) may not listen yet -> retry for a few seconds
+async function sendToTab(tabId, message, retries = 20) {
   try {
-    return await chrome.tabs.sendMessage(tabId, message);
+    const response = await chrome.tabs.sendMessage(tabId, message);
+    if (typeof response === "undefined") {
+      // tab is loaded, but its listener is not registered yet
+      throw new Error("No response from tab");
+    }
+    return response;
   } catch (e) {
     if (retries <= 0) {
       return { status: 500, error: e.message };
     }
     await new Promise(resolve => setTimeout(resolve, 200));
-    return sendToProjector(tabId, message, retries - 1);
+    return sendToTab(tabId, message, retries - 1);
   }
 }
 
@@ -327,13 +408,41 @@ function getExternalHelp() {
           "Sites that block framing (X-Frame-Options / frame-ancestors) can't be displayed",
           "Any updateText (verse selection, ESC) replaces the external page"
         ]
+      },
+      getVerses: {
+        description: "Get the text of a Bible reference (nothing is projected)",
+        payload: {
+          reference:
+            'string (required) - eg. "John 3:16-18", "JHN 3:16" or a chapter "Psalm 23". Book name in the bible.com language or USFM code',
+          version:
+            "number (optional) - bible.com version id (eg. 111 for NIV). Defaults to the version open on bible.com"
+        },
+        response: "{ status, reference, usfm, version: { id, name }, verses: [{ verse, text }], text }",
+        notes: [
+          "bible.com is opened in background if no bible.com tab is open",
+          "status 400 for an invalid reference format, 422 when the book, chapter or verse does not exist"
+        ]
+      },
+      projectVerses: {
+        description: "Open a Bible reference on bible.com and project it (only if the reference is valid)",
+        payload: {
+          reference: 'string (required) - eg. "John 3:16-18" or "JHN 3:16" (a verse is required)',
+          index: "number (optional) - Window index (1 or 2). If omitted, projects to all enabled windows"
+        },
+        response: "same as getVerses (the verses of the primary version)",
+        notes: [
+          "Uses the versions open on bible.com (parallel version included), like a pinned reference",
+          "Responds when the reference is valid and the projection started",
+          "Nothing is projected for an invalid reference (status 400 / 422)"
+        ]
       }
     },
     statusCodes: {
       200: "Done",
-      400: "Invalid payload (eg. url or index not allowed)",
+      400: "Invalid payload (eg. url, index or reference format not allowed)",
       403: "Action not allowed",
       404: "Window is disabled in projector settings",
+      422: "Reference not found (book, chapter or verse)",
       500: "Projection window did not respond"
     }
   };

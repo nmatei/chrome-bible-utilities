@@ -30,6 +30,7 @@
         "views/main/actions/settings.js",
         "views/main/actions/help.js",
         "views/main/actions/pin-verses.js",
+        "views/main/actions/external-verses.js",
         "views/main/actions.js",
         "views/main/index.js"
       ],

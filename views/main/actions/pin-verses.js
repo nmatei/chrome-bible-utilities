@@ -730,8 +730,19 @@ async function copyByOpeningReferences(targets, view, maskWrapper) {
 }
 
 async function openPinReference(target, project = true) {
-  const value = target.innerText;
-  const match = getVerseInfo(value);
+  const match = getVerseInfo(target.innerText);
+  const icon = target.closest("tr").querySelector('a[data-key="remove"]');
+  return openReference(match, project, icon);
+}
+
+/**
+ * Open the chapter of a reference and select (project) its verse
+ * @param {*} match - parsed reference (see getVerseInfo), book name in the current language
+ * @param {Boolean} project
+ * @param {HTMLElement} [icon] - spins while the chapter is opened
+ * @returns {Promise<{title, match}|{}>}
+ */
+async function openReference(match, project = true, icon) {
   if (match) {
     // store the match only when we have to open another chapter, since that can reload the page
     //   (verses from the loaded chapter are selected right away, nothing to keep for the next load)
@@ -740,12 +751,11 @@ async function openPinReference(target, project = true) {
     if (otherChapter) {
       setAutoSelectVerse(match);
     }
-    const icon = target.closest("tr").querySelector('a[data-key="remove"]');
-    icon.classList.add("spin");
+    icon?.classList.add("spin");
     const title = await openChapter(match.book, match.chapter);
     await checkCacheVersesInfo();
     await waitAndSelectVerse(match, title, project);
-    icon.classList.remove("spin");
+    icon?.classList.remove("spin");
     // if code reaches this point it means that verse is already selected,
     //   so we can clear auto select verse.
     // But when a page load already started (eg. chapter url changed in waitAndSelectVerse)

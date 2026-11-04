@@ -126,6 +126,7 @@ Or **support development** of this extension directly:
   - [x] via `Chrome Runtime Messages` (chrome.runtime.sendMessage)
   - [x] example how to project songs on this extension: [github.com/unu-unu-ro/norless-improvements-extension](https://github.com/unu-unu-ro/norless-improvements-extension)
   - [x] project text/Markdown (`updateText`) or a full size **external web page** (`updateFrame`)
+  - [x] get the text of a Bible reference (`getVerses`) or project it (`projectVerses`)
   - [x] see [🔌 External API](#-external-api-for-other-extensions)
 
 ## 🔌 External API (for other extensions)
@@ -205,14 +206,52 @@ await project("updateFrame", { index: 1, url: "" });
 - sites that forbid embedding (`X-Frame-Options` / CSP `frame-ancestors`) will show an empty/error page — use their _embed_ url when available
 - while the iframe has focus, keyboard shortcuts (arrows, `ESC`, `F11`) go to the external page — click outside it or use bible.com to control the projector
 
+### `getVerses` – get the text of a reference (no projection)
+
+```js
+const response = await project("getVerses", { reference: "John 3:16-17" });
+// {
+//   status: 200,
+//   reference: "John 3:16-17",
+//   usfm: "JHN.3.16-17",
+//   version: { id: 1, name: "KJV" },
+//   verses: [{ verse: "16", text: "For God so loved the world..." }, { verse: "17", text: "..." }],
+//   text: "16 For God so loved the world...\n17 ..."
+// }
+```
+
+| Payload     | Type              | Description                                                                                                     |
+| ----------- | ----------------- | --------------------------------------------------------------------------------------------------------------- |
+| `reference` | string (required) | `"John 3:16-18"`, `"JHN 3:16"` or a whole chapter `"Psalm 23"`. Book name in the bible.com language or USFM code |
+| `version`   | number            | bible.com version id (eg. `111` for NIV). Defaults to the version open on bible.com                             |
+
+### `projectVerses` – open a reference on bible.com and project it
+
+```js
+await project("projectVerses", { reference: "PSA 23:1-3" });
+```
+
+Works like a 📌 pinned reference: bible.com opens the chapter, selects the verses and projects them
+(with the parallel version, arrow keys continue from there). The reference is not added to the pinned list.
+
+| Payload     | Type              | Description                                                                  |
+| ----------- | ----------------- | ---------------------------------------------------------------------------- |
+| `reference` | string (required) | `"John 3:16-18"` or `"JHN 3:16"` (a verse is required)                       |
+| `index`     | `1` \| `2`        | Projection window. If omitted, all enabled windows are updated               |
+
+- the reference is checked first: nothing is projected when it is not valid (`status: 400` / `422`)
+- the response (same as `getVerses`) comes when the projection has started
+- bible.com is opened in background if no bible.com tab is open (both `getVerses` and `projectVerses`)
+
 ### Response status codes
 
 | `status` | Meaning                                                   |
 | -------- | --------------------------------------------------------- |
 | `200`    | Done                                                      |
-| `400`    | Invalid payload (eg. url/index not allowed) – see `error` |
+| `400`    | Invalid payload (eg. url/index/reference format) – see `error` |
 | `403`    | Unknown action – send `{ action: "help" }` for the list   |
 | `404`    | Window (`index`) is disabled in projector settings        |
+| `422`    | Reference not found (book, chapter or verse) – see `error` |
 | `500`    | Projection window did not respond – see `error`           |
 
 ## ⚙ Setup Plugin as Developer

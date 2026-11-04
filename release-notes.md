@@ -13,6 +13,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 - [x] 🌙 **Dark mode, built in** — the extension now follows **bible.com's own dark mode** (bible.com menu: Light / Dark): verse numbers, projected verse highlight, menus, prompts and scrollbars all switch to dark colors.
 - [x] 🔄 **Up to date with bible.com's new layout** — opening a **pinned verse** from another book or chapter switches the chapter **without a page refresh** again
+- [x] 🔌 **External API: Bible references from other extensions** — other extensions (eg. song projection apps) can now **get the text of a reference** (`getVerses`, eg. `John 3:16-18`) or **project it** (`projectVerses`): bible.com opens the chapter and projects the verses just like a 📌 pinned reference, parallel version included. Invalid references are never projected — see [🔌 External API](README.md#-external-api-for-other-extensions)
 
 ## 2.21.0 (2026-10-17)
 

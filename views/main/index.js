@@ -229,7 +229,9 @@ function getDisplayText(verses, displays) {
 }
 
 async function printSelectedVerses(verses) {
-  const [display1, display2] = displaySettings;
+  // an external projectVerses can target only one window (the other one is left as it is)
+  const only = externalProjectIndex;
+  const [display1, display2] = displaySettings.map((display, i) => (only && only !== i + 1 ? 0 : display));
   const display1Text = display1 && verses.length ? getDisplayText(verses, display1) : "";
 
   let display2Text = display2 ? display1Text : "";
@@ -238,13 +240,17 @@ async function printSelectedVerses(verses) {
   }
   if (display1Text || display2Text) {
     // create projector windows first
-    await getProjectTab();
+    await getProjectTab([display1, display2]);
   }
 
   // TODO improve? performance by checking?
   //   keep in mind that if index is 'undefined' will project to both windows (with one single event)
-  projectText(display1Text, false, 1, true);
-  projectText(display2Text, false, 2, true);
+  if (only !== 2) {
+    projectText(display1Text, false, 1, true);
+  }
+  if (only !== 1) {
+    projectText(display2Text, false, 2, true);
+  }
 }
 
 function deselectAll() {
@@ -637,6 +643,15 @@ async function initEvents() {
         sendResponse({ status: 200 });
         break;
       }
+      case "externalVerses": {
+        onExternalVersesRequest(request.payload).then(sendResponse, error => {
+          sendResponse({
+            status: 500,
+            error: error.message
+          });
+        });
+        return true;
+      }
       // case "install": {
       //   showNewVersionBadge();
       //   sendResponse({ status: 200 });
@@ -788,7 +803,17 @@ async function checkAutoProject() {
     }
     //console.info("selecting reference after page reload", match);
     const [title] = getChapterTitles();
-    const selected = await waitAndSelectVerse(match, title);
+    // external projectVerses (see external-verses.js): limited to one window and/or a range of verses
+    externalProjectIndex = match.index || 0;
+    let selected;
+    try {
+      selected = await waitAndSelectVerse(match, title);
+      if (selected && match.range && match.to) {
+        await doSelectVerses(match.to, false, false, false, true);
+      }
+    } finally {
+      externalProjectIndex = 0;
+    }
     if (selected) {
       // select verse in pin box and scroll to it
       const links = $$('#pinned-verses-list a[data-key="open"]');

@@ -64,10 +64,10 @@ async function bringTabToFront() {
   );
 }
 
-async function getProjectTab() {
+async function getProjectTab(displays = displaySettings) {
   let tab1 = projectTab1;
   let tab2 = projectTab2;
-  const [display1, display2] = displaySettings;
+  const [display1, display2] = displays;
   if (display1 && !tab1) {
     tab1 = projectTab1 = await createProjectTab(1);
   }
