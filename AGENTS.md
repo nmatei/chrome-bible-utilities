@@ -1,23 +1,16 @@
-# Copilot Instructions for Chrome Bible Utilities Extension
+# Agent Instructions for Chrome Bible Utilities Extension
 
-## IDE Rules Sync
+## Agent configuration
 
-This file is kept in sync across all IDE rule files:
+`AGENTS.md` is the single source of truth for agent instructions. The other files only point here:
 
-| File | IDE |
+| File | Read by |
 |---|---|
-| `CLAUDE.md` | Claude Code |
-| `.github/copilot-instructions.md` | GitHub Copilot |
+| `AGENTS.md` | canonical — edit rules here |
+| `CLAUDE.md` | Claude Code — pointer only (`@AGENTS.md`); do not add content here |
+| `.github/copilot-instructions.md` | GitHub Copilot — pointer only; do not add content here |
 
-**When asked to update these rules or instructions, always run the sync script after saving changes:**
-
-```bash
-bash .claude/sync-rules.sh <path-to-this-file>
-```
-
-Replace `<path-to-this-file>` with the path of the file you just edited — e.g. `CLAUDE.md` or `.github/copilot-instructions.md`. The two files are byte-identical.
-
-> Claude Code: a `PostToolUse` hook in `.claude/settings.json` runs this automatically on every edit.
+**When asked to update these rules or instructions, edit `AGENTS.md`** — never the pointer files, even if that is the file your tool loaded.
 
 ### Skills (Claude ↔ Copilot)
 
