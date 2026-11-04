@@ -51,16 +51,16 @@
     ]
   },
   "dependencies": {
-    "dompurify": "^3.4.16",
-    "marked": "^17.0.6"
+    "dompurify": "^3.4.17",
+    "marked": "^18.1.3"
   },
   "devDependencies": {
-    "@types/chrome": "^0.1.32",
+    "@types/chrome": "^0.3.7",
     "@types/jest": "^30.0.0",
     "browser-sync": "^3.0.4",
     "jest-environment-jsdom": "^30.5.2",
-    "jsdom": "^30.0.1",
+    "jsdom": "^30.1.3",
     "run-script-os": "^1.1.6",
-    "ts-jest": "^29.4.6"
+    "ts-jest": "^29.4.15"
   }
 }
