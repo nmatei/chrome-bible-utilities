@@ -16,10 +16,8 @@ import { applyRootStyles, BIBLE_TABS_URL, initUserOptions } from "../settings/co
 const animateKeys = {
   //"⌃⌘F": "F11", // TODO test on mac Os (isMac)
   F11: "F11",
-  ArrowLeft: "ArrowLeft",
-  ArrowUp: "ArrowLeft",
-  ArrowRight: "ArrowRight",
-  ArrowDown: "ArrowRight"
+  ArrowUp: "ArrowUp",
+  ArrowDown: "ArrowDown"
 };
 
 const isMac = /(Mac)/i.test(navigator.platform);

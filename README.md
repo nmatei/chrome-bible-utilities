@@ -38,7 +38,7 @@ or in **2 different languages**.
 - [x] 🔤 **Project selected verses** (+/- parallel text)
   - [x] 🔎 `Search` Book and Chapter
   - [x] `Click` on verse number to **display** it on projector
-  - [x] `Up / Down / Left / Right` arrows to navigate to **next/preview** verses
+  - [x] `Up / Down` arrows to navigate to **previous/next** verses
   - [x] `CTRL + Click` to **add verse** to selection (multi select)
   - [x] `Shift + Click` to multi select between last selection
   - [x] `ALT + Click` on verse number or Pinned reference, to force project window to be on top (in case is not visible)

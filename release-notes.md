@@ -9,6 +9,10 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
+## 2.23.0 (soon)
+
+- [x] ⌨️ **Only `Up / Down` arrows navigate verses** now — `Left / Right` are left to bible.com, which uses them to **change the chapter** (Help ❔ and the projector ◀ ▶ buttons updated)
+
 ## 2.22.0 (2026-11-05)
 
 - [x] 🌙 **Dark mode, built in** — the extension now follows **bible.com's own dark mode** (bible.com menu: Light / Dark): verse numbers, projected verse highlight, menus, prompts and scrollbars all switch to dark colors.

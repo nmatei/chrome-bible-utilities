@@ -474,12 +474,11 @@ async function selectByKeys(key) {
       await displayVerses([]);
       return;
     }
-    case "ArrowLeft":
+    // Left / Right are not used: bible.com uses them to change the chapter
     case "ArrowUp": {
       dir = -1;
       break;
     }
-    case "ArrowRight":
     case "ArrowDown": {
       dir = 1;
       break;

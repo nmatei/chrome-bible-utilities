@@ -22,7 +22,7 @@ function getHelpContent() {
         </div>
         <ul>
           <li><strong class="key-code">Click</strong> on verse number to display it on projector (eg. <strong class="key-code key-code-padding">1</strong>)</li>
-          <li><strong class="key-code">Up / Down / Left / Right</strong> arrows to navigate to next/preview verses</li>
+          <li><strong class="key-code">Up / Down</strong> arrows to navigate to previous/next verses</li>
           <li><strong class="key-code">${
             isMac ? "⌘" : "CTRL"
           } + Click</strong> to add verse to selection (multi select)</li>
