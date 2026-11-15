@@ -38,6 +38,33 @@ function projectText(text, markdown = false, index, nonBreakingHyphens = false) 
   });
 }
 
+/**
+ * "verse" message for the extensions connected to background.js (chrome.runtime.connect):
+ *   what a projection window shows after bible.com projected (or cleared) its verses
+ * @param {Number} index - window 1 or 2
+ * @param {{ references: String[], versesInfo: Array }} [verses] - see getDisplayVerses, none = cleared
+ * @returns {{ index: Number, reference: String|null, text: String }}
+ */
+function getVerseEvent(index, { references = [], versesInfo = [] } = {}) {
+  const text = versesInfo
+    .map(v => v.content)
+    .filter(Boolean)
+    .join("\n");
+  const reference = references
+    .join(" ")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return { index, reference: (text && reference) || null, text };
+}
+
+function notifyVersesProjected(events) {
+  return chrome.runtime.sendMessage({
+    action: "versesProjected",
+    payload: events
+  });
+}
+
 function projectFrame(url, index) {
   return chrome.runtime.sendMessage({
     action: "updateFrame",
@@ -88,4 +115,8 @@ function closeProjectTab(index) {
 async function createProjectTab(index) {
   const response = await createChromeWindow(index);
   return response ? response.id : null;
+}
+
+if (typeof module === "object" && typeof module.exports === "object") {
+  module.exports = { getVerseEvent };
 }

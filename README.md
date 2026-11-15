@@ -127,6 +127,7 @@ Or **support development** of this extension directly:
   - [x] example how to project songs on this extension: [github.com/unu-unu-ro/norless-improvements-extension](https://github.com/unu-unu-ro/norless-improvements-extension)
   - [x] project text/Markdown (`updateText`) or a full size **external web page** (`updateFrame`)
   - [x] get the text of a Bible reference (`getVerses`) or project it (`projectVerses`)
+  - [x] hear the verses projected from bible.com (`chrome.runtime.connect`, `verse` messages)
   - [x] see [🔌 External API](#-external-api-for-other-extensions)
 
 ## 🔌 External API (for other extensions)
@@ -242,6 +243,36 @@ Works like a 📌 pinned reference: bible.com opens the chapter, selects the ver
 - the reference is checked first: nothing is projected when it is not valid (`status: 400` / `422`)
 - the response (same as `getVerses`) comes when the projection has started
 - bible.com is opened in background if no bible.com tab is open (both `getVerses` and `projectVerses`)
+
+### `verse` – hear the verses projected from bible.com
+
+Connect with [`chrome.runtime.connect`](https://developer.chrome.com/docs/extensions/develop/concepts/messaging#external)
+(from a service worker or a content script) to get a message each time **bible.com projects or clears verses** in a window:
+a verse click, arrows, `ESC`, a 📌 pinned reference or a `projectVerses`. Text sent by extensions (`updateText` / `updateFrame`) sends nothing.
+
+```js
+function listenVerses() {
+  const port = chrome.runtime.connect(PROJECTOR_ID, { name: "my-extension" });
+  port.onMessage.addListener(({ action, payload }) => {
+    if (action === "verse") {
+      // { index: 1, reference: "VDC Ioan 3:16-17", text: "Fiindcă atât de mult...\nDumnezeu, în adevăr..." }
+      // { index: 2, reference: null, text: "" } - window 2 cleared
+      console.info(payload);
+    }
+  });
+  // the port closes when this extension's service worker stops (eg. idle): connect again
+  port.onDisconnect.addListener(() => setTimeout(listenVerses, 1000));
+}
+listenVerses();
+```
+
+One message per window that changed (an external `projectVerses` with an `index` changes only that window):
+
+| Payload     | Type           | Description                                                                                     |
+| ----------- | -------------- | ----------------------------------------------------------------------------------------------- |
+| `index`     | `1` \| `2`     | Projection window                                                                               |
+| `reference` | string \| null | The reference in the window header as plain text, eg. `"VDC Ioan 3:16-18"`; `null` when cleared |
+| `text`      | string         | The verses as plain text, one verse per line, without verse numbers; `""` when cleared          |
 
 ### Response status codes
 

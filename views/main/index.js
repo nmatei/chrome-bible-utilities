@@ -205,7 +205,7 @@ function addVersesFromCache(versesInfo) {
   return versesInfo;
 }
 
-function getDisplayText(verses, displays) {
+function getDisplayVerses(verses, displays) {
   const parallelEnabled = hasParallelView();
   let versesInfo = getVersesInfo(verses, parallelEnabled);
   let chapters = getTitles();
@@ -218,7 +218,10 @@ function getDisplayText(verses, displays) {
     versesInfo = versesInfo.filter(({ parallel }) => displays && parallel === (displays === 1));
   }
 
-  const references = getReferences(chapters, versesInfo);
+  return { references: getReferences(chapters, versesInfo), versesInfo };
+}
+
+function getDisplayText({ references, versesInfo }) {
   const versesContent = versesInfo.map(
     ({ cls, verseNr, content }) =>
       `<p class="verse ${cls}">${verseNr ? `<sup>${verseNr}</sup>&nbsp;` : ""}${content}</p>`
@@ -232,12 +235,11 @@ async function printSelectedVerses(verses) {
   // an external projectVerses can target only one window (the other one is left as it is)
   const only = externalProjectIndex;
   const [display1, display2] = displaySettings.map((display, i) => (only && only !== i + 1 ? 0 : display));
-  const display1Text = display1 && verses.length ? getDisplayText(verses, display1) : "";
-
-  let display2Text = display2 ? display1Text : "";
-  if (display2 !== display1) {
-    display2Text = display2 && verses.length ? getDisplayText(verses, display2) : "";
-  }
+  const display1Verses = display1 && verses.length ? getDisplayVerses(verses, display1) : undefined;
+  const display2Verses =
+    display2 === display1 ? display1Verses : display2 && verses.length ? getDisplayVerses(verses, display2) : undefined;
+  const display1Text = display1Verses ? getDisplayText(display1Verses) : "";
+  const display2Text = display2Verses ? getDisplayText(display2Verses) : "";
   if (display1Text || display2Text) {
     // create projector windows first
     await getProjectTab([display1, display2]);
@@ -245,12 +247,17 @@ async function printSelectedVerses(verses) {
 
   // TODO improve? performance by checking?
   //   keep in mind that if index is 'undefined' will project to both windows (with one single event)
+  const events = [];
   if (only !== 2) {
     projectText(display1Text, false, 1, true);
+    events.push(getVerseEvent(1, display1Verses));
   }
   if (only !== 1) {
     projectText(display2Text, false, 2, true);
+    events.push(getVerseEvent(2, display2Verses));
   }
+  // other extensions connected to background.js hear what bible.com projects
+  notifyVersesProjected(events);
 }
 
 function deselectAll() {

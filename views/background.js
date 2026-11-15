@@ -167,6 +167,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ status: 200 });
       break;
     }
+    case "versesProjected": {
+      // sent only by bible.com (this extension's content script): external updateText / updateFrame never reach here
+      request.payload.forEach(payload => {
+        externalPorts.forEach(port => {
+          try {
+            port.postMessage({ action: "verse", payload });
+          } catch (e) {
+            externalPorts.delete(port);
+          }
+        });
+      });
+      sendResponse({ status: 200 });
+      break;
+    }
     case "updateSlideSelection": {
       const { windowIndex } = request.payload;
       const key = projectorStorageKey + (windowIndex === 1 ? "" : windowIndex);
@@ -245,6 +259,15 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
       });
     }
   }
+});
+
+// Other extensions connect (chrome.runtime.connect(extensionId)) to hear the verses bible.com projects:
+//   { action: "verse", payload: { index, reference, text } } per window (see "versesProjected").
+// No externally_connectable in manifest.json, so every extension may connect (and no web page).
+const externalPorts = new Set();
+chrome.runtime.onConnectExternal.addListener(port => {
+  externalPorts.add(port);
+  port.onDisconnect.addListener(() => externalPorts.delete(port));
 });
 
 // same shape as views/popup/popup.js -> [window1, window2], 0 = window disabled
@@ -436,6 +459,26 @@ function getExternalHelp() {
           "Nothing is projected for an invalid reference (status 400 / 422)"
         ]
       }
+    },
+    connect: {
+      description:
+        "chrome.runtime.connect(extensionId) to hear what bible.com projects: the port gets one message per window that changed",
+      messages: {
+        verse: {
+          description:
+            "Verses projected (or cleared) from bible.com: a verse click, arrows, ESC, a pinned reference or projectVerses (not updateText / updateFrame)",
+          message: '{ action: "verse", payload: { index, reference, text } }',
+          payload: {
+            index: "number - Window index (1 or 2)",
+            reference:
+              'string | null - The reference in the window header as plain text, eg. "VDC Ioan 3:16-18" (null when cleared)',
+            text: 'string - The verses as plain text, one verse per line, without verse numbers ("" when cleared)'
+          }
+        }
+      },
+      notes: [
+        "The connection closes when this extension's service worker stops (eg. idle): connect again on port.onDisconnect"
+      ]
     },
     statusCodes: {
       200: "Done",
