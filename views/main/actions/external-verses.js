@@ -190,5 +190,9 @@ async function projectExternalReference(match) {
 }
 
 if (typeof module === "object" && typeof module.exports === "object") {
-  module.exports = { findExternalBook, parseExternalReference, pickVerses };
+  module.exports = {
+    findExternalBook,
+    parseExternalReference,
+    pickVerses
+  };
 }

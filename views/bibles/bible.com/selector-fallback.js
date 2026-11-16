@@ -312,5 +312,8 @@ if (typeof document === "object") {
 }
 
 if (typeof module === "object" && typeof module.exports === "object") {
-  module.exports = { detectVerseSelectors, getVersionViews };
+  module.exports = {
+    detectVerseSelectors,
+    getVersionViews
+  };
 }

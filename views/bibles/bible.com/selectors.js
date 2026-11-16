@@ -226,7 +226,10 @@ function parseGroupedVerseLabel(labelText) {
 }
 
 if (typeof module === "object" && typeof module.exports === "object") {
-  module.exports = { getVerseSelector, parseGroupedVerseLabel };
+  module.exports = {
+    getVerseSelector,
+    parseGroupedVerseLabel
+  };
 }
 
 function findLastVerseNumber() {

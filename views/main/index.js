@@ -218,7 +218,10 @@ function getDisplayVerses(verses, displays) {
     versesInfo = versesInfo.filter(({ parallel }) => displays && parallel === (displays === 1));
   }
 
-  return { references: getReferences(chapters, versesInfo), versesInfo };
+  return {
+    references: getReferences(chapters, versesInfo),
+    versesInfo
+  };
 }
 
 function getDisplayText({ references, versesInfo }) {
