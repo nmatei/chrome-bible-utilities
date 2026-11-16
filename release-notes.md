@@ -12,6 +12,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 ## 2.23.0 (soon)
 
 - [x] ⌨️ **Only `Up / Down` arrows navigate verses** now — `Left / Right` are left to bible.com, which uses them to **change the chapter** (Help ❔ and the projector ◀ ▶ buttons updated)
+- [x] 🔌 **External API: hear the verses projected from bible.com** — other extensions (eg. song projection apps) can **connect** (`chrome.runtime.connect`) and get a `verse` message with the **reference and text** each time bible.com projects or clears verses in a window, so they know what's on screen — see [🔌 External API](README.md#verse--hear-the-verses-projected-from-biblecom)
 
 ## 2.22.0 (2026-11-05)
 
