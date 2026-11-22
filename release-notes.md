@@ -9,16 +9,16 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 <a href="https://paypal.me/mateinick" target="_blank"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal" height="26"></a>
 <a href="https://github.com/sponsors/nmatei" target="_blank"><img src="https://img.shields.io/badge/Github_Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="26"></a>
 
-## 2.23.0 (soon)
+## 2.23.0 (2026-11-22)
 
 - [x] ⌨️ **Only `Up / Down` arrows navigate verses** now — `Left / Right` are left to bible.com, which uses them to **change the chapter** (Help ❔ and the projector ◀ ▶ buttons updated)
-- [x] 🔌 **External API: hear the verses projected from bible.com** — other extensions (eg. song projection apps) can **connect** (`chrome.runtime.connect`) and get a `verse` message with the **reference and text** each time bible.com projects or clears verses in a window, so they know what's on screen — see [🔌 External API](README.md#verse--hear-the-verses-projected-from-biblecom)
+- [x] 🔌 **External API: hear the verses projected from bible.com** — other extensions (eg. song projection apps) can **connect** (`chrome.runtime.connect`) and get a `verse` message with the **reference and text** each time bible.com projects or clears verses in a window, so they know what's on screen — see [🔌 External API](docs/external-api.md#verse--hear-the-verses-projected-from-biblecom)
 
 ## 2.22.0 (2026-11-05)
 
 - [x] 🌙 **Dark mode, built in** — the extension now follows **bible.com's own dark mode** (bible.com menu: Light / Dark): verse numbers, projected verse highlight, menus, prompts and scrollbars all switch to dark colors.
 - [x] 🔄 **Up to date with bible.com's new layout** — opening a **pinned verse** from another book or chapter switches the chapter **without a page refresh** again
-- [x] 🔌 **External API: Bible references from other extensions** — other extensions (eg. song projection apps) can now **get the text of a reference** (`getVerses`, eg. `John 3:16-18`) or **project it** (`projectVerses`): bible.com opens the chapter and projects the verses just like a 📌 pinned reference, parallel version included. Invalid references are never projected — see [🔌 External API](README.md#-external-api-for-other-extensions)
+- [x] 🔌 **External API: Bible references from other extensions** — other extensions (eg. song projection apps) can now **get the text of a reference** (`getVerses`, eg. `John 3:16-18`) or **project it** (`projectVerses`): bible.com opens the chapter and projects the verses just like a 📌 pinned reference, parallel version included. Invalid references are never projected — see [🔌 External API](docs/external-api.md)
 - [x] 🔒 Updated **dompurify** library to `v3.4.17` (security fixes for HTML sanitization of projected text) and **marked** library to `v18.1.3` (Markdown parser)
 
 ## 2.21.0 (2026-10-17)
@@ -30,7 +30,7 @@ for [Chrome extension to for Bible.com](README.md) by [@Matei Nicolae](https://n
 
 - [x] 🔄 **Up to date with bible.com's new Books dialog** — switching book & chapter when opening a pinned reference (📌) works **without page refresh** again, also on narrow windows and in parallel view
 - [x] 🎨 **Live Text** (💬) and **Help** (❔) boxes can be **moved with drag & drop** by their title — the new position is remembered (in this browser); drag it back next to its toolbar button to **re-attach** it
-- [x] 🔌 Other extensions can now project a **full size external web page** (eg. slides, video, countdown) with the new `updateFrame` message — the page can't read anything from the projector window. See [External API](README.md#-external-api-for-other-extensions)
+- [x] 🔌 Other extensions can now project a **full size external web page** (eg. slides, video, countdown) with the new `updateFrame` message — the page can't read anything from the projector window. See [External API](docs/external-api.md)
 - [x] 🔌 When another extension projects (`updateText` / `updateFrame`) and the projection window is closed, it is **opened automatically** (only the windows enabled in settings), together with bible.com (in background) if it's not open
 - [x] 🌐 **Live text** can project an external web page too: type `iframe: https://...` (as the only text) or paste an `<iframe>` embed code, then press `CTRL + Enter`
 - [x] 📦 Updated marked library to v17.0.6, and dompurify library to v3.4.16
